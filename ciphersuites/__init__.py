@@ -201,6 +201,33 @@ for ciphersuite in _CIPHERSUITES:
             ciphersuite["fields"].setdefault("jsse", [])
             ciphersuite["fields"]["jsse"].append(jsse["pk"])
 
+    for boringssl in BORINGSSL:
+        if ciphersuite_hexcode == list(filter(partial(is_not, None), [
+                boringssl["fields"]["hex_byte_1"],
+                boringssl["fields"]["hex_byte_2"],
+                boringssl["fields"].get("hex_byte_3", None)
+            ])):
+            ciphersuite["fields"].setdefault("boringssl", [])
+            ciphersuite["fields"]["boringssl"].append(boringssl["pk"])
+
+    for libressl in LIBRESSL:
+        if ciphersuite_hexcode == list(filter(partial(is_not, None), [
+                libressl["fields"]["hex_byte_1"],
+                libressl["fields"]["hex_byte_2"],
+                libressl["fields"].get("hex_byte_3", None)
+            ])):
+            ciphersuite["fields"].setdefault("libressl", [])
+            ciphersuite["fields"]["libressl"].append(libressl["pk"])
+
+    for s2n in S2N:
+        if ciphersuite_hexcode == list(filter(partial(is_not, None), [
+                s2n["fields"]["hex_byte_1"],
+                s2n["fields"]["hex_byte_2"],
+                s2n["fields"].get("hex_byte_3", None)
+            ])):
+            ciphersuite["fields"].setdefault("s2n", [])
+            ciphersuite["fields"]["s2n"].append(s2n["pk"])
+
     # Iterate over technology fields and substitute in details
     # NOTE: I would like a cleaner way to do this substitution rather than a static list
     for field in ["protocol", "key_exchange", "authentication", "encryption", "hashing"]:
