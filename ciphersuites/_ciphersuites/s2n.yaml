@@ -1,0 +1,191 @@
+- model: s2n
+  pk: TLS_NULL_WITH_NULL_NULL
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x00'
+- model: s2n
+  pk: AES256-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x3D'
+- model: s2n
+  pk: AES256-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x35'
+- model: s2n
+  pk: AES128-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x3C'
+- model: s2n
+  pk: AES128-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x2F'
+- model: s2n
+  pk: DES-CBC3-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x0A'
+- model: s2n
+  pk: RC4-MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x04'
+- model: s2n
+  pk: RC4-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x05'
+- model: s2n
+  pk: DHE-RSA-AES128-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x33'
+- model: s2n
+  pk: DHE-RSA-AES128-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x67'
+- model: s2n
+  pk: DHE-RSA-AES256-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x39'
+- model: s2n
+  pk: DHE-RSA-AES256-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x6B'
+- model: s2n
+  pk: DHE-RSA-DES-CBC3-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x16'
+- model: s2n
+  pk: ECDHE-ECDSA-AES128-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x09'
+- model: s2n
+  pk: ECDHE-ECDSA-AES128-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x23'
+- model: s2n
+  pk: ECDHE-ECDSA-AES256-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x0A'
+- model: s2n
+  pk: ECDHE-ECDSA-AES256-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x24'
+- model: s2n
+  pk: ECDHE-RSA-RC4-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x11'
+- model: s2n
+  pk: ECDHE-RSA-AES128-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x13'
+- model: s2n
+  pk: ECDHE-RSA-AES128-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x27'
+- model: s2n
+  pk: ECDHE-RSA-AES256-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x14'
+- model: s2n
+  pk: ECDHE-RSA-AES256-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x28'
+- model: s2n
+  pk: ECDHE-RSA-DES-CBC3-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x12'
+- model: s2n
+  pk: AES128-GCM-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x9C'
+- model: s2n
+  pk: AES256-GCM-SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x9D'
+- model: s2n
+  pk: DHE-RSA-AES128-GCM-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x9E'
+- model: s2n
+  pk: DHE-RSA-AES256-GCM-SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x9F'
+- model: s2n
+  pk: ECDHE-ECDSA-AES128-GCM-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x2B'
+- model: s2n
+  pk: ECDHE-ECDSA-AES256-GCM-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x2C'
+- model: s2n
+  pk: ECDHE-RSA-AES128-GCM-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x2F'
+- model: s2n
+  pk: ECDHE-RSA-AES256-GCM-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x30'
+- model: s2n
+  pk: ECDHE-RSA-CHACHA20-POLY1305
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0xA8'
+- model: s2n
+  pk: ECDHE-ECDSA-CHACHA20-POLY1305
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0xA9'
+- model: s2n
+  pk: DHE-RSA-CHACHA20-POLY1305
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0xAA'
+- model: s2n
+  pk: ECDHE-KYBER-RSA-AES256-GCM-SHA384
+  fields:
+    hex_byte_1: '0xFF'
+    hex_byte_2: '0x0C'
+- model: s2n
+  pk: TLS_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0x13'
+    hex_byte_2: '0x01'
+- model: s2n
+  pk: TLS_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0x13'
+    hex_byte_2: '0x02'
+- model: s2n
+  pk: TLS_CHACHA20_POLY1305_SHA256
+  fields:
+    hex_byte_1: '0x13'
+    hex_byte_2: '0x03'
+

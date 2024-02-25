@@ -106,6 +106,30 @@ except (ModuleNotFoundError, ImportError, IOError) as e:
     JSSE = []
 
 try:
+    with importlib_resources.path(f"ciphersuites._ciphersuites", "boringssl.yaml") as fixture:
+        with open(fixture, 'r') as f:
+            BORINGSSL = yaml.safe_load(f)
+except (ModuleNotFoundError, ImportError, IOError) as e:
+    warnings.warn(f"Failed to load resource 'ciphersuites._ciphersuites:borinssl.yaml': {str(e)}", Warning)
+    BORINGSSL = []
+
+try:
+    with importlib_resources.path(f"ciphersuites._ciphersuites", "libressl.yaml") as fixture:
+        with open(fixture, 'r') as f:
+            LIBRESSL = yaml.safe_load(f)
+except (ModuleNotFoundError, ImportError, IOError) as e:
+    warnings.warn(f"Failed to load resource 'ciphersuites._ciphersuites:libressl.yaml': {str(e)}", Warning)
+    LIBRESSL = []
+
+try:
+    with importlib_resources.path(f"ciphersuites._ciphersuites", "s2n.yaml") as fixture:
+        with open(fixture, 'r') as f:
+            S2N = yaml.safe_load(f)
+except (ModuleNotFoundError, ImportError, IOError) as e:
+    warnings.warn(f"Failed to load resource 'ciphersuites._ciphersuites:s2n.yaml': {str(e)}", Warning)
+    S2N = []
+
+try:
     with importlib_resources.path(f"ciphersuites._ciphersuites", "ciphersuites.yaml") as fixture:
         with open(fixture, 'r') as f:
             _CIPHERSUITES = yaml.safe_load(f)
