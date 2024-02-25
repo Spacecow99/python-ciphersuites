@@ -1,0 +1,601 @@
+- model: nss
+  pk: TLS_NULL_WITH_NULL_NULL
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x00'
+- model: nss
+  pk: TLS_RSA_WITH_NULL_MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x01'
+- model: nss
+  pk: TLS_RSA_WITH_NULL_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x02'
+- model: nss
+  pk: TLS_RSA_WITH_RC4_128_MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x04'
+- model: nss
+  pk: TLS_RSA_WITH_RC4_128_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x05'
+- model: nss
+  pk: TLS_RSA_WITH_IDEA_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x07'
+- model: nss
+  pk: TLS_RSA_WITH_DES_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x09'
+- model: nss
+  pk: TLS_RSA_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x0A'
+- model: nss
+  pk: TLS_DH_DSS_WITH_DES_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x0C'
+- model: nss
+  pk: TLS_DH_DSS_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x0D'
+- model: nss
+  pk: TLS_DH_RSA_WITH_DES_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x0F'
+- model: nss
+  pk: TLS_DH_RSA_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x10'
+- model: nss
+  pk: TLS_DHE_DSS_WITH_DES_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x12'
+- model: nss
+  pk: TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x13'
+- model: nss
+  pk: TLS_DHE_RSA_WITH_DES_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x15'
+- model: nss
+  pk: TLS_DHE_RSA_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x16'
+- model: nss
+  pk: TLS_DH_anon_WITH_RC4_128_MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x18'
+- model: nss
+  pk: TLS_DH_anon_WITH_DES_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x1A'
+- model: nss
+  pk: TLS_DH_anon_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x1B'
+- model: nss
+  pk: TLS_RSA_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x2F'
+- model: nss
+  pk: TLS_DH_DSS_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x30'
+- model: nss
+  pk: TLS_DH_RSA_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x31'
+- model: nss
+  pk: TLS_DHE_DSS_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x32'
+- model: nss
+  pk: TLS_DHE_RSA_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x33'
+- model: nss
+  pk: TLS_DH_anon_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x34'
+- model: nss
+  pk: TLS_RSA_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x35'
+- model: nss
+  pk: TLS_DH_DSS_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x36'
+- model: nss
+  pk: TLS_DH_RSA_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x37'
+- model: nss
+  pk: TLS_DHE_DSS_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x38'
+- model: nss
+  pk: TLS_DHE_RSA_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x39'
+- model: nss
+  pk: TLS_DH_anon_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x3A'
+- model: nss
+  pk: TLS_RSA_WITH_NULL_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x3B'
+- model: nss
+  pk: TLS_RSA_WITH_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x3C'
+- model: nss
+  pk: TLS_RSA_WITH_AES_256_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x3D'
+- model: nss
+  pk: TLS_DHE_DSS_WITH_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x40'
+- model: nss
+  pk: TLS_RSA_WITH_CAMELLIA_128_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x41'
+- model: nss
+  pk: TLS_DH_DSS_WITH_CAMELLIA_128_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x42'
+- model: nss
+  pk: TLS_DH_RSA_WITH_CAMELLIA_128_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x43'
+- model: nss
+  pk: TLS_DHE_DSS_WITH_CAMELLIA_128_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x44'
+- model: nss
+  pk: TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x45'
+- model: nss
+  pk: TLS_DH_anon_WITH_CAMELLIA_128_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x46'
+- model: nss
+  pk: TLS_DHE_DSS_WITH_RC4_128_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x66'
+- model: nss
+  pk: TLS_DHE_RSA_WITH_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x67'
+- model: nss
+  pk: TLS_DHE_DSS_WITH_AES_256_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x6A'
+- model: nss
+  pk: TLS_DHE_RSA_WITH_AES_256_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x6B'
+- model: nss
+  pk: TLS_RSA_WITH_CAMELLIA_256_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x84'
+- model: nss
+  pk: TLS_DH_DSS_WITH_CAMELLIA_256_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x85'
+- model: nss
+  pk: TLS_DH_RSA_WITH_CAMELLIA_256_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x86'
+- model: nss
+  pk: TLS_DHE_DSS_WITH_CAMELLIA_256_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x87'
+- model: nss
+  pk: TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x88'
+- model: nss
+  pk: TLS_DH_anon_WITH_CAMELLIA_256_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x89'
+- model: nss
+  pk: TLS_RSA_WITH_SEED_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x96'
+- model: nss
+  pk: TLS_RSA_WITH_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x9C'
+- model: nss
+  pk: TLS_RSA_WITH_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x9D'
+- model: nss
+  pk: TLS_DHE_RSA_WITH_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x9E'
+- model: nss
+  pk: TLS_DHE_RSA_WITH_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x9F'
+- model: nss
+  pk: TLS_DHE_DSS_WITH_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xA2'
+- model: nss
+  pk: TLS_DHE_DSS_WITH_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xA3'
+- model: nss
+  pk: TLS_EMPTY_RENEGOTIATION_INFO_SCSV
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xFF'
+- model: nss
+  pk: TLS_FALLBACK_SCSV
+  fields:
+    hex_byte_1: '0x56'
+    hex_byte_2: '0x00'
+- model: nss
+  pk: TLS_ECDH_ECDSA_WITH_NULL_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x01'
+- model: nss
+  pk: TLS_ECDH_ECDSA_WITH_RC4_128_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x02'
+- model: nss
+  pk: TLS_ECDH_ECDSA_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x03'
+- model: nss
+  pk: TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x04'
+- model: nss
+  pk: TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x05'
+- model: nss
+  pk: TLS_ECDHE_ECDSA_WITH_NULL_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x06'
+- model: nss
+  pk: TLS_ECDHE_ECDSA_WITH_RC4_128_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x07'
+- model: nss
+  pk: TLS_ECDHE_ECDSA_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x08'
+- model: nss
+  pk: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x09'
+- model: nss
+  pk: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x0A'
+- model: nss
+  pk: TLS_ECDH_RSA_WITH_NULL_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x0B'
+- model: nss
+  pk: TLS_ECDH_RSA_WITH_RC4_128_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x0C'
+- model: nss
+  pk: TLS_ECDH_RSA_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x0D'
+- model: nss
+  pk: TLS_ECDH_RSA_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x0E'
+- model: nss
+  pk: TLS_ECDH_RSA_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x0F'
+- model: nss
+  pk: TLS_ECDHE_RSA_WITH_NULL_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x10'
+- model: nss
+  pk: TLS_ECDHE_RSA_WITH_RC4_128_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x11'
+- model: nss
+  pk: TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x12'
+- model: nss
+  pk: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x13'
+- model: nss
+  pk: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x14'
+- model: nss
+  pk: TLS_ECDH_anon_WITH_NULL_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x15'
+- model: nss
+  pk: TLS_ECDH_anon_WITH_RC4_128_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x16'
+- model: nss
+  pk: TLS_ECDH_anon_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x17'
+- model: nss
+  pk: TLS_ECDH_anon_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x18'
+- model: nss
+  pk: TLS_ECDH_anon_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x19'
+- model: nss
+  pk: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x23'
+- model: nss
+  pk: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x24'
+- model: nss
+  pk: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x27'
+- model: nss
+  pk: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x28'
+- model: nss
+  pk: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x2B'
+- model: nss
+  pk: TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x2C'
+- model: nss
+  pk: TLS_ECDH_ECDSA_WITH_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x2D'
+- model: nss
+  pk: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x2F'
+- model: nss
+  pk: TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x30'
+- model: nss
+  pk: TLS_ECDH_RSA_WITH_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x31'
+- model: nss
+  pk: TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0xA8'
+- model: nss
+  pk: TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0xA9'
+- model: nss
+  pk: TLS_DHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0xAA'
+- model: nss
+  pk: TLS_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0x13'
+    hex_byte_2: '0x01'
+- model: nss
+  pk: TLS_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0x13'
+    hex_byte_2: '0x02'
+- model: nss
+  pk: TLS_CHACHA20_POLY1305_SHA256
+  fields:
+    hex_byte_1: '0x13'
+    hex_byte_2: '0x03'
+- model: nss
+  pk: TLS_ECDHE_PSK_WITH_CHACHA20_POLY1305_SHA256
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0xAC'
+- model: nss
+  pk: TLS_DHE_PSK_WITH_CHACHA20_POLY1305_SHA256
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0xAD'
+- model: nss
+  pk: TLS_ECDHE_PSK_WITH_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xD0'
+    hex_byte_2: '0x01'
+- model: nss
+  pk: TLS_ECDHE_PSK_WITH_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xD0'
+    hex_byte_2: '0x02'
+- model: nss
+  pk: TLS_DHE_PSK_WITH_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xAA'
+- model: nss
+  pk: TLS_DHE_PSK_WITH_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xAB'
+- model: nss
+  pk: TLS_RSA_EXPORT_WITH_RC4_40_MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x03'
+- model: nss
+  pk: TLS_RSA_EXPORT_WITH_RC2_CBC_40_MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x06'
+- model: nss
+  pk: TLS_RSA_EXPORT_WITH_DES40_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x08'
+- model: nss
+  pk: TLS_RSA_EXPORT1024_WITH_DES_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x62'
+- model: nss
+  pk: TLS_RSA_EXPORT1024_WITH_RC4_56_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x64'
+- model: nss
+  pk: TLS_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x14'
+- model: nss
+  pk: TLS_DH_RSA_EXPORT_WITH_DES40_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x0E'
+- model: nss
+  pk: TLS_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x63'
+- model: nss
+  pk: TLS_DHE_DSS_EXPORT1024_WITH_RC4_56_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x65'
+- model: nss
+  pk: TLS_DH_DSS_EXPORT_WITH_DES40_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x0B'
+- model: nss
+  pk: TLS_DHE_DSS_EXPORT_WITH_DES40_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x11'
+- model: nss
+  pk: TLS_DH_anon_EXPORT_WITH_RC4_40_MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x17'
+- model: nss
+  pk: TLS_DH_anon_EXPORT_WITH_DES40_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x19'
+

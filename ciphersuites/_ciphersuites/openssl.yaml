@@ -1,0 +1,1629 @@
+- model: openssl
+  pk: NULL-MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x01'
+- model: openssl
+  pk: NULL-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x02'
+- model: openssl
+  pk: EXP-RC4-MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x03'
+- model: openssl
+  pk: RC4-MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x04'
+- model: openssl
+  pk: RC4-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x05'
+- model: openssl
+  pk: EXP-RC2-CBC-MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x06'
+- model: openssl
+  pk: IDEA-CBC-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x07'
+- model: openssl
+  pk: EXP-DES-CBC-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x08'
+- model: openssl
+  pk: DES-CBC-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x09'
+- model: openssl
+  pk: DES-CBC3-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x0A'
+- model: openssl
+  pk: DH-DSS-DES-CBC-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x0C'
+- model: openssl
+  pk: DH-DSS-DES-CBC3-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x0D'
+- model: openssl
+  pk: DH-RSA-DES-CBC-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x0F'
+- model: openssl
+  pk: DH-RSA-DES-CBC3-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x10'
+- model: openssl
+  pk: EXP-EDH-DSS-DES-CBC-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x11'
+- model: openssl
+  pk: EDH-DSS-CBC-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x12'
+- model: openssl
+  pk: EDH-DSS-DES-CBC-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x12'
+- model: openssl
+  pk: DHE-DSS-DES-CBC3-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x13'
+- model: openssl
+  pk: EDH-DSS-DES-CBC3-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x13'
+- model: openssl
+  pk: EXP-EDH-RSA-DES-CBC-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x14'
+- model: openssl
+  pk: EDH-RSA-DES-CBC-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x15'
+- model: openssl
+  pk: DHE-RSA-DES-CBC3-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x16'
+- model: openssl
+  pk: EDH-RSA-DES-CBC3-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x16'
+- model: openssl
+  pk: EXP-ADH-RC4-MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x17'
+- model: openssl
+  pk: ADH-RC4-MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x18'
+- model: openssl
+  pk: EXP-ADH-DES-CBC-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x19'
+- model: openssl
+  pk: ADH-DES-CBC-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x1A'
+- model: openssl
+  pk: ADH-DES-CBC3-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x1B'
+- model: openssl
+  pk: AES128-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x2F'
+- model: openssl
+  pk: AES256-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x35'
+- model: openssl
+  pk: DH-DSS-AES128-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x30'
+- model: openssl
+  pk: DH-DSS-AES256-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x36'
+- model: openssl
+  pk: DH-RSA-AES128-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x31'
+- model: openssl
+  pk: DH-RSA-AES256-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x37'
+- model: openssl
+  pk: DHE-DSS-AES128-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x32'
+- model: openssl
+  pk: DHE-DSS-AES256-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x38'
+- model: openssl
+  pk: DHE-RSA-AES128-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x33'
+- model: openssl
+  pk: DHE-RSA-AES256-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x39'
+- model: openssl
+  pk: ADH-AES128-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x34'
+- model: openssl
+  pk: ADH-AES256-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x3A'
+- model: openssl
+  pk: CAMELLIA128-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x41'
+- model: openssl
+  pk: CAMELLIA256-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x84'
+- model: openssl
+  pk: DH-DSS-CAMELLIA128-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x42'
+- model: openssl
+  pk: DH-DSS-CAMELLIA256-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x85'
+- model: openssl
+  pk: DH-RSA-CAMELLIA128-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x43'
+- model: openssl
+  pk: DH-RSA-CAMELLIA256-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x86'
+- model: openssl
+  pk: DHE-DSS-CAMELLIA128-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x44'
+- model: openssl
+  pk: DHE-DSS-CAMELLIA256-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x87'
+- model: openssl
+  pk: DHE-RSA-CAMELLIA128-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x45'
+- model: openssl
+  pk: DHE-RSA-CAMELLIA256-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x88'
+- model: openssl
+  pk: ADH-CAMELLIA128-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x46'
+- model: openssl
+  pk: ADH-CAMELLIA256-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x89'
+- model: openssl
+  pk: SEED-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x96'
+- model: openssl
+  pk: DH-DSS-SEED-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x97'
+- model: openssl
+  pk: DH-RSA-SEED-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x98'
+- model: openssl
+  pk: DHE-DSS-SEED-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x99'
+- model: openssl
+  pk: DHE-RSA-SEED-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x9A'
+- model: openssl
+  pk: ADH-SEED-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x9B'
+- model: openssl
+  pk: GOST94-GOST89-GOST89
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x80'
+- model: openssl
+  pk: GOST2001-GOST89-GOST89
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x81'
+- model: openssl
+  pk: GOST94-NULL-GOST94
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x82'
+- model: openssl
+  pk: GOST2001-NULL-GOST94
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x83'
+- model: openssl
+  pk: EXP1024-DES-CBC-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x62'
+- model: openssl
+  pk: EXP1024-RC4-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x64'
+- model: openssl
+  pk: EXP1024-DHE-DSS-DES-CBC-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x63'
+- model: openssl
+  pk: EXP1024-DHE-DSS-RC4-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x65'
+- model: openssl
+  pk: DHE-DSS-RC4-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x66'
+- model: openssl
+  pk: ECDH-RSA-NULL-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x0B'
+- model: openssl
+  pk: ECDH-RSA-RC4-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x0C'
+- model: openssl
+  pk: ECDH-RSA-DES-CBC3-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x0D'
+- model: openssl
+  pk: ECDH-RSA-AES128-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x0E'
+- model: openssl
+  pk: ECDH-RSA-AES256-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x0F'
+- model: openssl
+  pk: ECDH-ECDSA-NULL-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x01'
+- model: openssl
+  pk: ECDH-ECDSA-RC4-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x02'
+- model: openssl
+  pk: ECDH-ECDSA-DES-CBC3-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x03'
+- model: openssl
+  pk: ECDH-ECDSA-AES128-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x04'
+- model: openssl
+  pk: ECDH-ECDSA-AES256-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x05'
+- model: openssl
+  pk: ECDHE-RSA-NULL-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x10'
+- model: openssl
+  pk: ECDHE-RSA-RC4-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x11'
+- model: openssl
+  pk: ECDHE-RSA-DES-CBC3-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x12'
+- model: openssl
+  pk: ECDHE-RSA-AES128-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x13'
+- model: openssl
+  pk: ECDHE-RSA-AES256-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x14'
+- model: openssl
+  pk: ECDHE-ECDSA-NULL-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x06'
+- model: openssl
+  pk: ECDHE-ECDSA-RC4-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x07'
+- model: openssl
+  pk: ECDHE-ECDSA-DES-CBC3-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x08'
+- model: openssl
+  pk: ECDHE-ECDSA-AES128-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x09'
+- model: openssl
+  pk: ECDHE-ECDSA-AES256-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x0A'
+- model: openssl
+  pk: AECDH-NULL-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x15'
+- model: openssl
+  pk: AECDH-RC4-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x16'
+- model: openssl
+  pk: AECDH-DES-CBC3-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x17'
+- model: openssl
+  pk: AECDH-AES128-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x18'
+- model: openssl
+  pk: AECDH-AES256-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x19'
+- model: openssl
+  pk: NULL-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x3B'
+- model: openssl
+  pk: AES128-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x3C'
+- model: openssl
+  pk: AES256-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x3D'
+- model: openssl
+  pk: AES128-GCM-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x9C'
+- model: openssl
+  pk: AES256-GCM-SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x9D'
+- model: openssl
+  pk: DH-RSA-AES128-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x3F'
+- model: openssl
+  pk: DH-RSA-AES256-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x69'
+- model: openssl
+  pk: DH-RSA-AES128-GCM-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xA0'
+- model: openssl
+  pk: DH-RSA-AES256-GCM-SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xA1'
+- model: openssl
+  pk: DH-DSS-AES128-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x3E'
+- model: openssl
+  pk: DH-DSS-AES256-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x68'
+- model: openssl
+  pk: DH-DSS-AES128-GCM-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xA4'
+- model: openssl
+  pk: DH-DSS-AES256-GCM-SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xA5'
+- model: openssl
+  pk: DHE-RSA-AES128-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x67'
+- model: openssl
+  pk: DHE-RSA-AES256-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x6B'
+- model: openssl
+  pk: DHE-RSA-AES128-GCM-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x9E'
+- model: openssl
+  pk: DHE-RSA-AES256-GCM-SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x9F'
+- model: openssl
+  pk: DHE-DSS-AES128-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x40'
+- model: openssl
+  pk: DHE-DSS-AES256-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x6A'
+- model: openssl
+  pk: DHE-DSS-AES128-GCM-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xA2'
+- model: openssl
+  pk: DHE-DSS-AES256-GCM-SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xA3'
+- model: openssl
+  pk: ECDH-RSA-AES128-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x29'
+- model: openssl
+  pk: ECDH-RSA-AES256-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x2A'
+- model: openssl
+  pk: ECDH-RSA-AES128-GCM-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x31'
+- model: openssl
+  pk: ECDH-RSA-AES256-GCM-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x32'
+- model: openssl
+  pk: ECDH-ECDSA-AES128-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x25'
+- model: openssl
+  pk: ECDH-ECDSA-AES256-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x26'
+- model: openssl
+  pk: ECDH-ECDSA-AES128-GCM-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x2D'
+- model: openssl
+  pk: ECDH-ECDSA-AES256-GCM-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x2E'
+- model: openssl
+  pk: ECDHE-RSA-AES128-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x27'
+- model: openssl
+  pk: ECDHE-RSA-AES256-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x28'
+- model: openssl
+  pk: ECDHE-RSA-AES128-GCM-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x2F'
+- model: openssl
+  pk: ECDHE-RSA-AES256-GCM-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x30'
+- model: openssl
+  pk: ECDHE-ECDSA-AES128-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x23'
+- model: openssl
+  pk: ECDHE-ECDSA-AES256-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x24'
+- model: openssl
+  pk: ECDHE-ECDSA-AES128-GCM-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x2B'
+- model: openssl
+  pk: ECDHE-ECDSA-AES256-GCM-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x2C'
+- model: openssl
+  pk: ADH-AES128-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x6C'
+- model: openssl
+  pk: ADH-AES256-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x6D'
+- model: openssl
+  pk: ADH-AES128-GCM-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xA6'
+- model: openssl
+  pk: ADH-AES256-GCM-SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xA7'
+- model: openssl
+  pk: PSK-RC4-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x8A'
+- model: openssl
+  pk: PSK-3DES-EDE-CBC-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x8B'
+- model: openssl
+  pk: PSK-AES128-CBC-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x8C'
+- model: openssl
+  pk: PSK-AES256-CBC-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x8D'
+- model: openssl
+  pk: RC4-MD5
+  fields:
+    hex_byte_1: '0x01'
+    hex_byte_2: '0x00'
+    hex_byte_3: '0x80'
+- model: openssl
+  pk: RC2-CBC-MD5
+  fields:
+    hex_byte_1: '0x03'
+    hex_byte_2: '0x00'
+    hex_byte_3: '0x80'
+- model: openssl
+  pk: IDEA-CBC-MD5
+  fields:
+    hex_byte_1: '0x05'
+    hex_byte_2: '0x00'
+    hex_byte_3: '0x80'
+- model: openssl
+  pk: DES-CBC3-MD5
+  fields:
+    hex_byte_1: '0x07'
+    hex_byte_2: '0x00'
+    hex_byte_3: '0xC0'
+- model: openssl
+  pk: AES128-CCM
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x9C'
+- model: openssl
+  pk: AES256-CCM
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x9D'
+- model: openssl
+  pk: DHE-RSA-AES128-CCM
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x9E'
+- model: openssl
+  pk: DHE-RSA-AES256-CCM
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x9F'
+- model: openssl
+  pk: AES128-CCM8
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xA0'
+- model: openssl
+  pk: AES256-CCM8
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xA1'
+- model: openssl
+  pk: DHE-RSA-AES128-CCM8
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xA2'
+- model: openssl
+  pk: DHE-RSA-AES256-CCM8
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xA3'
+- model: openssl
+  pk: ECDHE-ECDSA-AES128-CCM
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xAC'
+- model: openssl
+  pk: ECDHE-ECDSA-AES256-CCM
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xAD'
+- model: openssl
+  pk: ECDHE-ECDSA-AES128-CCM8
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xAE'
+- model: openssl
+  pk: ECDHE-ECDSA-AES256-CCM8
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xAF'
+- model: openssl
+  pk: ARIA128-GCM-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x50'
+- model: openssl
+  pk: ARIA256-GCM-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x51'
+- model: openssl
+  pk: DHE-RSA-ARIA128-GCM-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x52'
+- model: openssl
+  pk: DHE-RSA-ARIA256-GCM-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x53'
+- model: openssl
+  pk: DHE-DSS-ARIA128-GCM-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x56'
+- model: openssl
+  pk: DHE-DSS-ARIA256-GCM-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x57'
+- model: openssl
+  pk: ECDHE-ECDSA-ARIA128-GCM-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x5C'
+- model: openssl
+  pk: ECDHE-ECDSA-ARIA256-GCM-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x5D'
+- model: openssl
+  pk: ECDHE-ARIA128-GCM-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x60'
+- model: openssl
+  pk: ECDHE-ARIA256-GCM-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x61'
+- model: openssl
+  pk: PSK-ARIA128-GCM-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x6A'
+- model: openssl
+  pk: PSK-ARIA256-GCM-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x6B'
+- model: openssl
+  pk: DHE-PSK-ARIA128-GCM-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x6C'
+- model: openssl
+  pk: DHE-PSK-ARIA256-GCM-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x6D'
+- model: openssl
+  pk: RSA-PSK-ARIA128-GCM-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x6E'
+- model: openssl
+  pk: RSA-PSK-ARIA256-GCM-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x6F'
+- model: openssl
+  pk: ECDHE-ECDSA-CAMELLIA128-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x72'
+- model: openssl
+  pk: ECDHE-ECDSA-CAMELLIA256-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x73'
+- model: openssl
+  pk: ECDHE-RSA-CAMELLIA128-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x76'
+- model: openssl
+  pk: ECDHE-RSA-CAMELLIA256-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x77'
+- model: openssl
+  pk: PSK-NULL-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x2C'
+- model: openssl
+  pk: DHE-PSK-NULL-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x2D'
+- model: openssl
+  pk: RSA-PSK-NULL-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x2E'
+- model: openssl
+  pk: DHE-PSK-RC4-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x8E'
+- model: openssl
+  pk: DHE-PSK-3DES-EDE-CBC-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x8F'
+- model: openssl
+  pk: DHE-PSK-AES128-CBC-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x90'
+- model: openssl
+  pk: DHE-PSK-AES256-CBC-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x91'
+- model: openssl
+  pk: RSA-PSK-RC4-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x92'
+- model: openssl
+  pk: RSA-PSK-3DES-EDE-CBC-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x93'
+- model: openssl
+  pk: RSA-PSK-AES128-CBC-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x94'
+- model: openssl
+  pk: RSA-PSK-AES256-CBC-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x95'
+- model: openssl
+  pk: PSK-AES128-GCM-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xA8'
+- model: openssl
+  pk: PSK-AES256-GCM-SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xA9'
+- model: openssl
+  pk: DHE-PSK-AES128-GCM-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xAA'
+- model: openssl
+  pk: DHE-PSK-AES256-GCM-SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xAB'
+- model: openssl
+  pk: RSA-PSK-AES128-GCM-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xAC'
+- model: openssl
+  pk: RSA-PSK-AES256-GCM-SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xAD'
+- model: openssl
+  pk: PSK-AES128-CBC-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xAE'
+- model: openssl
+  pk: PSK-AES256-CBC-SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xAF'
+- model: openssl
+  pk: PSK-NULL-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xB0'
+- model: openssl
+  pk: PSK-NULL-SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xB1'
+- model: openssl
+  pk: DHE-PSK-AES128-CBC-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xB2'
+- model: openssl
+  pk: DHE-PSK-AES256-CBC-SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xB3'
+- model: openssl
+  pk: DHE-PSK-NULL-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xB4'
+- model: openssl
+  pk: DHE-PSK-NULL-SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xB5'
+- model: openssl
+  pk: RSA-PSK-AES128-CBC-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xB6'
+- model: openssl
+  pk: RSA-PSK-AES256-CBC-SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xB7'
+- model: openssl
+  pk: RSA-PSK-NULL-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xB8'
+- model: openssl
+  pk: RSA-PSK-NULL-SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xB9'
+- model: openssl
+  pk: ECDHE-PSK-RC4-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x33'
+- model: openssl
+  pk: ECDHE-PSK-3DES-EDE-CBC-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x34'
+- model: openssl
+  pk: ECDHE-PSK-AES128-CBC-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x35'
+- model: openssl
+  pk: ECDHE-PSK-AES256-CBC-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x36'
+- model: openssl
+  pk: ECDHE-PSK-AES128-CBC-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x37'
+- model: openssl
+  pk: ECDHE-PSK-AES256-CBC-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x38'
+- model: openssl
+  pk: ECDHE-PSK-NULL-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x39'
+- model: openssl
+  pk: ECDHE-PSK-NULL-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x3A'
+- model: openssl
+  pk: ECDHE-PSK-NULL-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x3B'
+- model: openssl
+  pk: PSK-CAMELLIA128-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x94'
+- model: openssl
+  pk: PSK-CAMELLIA256-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x95'
+- model: openssl
+  pk: DHE-PSK-CAMELLIA128-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x96'
+- model: openssl
+  pk: DHE-PSK-CAMELLIA256-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x97'
+- model: openssl
+  pk: RSA-PSK-CAMELLIA128-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x98'
+- model: openssl
+  pk: RSA-PSK-CAMELLIA256-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x99'
+- model: openssl
+  pk: ECDHE-PSK-CAMELLIA128-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x9A'
+- model: openssl
+  pk: ECDHE-PSK-CAMELLIA256-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x9B'
+- model: openssl
+  pk: PSK-AES128-CCM
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xA4'
+- model: openssl
+  pk: PSK-AES256-CCM
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xA5'
+- model: openssl
+  pk: DHE-PSK-AES128-CCM
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xA6'
+- model: openssl
+  pk: DHE-PSK-AES256-CCM
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xA7'
+- model: openssl
+  pk: PSK-AES128-CCM8
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xA8'
+- model: openssl
+  pk: PSK-AES256-CCM8
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xA9'
+- model: openssl
+  pk: ECDHE-RSA-CHACHA20-POLY1305
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0xA8'
+- model: openssl
+  pk: ECDHE-ECDSA-CHACHA20-POLY1305
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0xA9'
+- model: openssl
+  pk: DHE-RSA-CHACHA20-POLY1305
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0xAA'
+- model: openssl
+  pk: PSK-CHACHA20-POLY1305
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0xAB'
+- model: openssl
+  pk: ECDHE-PSK-CHACHA20-POLY1305
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0xAC'
+- model: openssl
+  pk: DHE-PSK-CHACHA20-POLY1305
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0xAD'
+- model: openssl
+  pk: RSA-PSK-CHACHA20-POLY1305
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0xAE'
+- model: openssl
+  pk: TLS_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0x13'
+    hex_byte_2: '0x01'
+- model: openssl
+  pk: TLS_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0x13'
+    hex_byte_2: '0x02'
+- model: openssl
+  pk: TLS_CHACHA20_POLY1305_SHA256
+  fields:
+    hex_byte_1: '0x13'
+    hex_byte_2: '0x03'
+- model: openssl
+  pk: TLS_AES_128_CCM_SHA256
+  fields:
+    hex_byte_1: '0x13'
+    hex_byte_2: '0x04'
+- model: openssl
+  pk: TLS_AES_128_CCM_8_SHA256
+  fields:
+    hex_byte_1: '0x13'
+    hex_byte_2: '0x05'
+- model: openssl
+  pk: ECDHE-ECDSA-CHACHA20-POLY1305-OLD
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0x14'
+- model: openssl
+  pk: ECDHE-RSA-CHACHA20-POLY1305-OLD
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0x13'
+- model: openssl
+  pk: DHE-RSA-CHACHA20-POLY1305-OLD
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0x15'
+- model: openssl
+  pk: SRP-DSS-AES-256-CBC-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x22'
+- model: openssl
+  pk: SRP-RSA-AES-256-CBC-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x21'
+- model: openssl
+  pk: SRP-AES-256-CBC-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x20'
+- model: openssl
+  pk: DHE-RSA-CAMELLIA256-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xC4'
+- model: openssl
+  pk: DHE-DSS-CAMELLIA256-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xC3'
+- model: openssl
+  pk: DH-RSA-CAMELLIA256-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xC2'
+- model: openssl
+  pk: DH-DSS-CAMELLIA256-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xC1'
+- model: openssl
+  pk: ADH-CAMELLIA256-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xC5'
+- model: openssl
+  pk: DHE-PSK-AES256-CCM8
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xAB'
+- model: openssl
+  pk: ECDH-RSA-CAMELLIA256-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x79'
+- model: openssl
+  pk: ECDH-ECDSA-CAMELLIA256-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x75'
+- model: openssl
+  pk: CAMELLIA256-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xC0'
+- model: openssl
+  pk: ARIA256-CBC-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x3D'
+- model: openssl
+  pk: DHE-DSS-ARIA256-CBC-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x43'
+- model: openssl
+  pk: DHE-RSA-ARIA256-CBC-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x45'
+- model: openssl
+  pk: DH-anon-ARIA256-CBC-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x47'
+- model: openssl
+  pk: ECDHE-ECDSA-ARIA256-CBC-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x49'
+- model: openssl
+  pk: ECDHE-RSA-ARIA256-CBC-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x4D'
+- model: openssl
+  pk: DH-RSA-ARIA256-GCM-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x55'
+- model: openssl
+  pk: DH-DSS-ARIA256-GCM-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x59'
+- model: openssl
+  pk: ADH-ARIA256-GCM-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x5B'
+- model: openssl
+  pk: ECDH-ECDSA-ARIA256-GCM-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x5F'
+- model: openssl
+  pk: ECDH-ARIA256-GCM-SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x63'
+- model: openssl
+  pk: GOST-MD5
+  fields:
+    hex_byte_1: '0xFF'
+    hex_byte_2: '0x00'
+- model: openssl
+  pk: GOST-GOST94
+  fields:
+    hex_byte_1: '0xFF'
+    hex_byte_2: '0x01'
+- model: openssl
+  pk: GOST-GOST89MAC
+  fields:
+    hex_byte_1: '0xFF'
+    hex_byte_2: '0x02'
+- model: openssl
+  pk: GOST-GOST89STREAM
+  fields:
+    hex_byte_1: '0xFF'
+    hex_byte_2: '0x03'
+- model: openssl
+  pk: GOST2012256-GOST89-GOST89
+  fields:
+    hex_byte_1: '0xFF'
+    hex_byte_2: '0x85'
+- model: openssl
+  pk: SRP-DSS-AES-128-CBC-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x1F'
+- model: openssl
+  pk: SRP-RSA-AES-128-CBC-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x1E'
+- model: openssl
+  pk: SRP-AES-128-CBC-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x1D'
+- model: openssl
+  pk: DHE-PSK-AES128-CCM8
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xAA'
+- model: openssl
+  pk: DHE-RSA-CAMELLIA128-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xBE'
+- model: openssl
+  pk: DHE-DSS-CAMELLIA128-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xBD'
+- model: openssl
+  pk: DH-RSA-CAMELLIA128-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xBC'
+- model: openssl
+  pk: DH-DSS-CAMELLIA128-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xBB'
+- model: openssl
+  pk: ADH-CAMELLIA128-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xBF'
+- model: openssl
+  pk: ECDH-RSA-CAMELLIA128-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x78'
+- model: openssl
+  pk: ECDH-ECDSA-CAMELLIA128-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x74'
+- model: openssl
+  pk: CAMELLIA128-SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xBA'
+- model: openssl
+  pk: KRB5-IDEA-CBC-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x21'
+- model: openssl
+  pk: KRB5-IDEA-CBC-MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x25'
+- model: openssl
+  pk: ARIA128-CBC-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x3C'
+- model: openssl
+  pk: DHE-DSS-ARIA128-CBC-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x42'
+- model: openssl
+  pk: DHE-RSA-ARIA128-CBC-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x44'
+- model: openssl
+  pk: DH-anon-ARIA128-CBC-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x46'
+- model: openssl
+  pk: ECDHE-ECDSA-ARIA128-CBC-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x48'
+- model: openssl
+  pk: ECDHE-RSA-ARIA128-CBC-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x4C'
+- model: openssl
+  pk: DH-RSA-ARIA128-GCM-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x54'
+- model: openssl
+  pk: DH-DSS-ARIA128-GCM-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x58'
+- model: openssl
+  pk: ADH-ARIA128-GCM-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x5A'
+- model: openssl
+  pk: ECDH-ECDSA-ARIA128-GCM-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x5E'
+- model: openssl
+  pk: ECDH-ARIA128-GCM-SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x62'
+- model: openssl
+  pk: KRB5-RC4-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x20'
+- model: openssl
+  pk: KRB5-RC4-MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x24'
+- model: openssl
+  pk: SRP-DSS-3DES-EDE-CBC-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x1C'
+- model: openssl
+  pk: SRP-RSA-3DES-EDE-CBC-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x1B'
+- model: openssl
+  pk: SRP-3DES-EDE-CBC-SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x1A'
+- model: openssl
+  pk: DES-CBC3-SHA
+  fields:
+    hex_byte_1: '0x07'
+    hex_byte_2: '0x01'
+    hex_byte_3: '0xC0'
+- model: openssl
+  pk: KRB5-DES-CBC3-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x1F'
+- model: openssl
+  pk: KRB5-DES-CBC3-MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x23'
+- model: openssl
+  pk: RC4-64-MD5
+  fields:
+    hex_byte_1: '0x08'
+    hex_byte_2: '0x00'
+    hex_byte_3: '0x80'
+- model: openssl
+  pk: DES-CFB-M1
+  fields:
+    hex_byte_1: '0xFF'
+    hex_byte_2: '0x80'
+    hex_byte_3: '0x00'
+- model: openssl
+  pk: EXP1024-RC2-CBC-MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x61'
+- model: openssl
+  pk: DES-CBC-MD5
+  fields:
+    hex_byte_1: '0x06'
+    hex_byte_2: '0x00'
+    hex_byte_3: '0x40'
+- model: openssl
+  pk: DES-CBC-SHA
+  fields:
+    hex_byte_1: '0x06'
+    hex_byte_2: '0x01'
+    hex_byte_3: '0x40'
+- model: openssl
+  pk: KRB5-DES-CBC-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x1E'
+- model: openssl
+  pk: KRB5-DES-CBC-MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x22'
+- model: openssl
+  pk: EXP1024-RC4-MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x60'
+- model: openssl
+  pk: EXP-RC2-CBC-MD5
+  fields:
+    hex_byte_1: '0x04'
+    hex_byte_2: '0x00'
+    hex_byte_3: '0x80'
+- model: openssl
+  pk: EXP-KRB5-RC2-CBC-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x27'
+- model: openssl
+  pk: EXP-KRB5-DES-CBC-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x26'
+- model: openssl
+  pk: EXP-KRB5-RC2-CBC-MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x2A'
+- model: openssl
+  pk: EXP-KRB5-DES-CBC-MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x29'
+- model: openssl
+  pk: EXP-DH-DSS-DES-CBC-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x0B'
+- model: openssl
+  pk: EXP-DH-RSA-DES-CBC-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x0E'
+- model: openssl
+  pk: EXP-RC4-MD5
+  fields:
+    hex_byte_1: '0x02'
+    hex_byte_2: '0x00'
+    hex_byte_3: '0x80'
+- model: openssl
+  pk: EXP-KRB5-RC4-SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x28'
+- model: openssl
+  pk: EXP-KRB5-RC4-MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x2B'
+- model: openssl
+  pk: 'NULL'
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x00'
+- model: openssl
+  pk: NULL-MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x00'
+    hex_byte_3: '0x00'
+- model: openssl
+  pk: GOST2012256-NULL-STREEBOG256
+  fields:
+    hex_byte_1: '0xFF'
+    hex_byte_2: '0x87'
+- model: openssl
+  pk: 'NULL'
+  fields:
+    hex_byte_1: '0xFF'
+    hex_byte_2: '0x80'
+    hex_byte_3: '0x10'
+

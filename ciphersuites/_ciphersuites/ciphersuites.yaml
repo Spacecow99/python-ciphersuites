@@ -1,0 +1,5964 @@
+- model: ciphersuite
+  pk: TLS_NULL_WITH_NULL_NULL
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x00'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: 'NULL'
+    authentication: 'NULL'
+    encryption: 'NULL'
+    aead: false
+    hashing: 'NULL'
+- model: ciphersuite
+  pk: TLS_RSA_WITH_NULL_MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x01'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: 'NULL'
+    aead: false
+    hashing: MD5
+- model: ciphersuite
+  pk: TLS_RSA_WITH_NULL_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x02'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: 'NULL'
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_RSA_EXPORT_WITH_RC4_40_MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x03'
+    protocol: TLS
+    old: false
+    export: true
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: RC4 40
+    aead: false
+    hashing: MD5
+- model: ciphersuite
+  pk: TLS_RSA_WITH_RC4_128_MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x04'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: RC4 128
+    aead: false
+    hashing: MD5
+- model: ciphersuite
+  pk: TLS_RSA_WITH_RC4_128_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x05'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: RC4 128
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_RSA_EXPORT_WITH_RC2_CBC_40_MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x06'
+    protocol: TLS
+    old: false
+    export: true
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: RC2 CBC 40
+    aead: false
+    hashing: MD5
+- model: ciphersuite
+  pk: TLS_RSA_WITH_IDEA_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x07'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: IDEA CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_RSA_EXPORT_WITH_DES40_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x08'
+    protocol: TLS
+    old: false
+    export: true
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: DES40 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_RSA_WITH_DES_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x09'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: DES CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_RSA_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x0A'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: 3DES EDE CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DH_DSS_EXPORT_WITH_DES40_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x0B'
+    protocol: TLS
+    old: false
+    export: true
+    fips: false
+    key_exchange: DH
+    authentication: DSS
+    encryption: DES40 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DH_DSS_WITH_DES_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x0C'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: DSS
+    encryption: DES CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DH_DSS_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x0D'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: DSS
+    encryption: 3DES EDE CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DH_RSA_EXPORT_WITH_DES40_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x0E'
+    protocol: TLS
+    old: false
+    export: true
+    fips: false
+    key_exchange: DH
+    authentication: RSA
+    encryption: DES40 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DH_RSA_WITH_DES_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x0F'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: RSA
+    encryption: DES CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DH_RSA_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x10'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: RSA
+    encryption: 3DES EDE CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DHE_DSS_EXPORT_WITH_DES40_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x11'
+    protocol: TLS
+    old: false
+    export: true
+    fips: false
+    key_exchange: DHE
+    authentication: DSS
+    encryption: DES40 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DHE_DSS_WITH_DES_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x12'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: DSS
+    encryption: DES CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x13'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: DSS
+    encryption: 3DES EDE CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x14'
+    protocol: TLS
+    old: false
+    export: true
+    fips: false
+    key_exchange: DHE
+    authentication: RSA
+    encryption: DES40 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DHE_RSA_WITH_DES_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x15'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: RSA
+    encryption: DES CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DHE_RSA_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x16'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: RSA
+    encryption: 3DES EDE CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DH_anon_EXPORT_WITH_RC4_40_MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x17'
+    protocol: TLS
+    old: false
+    export: true
+    fips: false
+    key_exchange: DH
+    authentication: anon
+    encryption: RC4 40
+    aead: false
+    hashing: MD5
+- model: ciphersuite
+  pk: TLS_DH_anon_WITH_RC4_128_MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x18'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: anon
+    encryption: RC4 128
+    aead: false
+    hashing: MD5
+- model: ciphersuite
+  pk: TLS_DH_anon_EXPORT_WITH_DES40_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x19'
+    protocol: TLS
+    old: false
+    export: true
+    fips: false
+    key_exchange: DH
+    authentication: anon
+    encryption: DES40 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DH_anon_WITH_DES_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x1A'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: anon
+    encryption: DES CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DH_anon_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x1B'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: anon
+    encryption: 3DES EDE CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_KRB5_WITH_DES_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x1E'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: KRB5
+    authentication: KRB5
+    encryption: DES CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_KRB5_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x1F'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: KRB5
+    authentication: KRB5
+    encryption: 3DES EDE CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_KRB5_WITH_RC4_128_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x20'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: KRB5
+    authentication: KRB5
+    encryption: RC4 128
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_KRB5_WITH_IDEA_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x21'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: KRB5
+    authentication: KRB5
+    encryption: IDEA CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_KRB5_WITH_DES_CBC_MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x22'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: KRB5
+    authentication: KRB5
+    encryption: DES CBC
+    aead: false
+    hashing: MD5
+- model: ciphersuite
+  pk: TLS_KRB5_WITH_3DES_EDE_CBC_MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x23'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: KRB5
+    authentication: KRB5
+    encryption: 3DES EDE CBC
+    aead: false
+    hashing: MD5
+- model: ciphersuite
+  pk: TLS_KRB5_WITH_RC4_128_MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x24'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: KRB5
+    authentication: KRB5
+    encryption: RC4 128
+    aead: false
+    hashing: MD5
+- model: ciphersuite
+  pk: TLS_KRB5_WITH_IDEA_CBC_MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x25'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: KRB5
+    authentication: KRB5
+    encryption: IDEA CBC
+    aead: false
+    hashing: MD5
+- model: ciphersuite
+  pk: TLS_KRB5_EXPORT_WITH_DES_CBC_40_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x26'
+    protocol: TLS
+    old: false
+    export: true
+    fips: false
+    key_exchange: KRB5
+    authentication: KRB5
+    encryption: DES CBC 40
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_KRB5_EXPORT_WITH_RC2_CBC_40_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x27'
+    protocol: TLS
+    old: false
+    export: true
+    fips: false
+    key_exchange: KRB5
+    authentication: KRB5
+    encryption: RC2 CBC 40
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_KRB5_EXPORT_WITH_RC4_40_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x28'
+    protocol: TLS
+    old: false
+    export: true
+    fips: false
+    key_exchange: KRB5
+    authentication: KRB5
+    encryption: RC4 40
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_KRB5_EXPORT_WITH_DES_CBC_40_MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x29'
+    protocol: TLS
+    old: false
+    export: true
+    fips: false
+    key_exchange: KRB5
+    authentication: KRB5
+    encryption: DES CBC 40
+    aead: false
+    hashing: MD5
+- model: ciphersuite
+  pk: TLS_KRB5_EXPORT_WITH_RC2_CBC_40_MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x2A'
+    protocol: TLS
+    old: false
+    export: true
+    fips: false
+    key_exchange: KRB5
+    authentication: KRB5
+    encryption: RC2 CBC 40
+    aead: false
+    hashing: MD5
+- model: ciphersuite
+  pk: TLS_KRB5_EXPORT_WITH_RC4_40_MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x2B'
+    protocol: TLS
+    old: false
+    export: true
+    fips: false
+    key_exchange: KRB5
+    authentication: KRB5
+    encryption: RC4 40
+    aead: false
+    hashing: MD5
+- model: ciphersuite
+  pk: TLS_PSK_WITH_NULL_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x2C'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: PSK
+    authentication: PSK
+    encryption: 'NULL'
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DHE_PSK_WITH_NULL_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x2D'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: PSK
+    encryption: 'NULL'
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_RSA_PSK_WITH_NULL_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x2E'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: PSK
+    encryption: 'NULL'
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_RSA_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x2F'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: AES 128 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DH_DSS_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x30'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: DSS
+    encryption: AES 128 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DH_RSA_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x31'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: RSA
+    encryption: AES 128 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DHE_DSS_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x32'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: DSS
+    encryption: AES 128 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DHE_RSA_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x33'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: RSA
+    encryption: AES 128 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DH_anon_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x34'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: anon
+    encryption: AES 128 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_RSA_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x35'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: AES 256 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DH_DSS_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x36'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: DSS
+    encryption: AES 256 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DH_RSA_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x37'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: RSA
+    encryption: AES 256 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DHE_DSS_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x38'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: DSS
+    encryption: AES 256 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DHE_RSA_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x39'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: RSA
+    encryption: AES 256 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DH_anon_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x3A'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: anon
+    encryption: AES 256 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_RSA_WITH_NULL_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x3B'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: 'NULL'
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_RSA_WITH_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x3C'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: AES 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_RSA_WITH_AES_256_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x3D'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: AES 256 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DH_DSS_WITH_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x3E'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: DSS
+    encryption: AES 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DH_RSA_WITH_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x3F'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: RSA
+    encryption: AES 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DHE_DSS_WITH_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x40'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: DSS
+    encryption: AES 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_RSA_WITH_CAMELLIA_128_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x41'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: CAMELLIA 128 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DH_DSS_WITH_CAMELLIA_128_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x42'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: DSS
+    encryption: CAMELLIA 128 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DH_RSA_WITH_CAMELLIA_128_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x43'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: RSA
+    encryption: CAMELLIA 128 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DHE_DSS_WITH_CAMELLIA_128_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x44'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: DSS
+    encryption: CAMELLIA 128 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x45'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: RSA
+    encryption: CAMELLIA 128 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DH_anon_WITH_CAMELLIA_128_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x46'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: anon
+    encryption: CAMELLIA 128 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DHE_RSA_WITH_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x67'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: RSA
+    encryption: AES 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DH_DSS_WITH_AES_256_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x68'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: DSS
+    encryption: AES 256 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DH_RSA_WITH_AES_256_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x69'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: RSA
+    encryption: AES 256 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DHE_DSS_WITH_AES_256_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x6A'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: DSS
+    encryption: AES 256 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DHE_RSA_WITH_AES_256_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x6B'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: RSA
+    encryption: AES 256 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DH_anon_WITH_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x6C'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: anon
+    encryption: AES 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DH_anon_WITH_AES_256_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x6D'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: anon
+    encryption: AES 256 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_RSA_WITH_CAMELLIA_256_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x84'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: CAMELLIA 256 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DH_DSS_WITH_CAMELLIA_256_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x85'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: DSS
+    encryption: CAMELLIA 256 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DH_RSA_WITH_CAMELLIA_256_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x86'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: RSA
+    encryption: CAMELLIA 256 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DHE_DSS_WITH_CAMELLIA_256_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x87'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: DSS
+    encryption: CAMELLIA 256 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x88'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: RSA
+    encryption: CAMELLIA 256 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DH_anon_WITH_CAMELLIA_256_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x89'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: anon
+    encryption: CAMELLIA 256 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_PSK_WITH_RC4_128_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x8A'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: PSK
+    authentication: PSK
+    encryption: RC4 128
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_PSK_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x8B'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: PSK
+    authentication: PSK
+    encryption: 3DES EDE CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_PSK_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x8C'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: PSK
+    authentication: PSK
+    encryption: AES 128 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_PSK_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x8D'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: PSK
+    authentication: PSK
+    encryption: AES 256 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DHE_PSK_WITH_RC4_128_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x8E'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: PSK
+    encryption: RC4 128
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DHE_PSK_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x8F'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: PSK
+    encryption: 3DES EDE CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DHE_PSK_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x90'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: PSK
+    encryption: AES 128 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DHE_PSK_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x91'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: PSK
+    encryption: AES 256 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_RSA_PSK_WITH_RC4_128_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x92'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: PSK
+    encryption: RC4 128
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_RSA_PSK_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x93'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: PSK
+    encryption: 3DES EDE CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_RSA_PSK_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x94'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: PSK
+    encryption: AES 128 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_RSA_PSK_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x95'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: PSK
+    encryption: AES 256 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_RSA_WITH_SEED_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x96'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: SEED CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DH_DSS_WITH_SEED_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x97'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: DSS
+    encryption: SEED CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DH_RSA_WITH_SEED_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x98'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: RSA
+    encryption: SEED CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DHE_DSS_WITH_SEED_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x99'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: DSS
+    encryption: SEED CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DHE_RSA_WITH_SEED_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x9A'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: RSA
+    encryption: SEED CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DH_anon_WITH_SEED_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x9B'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: anon
+    encryption: SEED CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_RSA_WITH_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x9C'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: AES 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_RSA_WITH_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x9D'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: AES 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_DHE_RSA_WITH_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x9E'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: RSA
+    encryption: AES 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DHE_RSA_WITH_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x9F'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: RSA
+    encryption: AES 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_DH_RSA_WITH_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xA0'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: RSA
+    encryption: AES 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DH_RSA_WITH_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xA1'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: RSA
+    encryption: AES 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_DHE_DSS_WITH_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xA2'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: DSS
+    encryption: AES 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DHE_DSS_WITH_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xA3'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: DSS
+    encryption: AES 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_DH_DSS_WITH_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xA4'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: DSS
+    encryption: AES 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DH_DSS_WITH_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xA5'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: DSS
+    encryption: AES 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_DH_anon_WITH_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xA6'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: anon
+    encryption: AES 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DH_anon_WITH_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xA7'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: anon
+    encryption: AES 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_PSK_WITH_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xA8'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: PSK
+    authentication: PSK
+    encryption: AES 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_PSK_WITH_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xA9'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: PSK
+    authentication: PSK
+    encryption: AES 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_DHE_PSK_WITH_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xAA'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: PSK
+    encryption: AES 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DHE_PSK_WITH_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xAB'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: PSK
+    encryption: AES 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_RSA_PSK_WITH_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xAC'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: PSK
+    encryption: AES 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_RSA_PSK_WITH_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xAD'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: PSK
+    encryption: AES 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_PSK_WITH_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xAE'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: PSK
+    authentication: PSK
+    encryption: AES 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_PSK_WITH_AES_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xAF'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: PSK
+    authentication: PSK
+    encryption: AES 256 CBC
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_PSK_WITH_NULL_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xB0'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: PSK
+    authentication: PSK
+    encryption: 'NULL'
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_PSK_WITH_NULL_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xB1'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: PSK
+    authentication: PSK
+    encryption: 'NULL'
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_DHE_PSK_WITH_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xB2'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: PSK
+    encryption: AES 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DHE_PSK_WITH_AES_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xB3'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: PSK
+    encryption: AES 256 CBC
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_DHE_PSK_WITH_NULL_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xB4'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: PSK
+    encryption: 'NULL'
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DHE_PSK_WITH_NULL_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xB5'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: PSK
+    encryption: 'NULL'
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_RSA_PSK_WITH_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xB6'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: PSK
+    encryption: AES 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_RSA_PSK_WITH_AES_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xB7'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: PSK
+    encryption: AES 256 CBC
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_RSA_PSK_WITH_NULL_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xB8'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: PSK
+    encryption: 'NULL'
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_RSA_PSK_WITH_NULL_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xB9'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: PSK
+    encryption: 'NULL'
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_RSA_WITH_CAMELLIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xBA'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: CAMELLIA 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DH_DSS_WITH_CAMELLIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xBB'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: DSS
+    encryption: CAMELLIA 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DH_RSA_WITH_CAMELLIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xBC'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: RSA
+    encryption: CAMELLIA 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DHE_DSS_WITH_CAMELLIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xBD'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: DSS
+    encryption: CAMELLIA 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xBE'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: RSA
+    encryption: CAMELLIA 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DH_anon_WITH_CAMELLIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xBF'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: anon
+    encryption: CAMELLIA 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_RSA_WITH_CAMELLIA_256_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xC0'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: CAMELLIA 256 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DH_DSS_WITH_CAMELLIA_256_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xC1'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: DSS
+    encryption: CAMELLIA 256 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DH_RSA_WITH_CAMELLIA_256_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xC2'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: RSA
+    encryption: CAMELLIA 256 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DHE_DSS_WITH_CAMELLIA_256_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xC3'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: DSS
+    encryption: CAMELLIA 256 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xC4'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: RSA
+    encryption: CAMELLIA 256 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DH_anon_WITH_CAMELLIA_256_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xC5'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: anon
+    encryption: CAMELLIA 256 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_SM4_GCM_SM3
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xC6'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: '-'
+    authentication: '-'
+    encryption: SM4 GCM
+    aead: true
+    hashing: SM3
+- model: ciphersuite
+  pk: TLS_SM4_CCM_SM3
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xC7'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: '-'
+    authentication: '-'
+    encryption: SM4 CCM
+    aead: true
+    hashing: SM3
+- model: ciphersuite
+  pk: TLS_EMPTY_RENEGOTIATION_INFO_SCSV
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xFF'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: '-'
+    authentication: '-'
+    encryption: '-'
+    aead: false
+    hashing: '-'
+- model: ciphersuite
+  pk: TLS_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0x13'
+    hex_byte_2: '0x01'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: '-'
+    authentication: '-'
+    encryption: AES 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0x13'
+    hex_byte_2: '0x02'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: '-'
+    authentication: '-'
+    encryption: AES 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_CHACHA20_POLY1305_SHA256
+  fields:
+    hex_byte_1: '0x13'
+    hex_byte_2: '0x03'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: '-'
+    authentication: '-'
+    encryption: CHACHA20 POLY1305
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_AES_128_CCM_SHA256
+  fields:
+    hex_byte_1: '0x13'
+    hex_byte_2: '0x04'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: '-'
+    authentication: '-'
+    encryption: AES 128 CCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_AES_128_CCM_8_SHA256
+  fields:
+    hex_byte_1: '0x13'
+    hex_byte_2: '0x05'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: '-'
+    authentication: '-'
+    encryption: AES 128 CCM 8
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_AEGIS_256_SHA512
+  fields:
+    hex_byte_1: '0x13'
+    hex_byte_2: '0x06'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: '-'
+    authentication: '-'
+    encryption: AEGIS 256
+    aead: false
+    hashing: SHA512
+- model: ciphersuite
+  pk: TLS_AEGIS_128L_SHA256
+  fields:
+    hex_byte_1: '0x13'
+    hex_byte_2: '0x07'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: '-'
+    authentication: '-'
+    encryption: AEGIS 128L
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_FALLBACK_SCSV
+  fields:
+    hex_byte_1: '0x56'
+    hex_byte_2: '0x00'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: '-'
+    authentication: '-'
+    encryption: '-'
+    aead: false
+    hashing: '-'
+- model: ciphersuite
+  pk: TLS_ECDH_ECDSA_WITH_NULL_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x01'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: ECDSA
+    encryption: 'NULL'
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_ECDH_ECDSA_WITH_RC4_128_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x02'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: ECDSA
+    encryption: RC4 128
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_ECDH_ECDSA_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x03'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: ECDSA
+    encryption: 3DES EDE CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x04'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: ECDSA
+    encryption: AES 128 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x05'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: ECDSA
+    encryption: AES 256 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_ECDHE_ECDSA_WITH_NULL_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x06'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: ECDSA
+    encryption: 'NULL'
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_ECDHE_ECDSA_WITH_RC4_128_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x07'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: ECDSA
+    encryption: RC4 128
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_ECDHE_ECDSA_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x08'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: ECDSA
+    encryption: 3DES EDE CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x09'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: ECDSA
+    encryption: AES 128 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x0A'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: ECDSA
+    encryption: AES 256 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_ECDH_RSA_WITH_NULL_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x0B'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: RSA
+    encryption: 'NULL'
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_ECDH_RSA_WITH_RC4_128_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x0C'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: RSA
+    encryption: RC4 128
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_ECDH_RSA_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x0D'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: RSA
+    encryption: 3DES EDE CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_ECDH_RSA_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x0E'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: RSA
+    encryption: AES 128 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_ECDH_RSA_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x0F'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: RSA
+    encryption: AES 256 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_ECDHE_RSA_WITH_NULL_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x10'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: RSA
+    encryption: 'NULL'
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_ECDHE_RSA_WITH_RC4_128_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x11'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: RSA
+    encryption: RC4 128
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x12'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: RSA
+    encryption: 3DES EDE CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x13'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: RSA
+    encryption: AES 128 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x14'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: RSA
+    encryption: AES 256 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_ECDH_anon_WITH_NULL_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x15'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: anon
+    encryption: 'NULL'
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_ECDH_anon_WITH_RC4_128_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x16'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: anon
+    encryption: RC4 128
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_ECDH_anon_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x17'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: anon
+    encryption: 3DES EDE CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_ECDH_anon_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x18'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: anon
+    encryption: AES 128 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_ECDH_anon_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x19'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: anon
+    encryption: AES 256 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_SRP_SHA_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x1A'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: SRP
+    authentication: SHA
+    encryption: 3DES EDE CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_SRP_SHA_RSA_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x1B'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: SRP
+    authentication: SHA RSA
+    encryption: 3DES EDE CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_SRP_SHA_DSS_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x1C'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: SRP
+    authentication: SHA DSS
+    encryption: 3DES EDE CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_SRP_SHA_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x1D'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: SRP
+    authentication: SHA
+    encryption: AES 128 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_SRP_SHA_RSA_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x1E'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: SRP
+    authentication: SHA RSA
+    encryption: AES 128 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_SRP_SHA_DSS_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x1F'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: SRP
+    authentication: SHA DSS
+    encryption: AES 128 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_SRP_SHA_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x20'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: SRP
+    authentication: SHA
+    encryption: AES 256 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_SRP_SHA_RSA_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x21'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: SRP
+    authentication: SHA RSA
+    encryption: AES 256 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_SRP_SHA_DSS_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x22'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: SRP
+    authentication: SHA DSS
+    encryption: AES 256 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x23'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: ECDSA
+    encryption: AES 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x24'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: ECDSA
+    encryption: AES 256 CBC
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x25'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: ECDSA
+    encryption: AES 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x26'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: ECDSA
+    encryption: AES 256 CBC
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x27'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: RSA
+    encryption: AES 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x28'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: RSA
+    encryption: AES 256 CBC
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_ECDH_RSA_WITH_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x29'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: RSA
+    encryption: AES 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDH_RSA_WITH_AES_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x2A'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: RSA
+    encryption: AES 256 CBC
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x2B'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: ECDSA
+    encryption: AES 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x2C'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: ECDSA
+    encryption: AES 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_ECDH_ECDSA_WITH_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x2D'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: ECDSA
+    encryption: AES 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDH_ECDSA_WITH_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x2E'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: ECDSA
+    encryption: AES 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x2F'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: RSA
+    encryption: AES 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x30'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: RSA
+    encryption: AES 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_ECDH_RSA_WITH_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x31'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: RSA
+    encryption: AES 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDH_RSA_WITH_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x32'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: RSA
+    encryption: AES 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_ECDHE_PSK_WITH_RC4_128_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x33'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: PSK
+    encryption: RC4 128
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_ECDHE_PSK_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x34'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: PSK
+    encryption: 3DES EDE CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_ECDHE_PSK_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x35'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: PSK
+    encryption: AES 128 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_ECDHE_PSK_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x36'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: PSK
+    encryption: AES 256 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_ECDHE_PSK_WITH_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x37'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: PSK
+    encryption: AES 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDHE_PSK_WITH_AES_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x38'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: PSK
+    encryption: AES 256 CBC
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_ECDHE_PSK_WITH_NULL_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x39'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: PSK
+    encryption: 'NULL'
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_ECDHE_PSK_WITH_NULL_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x3A'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: PSK
+    encryption: 'NULL'
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDHE_PSK_WITH_NULL_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x3B'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: PSK
+    encryption: 'NULL'
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_RSA_WITH_ARIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x3C'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: ARIA 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_RSA_WITH_ARIA_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x3D'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: ARIA 256 CBC
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_DH_DSS_WITH_ARIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x3E'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: DSS
+    encryption: ARIA 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DH_DSS_WITH_ARIA_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x3F'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: DSS
+    encryption: ARIA 256 CBC
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_DH_RSA_WITH_ARIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x40'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: RSA
+    encryption: ARIA 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DH_RSA_WITH_ARIA_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x41'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: RSA
+    encryption: ARIA 256 CBC
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_DHE_DSS_WITH_ARIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x42'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: DSS
+    encryption: ARIA 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DHE_DSS_WITH_ARIA_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x43'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: DSS
+    encryption: ARIA 256 CBC
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_DHE_RSA_WITH_ARIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x44'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: RSA
+    encryption: ARIA 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DHE_RSA_WITH_ARIA_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x45'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: RSA
+    encryption: ARIA 256 CBC
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_DH_anon_WITH_ARIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x46'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: anon
+    encryption: ARIA 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DH_anon_WITH_ARIA_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x47'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: anon
+    encryption: ARIA 256 CBC
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_ECDHE_ECDSA_WITH_ARIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x48'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: ECDSA
+    encryption: ARIA 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDHE_ECDSA_WITH_ARIA_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x49'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: ECDSA
+    encryption: ARIA 256 CBC
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_ECDH_ECDSA_WITH_ARIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x4A'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: ECDSA
+    encryption: ARIA 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDH_ECDSA_WITH_ARIA_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x4B'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: ECDSA
+    encryption: ARIA 256 CBC
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_ECDHE_RSA_WITH_ARIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x4C'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: RSA
+    encryption: ARIA 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDHE_RSA_WITH_ARIA_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x4D'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: RSA
+    encryption: ARIA 256 CBC
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_ECDH_RSA_WITH_ARIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x4E'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: RSA
+    encryption: ARIA 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDH_RSA_WITH_ARIA_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x4F'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: RSA
+    encryption: ARIA 256 CBC
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_RSA_WITH_ARIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x50'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: ARIA 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_RSA_WITH_ARIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x51'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: ARIA 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_DHE_RSA_WITH_ARIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x52'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: RSA
+    encryption: ARIA 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DHE_RSA_WITH_ARIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x53'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: RSA
+    encryption: ARIA 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_DH_RSA_WITH_ARIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x54'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: RSA
+    encryption: ARIA 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DH_RSA_WITH_ARIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x55'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: RSA
+    encryption: ARIA 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_DHE_DSS_WITH_ARIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x56'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: DSS
+    encryption: ARIA 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DHE_DSS_WITH_ARIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x57'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: DSS
+    encryption: ARIA 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_DH_DSS_WITH_ARIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x58'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: DSS
+    encryption: ARIA 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DH_DSS_WITH_ARIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x59'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: DSS
+    encryption: ARIA 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_DH_anon_WITH_ARIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x5A'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: anon
+    encryption: ARIA 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DH_anon_WITH_ARIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x5B'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: anon
+    encryption: ARIA 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_ECDHE_ECDSA_WITH_ARIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x5C'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: ECDSA
+    encryption: ARIA 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDHE_ECDSA_WITH_ARIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x5D'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: ECDSA
+    encryption: ARIA 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_ECDH_ECDSA_WITH_ARIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x5E'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: ECDSA
+    encryption: ARIA 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDH_ECDSA_WITH_ARIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x5F'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: ECDSA
+    encryption: ARIA 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_ECDHE_RSA_WITH_ARIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x60'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: RSA
+    encryption: ARIA 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDHE_RSA_WITH_ARIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x61'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: RSA
+    encryption: ARIA 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_ECDH_RSA_WITH_ARIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x62'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: RSA
+    encryption: ARIA 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDH_RSA_WITH_ARIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x63'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: RSA
+    encryption: ARIA 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_PSK_WITH_ARIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x64'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: PSK
+    authentication: PSK
+    encryption: ARIA 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_PSK_WITH_ARIA_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x65'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: PSK
+    authentication: PSK
+    encryption: ARIA 256 CBC
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_DHE_PSK_WITH_ARIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x66'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: PSK
+    encryption: ARIA 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DHE_PSK_WITH_ARIA_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x67'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: PSK
+    encryption: ARIA 256 CBC
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_RSA_PSK_WITH_ARIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x68'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: PSK
+    encryption: ARIA 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_RSA_PSK_WITH_ARIA_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x69'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: PSK
+    encryption: ARIA 256 CBC
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_PSK_WITH_ARIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x6A'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: PSK
+    authentication: PSK
+    encryption: ARIA 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_PSK_WITH_ARIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x6B'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: PSK
+    authentication: PSK
+    encryption: ARIA 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_DHE_PSK_WITH_ARIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x6C'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: PSK
+    encryption: ARIA 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DHE_PSK_WITH_ARIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x6D'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: PSK
+    encryption: ARIA 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_RSA_PSK_WITH_ARIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x6E'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: PSK
+    encryption: ARIA 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_RSA_PSK_WITH_ARIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x6F'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: PSK
+    encryption: ARIA 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_ECDHE_PSK_WITH_ARIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x70'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: PSK
+    encryption: ARIA 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDHE_PSK_WITH_ARIA_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x71'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: PSK
+    encryption: ARIA 256 CBC
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_ECDHE_ECDSA_WITH_CAMELLIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x72'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: ECDSA
+    encryption: CAMELLIA 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDHE_ECDSA_WITH_CAMELLIA_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x73'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: ECDSA
+    encryption: CAMELLIA 256 CBC
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_ECDH_ECDSA_WITH_CAMELLIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x74'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: ECDSA
+    encryption: CAMELLIA 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDH_ECDSA_WITH_CAMELLIA_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x75'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: ECDSA
+    encryption: CAMELLIA 256 CBC
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_ECDHE_RSA_WITH_CAMELLIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x76'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: RSA
+    encryption: CAMELLIA 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDHE_RSA_WITH_CAMELLIA_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x77'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: RSA
+    encryption: CAMELLIA 256 CBC
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_ECDH_RSA_WITH_CAMELLIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x78'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: RSA
+    encryption: CAMELLIA 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDH_RSA_WITH_CAMELLIA_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x79'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: RSA
+    encryption: CAMELLIA 256 CBC
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_RSA_WITH_CAMELLIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x7A'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: CAMELLIA 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_RSA_WITH_CAMELLIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x7B'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: CAMELLIA 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_DHE_RSA_WITH_CAMELLIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x7C'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: RSA
+    encryption: CAMELLIA 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DHE_RSA_WITH_CAMELLIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x7D'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: RSA
+    encryption: CAMELLIA 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_DH_RSA_WITH_CAMELLIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x7E'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: RSA
+    encryption: CAMELLIA 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DH_RSA_WITH_CAMELLIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x7F'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: RSA
+    encryption: CAMELLIA 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_DHE_DSS_WITH_CAMELLIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x80'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: DSS
+    encryption: CAMELLIA 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DHE_DSS_WITH_CAMELLIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x81'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: DSS
+    encryption: CAMELLIA 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_DH_DSS_WITH_CAMELLIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x82'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: DSS
+    encryption: CAMELLIA 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DH_DSS_WITH_CAMELLIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x83'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: DSS
+    encryption: CAMELLIA 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_DH_anon_WITH_CAMELLIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x84'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: anon
+    encryption: CAMELLIA 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DH_anon_WITH_CAMELLIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x85'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DH
+    authentication: anon
+    encryption: CAMELLIA 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_ECDHE_ECDSA_WITH_CAMELLIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x86'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: ECDSA
+    encryption: CAMELLIA 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDHE_ECDSA_WITH_CAMELLIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x87'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: ECDSA
+    encryption: CAMELLIA 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_ECDH_ECDSA_WITH_CAMELLIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x88'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: ECDSA
+    encryption: CAMELLIA 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDH_ECDSA_WITH_CAMELLIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x89'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: ECDSA
+    encryption: CAMELLIA 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_ECDHE_RSA_WITH_CAMELLIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x8A'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: RSA
+    encryption: CAMELLIA 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDHE_RSA_WITH_CAMELLIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x8B'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: RSA
+    encryption: CAMELLIA 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_ECDH_RSA_WITH_CAMELLIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x8C'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: RSA
+    encryption: CAMELLIA 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDH_RSA_WITH_CAMELLIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x8D'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: RSA
+    encryption: CAMELLIA 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_PSK_WITH_CAMELLIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x8E'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: PSK
+    authentication: PSK
+    encryption: CAMELLIA 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_PSK_WITH_CAMELLIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x8F'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: PSK
+    authentication: PSK
+    encryption: CAMELLIA 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_DHE_PSK_WITH_CAMELLIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x90'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: PSK
+    encryption: CAMELLIA 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DHE_PSK_WITH_CAMELLIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x91'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: PSK
+    encryption: CAMELLIA 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_RSA_PSK_WITH_CAMELLIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x92'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: PSK
+    encryption: CAMELLIA 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_RSA_PSK_WITH_CAMELLIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x93'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: PSK
+    encryption: CAMELLIA 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_PSK_WITH_CAMELLIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x94'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: PSK
+    authentication: PSK
+    encryption: CAMELLIA 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_PSK_WITH_CAMELLIA_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x95'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: PSK
+    authentication: PSK
+    encryption: CAMELLIA 256 CBC
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_DHE_PSK_WITH_CAMELLIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x96'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: PSK
+    encryption: CAMELLIA 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DHE_PSK_WITH_CAMELLIA_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x97'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: PSK
+    encryption: CAMELLIA 256 CBC
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_RSA_PSK_WITH_CAMELLIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x98'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: PSK
+    encryption: CAMELLIA 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_RSA_PSK_WITH_CAMELLIA_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x99'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: PSK
+    encryption: CAMELLIA 256 CBC
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_ECDHE_PSK_WITH_CAMELLIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x9A'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: PSK
+    encryption: CAMELLIA 128 CBC
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDHE_PSK_WITH_CAMELLIA_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x9B'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: PSK
+    encryption: CAMELLIA 256 CBC
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_RSA_WITH_AES_128_CCM
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x9C'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: AES 128 CCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_RSA_WITH_AES_256_CCM
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x9D'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: AES 256 CCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DHE_RSA_WITH_AES_128_CCM
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x9E'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: RSA
+    encryption: AES 128 CCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DHE_RSA_WITH_AES_256_CCM
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x9F'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: RSA
+    encryption: AES 256 CCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_RSA_WITH_AES_128_CCM_8
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xA0'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: AES 128 CCM 8
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_RSA_WITH_AES_256_CCM_8
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xA1'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: AES 256 CCM 8
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DHE_RSA_WITH_AES_128_CCM_8
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xA2'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: RSA
+    encryption: AES 128 CCM 8
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DHE_RSA_WITH_AES_256_CCM_8
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xA3'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: RSA
+    encryption: AES 256 CCM 8
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_PSK_WITH_AES_128_CCM
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xA4'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: PSK
+    authentication: PSK
+    encryption: AES 128 CCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_PSK_WITH_AES_256_CCM
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xA5'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: PSK
+    authentication: PSK
+    encryption: AES 256 CCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DHE_PSK_WITH_AES_128_CCM
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xA6'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: PSK
+    encryption: AES 128 CCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DHE_PSK_WITH_AES_256_CCM
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xA7'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: PSK
+    encryption: AES 256 CCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_PSK_WITH_AES_128_CCM_8
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xA8'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: PSK
+    authentication: PSK
+    encryption: AES 128 CCM 8
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_PSK_WITH_AES_256_CCM_8
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xA9'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: PSK
+    authentication: PSK
+    encryption: AES 256 CCM 8
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_PSK_DHE_WITH_AES_128_CCM_8
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xAA'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: PSK
+    encryption: AES 128 CCM 8
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_PSK_DHE_WITH_AES_256_CCM_8
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xAB'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: PSK
+    encryption: AES 256 CCM 8
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDHE_ECDSA_WITH_AES_128_CCM
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xAC'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: ECDSA
+    encryption: AES 128 CCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDHE_ECDSA_WITH_AES_256_CCM
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xAD'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: ECDSA
+    encryption: AES 256 CCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDHE_ECDSA_WITH_AES_128_CCM_8
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xAE'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: ECDSA
+    encryption: AES 128 CCM 8
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDHE_ECDSA_WITH_AES_256_CCM_8
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xAF'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: ECDSA
+    encryption: AES 256 CCM 8
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECCPWD_WITH_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xB0'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECCPWD
+    authentication: ECCPWD
+    encryption: AES 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECCPWD_WITH_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xB1'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECCPWD
+    authentication: ECCPWD
+    encryption: AES 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_ECCPWD_WITH_AES_128_CCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xB2'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECCPWD
+    authentication: ECCPWD
+    encryption: AES 128 CCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECCPWD_WITH_AES_256_CCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xB3'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECCPWD
+    authentication: ECCPWD
+    encryption: AES 256 CCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_SHA256_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xB4'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: '-'
+    authentication: SHA256
+    encryption: 'NULL'
+    aead: false
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_SHA384_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xB5'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: '-'
+    authentication: SHA384
+    encryption: 'NULL'
+    aead: false
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_GOSTR341112_256_WITH_KUZNYECHIK_CTR_OMAC
+  fields:
+    hex_byte_1: '0xC1'
+    hex_byte_2: '0x00'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: GOSTR341012
+    authentication: GOSTR341012
+    encryption: KUZNYECHIK CTR OMAC
+    aead: false
+    hashing: GOSTR341112
+- model: ciphersuite
+  pk: TLS_GOSTR341112_256_WITH_MAGMA_CTR_OMAC
+  fields:
+    hex_byte_1: '0xC1'
+    hex_byte_2: '0x01'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: GOSTR341012
+    authentication: GOSTR341012
+    encryption: MAGMA CTR OMAC
+    aead: false
+    hashing: GOSTR341112
+- model: ciphersuite
+  pk: TLS_GOSTR341112_256_WITH_28147_CNT_IMIT
+  fields:
+    hex_byte_1: '0xC1'
+    hex_byte_2: '0x02'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: GOSTR341012
+    authentication: GOSTR341012
+    encryption: 28147 CNT IMIT
+    aead: false
+    hashing: GOSTR341112
+- model: ciphersuite
+  pk: TLS_GOSTR341112_256_WITH_KUZNYECHIK_MGM_L
+  fields:
+    hex_byte_1: '0xC1'
+    hex_byte_2: '0x03'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: '-'
+    authentication: '-'
+    encryption: KUZNYECHIK MGM L
+    aead: true
+    hashing: GOSTR341112
+- model: ciphersuite
+  pk: TLS_GOSTR341112_256_WITH_MAGMA_MGM_L
+  fields:
+    hex_byte_1: '0xC1'
+    hex_byte_2: '0x04'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: '-'
+    authentication: '-'
+    encryption: MAGMA MGM L
+    aead: true
+    hashing: GOSTR341112
+- model: ciphersuite
+  pk: TLS_GOSTR341112_256_WITH_KUZNYECHIK_MGM_S
+  fields:
+    hex_byte_1: '0xC1'
+    hex_byte_2: '0x05'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: '-'
+    authentication: '-'
+    encryption: KUZNYECHIK MGM S
+    aead: true
+    hashing: GOSTR341112
+- model: ciphersuite
+  pk: TLS_GOSTR341112_256_WITH_MAGMA_MGM_S
+  fields:
+    hex_byte_1: '0xC1'
+    hex_byte_2: '0x06'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: '-'
+    authentication: '-'
+    encryption: MAGMA MGM S
+    aead: true
+    hashing: GOSTR341112
+- model: ciphersuite
+  pk: TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0xA8'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: RSA
+    encryption: CHACHA20 POLY1305
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0xA9'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: ECDSA
+    encryption: CHACHA20 POLY1305
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0xAA'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: RSA
+    encryption: CHACHA20 POLY1305
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_PSK_WITH_CHACHA20_POLY1305_SHA256
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0xAB'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: PSK
+    authentication: PSK
+    encryption: CHACHA20 POLY1305
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDHE_PSK_WITH_CHACHA20_POLY1305_SHA256
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0xAC'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: PSK
+    encryption: CHACHA20 POLY1305
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DHE_PSK_WITH_CHACHA20_POLY1305_SHA256
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0xAD'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: PSK
+    encryption: CHACHA20 POLY1305
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_RSA_PSK_WITH_CHACHA20_POLY1305_SHA256
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0xAE'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: PSK
+    encryption: CHACHA20 POLY1305
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDHE_PSK_WITH_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xD0'
+    hex_byte_2: '0x01'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: PSK
+    encryption: AES 128 GCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDHE_PSK_WITH_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xD0'
+    hex_byte_2: '0x02'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: PSK
+    encryption: AES 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_ECDHE_PSK_WITH_AES_128_CCM_8_SHA256
+  fields:
+    hex_byte_1: '0xD0'
+    hex_byte_2: '0x03'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: PSK
+    encryption: AES 128 CCM 8
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDHE_PSK_WITH_AES_128_CCM_SHA256
+  fields:
+    hex_byte_1: '0xD0'
+    hex_byte_2: '0x05'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: PSK
+    encryption: AES 128 CCM
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256_OLD
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0x14'
+    protocol: TLS
+    old: true
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: ECDSA
+    encryption: CHACHA20 POLY1305
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256_OLD
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0x13'
+    protocol: TLS
+    old: true
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: RSA
+    encryption: CHACHA20 POLY1305
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DHE_RSA_WITH_CHACHA20_POLY1305_SHA256_OLD
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0x15'
+    protocol: TLS
+    old: true
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: RSA
+    encryption: CHACHA20 POLY1305
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_GOSTR341094_WITH_28147_CNT_IMIT
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x80'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: GOSTR341094
+    authentication: GOSTR341094
+    encryption: 28147 CNT IMIT
+    aead: false
+    hashing: GOSTR341194
+- model: ciphersuite
+  pk: TLS_GOSTR341001_WITH_28147_CNT_IMIT
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x81'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: GOSTR341001
+    authentication: GOSTR341001
+    encryption: 28147 CNT IMIT
+    aead: false
+    hashing: GOSTR341194
+- model: ciphersuite
+  pk: TLS_GOSTR341094_RSA_WITH_28147_CNT_MD5
+  fields:
+    hex_byte_1: '0xFF'
+    hex_byte_2: '0x00'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: GOSTR341094
+    authentication: RSA
+    encryption: 28147 CNT
+    aead: false
+    hashing: MD5
+- model: ciphersuite
+  pk: TLS_RSA_WITH_28147_CNT_GOST94
+  fields:
+    hex_byte_1: '0xFF'
+    hex_byte_2: '0x01'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: 28147 CNT
+    aead: false
+    hashing: GOSTR341194
+- model: ciphersuite
+  pk: TLS_CECPQ1_RSA_WITH_CHACHA20_POLY1305_SHA256
+  fields:
+    hex_byte_1: '0x16'
+    hex_byte_2: '0xB7'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: CECPQ1
+    authentication: RSA
+    encryption: CHACHA20 POLY1305
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_CECPQ1_ECDSA_WITH_CHACHA20_POLY1305_SHA256
+  fields:
+    hex_byte_1: '0x16'
+    hex_byte_2: '0xB8'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: CECPQ1
+    authentication: ECDSA
+    encryption: CHACHA20 POLY1305
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_CECPQ1_RSA_WITH_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0x16'
+    hex_byte_2: '0xB9'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: CECPQ1
+    authentication: RSA
+    encryption: AES 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: TLS_CECPQ1_ECDSA_WITH_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0x16'
+    hex_byte_2: '0xBA'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: CECPQ1
+    authentication: ECDSA
+    encryption: AES 256 GCM
+    aead: true
+    hashing: SHA384
+- model: ciphersuite
+  pk: SSL_CK_IDEA_128_CBC_WITH_MD5
+  fields:
+    hex_byte_1: '0x05'
+    hex_byte_2: '0x00'
+    hex_byte_3: '0x80'
+    protocol: SSL
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: IDEA 128 CBC
+    aead: false
+    hashing: MD5
+- model: ciphersuite
+  pk: SSL_CK_RC2_128_CBC_WITH_MD5
+  fields:
+    hex_byte_1: '0x03'
+    hex_byte_2: '0x00'
+    hex_byte_3: '0x80'
+    protocol: SSL
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: RC2 128 CBC
+    aead: false
+    hashing: MD5
+- model: ciphersuite
+  pk: TLS_DHE_DSS_WITH_RC4_128_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x66'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: DSS
+    encryption: RC4 128
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: SSL_CK_RC4_128_WITH_MD5
+  fields:
+    hex_byte_1: '0x01'
+    hex_byte_2: '0x00'
+    hex_byte_3: '0x80'
+    protocol: SSL
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: RC4 128
+    aead: false
+    hashing: MD5
+- model: ciphersuite
+  pk: SSL_CK_DES_192_EDE3_CBC_WITH_MD5
+  fields:
+    hex_byte_1: '0x07'
+    hex_byte_2: '0x00'
+    hex_byte_3: '0xC0'
+    protocol: SSL
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: DES 192 EDE3 CBC
+    aead: false
+    hashing: MD5
+- model: ciphersuite
+  pk: SSL_CK_DES_192_EDE3_CBC_WITH_SHA
+  fields:
+    hex_byte_1: '0x07'
+    hex_byte_2: '0x01'
+    hex_byte_3: '0xC0'
+    protocol: SSL
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: DES 192 EDE3 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: SSL_RSA_FIPS_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0xFE'
+    hex_byte_2: '0xFF'
+    protocol: SSL
+    old: false
+    export: false
+    fips: true
+    key_exchange: RSA
+    authentication: RSA
+    encryption: 3DES EDE CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: SSL_CK_RC4_64_WITH_MD5
+  fields:
+    hex_byte_1: '0x08'
+    hex_byte_2: '0x00'
+    hex_byte_3: '0x80'
+    protocol: SSL
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: RC4 64
+    aead: false
+    hashing: MD5
+- model: ciphersuite
+  pk: SSL_CK_DES_64_CFB64_WITH_MD5_1
+  fields:
+    hex_byte_1: '0xFF'
+    hex_byte_2: '0x80'
+    hex_byte_3: '0x00'
+    protocol: SSL
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: DES 64 CFB64
+    aead: false
+    hashing: MD5 1
+- model: ciphersuite
+  pk: TLS_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x63'
+    protocol: TLS
+    old: false
+    export: true
+    fips: false
+    key_exchange: DHE
+    authentication: DSS
+    encryption: DES CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_RSA_EXPORT1024_WITH_DES_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x62'
+    protocol: TLS
+    old: false
+    export: true
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: DES CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_RSA_EXPORT1024_WITH_RC2_56_MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x61'
+    protocol: TLS
+    old: false
+    export: true
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: RC2 56
+    aead: false
+    hashing: MD5
+- model: ciphersuite
+  pk: SSL_CK_DES_64_CBC_WITH_MD5
+  fields:
+    hex_byte_1: '0x06'
+    hex_byte_2: '0x00'
+    hex_byte_3: '0x40'
+    protocol: SSL
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: DES 64 CBC
+    aead: false
+    hashing: MD5
+- model: ciphersuite
+  pk: SSL_CK_DES_64_CBC_WITH_SHA
+  fields:
+    hex_byte_1: '0x06'
+    hex_byte_2: '0x01'
+    hex_byte_3: '0x40'
+    protocol: SSL
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: DES 64 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: SSL_RSA_FIPS_WITH_DES_CBC_SHA
+  fields:
+    hex_byte_1: '0xFE'
+    hex_byte_2: '0xFE'
+    protocol: SSL
+    old: false
+    export: false
+    fips: true
+    key_exchange: RSA
+    authentication: RSA
+    encryption: DES CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DHE_DSS_EXPORT1024_WITH_RC4_56_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x65'
+    protocol: TLS
+    old: false
+    export: true
+    fips: false
+    key_exchange: DHE
+    authentication: DSS
+    encryption: RC4 56
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_RSA_EXPORT1024_WITH_RC4_56_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x64'
+    protocol: TLS
+    old: false
+    export: true
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: RC4 56
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_RSA_EXPORT1024_WITH_RC4_56_MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x60'
+    protocol: TLS
+    old: false
+    export: true
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: RC4 56
+    aead: false
+    hashing: MD5
+- model: ciphersuite
+  pk: SSL_CK_RC2_128_CBC_EXPORT40_WITH_MD5
+  fields:
+    hex_byte_1: '0x04'
+    hex_byte_2: '0x00'
+    hex_byte_3: '0x80'
+    protocol: SSL
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: RC2 128 CBC EXPORT40
+    aead: false
+    hashing: MD5
+- model: ciphersuite
+  pk: SSL_CK_RC4_128_EXPORT40_WITH_MD5
+  fields:
+    hex_byte_1: '0x02'
+    hex_byte_2: '0x00'
+    hex_byte_3: '0x80'
+    protocol: SSL
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: RC4 128 EXPORT40
+    aead: false
+    hashing: MD5
+- model: ciphersuite
+  pk: SSL_CK_NULL_WITH_MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x00'
+    hex_byte_3: '0x00'
+    protocol: SSL
+    old: false
+    export: false
+    fips: false
+    key_exchange: 'NULL'
+    authentication: 'NULL'
+    encryption: 'NULL'
+    aead: false
+    hashing: MD5
+- model: ciphersuite
+  pk: TLS_GOSTR341094_WITH_NULL_GOSTR3411
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x82'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: GOSTR341094
+    authentication: GOSTR341094
+    encryption: 'NULL'
+    aead: false
+    hashing: GOSTR341194
+- model: ciphersuite
+  pk: TLS_GOSTR341001_WITH_NULL_GOSTR3411
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x83'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: GOSTR341001
+    authentication: GOSTR341001
+    encryption: 'NULL'
+    aead: false
+    hashing: GOSTR341194
+- model: ciphersuite
+  pk: SSL_CK_NULL
+  fields:
+    hex_byte_1: '0xFF'
+    hex_byte_2: '0x80'
+    hex_byte_3: '0x10'
+    protocol: SSL
+    old: false
+    export: false
+    fips: false
+    key_exchange: 'NULL'
+    authentication: 'NULL'
+    encryption: 'NULL'
+    aead: false
+    hashing: 'NULL'
+- model: ciphersuite
+  pk: OLD_TLS_DHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0x15'
+    protocol: TLS
+    old: true
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: RSA
+    encryption: CHACHA20 POLY1305
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: OLD_TLS_ECDH_ECDSA_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x4A'
+    protocol: TLS
+    old: true
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: ECDSA
+    encryption: 3DES EDE CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: OLD_TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x4B'
+    protocol: TLS
+    old: true
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: ECDSA
+    encryption: AES 128 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: OLD_TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x4C'
+    protocol: TLS
+    old: true
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: ECDSA
+    encryption: AES 256 CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: OLD_TLS_ECDH_ECDSA_WITH_NULL_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x47'
+    protocol: TLS
+    old: true
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: ECDSA
+    encryption: 'NULL'
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: OLD_TLS_ECDH_ECDSA_WITH_RC4_128_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x48'
+    protocol: TLS
+    old: true
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: ECDSA
+    encryption: RC4 128
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: OLD_TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0x14'
+    protocol: TLS
+    old: true
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: ECDSA
+    encryption: CHACHA20 POLY1305
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: OLD_TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0x13'
+    protocol: TLS
+    old: true
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: RSA
+    encryption: CHACHA20 POLY1305
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: OLD_TLS_GOSTR341112_256_WITH_28147_CNT_IMIT
+  fields:
+    hex_byte_1: '0xFF'
+    hex_byte_2: '0x85'
+    protocol: TLS
+    old: true
+    export: false
+    fips: false
+    key_exchange: GOSTR341012
+    authentication: GOSTR341012
+    encryption: 28147 CNT IMIT
+    aead: false
+    hashing: GOSTR341112
+- model: ciphersuite
+  pk: OLD_TLS_RSA_FIPS_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0xFF'
+    hex_byte_2: '0xE1'
+    protocol: TLS
+    old: true
+    export: false
+    fips: true
+    key_exchange: RSA
+    authentication: RSA
+    encryption: 3DES EDE CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: OLD_TLS_RSA_FIPS_WITH_DES_CBC_SHA
+  fields:
+    hex_byte_1: '0xFF'
+    hex_byte_2: '0xE0'
+    protocol: TLS
+    old: true
+    export: false
+    fips: true
+    key_exchange: RSA
+    authentication: RSA
+    encryption: DES CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_DHE_PSK_WITH_AES_128_CCM_8
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xAA'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: PSK
+    encryption: AES 128 CCM 8
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DHE_PSK_WITH_AES_256_CCM_8
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xAB'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: PSK
+    encryption: AES 256 CCM 8
+    aead: true
+    hashing: SHA256
+- model: ciphersuite
+  pk: TLS_DHE_PSK_WITH_ESTREAM_SALSA20_SHA1
+  fields:
+    hex_byte_1: '0xE4'
+    hex_byte_2: '0x1C'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: PSK
+    encryption: ESTREAM SALSA20
+    aead: false
+    hashing: SHA1
+- model: ciphersuite
+  pk: TLS_DHE_PSK_WITH_SALSA20_SHA1
+  fields:
+    hex_byte_1: '0xE4'
+    hex_byte_2: '0x1D'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: PSK
+    encryption: SALSA20
+    aead: false
+    hashing: SHA1
+- model: ciphersuite
+  pk: TLS_DHE_RSA_WITH_ESTREAM_SALSA20_SHA1
+  fields:
+    hex_byte_1: '0xE4'
+    hex_byte_2: '0x1E'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: RSA
+    encryption: ESTREAM SALSA20
+    aead: false
+    hashing: SHA1
+- model: ciphersuite
+  pk: TLS_DHE_RSA_WITH_SALSA20_SHA1
+  fields:
+    hex_byte_1: '0xE4'
+    hex_byte_2: '0x1F'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: DHE
+    authentication: RSA
+    encryption: SALSA20
+    aead: false
+    hashing: SHA1
+- model: ciphersuite
+  pk: TLS_ECDH_ECDSA_WITH_DES_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x49'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDH
+    authentication: ECDSA
+    encryption: DES CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_ECDHE_ECDSA_WITH_ESTREAM_SALSA20_SHA1
+  fields:
+    hex_byte_1: '0xE4'
+    hex_byte_2: '0x14'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: ECDSA
+    encryption: ESTREAM SALSA20
+    aead: false
+    hashing: SHA1
+- model: ciphersuite
+  pk: TLS_ECDHE_ECDSA_WITH_SALSA20_SHA1
+  fields:
+    hex_byte_1: '0xE4'
+    hex_byte_2: '0x15'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: ECDSA
+    encryption: SALSA20
+    aead: false
+    hashing: SHA1
+- model: ciphersuite
+  pk: TLS_ECDHE_PSK_WITH_ESTREAM_SALSA20_SHA1
+  fields:
+    hex_byte_1: '0xE4'
+    hex_byte_2: '0x18'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: PSK
+    encryption: ESTREAM SALSA20
+    aead: false
+    hashing: SHA1
+- model: ciphersuite
+  pk: TLS_ECDHE_PSK_WITH_SALSA20_SHA1
+  fields:
+    hex_byte_1: '0xE4'
+    hex_byte_2: '0x19'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: PSK
+    encryption: SALSA20
+    aead: false
+    hashing: SHA1
+- model: ciphersuite
+  pk: TLS_ECDHE_RSA_WITH_ESTREAM_SALSA20_SHA1
+  fields:
+    hex_byte_1: '0xE4'
+    hex_byte_2: '0x12'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: RSA
+    encryption: ESTREAM SALSA20
+    aead: false
+    hashing: SHA1
+- model: ciphersuite
+  pk: TLS_ECDHE_RSA_WITH_SALSA20_SHA1
+  fields:
+    hex_byte_1: '0xE4'
+    hex_byte_2: '0x13'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: ECDHE
+    authentication: RSA
+    encryption: SALSA20
+    aead: false
+    hashing: SHA1
+- model: ciphersuite
+  pk: TLS_GOSTR341112_256_WITH_NULL_GOSTR3411
+  fields:
+    hex_byte_1: '0xFF'
+    hex_byte_2: '0x87'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: GOSTR341012
+    authentication: GOSTR341012
+    encryption: 'NULL'
+    aead: false
+    hashing: GOSTR341112
+- model: ciphersuite
+  pk: TLS_PSK_WITH_ESTREAM_SALSA20_SHA1
+  fields:
+    hex_byte_1: '0xE4'
+    hex_byte_2: '0x16'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: PSK
+    authentication: PSK
+    encryption: ESTREAM SALSA20
+    aead: false
+    hashing: SHA1
+- model: ciphersuite
+  pk: TLS_PSK_WITH_SALSA20_SHA1
+  fields:
+    hex_byte_1: '0xE4'
+    hex_byte_2: '0x17'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: PSK
+    authentication: PSK
+    encryption: SALSA20
+    aead: false
+    hashing: SHA1
+- model: ciphersuite
+  pk: TLS_RSA_EXPORT1024_WITH_RC2_CBC_56_MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x61'
+    protocol: TLS
+    old: false
+    export: true
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: RC2 CBC 56
+    aead: false
+    hashing: MD5
+- model: ciphersuite
+  pk: TLS_RSA_FIPS_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0xFE'
+    hex_byte_2: '0xFF'
+    protocol: TLS
+    old: false
+    export: false
+    fips: true
+    key_exchange: RSA
+    authentication: RSA
+    encryption: 3DES EDE CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_RSA_FIPS_WITH_DES_CBC_SHA
+  fields:
+    hex_byte_1: '0xFE'
+    hex_byte_2: '0xFE'
+    protocol: TLS
+    old: false
+    export: false
+    fips: true
+    key_exchange: RSA
+    authentication: RSA
+    encryption: DES CBC
+    aead: false
+    hashing: SHA
+- model: ciphersuite
+  pk: TLS_RSA_PSK_WITH_ESTREAM_SALSA20_SHA1
+  fields:
+    hex_byte_1: '0xE4'
+    hex_byte_2: '0x1A'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: PSK
+    encryption: ESTREAM SALSA20
+    aead: false
+    hashing: SHA1
+- model: ciphersuite
+  pk: TLS_RSA_PSK_WITH_SALSA20_SHA1
+  fields:
+    hex_byte_1: '0xE4'
+    hex_byte_2: '0x1B'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: PSK
+    encryption: SALSA20
+    aead: false
+    hashing: SHA1
+- model: ciphersuite
+  pk: TLS_RSA_WITH_3DES_EDE_CBC_MD5
+  fields:
+    hex_byte_1: '0xFF'
+    hex_byte_2: '0x83'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: 3DES EDE CBC
+    aead: false
+    hashing: MD5
+- model: ciphersuite
+  pk: TLS_RSA_WITH_DES_CBC_MD5
+  fields:
+    hex_byte_1: '0xFF'
+    hex_byte_2: '0x82'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: DES CBC
+    aead: false
+    hashing: MD5
+- model: ciphersuite
+  pk: TLS_RSA_WITH_ESTREAM_SALSA20_SHA1
+  fields:
+    hex_byte_1: '0xE4'
+    hex_byte_2: '0x10'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: ESTREAM SALSA20
+    aead: false
+    hashing: SHA1
+- model: ciphersuite
+  pk: TLS_RSA_WITH_IDEA_CBC_MD5
+  fields:
+    hex_byte_1: '0xFF'
+    hex_byte_2: '0x81'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: IDEA CBC
+    aead: false
+    hashing: MD5
+- model: ciphersuite
+  pk: TLS_RSA_WITH_RC2_CBC_MD5
+  fields:
+    hex_byte_1: '0xFF'
+    hex_byte_2: '0x80'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: RC2 CBC
+    aead: false
+    hashing: MD5
+- model: ciphersuite
+  pk: TLS_RSA_WITH_SALSA20_SHA1
+  fields:
+    hex_byte_1: '0xE4'
+    hex_byte_2: '0x11'
+    protocol: TLS
+    old: false
+    export: false
+    fips: false
+    key_exchange: RSA
+    authentication: RSA
+    encryption: SALSA20
+    aead: false
+    hashing: SHA1
+

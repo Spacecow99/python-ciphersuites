@@ -1,0 +1,941 @@
+- model: gnutls
+  pk: TLS_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0x13'
+    hex_byte_2: '0x01'
+- model: gnutls
+  pk: TLS_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0x13'
+    hex_byte_2: '0x02'
+- model: gnutls
+  pk: TLS_CHACHA20_POLY1305_SHA256
+  fields:
+    hex_byte_1: '0x13'
+    hex_byte_2: '0x03'
+- model: gnutls
+  pk: TLS_AES_128_CCM_SHA256
+  fields:
+    hex_byte_1: '0x13'
+    hex_byte_2: '0x04'
+- model: gnutls
+  pk: TLS_AES_128_CCM_8_SHA256
+  fields:
+    hex_byte_1: '0x13'
+    hex_byte_2: '0x05'
+- model: gnutls
+  pk: TLS_RSA_NULL_MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x01'
+- model: gnutls
+  pk: TLS_RSA_NULL_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x02'
+- model: gnutls
+  pk: TLS_RSA_NULL_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x3B'
+- model: gnutls
+  pk: TLS_DH_ANON_3DES_EDE_CBC_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x1B'
+- model: gnutls
+  pk: TLS_DH_ANON_ARCFOUR_128_MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x18'
+- model: gnutls
+  pk: TLS_DH_ANON_AES_128_CBC_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x34'
+- model: gnutls
+  pk: TLS_DH_ANON_AES_256_CBC_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x3A'
+- model: gnutls
+  pk: TLS_DH_ANON_CAMELLIA_128_CBC_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x46'
+- model: gnutls
+  pk: TLS_DH_ANON_CAMELLIA_256_CBC_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x89'
+- model: gnutls
+  pk: TLS_RSA_CAMELLIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xBA'
+- model: gnutls
+  pk: TLS_DHE_DSS_CAMELLIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xBD'
+- model: gnutls
+  pk: TLS_DHE_RSA_CAMELLIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xBE'
+- model: gnutls
+  pk: TLS_DH_ANON_CAMELLIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xBF'
+- model: gnutls
+  pk: TLS_RSA_CAMELLIA_256_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xC0'
+- model: gnutls
+  pk: TLS_DHE_DSS_CAMELLIA_256_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xC3'
+- model: gnutls
+  pk: TLS_DHE_RSA_CAMELLIA_256_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xC4'
+- model: gnutls
+  pk: TLS_DH_ANON_CAMELLIA_256_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xC5'
+- model: gnutls
+  pk: TLS_ECDHE_ECDSA_CAMELLIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x72'
+- model: gnutls
+  pk: TLS_ECDHE_ECDSA_CAMELLIA_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x73'
+- model: gnutls
+  pk: TLS_ECDHE_RSA_CAMELLIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x76'
+- model: gnutls
+  pk: TLS_ECDHE_RSA_CAMELLIA_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x77'
+- model: gnutls
+  pk: TLS_PSK_CAMELLIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x94'
+- model: gnutls
+  pk: TLS_PSK_CAMELLIA_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x95'
+- model: gnutls
+  pk: TLS_DHE_PSK_CAMELLIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x96'
+- model: gnutls
+  pk: TLS_DHE_PSK_CAMELLIA_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x97'
+- model: gnutls
+  pk: TLS_RSA_PSK_CAMELLIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x98'
+- model: gnutls
+  pk: TLS_RSA_PSK_CAMELLIA_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x99'
+- model: gnutls
+  pk: TLS_ECDHE_PSK_CAMELLIA_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x9A'
+- model: gnutls
+  pk: TLS_ECDHE_PSK_CAMELLIA_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x9B'
+- model: gnutls
+  pk: TLS_RSA_CAMELLIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x7A'
+- model: gnutls
+  pk: TLS_RSA_CAMELLIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x7B'
+- model: gnutls
+  pk: TLS_DHE_RSA_CAMELLIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x7C'
+- model: gnutls
+  pk: TLS_DHE_RSA_CAMELLIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x7D'
+- model: gnutls
+  pk: TLS_DHE_DSS_CAMELLIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x80'
+- model: gnutls
+  pk: TLS_DHE_DSS_CAMELLIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x81'
+- model: gnutls
+  pk: TLS_DH_ANON_CAMELLIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x84'
+- model: gnutls
+  pk: TLS_DH_ANON_CAMELLIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x85'
+- model: gnutls
+  pk: TLS_ECDHE_ECDSA_CAMELLIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x86'
+- model: gnutls
+  pk: TLS_ECDHE_ECDSA_CAMELLIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x87'
+- model: gnutls
+  pk: TLS_ECDHE_RSA_CAMELLIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x8A'
+- model: gnutls
+  pk: TLS_ECDHE_RSA_CAMELLIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x8B'
+- model: gnutls
+  pk: TLS_PSK_CAMELLIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x8E'
+- model: gnutls
+  pk: TLS_PSK_CAMELLIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x8F'
+- model: gnutls
+  pk: TLS_DHE_PSK_CAMELLIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x90'
+- model: gnutls
+  pk: TLS_DHE_PSK_CAMELLIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x91'
+- model: gnutls
+  pk: TLS_RSA_PSK_CAMELLIA_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x92'
+- model: gnutls
+  pk: TLS_RSA_PSK_CAMELLIA_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x93'
+- model: gnutls
+  pk: TLS_DH_ANON_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x6C'
+- model: gnutls
+  pk: TLS_DH_ANON_AES_256_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x6D'
+- model: gnutls
+  pk: TLS_ECDHE_RSA_CHACHA20_POLY1305
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0xA8'
+- model: gnutls
+  pk: TLS_ECDHE_ECDSA_CHACHA20_POLY1305
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0xA9'
+- model: gnutls
+  pk: TLS_DHE_RSA_CHACHA20_POLY1305
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0xAA'
+- model: gnutls
+  pk: TLS_PSK_CHACHA20_POLY1305
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0xAB'
+- model: gnutls
+  pk: TLS_ECDHE_PSK_CHACHA20_POLY1305
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0xAC'
+- model: gnutls
+  pk: TLS_DHE_PSK_CHACHA20_POLY1305
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0xAD'
+- model: gnutls
+  pk: TLS_RSA_PSK_CHACHA20_POLY1305
+  fields:
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0xAE'
+- model: gnutls
+  pk: TLS_PSK_ARCFOUR_128_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x8A'
+- model: gnutls
+  pk: TLS_PSK_3DES_EDE_CBC_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x8B'
+- model: gnutls
+  pk: TLS_PSK_AES_128_CBC_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x8C'
+- model: gnutls
+  pk: TLS_PSK_AES_256_CBC_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x8D'
+- model: gnutls
+  pk: TLS_DHE_PSK_ARCFOUR_128_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x8E'
+- model: gnutls
+  pk: TLS_DHE_PSK_3DES_EDE_CBC_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x8F'
+- model: gnutls
+  pk: TLS_DHE_PSK_AES_128_CBC_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x90'
+- model: gnutls
+  pk: TLS_DHE_PSK_AES_256_CBC_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x91'
+- model: gnutls
+  pk: TLS_RSA_PSK_ARCFOUR_128_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x92'
+- model: gnutls
+  pk: TLS_RSA_PSK_3DES_EDE_CBC_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x93'
+- model: gnutls
+  pk: TLS_RSA_PSK_AES_128_CBC_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x94'
+- model: gnutls
+  pk: TLS_RSA_PSK_AES_256_CBC_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x95'
+- model: gnutls
+  pk: TLS_SRP_SHA_3DES_EDE_CBC_SHA1
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x1A'
+- model: gnutls
+  pk: TLS_SRP_SHA_RSA_3DES_EDE_CBC_SHA1
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x1B'
+- model: gnutls
+  pk: TLS_SRP_SHA_DSS_3DES_EDE_CBC_SHA1
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x1C'
+- model: gnutls
+  pk: TLS_SRP_SHA_AES_128_CBC_SHA1
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x1D'
+- model: gnutls
+  pk: TLS_SRP_SHA_RSA_AES_128_CBC_SHA1
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x1E'
+- model: gnutls
+  pk: TLS_SRP_SHA_DSS_AES_128_CBC_SHA1
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x1F'
+- model: gnutls
+  pk: TLS_SRP_SHA_AES_256_CBC_SHA1
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x20'
+- model: gnutls
+  pk: TLS_SRP_SHA_RSA_AES_256_CBC_SHA1
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x21'
+- model: gnutls
+  pk: TLS_SRP_SHA_DSS_AES_256_CBC_SHA1
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x22'
+- model: gnutls
+  pk: TLS_RSA_ARCFOUR_128_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x05'
+- model: gnutls
+  pk: TLS_RSA_ARCFOUR_128_MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x04'
+- model: gnutls
+  pk: TLS_RSA_3DES_EDE_CBC_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x0A'
+- model: gnutls
+  pk: TLS_RSA_AES_128_CBC_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x2F'
+- model: gnutls
+  pk: TLS_RSA_AES_256_CBC_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x35'
+- model: gnutls
+  pk: TLS_RSA_CAMELLIA_128_CBC_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x41'
+- model: gnutls
+  pk: TLS_RSA_CAMELLIA_256_CBC_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x84'
+- model: gnutls
+  pk: TLS_RSA_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x3C'
+- model: gnutls
+  pk: TLS_RSA_AES_256_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x3D'
+- model: gnutls
+  pk: TLS_DHE_DSS_3DES_EDE_CBC_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x13'
+- model: gnutls
+  pk: TLS_DHE_DSS_ARCFOUR_128_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x66'
+- model: gnutls
+  pk: TLS_DHE_DSS_AES_256_CBC_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x38'
+- model: gnutls
+  pk: TLS_DHE_DSS_AES_128_CBC_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x32'
+- model: gnutls
+  pk: TLS_DHE_DSS_CAMELLIA_128_CBC_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x44'
+- model: gnutls
+  pk: TLS_DHE_DSS_CAMELLIA_256_CBC_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x87'
+- model: gnutls
+  pk: TLS_DHE_DSS_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x40'
+- model: gnutls
+  pk: TLS_DHE_DSS_AES_256_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x6A'
+- model: gnutls
+  pk: TLS_DHE_RSA_3DES_EDE_CBC_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x16'
+- model: gnutls
+  pk: TLS_DHE_RSA_AES_128_CBC_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x33'
+- model: gnutls
+  pk: TLS_DHE_RSA_AES_256_CBC_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x39'
+- model: gnutls
+  pk: TLS_DHE_RSA_CAMELLIA_128_CBC_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x45'
+- model: gnutls
+  pk: TLS_DHE_RSA_CAMELLIA_256_CBC_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x88'
+- model: gnutls
+  pk: TLS_DHE_RSA_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x67'
+- model: gnutls
+  pk: TLS_DHE_RSA_AES_256_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x6B'
+- model: gnutls
+  pk: TLS_RSA_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x9C'
+- model: gnutls
+  pk: TLS_DHE_RSA_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x9E'
+- model: gnutls
+  pk: TLS_DHE_DSS_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xA2'
+- model: gnutls
+  pk: TLS_DH_ANON_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xA6'
+- model: gnutls
+  pk: TLS_RSA_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x9D'
+- model: gnutls
+  pk: TLS_DHE_RSA_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x9F'
+- model: gnutls
+  pk: TLS_DHE_DSS_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xA3'
+- model: gnutls
+  pk: TLS_DH_ANON_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xA7'
+- model: gnutls
+  pk: TLS_RSA_AES_128_CCM
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x9C'
+- model: gnutls
+  pk: TLS_RSA_AES_256_CCM
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x9D'
+- model: gnutls
+  pk: TLS_DHE_RSA_AES_128_CCM
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x9E'
+- model: gnutls
+  pk: TLS_DHE_RSA_AES_256_CCM
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x9F'
+- model: gnutls
+  pk: TLS_ECDHE_ECDSA_AES_128_CCM
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xAC'
+- model: gnutls
+  pk: TLS_ECDHE_ECDSA_AES_256_CCM
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xAD'
+- model: gnutls
+  pk: TLS_PSK_AES_128_CCM
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xA4'
+- model: gnutls
+  pk: TLS_PSK_AES_256_CCM
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xA5'
+- model: gnutls
+  pk: TLS_DHE_PSK_AES_128_CCM
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xA6'
+- model: gnutls
+  pk: TLS_DHE_PSK_AES_256_CCM
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xA7'
+- model: gnutls
+  pk: TLS_RSA_AES_128_CCM_8
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xA0'
+- model: gnutls
+  pk: TLS_RSA_AES_256_CCM_8
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xA1'
+- model: gnutls
+  pk: TLS_DHE_RSA_AES_128_CCM_8
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xA2'
+- model: gnutls
+  pk: TLS_DHE_RSA_AES_256_CCM_8
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xA3'
+- model: gnutls
+  pk: TLS_ECDHE_ECDSA_AES_128_CCM_8
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xAE'
+- model: gnutls
+  pk: TLS_ECDHE_ECDSA_AES_256_CCM_8
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xAF'
+- model: gnutls
+  pk: TLS_PSK_AES_128_CCM_8
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xA8'
+- model: gnutls
+  pk: TLS_PSK_AES_256_CCM_8
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xA9'
+- model: gnutls
+  pk: TLS_DHE_PSK_AES_128_CCM_8
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xAA'
+- model: gnutls
+  pk: TLS_DHE_PSK_AES_256_CCM_8
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0xAB'
+- model: gnutls
+  pk: TLS_PSK_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xA8'
+- model: gnutls
+  pk: TLS_DHE_PSK_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xAA'
+- model: gnutls
+  pk: TLS_PSK_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xA9'
+- model: gnutls
+  pk: TLS_DHE_PSK_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xAB'
+- model: gnutls
+  pk: TLS_PSK_AES_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xAF'
+- model: gnutls
+  pk: TLS_PSK_NULL_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xB1'
+- model: gnutls
+  pk: TLS_DHE_PSK_AES_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xB3'
+- model: gnutls
+  pk: TLS_DHE_PSK_NULL_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xB5'
+- model: gnutls
+  pk: TLS_PSK_NULL_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x2C'
+- model: gnutls
+  pk: TLS_DHE_PSK_NULL_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x2D'
+- model: gnutls
+  pk: TLS_RSA_PSK_NULL_SHA1
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x2E'
+- model: gnutls
+  pk: TLS_ECDHE_PSK_NULL_SHA1
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x39'
+- model: gnutls
+  pk: TLS_RSA_PSK_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xAC'
+- model: gnutls
+  pk: TLS_RSA_PSK_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xAD'
+- model: gnutls
+  pk: TLS_RSA_PSK_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xB6'
+- model: gnutls
+  pk: TLS_RSA_PSK_AES_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xB7'
+- model: gnutls
+  pk: TLS_RSA_PSK_NULL_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xB8'
+- model: gnutls
+  pk: TLS_RSA_PSK_NULL_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xB9'
+- model: gnutls
+  pk: TLS_PSK_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xAE'
+- model: gnutls
+  pk: TLS_DHE_PSK_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xB2'
+- model: gnutls
+  pk: TLS_PSK_NULL_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xB0'
+- model: gnutls
+  pk: TLS_DHE_PSK_NULL_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xB4'
+- model: gnutls
+  pk: TLS_ECDH_ANON_NULL_SHA1
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x15'
+- model: gnutls
+  pk: TLS_ECDH_ANON_3DES_EDE_CBC_SHA1
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x17'
+- model: gnutls
+  pk: TLS_ECDH_ANON_AES_128_CBC_SHA1
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x18'
+- model: gnutls
+  pk: TLS_ECDH_ANON_AES_256_CBC_SHA1
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x19'
+- model: gnutls
+  pk: TLS_ECDH_ANON_ARCFOUR_128_SHA1
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x16'
+- model: gnutls
+  pk: TLS_ECDHE_RSA_NULL_SHA1
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x10'
+- model: gnutls
+  pk: TLS_ECDHE_RSA_3DES_EDE_CBC_SHA1
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x12'
+- model: gnutls
+  pk: TLS_ECDHE_RSA_AES_128_CBC_SHA1
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x13'
+- model: gnutls
+  pk: TLS_ECDHE_RSA_AES_256_CBC_SHA1
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x14'
+- model: gnutls
+  pk: TLS_ECDHE_RSA_ARCFOUR_128_SHA1
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x11'
+- model: gnutls
+  pk: TLS_ECDHE_ECDSA_NULL_SHA1
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x06'
+- model: gnutls
+  pk: TLS_ECDHE_ECDSA_3DES_EDE_CBC_SHA1
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x08'
+- model: gnutls
+  pk: TLS_ECDHE_ECDSA_AES_128_CBC_SHA1
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x09'
+- model: gnutls
+  pk: TLS_ECDHE_ECDSA_AES_256_CBC_SHA1
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x0A'
+- model: gnutls
+  pk: TLS_ECDHE_ECDSA_ARCFOUR_128_SHA1
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x07'
+- model: gnutls
+  pk: TLS_ECDHE_ECDSA_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x23'
+- model: gnutls
+  pk: TLS_ECDHE_RSA_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x27'
+- model: gnutls
+  pk: TLS_ECDHE_RSA_AES_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x28'
+- model: gnutls
+  pk: TLS_ECDHE_ECDSA_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x2B'
+- model: gnutls
+  pk: TLS_ECDHE_RSA_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x2F'
+- model: gnutls
+  pk: TLS_ECDHE_RSA_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x30'
+- model: gnutls
+  pk: TLS_ECDHE_ECDSA_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x2C'
+- model: gnutls
+  pk: TLS_ECDHE_ECDSA_AES_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x24'
+- model: gnutls
+  pk: TLS_ECDHE_PSK_3DES_EDE_CBC_SHA1
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x34'
+- model: gnutls
+  pk: TLS_ECDHE_PSK_AES_128_CBC_SHA1
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x35'
+- model: gnutls
+  pk: TLS_ECDHE_PSK_AES_256_CBC_SHA1
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x36'
+- model: gnutls
+  pk: TLS_ECDHE_PSK_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x37'
+- model: gnutls
+  pk: TLS_ECDHE_PSK_AES_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x38'
+- model: gnutls
+  pk: TLS_ECDHE_PSK_ARCFOUR_128_SHA1
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x33'
+- model: gnutls
+  pk: TLS_ECDHE_PSK_NULL_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x3A'
+- model: gnutls
+  pk: TLS_ECDHE_PSK_NULL_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x3B'
+- model: gnutls
+  pk: TLS_GOSTR341112_256_28147_CNT_IMIT
+  fields:
+    hex_byte_1: '0xc1'
+    hex_byte_2: '0x02'
+

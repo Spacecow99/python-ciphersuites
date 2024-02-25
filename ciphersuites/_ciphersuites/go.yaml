@@ -1,0 +1,137 @@
+- model: go
+  pk: TLS_RSA_WITH_RC4_128_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x05'
+- model: go
+  pk: TLS_RSA_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x0A'
+- model: go
+  pk: TLS_RSA_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x2F'
+- model: go
+  pk: TLS_RSA_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x35'
+- model: go
+  pk: TLS_RSA_WITH_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x3C'
+- model: go
+  pk: TLS_RSA_WITH_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x9C'
+- model: go
+  pk: TLS_RSA_WITH_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x9D'
+- model: go
+  pk: TLS_ECDHE_ECDSA_WITH_RC4_128_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x07'
+- model: go
+  pk: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x09'
+- model: go
+  pk: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x0A'
+- model: go
+  pk: TLS_ECDHE_RSA_WITH_RC4_128_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x11'
+- model: go
+  pk: TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x12'
+- model: go
+  pk: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x13'
+- model: go
+  pk: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x14'
+- model: go
+  pk: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x23'
+- model: go
+  pk: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x27'
+- model: go
+  pk: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x2F'
+- model: go
+  pk: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x2B'
+- model: go
+  pk: TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x30'
+- model: go
+  pk: TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x2C'
+- model: go
+  pk: TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+  fields: &id001
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0xA8'
+- model: go
+  pk: TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256
+  fields: &id002
+    hex_byte_1: '0xCC'
+    hex_byte_2: '0xA9'
+- model: go
+  pk: TLS_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0x13'
+    hex_byte_2: '0x01'
+- model: go
+  pk: TLS_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0x13'
+    hex_byte_2: '0x02'
+- model: go
+  pk: TLS_CHACHA20_POLY1305_SHA256
+  fields:
+    hex_byte_1: '0x13'
+    hex_byte_2: '0x03'
+- model: go
+  pk: TLS_FALLBACK_SCSV
+  fields:
+    hex_byte_1: '0x56'
+    hex_byte_2: '0x00'
+- model: go
+  pk: TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305
+  fields: *id001
+- model: go
+  pk: TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305
+  fields: *id002
+
