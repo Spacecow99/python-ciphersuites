@@ -1,0 +1,410 @@
+- model: schannel
+  pk: SSL_CK_DES_192_EDE3_CBC_WITH_MD5
+  fields:
+    hex_byte_1: '0x07'
+    hex_byte_2: '0x00'
+    hex_byte_3: '0xC0'
+- model: schannel
+  pk: SSL_CK_DES_64_CBC_WITH_MD5
+  fields:
+    hex_byte_1: '0x06'
+    hex_byte_2: '0x00'
+    hex_byte_3: '0x40'
+- model: schannel
+  pk: SSL_CK_RC4_128_EXPORT40_MD5
+  fields:
+    hex_byte_1: '0x02'
+    hex_byte_2: '0x00'
+    hex_byte_3: '0x80'
+- model: schannel
+  pk: SSL_CK_RC4_128_EXPORT40_WITH_MD5
+  fields:
+    hex_byte_1: '0x02'
+    hex_byte_2: '0x00'
+    hex_byte_3: '0x80'
+- model: schannel
+  pk: SSL_CK_RC4_128_WITH_MD5
+  fields:
+    hex_byte_1: '0x01'
+    hex_byte_2: '0x00'
+    hex_byte_3: '0x80'
+- model: schannel
+  pk: TLS_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0x13'
+    hex_byte_2: '0x01'
+- model: schannel
+  pk: TLS_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0x13'
+    hex_byte_2: '0x02'
+- model: schannel
+  pk: TLS_CHACHA20_POLY1305_SHA256
+  fields:
+    hex_byte_1: '0x13'
+    hex_byte_2: '0x03'
+- model: schannel
+  pk: TLS_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x63'
+- model: schannel
+  pk: TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x13'
+- model: schannel
+  pk: TLS_DHE_DSS_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x32'
+- model: schannel
+  pk: TLS_DHE_DSS_WITH_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x40'
+- model: schannel
+  pk: TLS_DHE_DSS_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x38'
+- model: schannel
+  pk: TLS_DHE_DSS_WITH_AES_256_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x6A'
+- model: schannel
+  pk: TLS_DHE_DSS_WITH_DES_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x12'
+- model: schannel
+  pk: TLS_DHE_RSA_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x33'
+- model: schannel
+  pk: TLS_DHE_RSA_WITH_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x9E'
+- model: schannel
+  pk: TLS_DHE_RSA_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x39'
+- model: schannel
+  pk: TLS_DHE_RSA_WITH_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x9F'
+- model: schannel
+  pk: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x09'
+- model: schannel
+  pk: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x23'
+- model: schannel
+  pk: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256_P256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x23'
+- model: schannel
+  pk: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256_P384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x23'
+- model: schannel
+  pk: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256_P521
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x23'
+- model: schannel
+  pk: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA_P256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x09'
+- model: schannel
+  pk: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA_P384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x09'
+- model: schannel
+  pk: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA_P521
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x09'
+- model: schannel
+  pk: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x2B'
+- model: schannel
+  pk: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256_P256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x2B'
+- model: schannel
+  pk: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256_P384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x2B'
+- model: schannel
+  pk: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256_P521
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x2B'
+- model: schannel
+  pk: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x0A'
+- model: schannel
+  pk: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x24'
+- model: schannel
+  pk: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384_P384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x24'
+- model: schannel
+  pk: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384_P521
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x24'
+- model: schannel
+  pk: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA_P256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x0A'
+- model: schannel
+  pk: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA_P384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x0A'
+- model: schannel
+  pk: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA_P521
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x0A'
+- model: schannel
+  pk: TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x2C'
+- model: schannel
+  pk: TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384_P384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x2C'
+- model: schannel
+  pk: TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384_P521
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x2C'
+- model: schannel
+  pk: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x13'
+- model: schannel
+  pk: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x27'
+- model: schannel
+  pk: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x27'
+- model: schannel
+  pk: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x27'
+- model: schannel
+  pk: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P521
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x27'
+- model: schannel
+  pk: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA_P256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x13'
+- model: schannel
+  pk: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA_P384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x13'
+- model: schannel
+  pk: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA_P521
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x13'
+- model: schannel
+  pk: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x2F'
+- model: schannel
+  pk: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x14'
+- model: schannel
+  pk: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x28'
+- model: schannel
+  pk: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x28'
+- model: schannel
+  pk: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x28'
+- model: schannel
+  pk: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P521
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x28'
+- model: schannel
+  pk: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA_P256
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x14'
+- model: schannel
+  pk: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA_P384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x14'
+- model: schannel
+  pk: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA_P521
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x14'
+- model: schannel
+  pk: TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0xC0'
+    hex_byte_2: '0x30'
+- model: schannel
+  pk: TLS_PSK_WITH_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xAE'
+- model: schannel
+  pk: TLS_PSK_WITH_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xA8'
+- model: schannel
+  pk: TLS_PSK_WITH_AES_256_CBC_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xAF'
+- model: schannel
+  pk: TLS_PSK_WITH_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xA9'
+- model: schannel
+  pk: TLS_PSK_WITH_NULL_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xB0'
+- model: schannel
+  pk: TLS_PSK_WITH_NULL_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0xB1'
+- model: schannel
+  pk: TLS_RSA_EXPORT1024_WITH_DES_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x62'
+- model: schannel
+  pk: TLS_RSA_EXPORT1024_WITH_RC4_56_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x64'
+- model: schannel
+  pk: TLS_RSA_EXPORT_WITH_RC4_40_MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x03'
+- model: schannel
+  pk: TLS_RSA_WITH_3DES_EDE_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x0A'
+- model: schannel
+  pk: TLS_RSA_WITH_AES_128_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x2F'
+- model: schannel
+  pk: TLS_RSA_WITH_AES_128_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x3C'
+- model: schannel
+  pk: TLS_RSA_WITH_AES_128_GCM_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x9C'
+- model: schannel
+  pk: TLS_RSA_WITH_AES_256_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x35'
+- model: schannel
+  pk: TLS_RSA_WITH_AES_256_CBC_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x3D'
+- model: schannel
+  pk: TLS_RSA_WITH_AES_256_GCM_SHA384
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x9D'
+- model: schannel
+  pk: TLS_RSA_WITH_DES_CBC_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x09'
+- model: schannel
+  pk: TLS_RSA_WITH_NULL_MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x01'
+- model: schannel
+  pk: TLS_RSA_WITH_NULL_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x02'
+- model: schannel
+  pk: TLS_RSA_WITH_NULL_SHA256
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x3B'
+- model: schannel
+  pk: TLS_RSA_WITH_RC4_128_MD5
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x04'
+- model: schannel
+  pk: TLS_RSA_WITH_RC4_128_SHA
+  fields:
+    hex_byte_1: '0x00'
+    hex_byte_2: '0x05'
