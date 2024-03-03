@@ -95,11 +95,9 @@ def main():
             for key in openssl_ck_values.keys():
 
                 if key not in openssl_txt_values:
-                    print("txt", f"'{key}'", file=sys.stderr)
                     continue
 
                 if key not in openssl_ck_values:
-                    print("hex", f"'{key}'", file=sys.stderr)
                     continue
 
                 record = {

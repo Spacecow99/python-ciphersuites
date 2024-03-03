@@ -33,7 +33,6 @@ def main():
         r = requests.get(CIPHER_HEXCODE_URL)
         # Parse TLS1_CK_ records for hexcodes
         for match in re.finditer(HEXCODE_REGEX, r.text):
-            #print(match.groupdict())
             key = match.group("key")
             hex = match.group("hex")
 
@@ -43,7 +42,6 @@ def main():
             }
                 
             openssl_ck_values[key] = code_point
-            
 
         r = requests.get(CIPHER_NAME_URL)
         # Parse TLS1_TXT_ records for OpenSSL name
@@ -57,16 +55,10 @@ def main():
 
             if key not in openssl_txt_values:
                 # TODO: I just don't think that there's an entry for the AES 128 TLSv1.3 ciphers
-                # txt 'TLS_FALLBACK_SCSV'
-                # txt 'TLS_EMPTY_RENEGOTIATION_INFO_SCSV'
-                # txt 'TLS_AES_128_CCM_SHA256'
-                # txt 'TLS_AES_128_CCM_8_SHA256'
-                print("txt", f"'{key}'", file=sys.stderr)
                 continue
             
             # IDK what I expect this to catch
             if key not in openssl_ck_values:
-                print("hex", f"'{key}'", file=sys.stderr)
                 continue
 
             record = {
