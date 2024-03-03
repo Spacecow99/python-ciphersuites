@@ -49,7 +49,6 @@ for technology in _TECHNOLOGIES:
 del _TECHNOLOGIES
 del _VULNERABILITIES
 
-
 #Load all ciphersuite related YAML files
 try:
     with importlib_resources.path(f"ciphersuites._ciphersuites", "iana.yaml") as fixture:
@@ -158,87 +157,6 @@ for ciphersuite in _CIPHERSUITES:
             ])):
                 ciphersuite["fields"].setdefault(entry["model"], [])
                 ciphersuite["fields"][entry["model"]].append(entry["pk"])
-
-    # for iana in IANA:
-    #     if ciphersuite_hexcode == list(filter(partial(is_not, None), [
-    #             iana["fields"]["hex_byte_1"],
-    #             iana["fields"]["hex_byte_2"],
-    #             iana["fields"].get("hex_byte_3", None)
-    #         ])):
-    #         ciphersuite["fields"].setdefault("iana", [])
-    #         ciphersuite["fields"]["iana"].append(iana["pk"])
-
-    # for openssl in OPENSSL:
-    #     if ciphersuite_hexcode == list(filter(partial(is_not, None), [
-    #             openssl["fields"]["hex_byte_1"],
-    #             openssl["fields"]["hex_byte_2"],
-    #             openssl["fields"].get("hex_byte_3", None)
-    #         ])):
-    #         ciphersuite["fields"].setdefault("openssl", [])
-    #         ciphersuite["fields"]["openssl"].append(openssl["pk"])
-
-    # for gnutls in GNUTLS:
-    #     if ciphersuite_hexcode == list(filter(partial(is_not, None), [
-    #             gnutls["fields"]["hex_byte_1"],
-    #             gnutls["fields"]["hex_byte_2"],
-    #             gnutls["fields"].get("hex_byte_3", None)
-    #         ])):
-    #         ciphersuite["fields"].setdefault("gnutls", [])
-    #         ciphersuite["fields"]["gnutls"].append(gnutls["pk"])
-
-    # for go in GO:
-    #     if ciphersuite_hexcode == list(filter(partial(is_not, None), [
-    #             go["fields"]["hex_byte_1"],
-    #             go["fields"]["hex_byte_2"],
-    #             go["fields"].get("hex_byte_3", None)
-    #         ])):
-    #         ciphersuite["fields"].setdefault("go", [])
-    #         ciphersuite["fields"]["go"].append(go["pk"])
-
-    # for nss in NSS:
-    #     if ciphersuite_hexcode == list(filter(partial(is_not, None), [
-    #             nss["fields"]["hex_byte_1"],
-    #             nss["fields"]["hex_byte_2"],
-    #             nss["fields"].get("hex_byte_3", None)
-    #         ])):
-    #         ciphersuite["fields"].setdefault("nss", [])
-    #         ciphersuite["fields"]["nss"].append(nss["pk"])
-
-    # for jsse in JSSE:
-    #     if ciphersuite_hexcode == list(filter(partial(is_not, None), [
-    #             jsse["fields"]["hex_byte_1"],
-    #             jsse["fields"]["hex_byte_2"],
-    #             jsse["fields"].get("hex_byte_3", None)
-    #         ])):
-    #         ciphersuite["fields"].setdefault("jsse", [])
-    #         ciphersuite["fields"]["jsse"].append(jsse["pk"])
-
-    # for boringssl in BORINGSSL:
-    #     if ciphersuite_hexcode == list(filter(partial(is_not, None), [
-    #             boringssl["fields"]["hex_byte_1"],
-    #             boringssl["fields"]["hex_byte_2"],
-    #             boringssl["fields"].get("hex_byte_3", None)
-    #         ])):
-    #         ciphersuite["fields"].setdefault("boringssl", [])
-    #         ciphersuite["fields"]["boringssl"].append(boringssl["pk"])
-
-    # for libressl in LIBRESSL:
-    #     if ciphersuite_hexcode == list(filter(partial(is_not, None), [
-    #             libressl["fields"]["hex_byte_1"],
-    #             libressl["fields"]["hex_byte_2"],
-    #             libressl["fields"].get("hex_byte_3", None)
-    #         ])):
-    #         ciphersuite["fields"].setdefault("libressl", [])
-    #         ciphersuite["fields"]["libressl"].append(libressl["pk"])
-
-    # for s2n in S2N:
-    #     if ciphersuite_hexcode == list(filter(partial(is_not, None), [
-    #             s2n["fields"]["hex_byte_1"],
-    #             s2n["fields"]["hex_byte_2"],
-    #             s2n["fields"].get("hex_byte_3", None)
-    #         ])):
-    #         ciphersuite["fields"].setdefault("s2n", [])
-    #         ciphersuite["fields"]["s2n"].append(s2n["pk"])
 
     # Iterate over technology fields and substitute in details
     # NOTE: I would like a cleaner way to do this substitution rather than a static list
