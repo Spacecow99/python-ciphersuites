@@ -65,6 +65,7 @@ function main() {
     scrape-libressl > "${DIRECTORY}/libressl.yaml"
     scrape-boringssl > "${DIRECTORY}/boringssl.yaml"
     scrape-s2n > "${DIRECTORY}/s2n.yaml"
+    scrape-mbedtls > "${DIRECTORY}/mbedtls.yaml"
 }
 
 

@@ -131,6 +131,14 @@ except (ModuleNotFoundError, ImportError, IOError) as e:
     SCHANNEL = []
 
 try:
+    with importlib_resources.path(f"ciphersuites._ciphersuites", "mbedtls.yaml") as fixture:
+        with open(fixture, 'r') as f:
+            MBEDTLS = yaml.safe_load(f)
+except (ModuleNotFoundError, ImportError, IOError) as e:
+    warnings.warn(f"Failed to load resource 'ciphersuites._ciphersuites:mbedtls.yaml': {str(e)}", Warning)
+    MBEDTLS = []
+
+try:
     with importlib_resources.path(f"ciphersuites._ciphersuites", "ciphersuites.yaml") as fixture:
         with open(fixture, 'r') as f:
             _CIPHERSUITES = yaml.safe_load(f)
@@ -148,7 +156,7 @@ for ciphersuite in _CIPHERSUITES:
         ciphersuite["fields"].get("hex_byte_3", None)
     ]))
     
-    for format in [IANA, OPENSSL, GNUTLS, GO, NSS, JSSE, BORINGSSL, LIBRESSL, S2N, SCHANNEL]:
+    for format in [IANA, OPENSSL, GNUTLS, GO, NSS, JSSE, BORINGSSL, LIBRESSL, S2N, SCHANNEL, MBEDTLS]:
         for entry in format:
             if ciphersuite_hexcode == list(filter(partial(is_not, None), [
                 entry["fields"]["hex_byte_1"],
