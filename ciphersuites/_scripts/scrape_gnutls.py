@@ -54,7 +54,8 @@ def main():
     elif args.SOURCE == "ciphersuites.c":
         # TODO: Document this absolute abomination of a regex
         # NOTE: This is prime for simplification
-        DEFINE_DEFS = "#define\ (?P<Define>GNUTLS_\w+_\w+)[\s\{\\\\]+(?P<Value>.+)[\s\}\\\\]+"
+        #DEFINE_DEFS = "#define\ (?P<Define>GNUTLS_\w+_\w+)[\s\{\\\\]+(?P<Value>.+)[\s\}\\\\]+"
+        DEFINE_DEFS= "#define\ (?P<Define>GNUTLS_\w+)\s\{\ (?P<Value>\w+,\ \w+)\ \}"
         ENTRY_DEFS = "ENTRY(_PRF|_TLS13)?\((?P<Define>.+),\n?.+\"(?P<Description>.+)\","
         GNUTLS_SRC_URL = "https://raw.githubusercontent.com/gnutls/gnutls/master/lib/algorithms/ciphersuites.c"
 
