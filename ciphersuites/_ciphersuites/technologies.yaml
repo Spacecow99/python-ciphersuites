@@ -2,17 +2,17 @@
 # Protocol Versions #
 #####################
 
-- model: protocol
+- model: directory.ProtocolVersion
   pk: 'TLS EXPORT'
   fields:
     long_name: 'Export-grade Transport Layer Security'
     vulnerabilities: ['Export-grade cipher suite']
-- model: protocol
+- model: directory.ProtocolVersion
   pk: 'TLS'
   fields:
     long_name: 'Transport Layer Security'
     vulnerabilities: []
-- model: protocol
+- model: directory.ProtocolVersion
   pk: 'SSL'
   fields:
     long_name: 'Secure Socket Layer'
@@ -22,107 +22,107 @@
 # Authentication Algorithms #
 #############################
 
-- model: authentication
+- model: directory.AuthAlgorithm
   pk: 'anon'
   fields:
     long_name: 'Anonymous'
     vulnerabilities: ['Anonymous key exchange']
-- model: authentication
+- model: directory.AuthAlgorithm
   pk: 'DHE'
   fields:
     long_name: 'Diffie-Hellman Ephemeral'
     vulnerabilities: []
-- model: authentication
+- model: directory.AuthAlgorithm
   pk: 'DSS'
   fields:
     long_name: 'Digital Signature Standard'
     vulnerabilities: []
-- model: authentication
+- model: directory.AuthAlgorithm
   pk: 'KRB5'
   fields:
     long_name: 'Kerberos 5'
     vulnerabilities: []
-- model: authentication
+- model: directory.AuthAlgorithm
   pk: 'ECDSA'
   fields:
     long_name: 'Elliptic Curve Digital Signature Algorithm'
     vulnerabilities: []
-- model: authentication
+- model: directory.AuthAlgorithm
   pk: 'NULL'
   fields:
     long_name: 'Null Authentication'
     vulnerabilities: ['NULL Authentication']
-- model: authentication
+- model: directory.AuthAlgorithm
   pk: 'PSK'
   fields:
     long_name: 'Pre-Shared Key'
     vulnerabilities: []
-- model: authentication
+- model: directory.AuthAlgorithm
   pk: 'RSA'
   fields:
     long_name: 'Rivest Shamir Adleman algorithm'
     vulnerabilities: ['RSA Authentication']
-- model: authentication
+- model: directory.AuthAlgorithm
   pk: 'SHA'
   fields:
     long_name: 'Secure Hash Algorithm 1'
     vulnerabilities: ['Secure Hash Algorithm 1']
-- model: authentication
+- model: directory.AuthAlgorithm
   pk: 'SHA DSS'
   fields:
     long_name: 'Secure Hash Algorithm 1 with Digital Signature Standard'
     vulnerabilities: ['Secure Hash Algorithm 1']
-- model: authentication
+- model: directory.AuthAlgorithm
   pk: 'SHA RSA'
   fields:
     long_name: 'Secure Hash Algorithm 1 with Rivest Shamir Adleman algorithm'
     vulnerabilities: ['Secure Hash Algorithm 1']
-- model: authentication
+- model: directory.AuthAlgorithm
   pk: 'OMAC'
   fields:
     long_name: 'One-key MAC'
     vulnerabilities: []
-- model: authentication
+- model: directory.AuthAlgorithm
   pk: 'IMIT'
   fields:
     long_name: 'gostIMIT28147'
     vulnerabilities: ['GOST']
-- model: authentication
+- model: directory.AuthAlgorithm
   pk: 'ECCPWD'
   fields:
     long_name: 'TLS-PWD'
     vulnerabilities: []
-- model: authentication
-  pk: 'SHA384'
+- model: directory.AuthAlgorithm
+  pk: 'SHA386'
   fields:
     long_name: 'Secure Hash Algorithm 384'
     vulnerabilities: []
-- model: authentication
+- model: directory.AuthAlgorithm
   pk: 'GOSTR341094'
   fields:
     long_name: 'GOST R 34.10-1994'
     vulnerabilities: []
-- model: authentication
+- model: directory.AuthAlgorithm
   pk: '256'
   fields:
     long_name: 'idk lol'
     vulnerabilities: []
-- model: authentication
+- model: directory.AuthAlgorithm
   pk: 'SHA256'
   fields:
     long_name: 'Secure Hash Algorithm 256'
     vulnerabilities: []
-- model: authentication
+- model: directory.AuthAlgorithm
   pk: 'GOSTR341012'
   fields:
     long_name: 'GOST R 34.10-2012'
     vulnerabilities: []
-- model: authentication
+- model: directory.AuthAlgorithm
   pk: '-'
   fields:
     long_name: '-'
     vulnerabilities: []
-- model: authentication
+- model: directory.AuthAlgorithm
   pk: 'GOSTR341001'
   fields:
     long_name: 'GOST R 34.10-2001'
@@ -132,82 +132,82 @@
 # Key Exchange Algorithms #
 ###########################
 
-- model: key_exchange
+- model: directory.KexAlgorithm
   pk: 'DH'
   fields:
     long_name: 'Diffie-Hellman'
     vulnerabilities: ['Non-ephemeral Key Exchange']
-- model: key_exchange
+- model: directory.KexAlgorithm
   pk: 'DHE'
   fields:
     long_name: 'Diffie-Hellman Ephemeral'
     vulnerabilities: []
-- model: key_exchange
+- model: directory.KexAlgorithm
   pk: 'ECDH'
   fields:
     long_name: 'Elliptic Curve Diffie-Hellman'
     vulnerabilities: ['Non-ephemeral Key Exchange']
-- model: key_exchange
+- model: directory.KexAlgorithm
   pk: 'ECDHE'
   fields:
     long_name: 'Elliptic Curve Diffie-Hellman Ephemeral'
     vulnerabilities: []
-- model: key_exchange
+- model: directory.KexAlgorithm
   pk: 'KRB5'
   fields:
     long_name: 'Kerberos 5'
     vulnerabilities: ['Non-ephemeral Key Exchange']
-- model: key_exchange
+- model: directory.KexAlgorithm
   pk: 'NULL'
   fields:
     long_name: 'NULL Key exchange'
     vulnerabilities: ['Non-ephemeral Key Exchange']
-- model: key_exchange
+- model: directory.KexAlgorithm
   pk: 'PSK'
   fields:
     long_name: 'Pre-Shared Key'
     vulnerabilities: ['Non-ephemeral Key Exchange']
-- model: key_exchange
+- model: directory.KexAlgorithm
   pk: 'RSA'
   fields:
     long_name: 'Rivest Shamir Adleman algorithm'
     vulnerabilities: ['Non-ephemeral Key Exchange']
-- model: key_exchange
+- model: directory.KexAlgorithm
   pk: 'SRP'
   fields:
     long_name: 'Secure Remote Password'
     vulnerabilities: []
-- model: key_exchange
+- model: directory.KexAlgorithm
   pk: 'VKO GOSTR3410 2012 256'
   fields:
     long_name: 'VKO GOSTR3410 2012 256'
     vulnerabilities: ['GOST']
-- model: key_exchange
+- model: directory.KexAlgorithm
   pk: 'ECCPWD'
   fields:
     long_name: 'TLS-PWD'
     vulnerabilities: []
-- model: key_exchange
+- model: directory.KexAlgorithm
   pk: 'GOSTR341012'
   fields:
     long_name: 'VKO GOST R 34.10-2012'
     vulnerabilities: ['GOST']
-- model: key_exchange
+- model: directory.KexAlgorithm
   pk: 'GOSTR341094'
   fields:
     long_name: 'VKO GOST R 34.10-1994'
     vulnerabilities: ['GOST']
-- model: key_exchange
+- model: directory.KexAlgorithm
   pk: 'CECPQ1'
   fields:
     long_name: 'Combined Elliptic-Curve and Post-Quantum 1'
     vulnerabilities: []
-- model: key_exchange
+- model: directory.KexAlgorithm
   pk: '-'
   fields:
     long_name: '-'
     vulnerabilities: []
-- model: key_exchange
+- model: directory.KexAlgorithm
   pk: 'GOSTR341001'
   fields:
     long_name: 'VKO GOST R 34.10-2001'
@@ -217,62 +217,57 @@
 # Hash Algorithms #
 ###################
 
-- model: hashing
+- model: directory.HashAlgorithm
   pk: 'MD5'
   fields:
     long_name: 'Message Digest 5'
     vulnerabilities: ['Message Digest 5']
-- model: hashing
+- model: directory.HashAlgorithm
   pk: 'NULL'
   fields:
     long_name: 'NULL Hash'
     vulnerabilities: []
-- model: hashing
+- model: directory.HashAlgorithm
   pk: 'SHA'
   fields:
     long_name: 'Secure Hash Algorithm 1'
     vulnerabilities: ['Secure Hash Algorithm 1']
-- model: hashing
+- model: directory.HashAlgorithm
   pk: 'SHA256'
   fields:
     long_name: 'Secure Hash Algorithm 256'
     vulnerabilities: []
-- model: hashing
+- model: directory.HashAlgorithm
   pk: 'SHA384'
   fields:
     long_name: 'Secure Hash Algorithm 384'
     vulnerabilities: []
-- model: hashing
-  pk: 'SHA512'
-  fields:
-    long_name: 'Secure Hash Algorithm 512'
-    vulnerabilities: []
-- model: hashing
+- model: directory.HashAlgorithm
   pk: 'SM3'
   fields:
     long_name: 'ShangMi 3 Hashing Algorithm'
     vulnerabilities: ['ShangMi 3 Hash']
-- model: hashing
+- model: directory.HashAlgorithm
   pk: 'GOSTR341112'
   fields:
     long_name: 'GOST R 34.11-2012'
     vulnerabilities: ['GOST']
-- model: hashing
+- model: directory.HashAlgorithm
   pk: 'GOSTR341194'
   fields:
     long_name: 'GOST R 34.11-1994'
     vulnerabilities: ['GOST']
-- model: hashing
+- model: directory.HashAlgorithm
   pk: 'SHA1'
   fields:
     long_name: 'Secure Hash Algorithm 1'
     vulnerabilities: ['Secure Hash Algorithm 1']
-- model: hashing
+- model: directory.HashAlgorithm
   pk: 'MD5 1'
   fields:
     long_name: 'Message Digest 5'
     vulnerabilities: ['Message Digest 5']
-- model: hashing
+- model: directory.HashAlgorithm
   pk: '-'
   fields:
     long_name: '-'
@@ -282,293 +277,293 @@
 # Encryption Algorithms #
 #########################
 
-- model: encryption
+- model: directory.EncAlgorithm
   pk: '3DES EDE CBC'
   fields:
     long_name: 'Triple-DES (Encrypt Decrypt Encrypt) in Cipher Block Chaining mode'
     vulnerabilities: ['Triple-DES','Cipher Block Chaining']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'AES 128'
   fields:
     long_name: 'Advanced Encryption Standard with 128bit key'
     vulnerabilities: []
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'AES 128 CBC'
   fields:
     long_name: 'Advanced Encryption Standard with 128bit key in Cipher Block Chaining mode'
     vulnerabilities: ['Cipher Block Chaining']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'AES 128 GCM'
   fields:
     long_name: 'Advanced Encryption Standard with 128bit key in Galois/Counter mode'
     vulnerabilities: []
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'AES 256'
   fields:
     long_name: 'Advanced Encryption Standard with 256bit key'
     vulnerabilities: []
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'AES 256 CBC'
   fields:
     long_name: 'Advanced Encryption Standard with 256bit key in Cipher Block Chaining mode'
     vulnerabilities: ['Cipher Block Chaining']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'AES 128 CCM'
   fields:
     long_name: 'Advanced Encryption Standard with 128bit key in Counter with CBC-MAC mode'
     vulnerabilities: []
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'AES 128 CCM 8'
   fields:
     long_name: 'Advanced Encryption Standard with 128bit key in Counter with CBC-MAC mode with 8-Octet ICV'
     vulnerabilities: []
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'AES 256 CCM'
   fields:
     long_name: 'Advanced Encryption Standard with 256bit key in Counter with CBC-MAC mode'
     vulnerabilities: []
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'AES 256 CCM 8'
   fields:
     long_name: 'Advanced Encryption Standard with 256bit key in Counter with CBC-MAC mode with an 8-Octet ICV'
     vulnerabilities: []
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'AES 256 GCM'
   fields:
     long_name: 'Advanced Encryption Standard with 256bit key in Galois/Counter mode'
     vulnerabilities: []
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'ARIA 128 CBC'
   fields:
     long_name: 'ARIA with 128bit key in Cipher Block Chaining mode'
     vulnerabilities: ['Cipher Block Chaining']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'ARIA 128 GCM'
   fields:
     long_name: 'ARIA with 128bit key in Galois/Counter mode'
     vulnerabilities: []
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'ARIA 256 CBC'
   fields:
     long_name: 'ARIA with 256bit key in Cipher Block Chaining mode'
     vulnerabilities: ['Cipher Block Chaining']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'ARIA 256 GCM'
   fields:
     long_name: 'ARIA with 256bit key in Galois/Counter mode'
     vulnerabilities: []
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'CAMELLIA 128 CBC'
   fields:
     long_name: 'CAMELLIA with 128bit key in Cipher Block Chaining mode'
     vulnerabilities: ['Cipher Block Chaining']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'CAMELLIA 128 GCM'
   fields:
     long_name: 'CAMELLIA with 128bit key in Galois/Counter mode'
     vulnerabilities: []
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'CAMELLIA 256 CBC'
   fields:
     long_name: 'CAMELLIA with 256bit key in Cipher Block Chaining mode'
     vulnerabilities: ['Cipher Block Chaining']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'CAMELLIA 256 GCM'
   fields:
     long_name: 'CAMELLIA with 256bit key in Galois/Counter mode'
     vulnerabilities: []
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'CHACHA20 POLY1305'
   fields:
     long_name: 'ChaCha stream cipher and Poly1305 authenticator'
     vulnerabilities: []
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'DES40 CBC'
   fields:
     long_name: 'Data Encryption Standard with 40bit key in Cipher Block Chaining mode'
     vulnerabilities: ['Data Encryption Standard', 'Cipher Block Chaining']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'DES CBC'
   fields:
     long_name: 'Data Encryption Standard with 56bit key in Cipher Block Chaining mode'
     vulnerabilities: ['Data Encryption Standard', 'Cipher Block Chaining']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'DES CBC 40'
   fields:
     long_name: 'Data Encryption Standard with 40bit key in Cipher Block Chaining mode'
     vulnerabilities: ['Data Encryption Standard', 'Cipher Block Chaining']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'IDEA CBC'
   fields:
     long_name: 'IDEA in Cipher Block Chaining mode'
     vulnerabilities: ['Cipher Block Chaining']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'NULL'
   fields:
     long_name: 'NULL Encryption'
     vulnerabilities: ['NULL Encryption']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'RC2 CBC 40'
   fields:
     long_name: 'Rivest Cipher 2 with 40bit key in Cipher Block Chaining mode'
     vulnerabilities: ['Rivest Cipher 2','Cipher Block Chaining']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'RC4 40'
   fields:
     long_name: 'Rivest Cipher 4 with 40bit key'
     vulnerabilities: ['Rivest Cipher 4']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'RC4 128'
   fields:
     long_name: 'Rivest Cipher 4 with 128bit key'
     vulnerabilities: ['Rivest Cipher 4']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'SEED CBC'
   fields:
     long_name: 'SEED in Cipher Block Chaining mode'
     vulnerabilities: ['Cipher Block Chaining']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'SM4 GCM'
   fields:
     long_name: 'ShangMi 4 Encryption Algorithm in Galois/Counter Mode'
     vulnerabilities: ['ShangMi 4 Encryption']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'SM4 CCM'
   fields:
     long_name: 'ShangMi 4 Encryption Algorithm in Counter with CBC-MAC mode'
     vulnerabilities: ['ShangMi 4 Encryption']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'KUZNYECHIK CTR'
   fields:
     long_name: 'Kuznyechik Block Cipher in CTR'
     vulnerabilities: ['GOST']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'MAGMA CTR'
   fields:
     long_name: 'Magma Block Cipher in CTR'
     vulnerabilities: ['GOST']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: '28147 CNT'
   fields:
     long_name: 'GOST 28147-89'
     vulnerabilities: ['GOST']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'IDEA 128 CBC'
   fields:
     long_name: 'IDEA with 128bit key in Cipher Block Chaining mode'
     vulnerabilities: ['Cipher Block Chaining']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'DES 64 CFB64'
   fields:
     long_name: 'Data Encryption Standard with 64bit key in Cipher Feedback mode with 64bit-width'
     vulnerabilities: ['Data Encryption Standard']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'RC2 CBC'
   fields:
     long_name: 'Rivest Cipher 2 in Cipher Block Chaining mode'
     vulnerabilities: ['Rivest Cipher 2','Cipher Block Chaining']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'AEGIS 256'
   fields:
     long_name: 'AEGIS 256'
     vulnerabilities: []
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'DES 64 CBC'
   fields:
     long_name: 'Data Encryption Standard with 64bit key in Cipher Block Chaining mode'
     vulnerabilities: ['Data Encryption Standard','Cipher Block Chaining']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'MAGMA CTR OMAC'
   fields:
     long_name: 'MAGMA Block Cipher in CTR with OMAC'
     vulnerabilities: ['GOST']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'RC2 56'
   fields:
     long_name: 'Rivest Cipher 2 with 56bit key'
     vulnerabilities: ['Rivest Cipher 2']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'RC2 128 CBC EXPORT40'
   fields:
     long_name: 'Export Grade Rivest Cipher 2 with 128bit key in Cipher Block Chaining mode'
     vulnerabilities: ['Rivest Cipher 2','Cipher Block Chaining']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'RC4 128 EXPORT40'
   fields:
     long_name: 'Export Grade Rivest Cipher 4 with 128bit key'
     vulnerabilities: ['Rivest Cipher 4']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'SALSA20'
   fields:
     long_name: 'Salsa20'
     vulnerabilities: []
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'KUZNYECHIK CTR OMAC'
   fields:
     long_name: 'Kuznyechik Block Cipher in CTR with OMAC'
     vulnerabilities: ['GOST']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'KUZNYECHIK MGM S'
   fields:
     long_name: 'Kuznyechik Block Cipher in MGM'
     vulnerabilities: ['GOST']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'RC4 64'
   fields:
     long_name: 'Rivest Cipher 4 with 64bit key'
     vulnerabilities: ['Rivest Cipher 4']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'MAGMA MGM S'
   fields:
     long_name: 'Magma Block Cipher in MGM'
     vulnerabilities: ['GOST']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'RC4 56'
   fields:
     long_name: 'Rivest Cipher 4 with 56bit key'
     vulnerabilities: ['Rivest Cipher 4']
 # TODO: Double check this one
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'DES 192 EDE3 CBC'
   fields:
     long_name: 'Triple Data Encryption Standard with 192bit key in Cipher Block Chaining mode'
     vulnerabilities: ['Data Encryption Standard','Cipher Block Chaining']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: '-'
   fields:
     long_name: '-'
     vulnerabilities: []
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'AEGIS 128L'
   fields:
     long_name: 'AEGIS 128L'
     vulnerabilities: []
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'RC2 CBC 56'
   fields:
     long_name: 'Rivest Cipher 2 with 56bit key in Cipher Block Chaining mode'
     vulnerabilities: ['Rivest Cipher 2','Cipher Block Chaining']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'KUZNYECHIK MGM L'
   fields:
     long_name: 'Kuznyechik Block Cipher in MGM'
     vulnerabilities: ['GOST']
-- model: encryption
-  pk: 'MAGMA MGM L'
+- model: directory.EncAlgorithm
+  pk: 'MAGMA MGM S'
   fields:
     long_name: 'Magma Block Cipher in MGM'
     vulnerabilities: ['GOST']
-- model: encryption
+- model: directory.EncAlgorithm
   pk: '28147 CNT IMIT'
   fields:
     long_name: 'GOST 28147-89 with IMIT28147'
     vulnerabilities: ['GOST']
-- model: encryption
-  pk: 'ESTREAM SALSA20'
+- model: directory.EncAlgorithm
+  pk: 'SALSA20'
   fields:
     long_name: 'eSTREAM Salsa20'
     vulnerabilities: []
-- model: encryption
+- model: directory.EncAlgorithm
   pk: 'RC2 128 CBC'
   fields:
     long_name: 'Rivest Cipher 2 with 128bit key in Cipher Block Chaining mode'

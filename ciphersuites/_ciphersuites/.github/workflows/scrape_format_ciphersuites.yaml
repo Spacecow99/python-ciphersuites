@@ -1,0 +1,284 @@
+
+name: Scrape & Format Ciphersuites
+
+on: 
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * 0"
+
+jobs:
+  scrape-datasources:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      #- uses: actions/checkout@v2
+
+      - name: Setup Python 3.x environment
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      
+      - name: Clone cipherscrape github repo
+        uses: GuillaumeFalourd/clone-github-repo-action@v2
+        with:
+          owner: Spacecow99
+          repository: python-ciphersuites
+
+      - name: Install cipherscrape and dependencies
+        shell: bash
+        run: |
+          python -m pip install python-ciphersuites/
+          python -m ciphersuites --version
+      
+      - name: Scrape IANA reserved ciphersuite list
+        shell: bash
+        run: |
+          scrape-iana > iana_ciphers.yaml
+
+      - name: Scrape scanigma knowledge base
+        shell: bash
+        run: |
+          scrape-scanigma > scanigma_ciphers.yaml
+
+      - name: Scrape TestSSL.sh cipher-mapping.txt
+        shell: bash
+        run: |
+          scrape-testssl > testssl_ciphers.yaml
+
+      - name: Scrape openssl documentation and testssl cipher-mapping.txt
+        shell: bash
+        run: |
+          scrape-openssl > openssl_ciphers.yaml
+
+      - name: Scrape gnutls manual
+        shell: bash
+        run: |
+          scrape-gnutls "manual" > gnutls_manual.yaml
+
+      - name: Scrape gnutls ciphersuites.c source code
+        shell: bash
+        run: |
+          scrape-gnutls "ciphersuites.c" > gnutls_source.yaml
+
+      - name: Scrape openssl documentation and testssl cipher-mapping.txt
+        shell: bash
+        run: |
+          scrape-nss > nss_ciphers.yaml
+
+      - name: Scrape go documentation and testssl cipher-mapping.txt
+        shell: bash
+        run: |
+          scrape-go > go_ciphers.yaml
+
+      - name: Scrape openssl documentation and testssl cipher-mapping.txt
+        shell: bash
+        run: |
+          scrape-jsse > jsse_ciphers.yaml      
+
+      - name: Scrape openssl documentation and testssl cipher-mapping.txt
+        shell: bash
+        run: |
+          scrape-libressl > libressl_ciphers.yaml
+
+      - name: Scrape openssl documentation and testssl cipher-mapping.txt
+        shell: bash
+        run: |
+          scrape-boringssl > boringssl_ciphers.yaml
+
+      - name: Scrape openssl documentation and testssl cipher-mapping.txt
+        shell: bash
+        run: |
+          scrape-s2n > s2n_ciphers.yaml
+
+      - name: Scrape openssl documentation and testssl cipher-mapping.txt
+        shell: bash
+        run: |
+          scrape-mbedtls > mbedtls_ciphers.yaml
+          
+      - name: Archive raw files as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: raw-datasets
+          path: "*.yaml"
+
+  process-datasets:
+    needs: scrape-datasources
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Python 3.x environment
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      
+      - name: Clone complete_cs_instance github repo
+        uses: GuillaumeFalourd/clone-github-repo-action@v2
+        with:
+          owner: Spacecow99
+          repository: python-ciphersuites
+
+      - name: Install complete_cs_instance and dependencies
+        shell: bash
+        run: |
+          python -m pip install python-ciphersuites/
+
+      - name: Create directory structure
+        shell: bash
+        run: |
+          mkdir -p ~/raw/ ~/processed/ 
+
+      - name: Download raw artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: raw-datasets
+          path: ~/raw/
+
+      - name: Copy openssl_ciphers.yaml from ~/raw/ to ~/processed/
+        shell: bash
+        run: |
+          cp ~/raw/openssl_ciphers.yaml ~/processed/openssl.yaml
+
+      - name: Copy nss_ciphers.yaml from ~/raw/ to ~/processed/
+        shell: bash
+        run: |
+          cp ~/raw/nss_ciphers.yaml ~/processed/nss.yaml
+
+      - name: Copy go_ciphers.yaml from ~/raw/ to ~/processed/
+        shell: bash
+        run: |
+          cp ~/raw/go_ciphers.yaml ~/processed/go.yaml
+          
+      - name: Copy jsse_ciphers.yaml from ~/raw/ to ~/processed/
+        shell: bash
+        run: |
+          cp ~/raw/jsse_ciphers.yaml ~/processed/jsse.yaml
+          
+      - name: Copy libressl_ciphers.yaml from ~/raw/ to ~/processed/
+        shell: bash
+        run: |
+          cp ~/raw/libressl_ciphers.yaml ~/processed/libressl.yaml
+          
+      - name: Copy boringssl_ciphers.yaml from ~/raw/ to ~/processed/
+        shell: bash
+        run: |
+          cp ~/raw/boringssl_ciphers.yaml ~/processed/boringssl.yaml
+
+      - name: Copy s2n_ciphers.yaml from ~/raw/ to ~/processed/
+        shell: bash
+        run: |
+          cp ~/raw/s2n_ciphers.yaml ~/processed/s2n.yaml
+
+      - name: Copy mbedtls_ciphers.yaml from ~/raw/ to ~/processed/
+        shell: bash
+        run: |
+          cp ~/raw/mbedtls_ciphers.yaml ~/processed/mbedtls.yaml
+          
+      - name: Combine and deduplicate GNUTLS lists
+        shell: bash
+        run: |
+          deduplicate-ciphers ~/raw/gnutls_source.yaml ~/raw/gnutls_manual.yaml > ~/processed/gnutls.yaml
+
+      - name: Combine and deduplicate TestSSL & Scanigma lists
+        shell: bash
+        run: |
+          deduplicate-ciphers ~/raw/testssl_ciphers.yaml ~/raw/scanigma_ciphers.yaml > ~/processed/combined_3rd_party_ciphers.yaml
+
+      - name: Combine and deduplicate IANA & combined 3rd party lists
+        shell: bash
+        run: |
+          deduplicate-ciphers ~/raw/iana_ciphers.yaml ~/processed/combined_3rd_party_ciphers.yaml > ~/processed/combined_iana_3rd_party_ciphers.yaml
+
+      - name: Run combined_cs_instance on combined IANA & 3rd party list
+        shell: bash
+        run: |
+          complete-ciphersuites ~/processed/combined_iana_3rd_party_ciphers.yaml > ~/processed/ciphersuites.yaml
+
+      - name: Archive processed files as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: processed-datasets
+          path: "~/processed/*.yaml"
+
+  upload-datasets:
+    needs: process-datasets
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download processed artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: processed-datasets
+          path: ~/processed/
+
+      - name: Update repo's openssl_ciphers.yaml with artifact version
+        shell: bash
+        run: |
+          cp -f ~/processed/openssl.yaml openssl.yaml
+
+      - name: Update repo's gnutls_ciphers.yaml with artifact version
+        shell: bash
+        run: |
+          cp -f ~/processed/gnutls.yaml gnutls.yaml
+
+      - name: Update repo's ciphersuites.yaml with artifact version
+        shell: bash
+        run: |
+          cp -f ~/processed/ciphersuites.yaml ciphersuites.yaml
+
+      - name: Copy nss_ciphers.yaml from ~/raw/ to ~/processed/
+        shell: bash
+        run: |
+          cp -f ~/processed/nss.yaml nss.yaml 
+
+      - name: Copy go_ciphers.yaml from ~/raw/ to ~/processed/
+        shell: bash
+        run: |
+          cp ~/processed/go.yaml go.yaml 
+          
+      - name: Copy jsse_ciphers.yaml from ~/raw/ to ~/processed/
+        shell: bash
+        run: |
+          cp ~/processed/jsse.yaml jsse.yaml 
+          
+      - name: Copy libressl_ciphers.yaml from ~/raw/ to ~/processed/
+        shell: bash
+        run: |
+          cp ~/processed/libressl.yaml libressl.yaml
+          
+      - name: Copy boringssl_ciphers.yaml from ~/raw/ to ~/processed/
+        shell: bash
+        run: |
+          cp ~/processed/boringssl.yaml boringssl.yaml
+
+      - name: Copy s2n_ciphers.yaml from ~/raw/ to ~/processed/
+        shell: bash
+        run: |
+          cp ~/processed/s2n.yaml s2n.yaml
+
+      - name: Copy mbedtls_ciphers.yaml from ~/raw/ to ~/processed/
+        shell: bash
+        run: |
+          cp ~/processed/mbedtls.yaml mbedtls.yaml
+ 
+      - name: Push changes to repo
+        shell: bash
+        run: |
+          git config user.name Spacecow99
+          git config user.email space.cowz@ship.eu
+          git add .
+          if [[ -n "$(git status | grep modified)" ]]; then
+            git commit -m "Updated fixtures from job @ $(date)"
+            git push
+          fi
