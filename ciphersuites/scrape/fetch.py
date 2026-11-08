@@ -50,6 +50,19 @@ def raw_url(repo: str, commit: str, path: str) -> str:
     )
 
 
+def wayback_id_url(timestamp: str, url: str) -> str:
+    """Return the Wayback Machine URL of the unmodified capture of ``url``.
+
+    ``timestamp`` is the 14-digit ``YYYYMMDDhhmmss`` capture time; the
+    ``id_`` suffix asks for the original bytes without Wayback's rewriting.
+    """
+    if not re.fullmatch(r"[0-9]{14}", timestamp):
+        raise ValueError(
+            f"Wayback timestamp must be exactly 14 digits: {timestamp!r}"
+        )
+    return f"https://web.archive.org/web/{timestamp}id_/{url}"
+
+
 def sha256_digest(data: bytes) -> str:
     """Return ``sha256:<hex>`` of the raw bytes."""
     return "sha256:" + hashlib.sha256(data).hexdigest()

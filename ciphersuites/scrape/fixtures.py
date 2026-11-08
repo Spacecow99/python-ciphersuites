@@ -7,6 +7,8 @@ Usage::
     python -m ciphersuites.scrape.fixtures LIB --commit SHA --label LABEL
     python -m ciphersuites.scrape.fixtures LIB --url URL --path PATH \
 --label LABEL
+    python -m ciphersuites.scrape.fixtures LIB --url URL --path PATH \
+--label LABEL --wayback 20260101000000
 """
 
 from __future__ import annotations
@@ -28,6 +30,7 @@ from ciphersuites.scrape.fetch import (
     Fetcher,
     decode_text,
     sha256_digest,
+    wayback_id_url,
 )
 from ciphersuites.scrape.versions import ls_remote_tags
 
@@ -181,6 +184,12 @@ def _parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--url", help="unversioned snapshot URL")
     parser.add_argument("--path", help="manifest path for --url")
+    parser.add_argument(
+        "--wayback",
+        metavar="TIMESTAMP",
+        help="with --url: capture the Wayback Machine copy made at this "
+        "14-digit time and record that URL",
+    )
     parser.add_argument("--manifest", type=Path, default=MANIFEST_PATH)
     parser.add_argument("--cache", type=Path, default=CACHE_DIR)
     return parser
@@ -214,13 +223,18 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     fetcher = Fetcher(args.cache)
     try:
         adapter = get_adapter(args.library)
+        if args.wayback and not args.url:
+            raise FixtureError("--wayback is only valid together with --url")
         if args.url:
             if not (args.path and args.label):
                 raise FixtureError("--url requires --path and --label")
+            url = args.url
+            if args.wayback:
+                url = wayback_id_url(args.wayback, url)
             entry = capture_url(
                 args.library,
                 args.label,
-                args.url,
+                url,
                 args.path,
                 fetcher,
                 args.manifest,

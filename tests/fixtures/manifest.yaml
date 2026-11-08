@@ -38,6 +38,11 @@
   url: https://raw.githubusercontent.com/golang/go/2aae1000ea1d4b28923b96db28acf4e3b99d6aff/src/crypto/tls/cipher_suites.go
   path: src/crypto/tls/cipher_suites.go
   sha256: sha256:c4287a0bc707876b78f792f086944ce43b9622750b57a79f68ac1de6e468b2b1
+- library: iana
+  label: '2026-11-08'
+  url: https://www.iana.org/assignments/tls-parameters/tls-parameters-4.csv
+  path: tls-parameters-4.csv
+  sha256: sha256:949ed87e901bb77314a96ad5a7b78c0b4b38ec56d16425efa2057a2efbd1570f
 - library: jsse
   label: '11'
   url: https://raw.githubusercontent.com/openjdk/jdk/da75f3c4ad5bdf25167a3ed80e51f567ab3dbd01/src/java.base/share/classes/sun/security/ssl/CipherSuite.java
@@ -188,3 +193,53 @@
   url: https://raw.githubusercontent.com/aws/s2n-tls/e7ce83a27fa9525515a621754a7183a51c80246b/tls/s2n_tls_parameters.h
   path: tls/s2n_tls_parameters.h
   sha256: sha256:9741a3069ac4661c0f4b6e21264ac9c8a862bcae81160d739f55b08ac0283acd
+- library: scanigma
+  label: '2026-11-08'
+  url: https://scanigma.com/knowledge-base/tls/ciphersuite/old-tls-dhe-rsa-with-chacha20-poly1305-sha256
+  path: detail/old-tls-dhe-rsa-with-chacha20-poly1305-sha256.html
+  sha256: sha256:399a96c563682d7b0a23a12865ed063090800b2eadea8eee1335adf72536794c
+- library: scanigma
+  label: '2026-11-08'
+  url: https://scanigma.com/knowledge-base/tls/ciphersuite/old-tls-ecdhe-rsa-with-chacha20-poly1305-sha256
+  path: detail/old-tls-ecdhe-rsa-with-chacha20-poly1305-sha256.html
+  sha256: sha256:e4fe985262afadda0ec0f1796f60bdd064fc3feb9bd7253cd7935631863bccd6
+- library: scanigma
+  label: '2026-11-08'
+  url: https://scanigma.com/knowledge-base/tls/ciphersuite/ssl-ck-rc4-128-with-md5
+  path: detail/ssl-ck-rc4-128-with-md5.html
+  sha256: sha256:8c845d1830642a588e947ebee7f56d6717902352dc0819b60cd68a9b659af5af
+- library: scanigma
+  label: '2026-11-08'
+  url: https://scanigma.com/knowledge-base/tls/ciphersuite/tls-aes-128-gcm-sha256
+  path: detail/tls-aes-128-gcm-sha256.html
+  sha256: sha256:117707b12de308a2b96b30412e03dfc3e18dcfa62c3f2a89fa719525be43d936
+- library: scanigma
+  label: '2026-11-08'
+  url: https://scanigma.com/knowledge-base/tls/ciphersuite/tls-aes-256-gcm-sha384
+  path: detail/tls-aes-256-gcm-sha384.html
+  sha256: sha256:dfb6be038aa20a9a1484d177a847c527734d2b35903a34beb2ca30318353e6ff
+- library: scanigma
+  label: '2026-11-08'
+  url: https://scanigma.com/knowledge-base/tls/ciphersuite/tls-chacha20-poly1305-sha256
+  path: detail/tls-chacha20-poly1305-sha256.html
+  sha256: sha256:cc0f7b33af99692e1763c9e52e26979d2d5df8e4912b19ec81ee0c837298d46d
+- library: scanigma
+  label: '2026-11-08'
+  url: https://scanigma.com/knowledge-base/tls/ciphersuite/tls-ecdhe-rsa-with-aes-128-gcm-sha256
+  path: detail/tls-ecdhe-rsa-with-aes-128-gcm-sha256.html
+  sha256: sha256:524c70676c084630cd1bbee1dd01b6d290448ac52fc326974101da5d7b24f7f4
+- library: scanigma
+  label: '2026-11-08'
+  url: https://scanigma.com/knowledge-base/tls/ciphersuite/tls-rsa-with-aes-128-cbc-sha
+  path: detail/tls-rsa-with-aes-128-cbc-sha.html
+  sha256: sha256:3a2f5f3ca3c08296748f5bad3e206d6422be86dbd88730d5e268bc32d95a3209
+- library: scanigma
+  label: '2026-11-08'
+  url: https://scanigma.com/knowledge-base/tls/ciphersuite/
+  path: listing.html
+  sha256: sha256:400d67972118b34879924db1d709437a235b0e44317178a0bc28ce9b5fa7b068
+- library: testssl
+  label: '2026-11-08'
+  url: https://raw.githubusercontent.com/testssl/testssl.sh/7dc4a6f2f49294ffa56f535fbfd0b62421130be8/etc/cipher-mapping.txt
+  path: etc/cipher-mapping.txt
+  sha256: sha256:6fcd4fa8cbb669da0c7eea4af833ea3e8d52a3c465ac449efe3b43d4e5d92cb4

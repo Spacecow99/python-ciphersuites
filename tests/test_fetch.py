@@ -10,6 +10,7 @@ import requests
 import responses
 
 from ciphersuites.scrape.fetch import (
+    wayback_id_url,
     CacheMissError,
     FetchError,
     Fetcher,
@@ -298,3 +299,17 @@ def test_ssl_error_not_retried(tmp_path):
         fetcher.get(URL)
     assert not sleeps
     assert len(responses.calls) == 1
+
+
+def test_wayback_id_url():
+    assert wayback_id_url("20260101123456", "https://x.org/a.csv") == (
+        "https://web.archive.org/web/20260101123456id_/https://x.org/a.csv"
+    )
+
+
+@pytest.mark.parametrize(
+    "stamp", ["2026", "2026010112345", "202601011234567", "2026010112345a", ""]
+)
+def test_wayback_id_url_rejects_bad_timestamp(stamp):
+    with pytest.raises(ValueError, match="14 digits"):
+        wayback_id_url(stamp, "https://x.org/a.csv")

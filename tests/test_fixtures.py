@@ -427,3 +427,41 @@ def test_capture_records_adapter_source_url(manifest, tmp_path):
             Local(), Version("1", "r", None), fetcher_for(tmp_path), manifest
         )
     assert entries[0].url == "https://example.org/p"
+
+
+WAYBACK = "https://web.archive.org/web/20260101123456id_/https://x/y.csv"
+
+
+def test_main_wayback_captures_and_records_wayback_url(
+    dummy, manifest, tmp_path
+):
+    with responses.RequestsMock() as rsps:
+        rsps.add(responses.GET, WAYBACK, body=b"q")
+        code = fixtures.main(
+            ["dummy", "--url", "https://x/y.csv", "--wayback", "20260101123456"]
+            + ["--path", "y.csv", "--label", "snap"]
+            + ["--manifest", str(manifest), "--cache", str(tmp_path / "c")]
+        )
+    assert code == 0
+    assert fixtures.read_manifest(manifest)[0].url == WAYBACK
+    assert dummy.name == "dummy"
+
+
+def test_main_wayback_requires_url(dummy, manifest, capsys):
+    code = fixtures.main(
+        ["dummy", "--wayback", "20260101123456", "--commit", SHA]
+        + ["--label", "l", "--manifest", str(manifest)]
+    )
+    assert code != 0
+    assert "--wayback" in capsys.readouterr().err
+    assert dummy.name == "dummy"
+
+
+def test_main_wayback_bad_timestamp(dummy, manifest, capsys):
+    code = fixtures.main(
+        ["dummy", "--url", "https://x/y.csv", "--wayback", "2026"]
+        + ["--path", "y.csv", "--label", "l", "--manifest", str(manifest)]
+    )
+    assert code != 0
+    assert "14 digits" in capsys.readouterr().err
+    assert dummy.name == "dummy"
