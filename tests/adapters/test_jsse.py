@@ -183,6 +183,19 @@ def test_unparseable_entry_lowers_coverage():
     assert result.join_coverage == pytest.approx(1 / 3)
 
 
+def test_space_before_parenthesis_is_still_an_entry():
+    body = (
+        "    TLS_A_WITH_B (0x0001, true),\n"
+        + "    TLS_C_WITH_D\t(\n            0x0002, true),\n"
+    )
+    result = _parse(body)
+    assert sorted((r.name, r.code_point) for r in result.records) == [
+        ("TLS_A_WITH_B", ("0x00", "0x01")),
+        ("TLS_C_WITH_D", ("0x00", "0x02")),
+    ]
+    assert result.total_keys == 2
+
+
 def test_conflicting_duplicates_raise():
     body = _entry("TLS_A_WITH_B", "0x0001, true") + _entry(
         "TLS_A_WITH_B", "0x0002, true"

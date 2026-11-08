@@ -21,7 +21,7 @@ _FILE_8 = "jdk/src/share/classes/sun/security/ssl/CipherSuite.java"
 _FILE = "src/java.base/share/classes/sun/security/ssl/CipherSuite.java"
 # Strings are matched first so that a ``//`` inside one is not a comment.
 _SKIP = re.compile(r'"(?:[^"\\\n]|\\.)*"|//[^\n]*|/\*.*?\*/', re.DOTALL)
-_ENTRY = re.compile(r"^[ \t]+(?P<name>(?:TLS|SSL)_\w+)\(", re.MULTILINE)
+_ENTRY = re.compile(r"^[ \t]+(?P<name>(?:TLS|SSL)_\w+)[ \t]*\(", re.MULTILINE)
 # The code point follows the opening parenthesis, either directly or after
 # the suite name string used by the "names known" entries.
 _CODE = re.compile(r'\s*(?:"[^"\n]*"\s*,\s*)?0x(?P<hex>[0-9A-Fa-f]{4})\b')
