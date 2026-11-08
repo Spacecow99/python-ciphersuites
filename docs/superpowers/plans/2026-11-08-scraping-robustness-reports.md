@@ -1,6 +1,6 @@
 # Task reports — plan: docs/superpowers/plans/2026-11-08-scraping-robustness.md
 
-Implementer reports for Tasks 1-13, concatenated from the git-ignored SDD workspace.
+Implementer reports for Tasks 1-14, concatenated from the git-ignored SDD workspace.
 
 ---
 
@@ -349,3 +349,50 @@ Row counting independent of key capture (unparsed rows -> `<unparsed row at line
 
 ## Concerns
 None significant. Comment blanking replaces `//` comments with a space (not empty) so tokens never fuse.
+
+---
+
+<!-- task-14-report.md -->
+
+# Task 14 report: Schannel curated adapter
+
+Status: implemented. Commit: see `git log` ("Add hand-curated Schannel adapter").
+
+## Pages transcribed (oldest to newest, all under https://learn.microsoft.com/en-us/windows/win32/secauthn/)
+Index: cipher-suites-in-schannel (lists 18 pages; all transcribed).
+schannel-cipher-suites-in-windows-vista (16 suites); tls-cipher-suites-in-windows-7 (41); -8 (39); -8-1 (41); -10--version-1507 (43); -10-v1511 (43); -10-v1607 (45); -10-v1703, v1709, v1803, v1809, v1903, v20h2 (45 each); -windows-server-2022 (48); -windows-11 (48); -windows-11-v22h2 (48); -windows-10-v22h2 (45); -windows-server-2025 (48).
+Default, "supported but not enabled by default" and PSK tables are merged; noted in the YAML header. Brief assertion (TLS_AES_128_GCM_SHA256 in newest) holds.
+
+## Name special-cases
+- Curve suffixes `_P256/_P384/_P521` on Vista, 7, 8, 8.1 pages stripped and deduplicated (28 distinct suffixed names).
+- Absent from iana.yaml, standard values used (match v1 schannel.yaml): TLS_RSA_EXPORT1024_WITH_DES_CBC_SHA 0x0062, TLS_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA 0x0063, TLS_RSA_EXPORT1024_WITH_RC4_56_SHA 0x0064, SSL_CK_RC4_128_WITH_MD5 01 00 80, SSL_CK_RC4_128_EXPORT40_WITH_MD5 02 00 80, SSL_CK_DES_64_CBC_WITH_MD5 06 00 40, SSL_CK_DES_192_EDE3_CBC_WITH_MD5 07 00 C0. Marked "(not in IANA data)" in the YAML.
+- Some cells carry trailing text after the name (e.g. "Only used when application explicitly requests"): only the first token is taken.
+- Server 2022 page says three suites are disabled by default from 23H2; still supported, kept.
+
+## Curated vs v1
+No v1 code point is missing and no curated code point is absent from v1. v1-only names: curve-suffixed ECDHE names and SSL_CK_RC4_128_EXPORT40_MD5 (same code points as listed names). So no `# not in any Microsoft Learn page` entries; the test accepts such comments if ever needed. Ordering choice: Server 2022, Windows 11, Windows 11 22H2, Windows 10 22H2, Server 2025.
+
+## Design notes
+parse() receives no version, so fetch_files returns the packaged YAML cut down to the requested version's single entry (file name schannel_curated.yaml); parse validates and requires exactly one. load_curated validates labels, unique names, code points, one code point per name across versions. source_url returns the Learn URL (version.ref).
+
+## TDD
+RED: tests/adapters/test_schannel.py -> ModuleNotFoundError for ciphersuites.scrape.adapters.schannel. GREEN: 322 passed (full suite).
+
+## Checks
+- pytest -q: 322 passed
+- black --check ciphersuites/scrape tests: 42 files unchanged
+- pylint ciphersuites/scrape tests: 10.00/10, no messages
+- bandit -q -r ciphersuites/scrape: no findings
+- `flit build --format wheel` (as CI): wheel contains ciphersuites/scrape/data/schannel_curated.yaml and data/__init__.py.
+
+## Files
+ciphersuites/scrape/data/__init__.py, ciphersuites/scrape/data/schannel_curated.yaml, ciphersuites/scrape/adapters/schannel.py, ciphersuites/scrape/adapters/__init__.py (import), tests/adapters/test_schannel.py.
+
+## Concerns
+Pages were not re-verified for later edits; transcription date 2026-11-08. HTML kept only in scratchpad; no golden test (curated data).
+
+## Fix round 1
+- Vista: the "supported, not present by default" suites are a bullet list (`<ul><li>`), which the first extractor skipped. Added the 8 missing: TLS_RSA_EXPORT_WITH_RC4_40_MD5 0x0003, TLS_RSA_EXPORT1024_WITH_RC4_56_SHA 0x0064, TLS_RSA_EXPORT1024_WITH_DES_CBC_SHA 0x0062, SSL_CK_RC4_128_EXPORT40_WITH_MD5 (page spells it ..._EXPORT40_MD5; noted in YAML) 02 00 80, SSL_CK_DES_64_CBC_WITH_MD5 06 00 40, TLS_RSA_WITH_DES_CBC_SHA 0x0009, TLS_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA 0x0063, TLS_DHE_DSS_WITH_DES_CBC_SHA 0x0012. Vista comment corrected. The reviewer's list matched the live page exactly.
+- Re-fetched all 18 pages (byte-identical to the saved copies); extractor now reads table first cells and list items, and cross-checks every `(TLS|SSL)_...` token in the page text against what was captured (no uncaptured tokens on any page). Page vs YAML unique-suite counts (curve suffixes collapsed), all match: Vista 24/24, 7 41/41, 8 39/39, 8.1 41/41, 10-1507 43/43, 1511 43/43, 1607..22H2 (1607,1703,1709,1803,1809,1903,20H2) 45/45 each, Server 2022 48/48, 11 48/48, 11 22H2 48/48, 10 22H2 45/45, Server 2025 48/48. Only Vista changed.
+- Tests added: per-version expected count table, Vista regression (TLS_RSA_WITH_DES_CBC_SHA, SSL_CK_DES_64_CBC_WITH_MD5, EXPORT40), version_order ValueError for uncurated label (code fixed).
+- Results: pytest 325 passed; black --check: 42 files unchanged; pylint ciphersuites/scrape tests: 10.00/10, no messages; bandit -q -r ciphersuites/scrape: no findings.

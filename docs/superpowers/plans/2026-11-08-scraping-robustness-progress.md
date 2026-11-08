@@ -93,7 +93,7 @@ Task 6: minor (deferred): registration test uses `python -I` (fails spuriously i
 Task 6: minor (deferred, check in final review): source_url raises NotImplementedError where capture used to raise FixtureError; fixtures.main may traceback instead of clean error for repo/commit-less adapters.
 Task 6: complete (commits b58cc99..deaad97, review clean)
 
-## RESUME POINT (after user-requested compaction)
+## (superseded) resume point after Task 6 compaction
 Next: Task 7 (OpenSSL adapter + shared CK/TXT parser). BASE for Task 7 = deaad97.
 Interfaces now available for adapters: core (Record, Version, ParseResult — construct with keywords), helpers (extract_defines, resolve_aliases, split_hex_word), fetch (Fetcher, raw_url requires 40-hex lowercase SHA, Fetcher.evict), versions (TagVersion, ls_remote_tags, ls_remote_head, semver_tag, line_key, latest_per_line), adapters/base (Adapter with source_url/fetch_files/version_order, register, get_adapter, ADAPTERS; new adapter modules MUST be imported in adapters/__init__.py after base), fixtures CLI (tag | --commit SHA --label | --url URL --path PATH --label), tests/conftest.py (upstream, update_goldens), tests/golden.py (assert_matches_golden).
 Controller always: verify tests + black + pylint (zero messages) + bandit + Python 3.9 run (uv run --no-project --python 3.9 --with-editable . --with pytest --with responses -- python -m pytest -q; rm uv.lock) because implementers often omit pasted evidence.
@@ -141,7 +141,7 @@ Task 12: minor (deferred, final review — cheap, do them): mbedtls _ENTRY denom
 Task 12: complete (commits dde0e6b..dde983b, review clean)
 USER REQUEST: pause after Task 12 (session limit). Awaiting answer on committing ledger + combined reports to docs/superpowers/plans/.
 
-## RESUME POINT (after Task 12 pause)
+## (superseded) resume point after Task 12 pause
 Next: Task 13 (GnuTLS). BASE = dde983b. Then 14 Schannel, 15 reference sources (web.archive.org allowlisted but TLS handshake gets no answer from this egress — retry; fallback ruling: direct-URL capture with sha256), 16-23, final review (most capable model).
 Carry-forward facts: fixtures CLI forms tag | --commit SHA --label | --url URL --path PATH --label | --repo URL; adapters mirror nss.py/jsse.py/s2n.py pattern (coverage denominator over entry-looking lines, numeric conflict ValueError, dangling -> unmatched).
 USER REQUEST: do Task 13, then update the committed ledger copy and pause again.
@@ -153,6 +153,22 @@ Task 13: minor (deferred, final review): no synthetic gnutls_X_Y_Z vs X.Y.Z same
 Task 13: complete (commits 72c7f4d..9b8774e, review clean)
 USER REQUEST: pause after Task 13 (committed ledger updated).
 
-## RESUME POINT (after Task 13 pause)
+## (superseded) resume point after Task 13 pause
 Next: Task 14 (Schannel curated). BASE = HEAD after ledger commit (adapter work ends at 9b8774e). Then 15 reference sources (web.archive.org allowlisted but TLS handshake got no answer from this egress — retry; fallback ruling: direct-URL capture with sha256), 16-23, final review (most capable model).
 Carry-forward facts: fixtures CLI forms tag | --commit SHA --label | --url URL --path PATH --label | --repo URL; adapters mirror nss.py/jsse.py/s2n.py/gnutls.py pattern (coverage denominator over entry-looking lines, numeric conflict ValueError, dangling -> unmatched). Restore this ledger into .superpowers/sdd/2026-11-08-scraping-robustness/progress.md in a fresh session (the workspace dir is git-ignored).
+USER REQUEST: do Task 14, then update committed ledger and pause.
+Task 14: implementer a633964ddf6facc60 (sonnet), base 44a72c3. Dispatch: code points from iana.yaml (MS pages give names only); curated YAML must ship in wheel; source_url override required.
+Task 14: first head aaf2fa3 (DONE). Controller verified: 322 passed (3.13+3.9), lint clean. 18 MS Learn pages, Vista..Server 2025; curated code points == v1 code points.
+Task 14: Ruling: fetch_files returns the curated YAML sliced to the requested version's entry (parse() takes no version) — keeps per-version input hashes stable for the identical-input gate — if wrong, parse must receive the full file plus a label.
+Task 14: Ruling: chronological order for 2021-2024 pages (Server 2022, Win 11, Win 11 22H2, Win 10 22H2, Server 2025) — by release date — if wrong, only version_order display changes.
+Task 14: review Needs fixes, 1 Important (Vista entry omits 8 not-enabled-by-default suites; misleading comment). Reviewer verified other 17 pages by name set, all IANA code points, 7 non-IANA codes, deterministic slicing, wheel contents.
+Task 14: fix round 1/5 dispatched to a633964ddf6facc60 (Vista suites; re-verify all 18 pages table by table; per-version count test; version_order ValueError).
+Task 14: fix round 1/5 (4 addressed, 0 open — Vista 24 suites from bullet list; all 18 pages re-verified incl. bullet lists; EXPECTED_COUNTS per version + Vista regression test; version_order ValueError; commits aaf2fa3..1cf6621). Re-reviewer independently confirmed Vista 24/24 and Windows 8 39/39.
+Task 14: minor (deferred, final review): Vista regression test asserts 3 of 8 added suites (count test catches drops but not swaps).
+Task 14: complete (commits 44a72c3..1cf6621, review clean)
+USER REQUEST: pause after Task 14 (committed ledger updated).
+
+## RESUME POINT (after Task 14 pause) — CURRENT
+Next: Task 15 (reference sources: IANA CSV, Scanigma, testssl). BASE = HEAD after this ledger commit (adapter work ends at 1cf6621). web.archive.org is allowlisted but its TLS handshake got no answer from this egress — retry first; fallback ruling to make if still down: capture IANA/Scanigma by direct URL with sha256 recorded (fixtures break when the page changes). Then 16-23, final review (most capable model).
+Stop points requiring the user: Task 22 step 3 (push to data repo), Task 23 step 1 (release tag v0.1.0) and step 4 (push to data repo).
+Carry-forward facts: fixtures CLI forms tag | --commit SHA --label | --url URL --path PATH --label | --repo URL; adapters mirror nss.py/jsse.py/s2n.py/gnutls.py pattern (coverage denominator over entry-looking lines, numeric conflict ValueError, dangling -> unmatched); curated Schannel slices YAML per version in fetch_files. Restore this ledger into .superpowers/sdd/2026-11-08-scraping-robustness/progress.md in a fresh session (the workspace dir is git-ignored).
