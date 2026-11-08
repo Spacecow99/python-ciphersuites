@@ -678,7 +678,7 @@ def test_lazy_load_missing_data(monkeypatch, tmp_path):  # import succeeds; firs
 
 ### Task 26: Full documentation suite for three audiences
 
-**Status:** OPEN -- not executed in the Tasks 1-23 run.
+**Status:** IN PROGRESS, PAUSED after dispatch D3 (2026-11-08). Done: D1 inventory, Sphinx config, CI docs job, example harness; D2 shared pages and data guide; D3 user guide. Next: D4 developer guide, then D5 accuracy review, D6 fixes, README and final verify. Resume from 2026-11-08-scraping-robustness-task26-handoff.md.
 
 **Goal:** Write a complete Sphinx (MyST Markdown) documentation set in `docs/source/`. It serves three separate audiences. Each reader is a human with no prior knowledge of the package, its layout or its purpose, and may be a beginner developer.
 
@@ -734,14 +734,14 @@ docs/source/
 ```
 
 **Steps:**
-- [ ] **Step 1: Research inventory.** Read the spec, the plan, the ledger rulings and the code. Write an inventory to the SDD workspace: every public function and class, CLI flag, exit code, YAML key, finding code and file in the data repo. For each, record its source (file:line) and which page will document it. This inventory is the accuracy checklist for Step 6.
-- [ ] **Step 2: Fix the Sphinx configuration.** In `docs/source/conf.py`:
+- [x] **Step 1: Research inventory.** Read the spec, the plan, the ledger rulings and the code. Write an inventory to the SDD workspace: every public function and class, CLI flag, exit code, YAML key, finding code and file in the data repo. For each, record its source (file:line) and which page will document it. This inventory is the accuracy checklist for Step 6.
+- [x] **Step 2: Fix the Sphinx configuration.** In `docs/source/conf.py`:
   - Take `release` from `ciphersuites.__version__`; it currently says `0.0.1`.
   - Fix the read-the-docs check: `os.environ.get("READTHEDOCS") == True` is always false, because the environment value is a string.
   - Create or remove the missing `_static` path.
   - Enable `sphinx.ext.autodoc`/`autosummary` for the API pages, or document the API by hand. Choose one and record the choice.
   - Add a `docs` build to CI, using `sphinx-build -W --keep-going`, so warnings fail the build.
-- [ ] **Step 3: Write the shared pages.** Write `index.md`, `glossary.md` and `concepts/` first; the three guides link to them.
+- [x] **Step 3: Write the shared pages.** Write `index.md`, `glossary.md` and `concepts/` first; the three guides link to them.
 - [ ] **Step 4: Write the three guides.** Each guide is complete without the other two, apart from links to the shared pages.
   - **Data guide:** document every YAML key with its type, meaning and an example taken from the real data at the pinned submodule commit. Explain `status: stale`, `accepted`, version label formats per library, 3-byte SSLv2 code points, and SCSV records.
   - **User guide:** cover every public function in `ciphersuites.catalog`, `AmbiguousNameError` and narrowing, `DataNotFoundError` and the submodule hint, and every `python -m ciphersuites` flag, including `-V`.
