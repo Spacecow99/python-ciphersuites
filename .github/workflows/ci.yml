@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          submodules: true
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: "3.12"
+      - name: Install lint tools
+        run: pip install black pylint bandit .
+      - name: Black
+        run: |
+          paths=""
+          for p in ciphersuites/scrape ciphersuites/catalog.py ciphersuites/parse_name.py tests; do
+            if test -e "$p"; then paths="$paths $p"; fi
+          done
+          black --check $paths
+      - name: Pylint
+        run: |
+          paths=""
+          for p in ciphersuites/scrape ciphersuites/catalog.py ciphersuites/parse_name.py tests; do
+            if test -e "$p"; then paths="$paths $p"; fi
+          done
+          pylint $paths
+      - name: Bandit
+        run: |
+          paths=""
+          for p in ciphersuites/scrape ciphersuites/catalog.py; do
+            if test -e "$p"; then paths="$paths $p"; fi
+          done
+          if test -n "$paths"; then bandit -r $paths; fi
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          submodules: true
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install
+        run: pip install .[test]
+      - name: Pytest
+        run: pytest
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          submodules: true
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: "3.12"
+      - name: Build
+        run: pip install flit && flit build
+      - name: Check wheel contains data
+        run: unzip -l dist/*.whl | grep -q "ciphersuites/_ciphersuites/ciphersuites.yaml"
