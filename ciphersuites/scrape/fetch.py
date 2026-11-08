@@ -7,6 +7,7 @@ import os
 import re
 import tempfile
 import time
+from urllib.parse import quote
 from pathlib import Path
 from typing import Callable, Optional, Tuple
 
@@ -15,6 +16,7 @@ import requests
 RETRY_DELAYS = (2, 4, 8, 16)
 TIMEOUT = 30.0
 
+_SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 _GITHUB_RE = re.compile(
     r"^https://github\.com/(?P<owner>[^/\s]+)/(?P<name>[^/\s]+?)(?:\.git)?/?$"
 )
@@ -39,9 +41,12 @@ def raw_url(repo: str, commit: str, path: str) -> str:
         raise ValueError(
             f"not a https://github.com/<owner>/<name> URL: {repo!r}"
         )
+    if not _SHA_RE.match(commit):
+        raise ValueError(f"commit must be a full lowercase SHA-1: {commit!r}")
+    quoted = quote(path.lstrip("/"), safe="/")
     return (
         f"https://raw.githubusercontent.com/{match.group('owner')}/"
-        f"{match.group('name')}/{commit}/{path.lstrip('/')}"
+        f"{match.group('name')}/{commit}/{quoted}"
     )
 
 
@@ -125,9 +130,19 @@ class Fetcher:
                 self._sleep(RETRY_DELAYS[attempt - 1])
             try:
                 response = self.session.get(url, timeout=self.timeout)
-            except (requests.ConnectionError, requests.Timeout) as exc:
+            except requests.exceptions.SSLError as exc:
+                raise FetchError(f"TLS failure for {url}: {exc}") from exc
+            except (
+                requests.ConnectionError,
+                requests.Timeout,
+                requests.exceptions.ChunkedEncodingError,
+            ) as exc:
                 last = f"{type(exc).__name__}: {exc}"
                 continue
+            except requests.RequestException as exc:
+                raise FetchError(
+                    f"request failed for {url}: {type(exc).__name__}: {exc}"
+                ) from exc
             status = response.status_code
             if 200 <= status < 300:
                 return response.content

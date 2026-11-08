@@ -19,7 +19,8 @@ from ciphersuites.scrape.fetch import (
     sha256_digest,
 )
 
-URL = "https://raw.githubusercontent.com/o/r/abc/file.c"
+SHA = "0123456789abcdef0123456789abcdef01234567"
+URL = f"https://raw.githubusercontent.com/o/r/{SHA}/file.c"
 
 
 def make(tmp_path, **kwargs):
@@ -101,7 +102,7 @@ def test_cache_hit_skips_network(tmp_path):
     """A second get with the same key makes no request."""
     responses.add(responses.GET, URL, body=b"data")
     fetcher, _ = make(tmp_path)
-    key = ("o/r", "abc", "file.c")
+    key = ("o/r", SHA, "file.c")
     assert fetcher.get(URL, key) == b"data"
     assert fetcher.get(URL, key) == b"data"
     assert len(responses.calls) == 1
@@ -214,15 +215,15 @@ def test_timeout_passed_to_session(tmp_path):
 )
 def test_raw_url_accepts_forms(repo):
     """Trailing slash and .git are tolerated."""
-    assert raw_url(repo, "abc", "d/f.c") == (
-        "https://raw.githubusercontent.com/o/r/abc/d/f.c"
+    assert raw_url(repo, SHA, "d/f.c") == (
+        f"https://raw.githubusercontent.com/o/r/{SHA}/d/f.c"
     )
 
 
 def test_raw_url_strips_leading_slash():
     """A leading slash on path does not double up."""
-    assert raw_url("https://github.com/o/r", "abc", "/d/f.c").endswith(
-        "/abc/d/f.c"
+    assert raw_url("https://github.com/o/r", SHA, "/d/f.c").endswith(
+        f"/{SHA}/d/f.c"
     )
 
 
@@ -240,4 +241,60 @@ def test_raw_url_strips_leading_slash():
 def test_raw_url_rejects(repo):
     """Non-GitHub or malformed repos raise ValueError."""
     with pytest.raises(ValueError):
-        raw_url(repo, "abc", "f")
+        raw_url(repo, SHA, "f")
+
+
+@pytest.mark.parametrize("commit", ["v1.2.3", "main", "0123abc", SHA.upper()])
+def test_raw_url_requires_full_sha(commit):
+    """Tags, branches, short and uppercase SHAs are rejected."""
+    with pytest.raises(ValueError):
+        raw_url("https://github.com/o/r", commit, "f")
+
+
+def test_raw_url_quotes_segments():
+    """Odd characters are percent-encoded; separators are kept."""
+    url = raw_url("https://github.com/o/r", SHA, "a b/c?d#e/f.c")
+    assert url.endswith(f"/{SHA}/a%20b/c%3Fd%23e/f.c")
+
+
+@responses.activate
+def test_chunked_encoding_error_retried(tmp_path):
+    """A mid-body drop is retried."""
+    responses.add(
+        responses.GET, URL, body=requests.exceptions.ChunkedEncodingError("x")
+    )
+    responses.add(responses.GET, URL, body=b"ok")
+    fetcher, sleeps = make(tmp_path)
+    assert fetcher.get(URL) == b"ok"
+    assert sleeps == [2]
+
+
+@pytest.mark.parametrize(
+    "exc",
+    [
+        requests.exceptions.TooManyRedirects("loop"),
+        requests.exceptions.InvalidURL("bad"),
+        requests.exceptions.ContentDecodingError("gzip"),
+    ],
+)
+@responses.activate
+def test_permanent_request_errors_wrapped(tmp_path, exc):
+    """Other RequestExceptions become FetchError, unretried and chained."""
+    responses.add(responses.GET, URL, body=exc)
+    fetcher, sleeps = make(tmp_path)
+    with pytest.raises(FetchError, match="file.c") as info:
+        fetcher.get(URL)
+    assert info.value.__cause__ is exc
+    assert not sleeps
+    assert len(responses.calls) == 1
+
+
+@responses.activate
+def test_ssl_error_not_retried(tmp_path):
+    """Certificate failures are deterministic: no retry."""
+    responses.add(responses.GET, URL, body=requests.exceptions.SSLError("cert"))
+    fetcher, sleeps = make(tmp_path)
+    with pytest.raises(FetchError, match="TLS"):
+        fetcher.get(URL)
+    assert not sleeps
+    assert len(responses.calls) == 1
