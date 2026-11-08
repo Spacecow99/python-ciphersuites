@@ -192,11 +192,20 @@ def _working_directory(path: Path) -> Iterator[None]:
 
 @lru_cache(maxsize=None)
 def _shim_dir() -> str:
-    """A directory whose ``python``/``python3`` run this interpreter."""
+    """A directory whose ``python``/``python3`` run this interpreter.
+
+    The shims are scripts that exec ``sys.executable`` by its path. A
+    symlink would not do: a symlink outside a virtual environment's
+    ``bin`` directory starts the base interpreter without the
+    environment's packages.
+    """
     shim = tempfile.mkdtemp(prefix="docs-examples-")
     atexit.register(shutil.rmtree, shim, True)
     for name in ("python", "python3"):
-        os.symlink(sys.executable, os.path.join(shim, name))
+        path = os.path.join(shim, name)
+        with open(path, "w", encoding="utf-8") as handle:
+            handle.write(f'#!/bin/sh\nexec "{sys.executable}" "$@"\n')
+        os.chmod(path, 0o755)  # nosec B103
     return shim
 
 
