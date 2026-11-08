@@ -428,7 +428,8 @@ def test_join_coverage_meets_threshold(upstream): # each fixture >= 0.90
 - IANA: `ref="https://www.iana.org/assignments/tls-parameters/tls-parameters-4.csv"`, `commit=None`; `fetch_files` fetches the URL without cache key in live runs. Parse keeps `Reserved`/`Unassigned` excluded and range expansion as today; `attributes[cp] = {"dtls_ok": <"Y"/"N" -> bool>, "recommended": <"Y"|"N"|"D">}`.
 - testssl: `repo="https://github.com/testssl/testssl.sh"`, `commit=ls_remote_head(repo)`, `files_for -> ["etc/cipher-mapping.txt"]`; parse uses the existing regex and the IANA-style `Description` column as the name.
 - Scanigma: `ref="https://scanigma.com/knowledge-base/"`; HTML parsed with BeautifulSoup as in the current scraper.
-- Fixtures: IANA and Scanigma via Wayback `id_` URLs (needs `web.archive.org`, see Task 6); testssl at a pinned commit.
+- Fixtures: IANA and Scanigma captured from the LIVE URLs with `--url` and pinned by sha256 (user directive; `web.archive.org` unreachable); testssl at a pinned commit.
+- Wayback scaffolding (user directive): add `wayback_id_url(timestamp: str, url: str) -> str` returning `https://web.archive.org/web/<timestamp>id_/<url>` (timestamp validated as 14 digits), and a fixtures-CLI option `--wayback TIMESTAMP` usable with `--url` that captures through that URL while recording the Wayback URL in the manifest. Unit tests without network access. Unused by default; Task 24 adopts it.
 
 - [ ] Tests: IANA fixture yields `Record("TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256", ("0xC0","0x2F"))` with `attributes == {"dtls_ok": True, "recommended": "Y"}`; no IANA record name starts with `Reserved` or `Unassigned`; testssl fixture contains both `("0xCC","0xA8")` and `("0xCC","0x13")` with distinct names; Scanigma fixture returns > 0 records.
 - [ ] Follow the adapter step pattern. Commit.
@@ -597,6 +598,22 @@ def test_lazy_load_missing_data(monkeypatch, tmp_path):  # import succeeds; firs
 - [ ] **Step 3: Verify:** `python -c "import yaml,sys; yaml.safe_load(open(sys.argv[1]))" .github/workflows/scrape_format_ciphersuites.yaml`; if `actionlint` is installable, run it. Expected: no errors.
 - [ ] **Step 4: Commit** in the data repo; **ask the user before pushing**.
 
+### Task 24: Migrate IANA/Scanigma reference sources to web.archive.org snapshots
+
+**Status:** BLOCKED -- the container cannot reach `web.archive.org` (TLS handshake gets no answer through the egress proxy even with the host allowlisted). Do not execute until connectivity is established; it is not part of the Tasks 1-23 run.
+
+**Files:** Modify `tests/fixtures/manifest.yaml`, `tests/fixtures/expected/{iana,scanigma}/*.yaml`, `tests/adapters/test_reference.py`; possibly `ciphersuites/scrape/adapters/reference/{iana,scanigma}.py`.
+
+**Interfaces:**
+- Consumes: the Wayback scaffolding from Task 15 (`wayback_id_url(timestamp, url)` / snapshot capture support in the fixtures CLI), currently unused.
+- Produces: IANA and Scanigma fixtures pinned to immutable Wayback `id_` snapshot URLs instead of the live sites.
+
+- [ ] **Step 1:** Confirm connectivity: `curl -sS -o /dev/null -w '%{http_code}' https://web.archive.org/` returns 200 from the container.
+- [ ] **Step 2:** Choose a snapshot timestamp per source (closest available to the live capture used in Task 15) and capture each with the fixtures CLI through the Wayback path; record sha256 in the manifest, replacing the live-URL entries.
+- [ ] **Step 3:** Regenerate the IANA and Scanigma goldens (`--update-goldens`) and diff them against the Task 15 live goldens; explain every difference in the commit message.
+- [ ] **Step 4:** Run the full verification (pytest 3.13 + 3.9, black, pylint, bandit). Expected: all pass.
+- [ ] **Step 5:** Commit; remove the "live reference fixtures" deviation note below.
+
 ---
 
 ## Spec coverage map
@@ -621,6 +638,6 @@ def test_lazy_load_missing_data(monkeypatch, tmp_path):  # import succeeds; firs
 - The run loop lives in `scrape/runner.py`, not `core.py`, to keep files focused.
 - The §8.4 one-off parity test is implemented as the `V1_PARITY` gate, active whenever the baseline is schema v1; it runs automatically on the first `--baseline-ref b0e59c6` scrape and differences are resolved with `--accept` plus recorded reasons.
 - Gate "same commit -> identical output" is evaluated on identical input file hashes, which also covers reference sources that have no commit.
-- Unversioned reference fixtures are pinned through Wayback Machine `id_` snapshots (requires allowing `web.archive.org`).
+- Unversioned reference fixtures (IANA CSV, Scanigma) are captured from the LIVE sites and pinned by sha256 (user directive, 2026-11-08: `web.archive.org` is unreachable from the container). Wayback `id_` scaffolding exists but is unused; Task 24 migrates to it once connectivity exists. Cost: these fixtures fail when either site edits its page.
 - Library docs carry a top-level `kind` field (`library` | `reference`) so the API can list only implementations.
 - Minimum lines chosen here (spec only fixed OpenSSL): Go 1.12, NSS 3.20, JDK 8 + >= 11, Mbed TLS 2.16, GnuTLS 3.3, s2n 1.0.
