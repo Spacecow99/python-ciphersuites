@@ -108,6 +108,56 @@ def test_version_order_is_file_order_not_line_key():
     ]
 
 
+EXPECTED_COUNTS = {
+    "Windows Vista": 24,
+    "Windows 7": 41,
+    "Windows 8": 39,
+    "Windows 8.1": 41,
+    "Windows 10 1507": 43,
+    "Windows 10 1511": 43,
+    "Windows 10 1607": 45,
+    "Windows 10 1703": 45,
+    "Windows 10 1709": 45,
+    "Windows 10 1803": 45,
+    "Windows 10 1809": 45,
+    "Windows 10 1903": 45,
+    "Windows 10 20H2": 45,
+    "Windows Server 2022": 48,
+    "Windows 11": 48,
+    "Windows 11 22H2": 48,
+    "Windows 10 22H2": 45,
+    "Windows Server 2025": 48,
+}
+
+
+def test_suite_count_per_version():
+    """Counts from the Microsoft Learn pages (all tables and lists)."""
+    counts = {
+        v.label: len(_parse_version(v).records)
+        for v in Schannel().discover_versions()
+    }
+    assert counts == EXPECTED_COUNTS
+    assert list(counts) == list(EXPECTED_COUNTS)
+
+
+def test_vista_includes_suites_from_not_present_by_default_list():
+    records = _parse_version(Schannel().discover_versions()[0]).records
+    assert Record("TLS_RSA_WITH_DES_CBC_SHA", ("0x00", "0x09")) in records
+    assert (
+        Record("SSL_CK_DES_64_CBC_WITH_MD5", ("0x06", "0x00", "0x40"))
+        in records
+    )
+    assert (
+        Record("SSL_CK_RC4_128_EXPORT40_WITH_MD5", ("0x02", "0x00", "0x80"))
+        in records
+    )
+
+
+def test_version_order_unknown_label_is_value_error():
+    with pytest.raises(ValueError, match="Windows 95"):
+        Schannel().version_order(["Windows 7", "Windows 95"])
+
+
 def test_files_and_source_url():
     adapter = Schannel()
     version = adapter.discover_versions()[3]

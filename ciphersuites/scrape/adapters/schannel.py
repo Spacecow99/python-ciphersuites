@@ -114,4 +114,7 @@ class Schannel(Adapter):
 
     def version_order(self, labels: List[str]) -> List[str]:
         position = {e["label"]: i for i, e in enumerate(_packaged())}
+        unknown = [label for label in labels if label not in position]
+        if unknown:
+            raise ValueError(f"no curated Schannel entry for {unknown[0]!r}")
         return sorted(labels, key=position.__getitem__)

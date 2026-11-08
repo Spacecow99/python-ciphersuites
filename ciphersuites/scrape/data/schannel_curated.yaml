@@ -7,7 +7,8 @@
 # One entry per "TLS Cipher Suites in Windows ..." page, oldest first; that
 # order is the version order. Each entry lists every suite named on the page:
 # the enabled-by-default table, the "supported but not enabled by default"
-# table and (Windows 10 1607 onwards) the PSK table are all merged, because
+# table (a bullet list on the Windows Vista page) and (Windows 10 1607
+# onwards) the PSK table are all merged, because
 # every one of them is a suite Schannel supports.
 #
 # Microsoft's pages give suite names only. Code points come from the IANA
@@ -29,7 +30,10 @@
 # "# not in any Microsoft Learn page" entries.
 versions:
   - label: Windows Vista
-    # Page lists only suites that are supported but not present by default.
+    # Default table plus the list of suites supported but not present by
+    # default. The page spells one of the latter
+    # SSL_CK_RC4_128_EXPORT40_MD5; it is listed here as
+    # SSL_CK_RC4_128_EXPORT40_WITH_MD5 (same code point).
     source: https://learn.microsoft.com/en-us/windows/win32/secauthn/schannel-cipher-suites-in-windows-vista
     suites:
       - {name: TLS_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x2F']}
@@ -48,6 +52,14 @@ versions:
       - {name: SSL_CK_DES_192_EDE3_CBC_WITH_MD5, code_point: ['0x07', '0x00', '0xC0']}  # (not in IANA data)
       - {name: TLS_RSA_WITH_NULL_MD5, code_point: ['0x00', '0x01']}
       - {name: TLS_RSA_WITH_NULL_SHA, code_point: ['0x00', '0x02']}
+      - {name: TLS_RSA_EXPORT_WITH_RC4_40_MD5, code_point: ['0x00', '0x03']}
+      - {name: TLS_RSA_EXPORT1024_WITH_RC4_56_SHA, code_point: ['0x00', '0x64']}  # (not in IANA data)
+      - {name: TLS_RSA_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x62']}  # (not in IANA data)
+      - {name: SSL_CK_RC4_128_EXPORT40_WITH_MD5, code_point: ['0x02', '0x00', '0x80']}  # (not in IANA data)
+      - {name: SSL_CK_DES_64_CBC_WITH_MD5, code_point: ['0x06', '0x00', '0x40']}  # (not in IANA data)
+      - {name: TLS_RSA_WITH_DES_CBC_SHA, code_point: ['0x00', '0x09']}
+      - {name: TLS_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x63']}  # (not in IANA data)
+      - {name: TLS_DHE_DSS_WITH_DES_CBC_SHA, code_point: ['0x00', '0x12']}
   - label: Windows 7
     # Also covers Windows Server 2008 R2.
     source: https://learn.microsoft.com/en-us/windows/win32/secauthn/tls-cipher-suites-in-windows-7
@@ -613,7 +625,9 @@ versions:
       - {name: TLS_PSK_WITH_NULL_SHA384, code_point: ['0x00', '0xB1']}
       - {name: TLS_PSK_WITH_NULL_SHA256, code_point: ['0x00', '0xB0']}
   - label: Windows Server 2022
-    # TLS_RSA_WITH_3DES_EDE_CBC_SHA, TLS_DHE_RSA_WITH_AES_256_GCM_SHA384 and TLS_DHE_RSA_WITH_AES_128_GCM_SHA256 are disabled by default from 23H2 but remain supported, so they stay listed.
+    # TLS_RSA_WITH_3DES_EDE_CBC_SHA, TLS_DHE_RSA_WITH_AES_256_GCM_SHA384
+    # and TLS_DHE_RSA_WITH_AES_128_GCM_SHA256 are disabled by default from
+    # 23H2 but remain supported, so they stay listed.
     source: https://learn.microsoft.com/en-us/windows/win32/secauthn/tls-cipher-suites-in-windows-server-2022
     suites:
       - {name: TLS_AES_256_GCM_SHA384, code_point: ['0x13', '0x02']}
