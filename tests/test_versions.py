@@ -95,6 +95,19 @@ def test_ls_remote_git_failure_propagates() -> None:
         ls_remote_tags("r", runner=failing)
 
 
+def test_ls_remote_timeout_propagates() -> None:
+    def slow(argv: Any, **kwargs: Any) -> Any:
+        raise subprocess.TimeoutExpired(argv, 120)
+
+    with pytest.raises(subprocess.TimeoutExpired):
+        ls_remote_tags("r", runner=slow)
+
+
+def test_ls_remote_orphan_peeled_line_dropped() -> None:
+    out = f"{C}\trefs/tags/ghost^{{}}\n{B}\trefs/tags/v1\n"
+    assert ls_remote_tags("r", runner=FakeRunner(out)) == {"v1": B}
+
+
 def test_ls_remote_head() -> None:
     out = f"{A}\tHEAD\n{B}\trefs/heads/main\n"
     fake = FakeRunner(out)
@@ -165,7 +178,8 @@ def test_order_ascending_by_line_key() -> None:
 
 
 def test_duplicate_key_picks_greatest_tag_name() -> None:
-    def parse(_tag: str) -> TagVersion:
+    def parse(tag: str) -> TagVersion:
+        assert tag
         return TagVersion("1.0", (1, 0, 0))
 
     vs = latest_per_line({"t-a": A, "t-c": C, "t-b": B}, parse)
