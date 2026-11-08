@@ -1,6 +1,6 @@
 # Task reports — plan: docs/superpowers/plans/2026-11-08-scraping-robustness.md
 
-Implementer reports for Tasks 1-12, concatenated from the git-ignored SDD workspace.
+Implementer reports for Tasks 1-13, concatenated from the git-ignored SDD workspace.
 
 ---
 
@@ -318,3 +318,34 @@ Join semantics follow the brief (total_keys = name side; header-only ids ignored
 - Mbed TLS tie between `v` and `mbedtls-` tags is resolved by tag-name order (assumes same commit; true for all captured lines).
 - `test_every_table_entry_is_a_record` counts `"TLS` string occurrences in the .c file; fragile if upstream adds other such strings.
 - v3.6.3.1 (security re-release) is not discovered as a patch of 3.6; harmless since 3.6.7 is newer.
+
+---
+
+<!-- task-13-report.md -->
+
+# Task 13 report: GnuTLS adapter
+
+Implemented `ciphersuites/scrape/adapters/gnutls.py` (registered, imported in `adapters/__init__.py`), `tests/adapters/test_gnutls.py`, tag list, two fixtures (3.6.16, 3.8.13) and goldens.
+
+## Naming finding
+Verified in both fixtures: `ENTRY`/`ENTRY_PRF`/`ENTRY_TLS13` use `#name` and the library returns `cs_algorithms[idx].name + sizeof("GNU") - 1`. So the GnuTLS name is the macro name minus "GNU" (`GNUTLS_ECDHE_RSA_AES_128_GCM_SHA256` -> `TLS_ECDHE_RSA_AES_128_GCM_SHA256`). Hand assertion is true. Second arg is the IANA canonical name; not recorded: `ParseResult.attributes` exists generically but no adapter uses it and goldens ignore it (YAGNI).
+Also found: a third macro `ENTRY_TLS13` (5 rows); handled by the `ENTRY*(` row-start rule.
+
+## Deviation: tags
+Brief says `gnutls_X_Y_Z` only. Real tags: `gnutls_X_Y_Z` up to 3.6.12, plain `X.Y.Z` from 3.6.12 on; 3.6.16 and all 3.7/3.8 exist only as plain. Both forms accepted (fullmatch rejects pre0, _1, -windows, _win32). Same-key ties go to greatest tag name (deterministic).
+
+## TDD
+RED: `pytest tests/adapters/test_gnutls.py` -> collection error, ModuleNotFoundError (adapter absent); after adapter, before fixtures: 8 failed (no fixture), 13 passed.
+GREEN: after fixtures + `--update-goldens`: `21 passed`. Full suite: `306 passed`.
+
+## Golden vs v1 (188 records)
+Both 3.6.16 and 3.8.13 give 188 records, join coverage 1.0, identical to v1 names/code points. Sole difference: v1 has one lowercase-hex record (TLS_GOSTR341112_256_28147_CNT_IMIT 0xc1/0x02), normalised to 0xC1/0x02.
+
+## Lint
+black: 39 files unchanged. pylint: 10.00/10, zero messages (only pre-existing config UserWarnings about overgeneral-exceptions). bandit: clean (pre-existing nosec warnings in versions.py only).
+
+## Self-review
+Row counting independent of key capture (unparsed rows -> `<unparsed row at line N>` unmatched); macro definitions blanked incl. continuation lines; comments blanked skipping strings; conflicts raise; aliases resolved. Tests cover each. Join coverage asserted == 1.0.
+
+## Concerns
+None significant. Comment blanking replaces `//` comments with a space (not empty) so tokens never fuse.

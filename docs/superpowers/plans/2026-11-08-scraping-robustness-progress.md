@@ -144,3 +144,15 @@ USER REQUEST: pause after Task 12 (session limit). Awaiting answer on committing
 ## RESUME POINT (after Task 12 pause)
 Next: Task 13 (GnuTLS). BASE = dde983b. Then 14 Schannel, 15 reference sources (web.archive.org allowlisted but TLS handshake gets no answer from this egress — retry; fallback ruling: direct-URL capture with sha256), 16-23, final review (most capable model).
 Carry-forward facts: fixtures CLI forms tag | --commit SHA --label | --url URL --path PATH --label | --repo URL; adapters mirror nss.py/jsse.py/s2n.py pattern (coverage denominator over entry-looking lines, numeric conflict ValueError, dangling -> unmatched).
+USER REQUEST: do Task 13, then update the committed ledger copy and pause again.
+Task 13: implementer a7b1f6e34f729273a (sonnet), base 72c7f4d. Dispatch flagged GnuTLS name = macro name minus 'GNU' (quoted string is IANA canonical) — verify.
+Task 13: first head 9b8774e (DONE). Controller verified: 306 passed (3.13+3.9), lint clean. Fixtures 3.6.16, 3.8.13; 188 records each, coverage 1.0, matches v1 (only lowercase-hex v1 record differs).
+Task 13: Ruling: GnuTLS adapter accepts plain `X.Y.Z` tags as well as `gnutls_X_Y_Z` — upstream switched tag style at 3.6.13 and 3.6.16/3.8.x exist only as plain tags — if wrong, a stray plain tag could be selected (fullmatch digits only limits it).
+Task 13: review approved (0 Crit/Imp). Reviewer reproduced 188 rows (191 ENTRY*( minus 3 macro defs) on both fixtures; mixed tag styles deterministic.
+Task 13: minor (deferred, final review): no synthetic gnutls_X_Y_Z vs X.Y.Z same-version test; `#if 0` rows would count (none present) — add comment; discovery test hard-codes 3.6.16/3.8.13.
+Task 13: complete (commits 72c7f4d..9b8774e, review clean)
+USER REQUEST: pause after Task 13 (committed ledger updated).
+
+## RESUME POINT (after Task 13 pause)
+Next: Task 14 (Schannel curated). BASE = HEAD after ledger commit (adapter work ends at 9b8774e). Then 15 reference sources (web.archive.org allowlisted but TLS handshake got no answer from this egress — retry; fallback ruling: direct-URL capture with sha256), 16-23, final review (most capable model).
+Carry-forward facts: fixtures CLI forms tag | --commit SHA --label | --url URL --path PATH --label | --repo URL; adapters mirror nss.py/jsse.py/s2n.py/gnutls.py pattern (coverage denominator over entry-looking lines, numeric conflict ValueError, dangling -> unmatched). Restore this ledger into .superpowers/sdd/2026-11-08-scraping-robustness/progress.md in a fresh session (the workspace dir is git-ignored).
