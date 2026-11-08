@@ -206,3 +206,9 @@ Task 18: first head 7180f05 (DONE_WITH_CONCERNS: tests after code). Controller v
 Task 18: review approved (0 Crit/Imp). Boundaries pinned (0.90 coverage, 0.5x, 10%, 27/29 days); accepts scoped to BASELINE_CODES + exact pair.
 Task 18: minor (deferred, final review — revisit after Task 22 real run): NEW_NAME_COLLISION noisy for openssl family (libressl/boringssl share openssl names; KNOWN list is openssl-only; repeated per version label); untested: lowest-line NEW_LINE_SHRINK, V1_PARITY newest-not-scraped, exactly-28-days, non-baseline code on accepted pair, missing new_entry; reference --accept key is the run date; Finding unhashable (dict field) — note or eq=False.
 Task 18: complete (commits d554cd7..7180f05, review clean)
+Task 19: implementer a0db5f73eb05c87fd (sonnet), base 758ae0e.
+Task 19: Ruling: within one reference, several names for one code point -> lexicographically smallest from the newest version — determinism — if wrong, a different but valid alias is shown as the catalogue name.
+Task 19: Ruling: IANA dtls_ok/recommended not copied into the catalogue (spec 5.3: no per-library data duplicated) — if wrong, API must join iana.yaml for them.
+Task 19: first head f00a492 (DONE). Controller verified: 455 passed (3.13+3.9), lint clean. Review: controller-only (67-line module + 9 tests read in full; all brief tests + rulings present) — no subagent reviewer for this size.
+Task 19: minor (deferred, final review): `_newest_names` assumes versions[-1] is newest (true via to_doc ordering / keep_last=1).
+Task 19: complete (commits 758ae0e..f00a492, review clean)

@@ -1,6 +1,6 @@
 # Task reports — plan: docs/superpowers/plans/2026-11-08-scraping-robustness.md
 
-Implementer reports for Tasks 1-18, concatenated from the git-ignored SDD workspace.
+Implementer reports for Tasks 1-19, concatenated from the git-ignored SDD workspace.
 
 ---
 
@@ -494,3 +494,15 @@ Decisions/notes:
 - Reference rules ignore labels (newest baseline vs newest new); generic NONDETERMINISTIC/PATCH rules are skipped for reference kind.
 - check_catalog expects catalog_doc["suites"][i]["code_point"]. Cross-library collision flags every involved library not in KNOWN_NAME_COLLISIONS.
 - apply_accepts adds details["reason"]. No brief/spec conflicts found.
+
+---
+
+<!-- task-19-report.md -->
+
+# Task 19 report
+Status: DONE. Commit f00a492 "Add catalogue builder".
+Files: ciphersuites/scrape/build_catalog.py, tests/test_build_catalog.py.
+RED: collection error ModuleNotFoundError (no build_catalog module). One test bug fixed after GREEN run (TLS_B vs TLS_Z name ordering).
+Verification: pytest 455 passed (also on py3.9 via uv); black clean; pylint 10.00 with no messages; bandit no issues (only pre-existing nosec warnings); uv.lock removed.
+Rulings implemented: newest version only; smallest name per reference; precedence iana>testssl>scanigma; unknown key -> ValueError; merge by code point only; attributes not copied; code_point as list; sorted by code_point_sort_key; deterministic dump and empty-input tests.
+Concerns: none.
