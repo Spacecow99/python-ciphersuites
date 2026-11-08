@@ -1,0 +1,869 @@
+# Hand-curated Schannel cipher suites. Schannel has no public source code,
+# so this file is transcribed by hand from Microsoft Learn rather than
+# scraped. Index page:
+#   https://learn.microsoft.com/en-us/windows/win32/secauthn/cipher-suites-in-schannel
+# Transcription date: 2026-11-08.
+#
+# One entry per "TLS Cipher Suites in Windows ..." page, oldest first; that
+# order is the version order. Each entry lists every suite named on the page:
+# the enabled-by-default table, the "supported but not enabled by default"
+# table and (Windows 10 1607 onwards) the PSK table are all merged, because
+# every one of them is a suite Schannel supports.
+#
+# Microsoft's pages give suite names only. Code points come from the IANA
+# registry (ciphersuites/_ciphersuites/iana.yaml), except for the suites
+# IANA's registry in this repository lacks, marked "(not in IANA data)" below:
+# TLS_*_EXPORT1024_* (draft-ietf-tls-56-bit-ciphersuites) and SSL_CK_*
+# (SSL 2.0 three-byte codes).
+#
+# Windows 7 to 8.1 and Windows Vista list the ECDHE suites once per curve
+# with a _P256/_P384/_P521 suffix. The suffix names a curve, not a suite, so
+# it is stripped and the suite is listed once.
+#
+# v1 ciphersuites/_ciphersuites/schannel.yaml cross-check: every v1 code point
+# is present below. The v1 names that are NOT listed below are the curve-
+# suffixed ones (TLS_ECDHE_*_P256/_P384/_P521, same code points as the
+# unsuffixed suites) and SSL_CK_RC4_128_EXPORT40_MD5 (same code point as
+# SSL_CK_RC4_128_EXPORT40_WITH_MD5, the spelling Microsoft Learn uses).
+# No v1 code point is missing from every Microsoft Learn page, so there are no
+# "# not in any Microsoft Learn page" entries.
+versions:
+  - label: Windows Vista
+    # Page lists only suites that are supported but not present by default.
+    source: https://learn.microsoft.com/en-us/windows/win32/secauthn/schannel-cipher-suites-in-windows-vista
+    suites:
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x2F']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x35']}
+      - {name: TLS_RSA_WITH_RC4_128_SHA, code_point: ['0x00', '0x05']}
+      - {name: TLS_RSA_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x0A']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x09']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x0A']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x13']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x14']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x32']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x38']}
+      - {name: TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x13']}
+      - {name: TLS_RSA_WITH_RC4_128_MD5, code_point: ['0x00', '0x04']}
+      - {name: SSL_CK_RC4_128_WITH_MD5, code_point: ['0x01', '0x00', '0x80']}  # (not in IANA data)
+      - {name: SSL_CK_DES_192_EDE3_CBC_WITH_MD5, code_point: ['0x07', '0x00', '0xC0']}  # (not in IANA data)
+      - {name: TLS_RSA_WITH_NULL_MD5, code_point: ['0x00', '0x01']}
+      - {name: TLS_RSA_WITH_NULL_SHA, code_point: ['0x00', '0x02']}
+  - label: Windows 7
+    # Also covers Windows Server 2008 R2.
+    source: https://learn.microsoft.com/en-us/windows/win32/secauthn/tls-cipher-suites-in-windows-7
+    suites:
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384, code_point: ['0xC0', '0x28']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, code_point: ['0xC0', '0x27']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x14']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x13']}
+      - {name: TLS_DHE_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0x9F']}
+      - {name: TLS_DHE_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0x9E']}
+      - {name: TLS_DHE_RSA_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x39']}
+      - {name: TLS_DHE_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x33']}
+      - {name: TLS_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0x9D']}
+      - {name: TLS_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0x9C']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA256, code_point: ['0x00', '0x3D']}
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0x3C']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x35']}
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x2F']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, code_point: ['0xC0', '0x2C']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, code_point: ['0xC0', '0x2B']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384, code_point: ['0xC0', '0x24']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, code_point: ['0xC0', '0x23']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x0A']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x09']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA256, code_point: ['0x00', '0x6A']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0x40']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x38']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x32']}
+      - {name: TLS_RSA_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x0A']}
+      - {name: TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x13']}
+      - {name: TLS_RSA_WITH_RC4_128_SHA, code_point: ['0x00', '0x05']}
+      - {name: TLS_RSA_WITH_RC4_128_MD5, code_point: ['0x00', '0x04']}
+      - {name: TLS_RSA_WITH_NULL_SHA256, code_point: ['0x00', '0x3B']}
+      - {name: TLS_RSA_WITH_NULL_SHA, code_point: ['0x00', '0x02']}
+      - {name: SSL_CK_RC4_128_WITH_MD5, code_point: ['0x01', '0x00', '0x80']}  # (not in IANA data)
+      - {name: SSL_CK_DES_192_EDE3_CBC_WITH_MD5, code_point: ['0x07', '0x00', '0xC0']}  # (not in IANA data)
+      - {name: TLS_RSA_WITH_DES_CBC_SHA, code_point: ['0x00', '0x09']}
+      - {name: TLS_RSA_EXPORT1024_WITH_RC4_56_SHA, code_point: ['0x00', '0x64']}  # (not in IANA data)
+      - {name: TLS_RSA_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x62']}  # (not in IANA data)
+      - {name: TLS_RSA_EXPORT_WITH_RC4_40_MD5, code_point: ['0x00', '0x03']}
+      - {name: TLS_RSA_WITH_NULL_MD5, code_point: ['0x00', '0x01']}
+      - {name: TLS_DHE_DSS_WITH_DES_CBC_SHA, code_point: ['0x00', '0x12']}
+      - {name: TLS_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x63']}  # (not in IANA data)
+      - {name: SSL_CK_DES_64_CBC_WITH_MD5, code_point: ['0x06', '0x00', '0x40']}  # (not in IANA data)
+      - {name: SSL_CK_RC4_128_EXPORT40_WITH_MD5, code_point: ['0x02', '0x00', '0x80']}  # (not in IANA data)
+  - label: Windows 8
+    # Also covers Windows Server 2012.
+    source: https://learn.microsoft.com/en-us/windows/win32/secauthn/tls-cipher-suites-in-windows-8
+    suites:
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384, code_point: ['0xC0', '0x28']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, code_point: ['0xC0', '0x27']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x14']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x13']}
+      - {name: TLS_DHE_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0x9F']}
+      - {name: TLS_DHE_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0x9E']}
+      - {name: TLS_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0x9D']}
+      - {name: TLS_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0x9C']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA256, code_point: ['0x00', '0x3D']}
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0x3C']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x35']}
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x2F']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, code_point: ['0xC0', '0x2C']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, code_point: ['0xC0', '0x2B']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384, code_point: ['0xC0', '0x24']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, code_point: ['0xC0', '0x23']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x0A']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x09']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA256, code_point: ['0x00', '0x6A']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0x40']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x38']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x32']}
+      - {name: TLS_RSA_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x0A']}
+      - {name: TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x13']}
+      - {name: TLS_RSA_WITH_RC4_128_SHA, code_point: ['0x00', '0x05']}
+      - {name: TLS_RSA_WITH_RC4_128_MD5, code_point: ['0x00', '0x04']}
+      - {name: TLS_RSA_WITH_NULL_SHA256, code_point: ['0x00', '0x3B']}
+      - {name: TLS_RSA_WITH_NULL_SHA, code_point: ['0x00', '0x02']}
+      - {name: SSL_CK_RC4_128_WITH_MD5, code_point: ['0x01', '0x00', '0x80']}  # (not in IANA data)
+      - {name: SSL_CK_DES_192_EDE3_CBC_WITH_MD5, code_point: ['0x07', '0x00', '0xC0']}  # (not in IANA data)
+      - {name: TLS_RSA_WITH_DES_CBC_SHA, code_point: ['0x00', '0x09']}
+      - {name: TLS_RSA_EXPORT1024_WITH_RC4_56_SHA, code_point: ['0x00', '0x64']}  # (not in IANA data)
+      - {name: TLS_RSA_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x62']}  # (not in IANA data)
+      - {name: TLS_RSA_EXPORT_WITH_RC4_40_MD5, code_point: ['0x00', '0x03']}
+      - {name: TLS_RSA_WITH_NULL_MD5, code_point: ['0x00', '0x01']}
+      - {name: TLS_DHE_DSS_WITH_DES_CBC_SHA, code_point: ['0x00', '0x12']}
+      - {name: TLS_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x63']}  # (not in IANA data)
+      - {name: SSL_CK_DES_64_CBC_WITH_MD5, code_point: ['0x06', '0x00', '0x40']}  # (not in IANA data)
+      - {name: SSL_CK_RC4_128_EXPORT40_WITH_MD5, code_point: ['0x02', '0x00', '0x80']}  # (not in IANA data)
+  - label: Windows 8.1
+    # Also covers Windows Server 2012 R2.
+    source: https://learn.microsoft.com/en-us/windows/win32/secauthn/tls-cipher-suites-in-windows-8-1
+    suites:
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384, code_point: ['0xC0', '0x28']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, code_point: ['0xC0', '0x27']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x14']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x13']}
+      - {name: TLS_DHE_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0x9F']}
+      - {name: TLS_DHE_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0x9E']}
+      - {name: TLS_DHE_RSA_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x39']}
+      - {name: TLS_DHE_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x33']}
+      - {name: TLS_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0x9D']}
+      - {name: TLS_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0x9C']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA256, code_point: ['0x00', '0x3D']}
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0x3C']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x35']}
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x2F']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, code_point: ['0xC0', '0x2C']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, code_point: ['0xC0', '0x2B']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384, code_point: ['0xC0', '0x24']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, code_point: ['0xC0', '0x23']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x0A']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x09']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA256, code_point: ['0x00', '0x6A']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0x40']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x38']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x32']}
+      - {name: TLS_RSA_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x0A']}
+      - {name: TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x13']}
+      - {name: TLS_RSA_WITH_RC4_128_SHA, code_point: ['0x00', '0x05']}
+      - {name: TLS_RSA_WITH_RC4_128_MD5, code_point: ['0x00', '0x04']}
+      - {name: TLS_RSA_WITH_NULL_SHA256, code_point: ['0x00', '0x3B']}
+      - {name: TLS_RSA_WITH_NULL_SHA, code_point: ['0x00', '0x02']}
+      - {name: SSL_CK_RC4_128_WITH_MD5, code_point: ['0x01', '0x00', '0x80']}  # (not in IANA data)
+      - {name: SSL_CK_DES_192_EDE3_CBC_WITH_MD5, code_point: ['0x07', '0x00', '0xC0']}  # (not in IANA data)
+      - {name: TLS_RSA_WITH_DES_CBC_SHA, code_point: ['0x00', '0x09']}
+      - {name: TLS_RSA_EXPORT1024_WITH_RC4_56_SHA, code_point: ['0x00', '0x64']}  # (not in IANA data)
+      - {name: TLS_RSA_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x62']}  # (not in IANA data)
+      - {name: TLS_RSA_EXPORT_WITH_RC4_40_MD5, code_point: ['0x00', '0x03']}
+      - {name: TLS_RSA_WITH_NULL_MD5, code_point: ['0x00', '0x01']}
+      - {name: TLS_DHE_DSS_WITH_DES_CBC_SHA, code_point: ['0x00', '0x12']}
+      - {name: TLS_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x63']}  # (not in IANA data)
+      - {name: SSL_CK_DES_64_CBC_WITH_MD5, code_point: ['0x06', '0x00', '0x40']}  # (not in IANA data)
+      - {name: SSL_CK_RC4_128_EXPORT40_WITH_MD5, code_point: ['0x02', '0x00', '0x80']}  # (not in IANA data)
+  - label: Windows 10 1507
+    source: https://learn.microsoft.com/en-us/windows/win32/secauthn/tls-cipher-suites-in-windows-10--version-1507
+    suites:
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0xC0', '0x30']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0xC0', '0x2F']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384, code_point: ['0xC0', '0x28']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, code_point: ['0xC0', '0x27']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x14']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x13']}
+      - {name: TLS_DHE_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0x9F']}
+      - {name: TLS_DHE_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0x9E']}
+      - {name: TLS_DHE_RSA_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x39']}
+      - {name: TLS_DHE_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x33']}
+      - {name: TLS_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0x9D']}
+      - {name: TLS_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0x9C']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA256, code_point: ['0x00', '0x3D']}
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0x3C']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x35']}
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x2F']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, code_point: ['0xC0', '0x2C']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, code_point: ['0xC0', '0x2B']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384, code_point: ['0xC0', '0x24']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, code_point: ['0xC0', '0x23']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x0A']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x09']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA256, code_point: ['0x00', '0x6A']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0x40']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x38']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x32']}
+      - {name: TLS_RSA_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x0A']}
+      - {name: TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x13']}
+      - {name: TLS_RSA_WITH_RC4_128_SHA, code_point: ['0x00', '0x05']}
+      - {name: TLS_RSA_WITH_RC4_128_MD5, code_point: ['0x00', '0x04']}
+      - {name: TLS_RSA_WITH_NULL_SHA256, code_point: ['0x00', '0x3B']}
+      - {name: TLS_RSA_WITH_NULL_SHA, code_point: ['0x00', '0x02']}
+      - {name: SSL_CK_RC4_128_WITH_MD5, code_point: ['0x01', '0x00', '0x80']}  # (not in IANA data)
+      - {name: SSL_CK_DES_192_EDE3_CBC_WITH_MD5, code_point: ['0x07', '0x00', '0xC0']}  # (not in IANA data)
+      - {name: TLS_RSA_WITH_DES_CBC_SHA, code_point: ['0x00', '0x09']}
+      - {name: TLS_RSA_EXPORT1024_WITH_RC4_56_SHA, code_point: ['0x00', '0x64']}  # (not in IANA data)
+      - {name: TLS_RSA_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x62']}  # (not in IANA data)
+      - {name: TLS_RSA_EXPORT_WITH_RC4_40_MD5, code_point: ['0x00', '0x03']}
+      - {name: TLS_RSA_WITH_NULL_MD5, code_point: ['0x00', '0x01']}
+      - {name: TLS_DHE_DSS_WITH_DES_CBC_SHA, code_point: ['0x00', '0x12']}
+      - {name: TLS_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x63']}  # (not in IANA data)
+      - {name: SSL_CK_DES_64_CBC_WITH_MD5, code_point: ['0x06', '0x00', '0x40']}  # (not in IANA data)
+      - {name: SSL_CK_RC4_128_EXPORT40_WITH_MD5, code_point: ['0x02', '0x00', '0x80']}  # (not in IANA data)
+  - label: Windows 10 1511
+    source: https://learn.microsoft.com/en-us/windows/win32/secauthn/tls-cipher-suites-in-windows-10-v1511
+    suites:
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, code_point: ['0xC0', '0x2C']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, code_point: ['0xC0', '0x2B']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0xC0', '0x30']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0xC0', '0x2F']}
+      - {name: TLS_DHE_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0x9F']}
+      - {name: TLS_DHE_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0x9E']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384, code_point: ['0xC0', '0x24']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, code_point: ['0xC0', '0x23']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384, code_point: ['0xC0', '0x28']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, code_point: ['0xC0', '0x27']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x0A']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x09']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x14']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x13']}
+      - {name: TLS_DHE_RSA_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x39']}
+      - {name: TLS_DHE_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x33']}
+      - {name: TLS_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0x9D']}
+      - {name: TLS_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0x9C']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA256, code_point: ['0x00', '0x3D']}
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0x3C']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x35']}
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x2F']}
+      - {name: TLS_RSA_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x0A']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA256, code_point: ['0x00', '0x6A']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0x40']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x38']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x32']}
+      - {name: TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x13']}
+      - {name: TLS_RSA_WITH_RC4_128_SHA, code_point: ['0x00', '0x05']}
+      - {name: TLS_RSA_WITH_RC4_128_MD5, code_point: ['0x00', '0x04']}
+      - {name: TLS_RSA_WITH_NULL_SHA256, code_point: ['0x00', '0x3B']}
+      - {name: TLS_RSA_WITH_NULL_SHA, code_point: ['0x00', '0x02']}
+      - {name: SSL_CK_DES_192_EDE3_CBC_WITH_MD5, code_point: ['0x07', '0x00', '0xC0']}  # (not in IANA data)
+      - {name: SSL_CK_RC4_128_WITH_MD5, code_point: ['0x01', '0x00', '0x80']}  # (not in IANA data)
+      - {name: TLS_RSA_WITH_DES_CBC_SHA, code_point: ['0x00', '0x09']}
+      - {name: TLS_RSA_EXPORT1024_WITH_RC4_56_SHA, code_point: ['0x00', '0x64']}  # (not in IANA data)
+      - {name: TLS_RSA_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x62']}  # (not in IANA data)
+      - {name: TLS_RSA_EXPORT_WITH_RC4_40_MD5, code_point: ['0x00', '0x03']}
+      - {name: TLS_RSA_WITH_NULL_MD5, code_point: ['0x00', '0x01']}
+      - {name: TLS_DHE_DSS_WITH_DES_CBC_SHA, code_point: ['0x00', '0x12']}
+      - {name: TLS_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x63']}  # (not in IANA data)
+      - {name: SSL_CK_DES_64_CBC_WITH_MD5, code_point: ['0x06', '0x00', '0x40']}  # (not in IANA data)
+      - {name: SSL_CK_RC4_128_EXPORT40_WITH_MD5, code_point: ['0x02', '0x00', '0x80']}  # (not in IANA data)
+  - label: Windows 10 1607
+    # Page also covers Windows Server 2016.
+    source: https://learn.microsoft.com/en-us/windows/win32/secauthn/tls-cipher-suites-in-windows-10-v1607
+    suites:
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, code_point: ['0xC0', '0x2C']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, code_point: ['0xC0', '0x2B']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0xC0', '0x30']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0xC0', '0x2F']}
+      - {name: TLS_DHE_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0x9F']}
+      - {name: TLS_DHE_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0x9E']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384, code_point: ['0xC0', '0x24']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, code_point: ['0xC0', '0x23']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384, code_point: ['0xC0', '0x28']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, code_point: ['0xC0', '0x27']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x0A']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x09']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x14']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x13']}
+      - {name: TLS_DHE_RSA_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x39']}
+      - {name: TLS_DHE_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x33']}
+      - {name: TLS_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0x9D']}
+      - {name: TLS_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0x9C']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA256, code_point: ['0x00', '0x3D']}
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0x3C']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x35']}
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x2F']}
+      - {name: TLS_RSA_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x0A']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA256, code_point: ['0x00', '0x6A']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0x40']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x38']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x32']}
+      - {name: TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x13']}
+      - {name: TLS_RSA_WITH_RC4_128_SHA, code_point: ['0x00', '0x05']}
+      - {name: TLS_RSA_WITH_RC4_128_MD5, code_point: ['0x00', '0x04']}
+      - {name: TLS_RSA_WITH_NULL_SHA256, code_point: ['0x00', '0x3B']}
+      - {name: TLS_RSA_WITH_NULL_SHA, code_point: ['0x00', '0x02']}
+      - {name: TLS_RSA_WITH_DES_CBC_SHA, code_point: ['0x00', '0x09']}
+      - {name: TLS_RSA_EXPORT1024_WITH_RC4_56_SHA, code_point: ['0x00', '0x64']}  # (not in IANA data)
+      - {name: TLS_RSA_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x62']}  # (not in IANA data)
+      - {name: TLS_RSA_EXPORT_WITH_RC4_40_MD5, code_point: ['0x00', '0x03']}
+      - {name: TLS_RSA_WITH_NULL_MD5, code_point: ['0x00', '0x01']}
+      - {name: TLS_DHE_DSS_WITH_DES_CBC_SHA, code_point: ['0x00', '0x12']}
+      - {name: TLS_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x63']}  # (not in IANA data)
+      - {name: TLS_PSK_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0xA9']}
+      - {name: TLS_PSK_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0xA8']}
+      - {name: TLS_PSK_WITH_AES_256_CBC_SHA384, code_point: ['0x00', '0xAF']}
+      - {name: TLS_PSK_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0xAE']}
+      - {name: TLS_PSK_WITH_NULL_SHA384, code_point: ['0x00', '0xB1']}
+      - {name: TLS_PSK_WITH_NULL_SHA256, code_point: ['0x00', '0xB0']}
+  - label: Windows 10 1703
+    source: https://learn.microsoft.com/en-us/windows/win32/secauthn/tls-cipher-suites-in-windows-10-v1703
+    suites:
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, code_point: ['0xC0', '0x2C']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, code_point: ['0xC0', '0x2B']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0xC0', '0x30']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0xC0', '0x2F']}
+      - {name: TLS_DHE_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0x9F']}
+      - {name: TLS_DHE_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0x9E']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384, code_point: ['0xC0', '0x24']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, code_point: ['0xC0', '0x23']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384, code_point: ['0xC0', '0x28']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, code_point: ['0xC0', '0x27']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x0A']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x09']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x14']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x13']}
+      - {name: TLS_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0x9D']}
+      - {name: TLS_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0x9C']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA256, code_point: ['0x00', '0x3D']}
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0x3C']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x35']}
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x2F']}
+      - {name: TLS_RSA_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x0A']}
+      - {name: TLS_RSA_WITH_RC4_128_SHA, code_point: ['0x00', '0x05']}
+      - {name: TLS_RSA_WITH_RC4_128_MD5, code_point: ['0x00', '0x04']}
+      - {name: TLS_RSA_WITH_NULL_SHA256, code_point: ['0x00', '0x3B']}
+      - {name: TLS_RSA_WITH_NULL_SHA, code_point: ['0x00', '0x02']}
+      - {name: TLS_DHE_RSA_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x39']}
+      - {name: TLS_DHE_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x33']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA256, code_point: ['0x00', '0x6A']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0x40']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x38']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x32']}
+      - {name: TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x13']}
+      - {name: TLS_RSA_WITH_DES_CBC_SHA, code_point: ['0x00', '0x09']}
+      - {name: TLS_DHE_DSS_WITH_DES_CBC_SHA, code_point: ['0x00', '0x12']}
+      - {name: TLS_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x63']}  # (not in IANA data)
+      - {name: TLS_RSA_WITH_NULL_MD5, code_point: ['0x00', '0x01']}
+      - {name: TLS_RSA_EXPORT1024_WITH_RC4_56_SHA, code_point: ['0x00', '0x64']}  # (not in IANA data)
+      - {name: TLS_RSA_EXPORT_WITH_RC4_40_MD5, code_point: ['0x00', '0x03']}
+      - {name: TLS_RSA_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x62']}  # (not in IANA data)
+      - {name: TLS_PSK_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0xA9']}
+      - {name: TLS_PSK_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0xA8']}
+      - {name: TLS_PSK_WITH_AES_256_CBC_SHA384, code_point: ['0x00', '0xAF']}
+      - {name: TLS_PSK_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0xAE']}
+      - {name: TLS_PSK_WITH_NULL_SHA384, code_point: ['0x00', '0xB1']}
+      - {name: TLS_PSK_WITH_NULL_SHA256, code_point: ['0x00', '0xB0']}
+  - label: Windows 10 1709
+    source: https://learn.microsoft.com/en-us/windows/win32/secauthn/tls-cipher-suites-in-windows-10-v1709
+    suites:
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, code_point: ['0xC0', '0x2C']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, code_point: ['0xC0', '0x2B']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0xC0', '0x30']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0xC0', '0x2F']}
+      - {name: TLS_DHE_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0x9F']}
+      - {name: TLS_DHE_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0x9E']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384, code_point: ['0xC0', '0x24']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, code_point: ['0xC0', '0x23']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384, code_point: ['0xC0', '0x28']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, code_point: ['0xC0', '0x27']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x0A']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x09']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x14']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x13']}
+      - {name: TLS_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0x9D']}
+      - {name: TLS_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0x9C']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA256, code_point: ['0x00', '0x3D']}
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0x3C']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x35']}
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x2F']}
+      - {name: TLS_RSA_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x0A']}
+      - {name: TLS_RSA_WITH_NULL_SHA256, code_point: ['0x00', '0x3B']}
+      - {name: TLS_RSA_WITH_NULL_SHA, code_point: ['0x00', '0x02']}
+      - {name: TLS_DHE_RSA_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x39']}
+      - {name: TLS_DHE_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x33']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA256, code_point: ['0x00', '0x6A']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0x40']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x38']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x32']}
+      - {name: TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x13']}
+      - {name: TLS_RSA_WITH_RC4_128_SHA, code_point: ['0x00', '0x05']}
+      - {name: TLS_RSA_WITH_RC4_128_MD5, code_point: ['0x00', '0x04']}
+      - {name: TLS_RSA_WITH_DES_CBC_SHA, code_point: ['0x00', '0x09']}
+      - {name: TLS_DHE_DSS_WITH_DES_CBC_SHA, code_point: ['0x00', '0x12']}
+      - {name: TLS_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x63']}  # (not in IANA data)
+      - {name: TLS_RSA_WITH_NULL_MD5, code_point: ['0x00', '0x01']}
+      - {name: TLS_RSA_EXPORT1024_WITH_RC4_56_SHA, code_point: ['0x00', '0x64']}  # (not in IANA data)
+      - {name: TLS_RSA_EXPORT_WITH_RC4_40_MD5, code_point: ['0x00', '0x03']}
+      - {name: TLS_RSA_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x62']}  # (not in IANA data)
+      - {name: TLS_PSK_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0xA9']}
+      - {name: TLS_PSK_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0xA8']}
+      - {name: TLS_PSK_WITH_AES_256_CBC_SHA384, code_point: ['0x00', '0xAF']}
+      - {name: TLS_PSK_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0xAE']}
+      - {name: TLS_PSK_WITH_NULL_SHA384, code_point: ['0x00', '0xB1']}
+      - {name: TLS_PSK_WITH_NULL_SHA256, code_point: ['0x00', '0xB0']}
+  - label: Windows 10 1803
+    source: https://learn.microsoft.com/en-us/windows/win32/secauthn/tls-cipher-suites-in-windows-10-v1803
+    suites:
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, code_point: ['0xC0', '0x2C']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, code_point: ['0xC0', '0x2B']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0xC0', '0x30']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0xC0', '0x2F']}
+      - {name: TLS_DHE_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0x9F']}
+      - {name: TLS_DHE_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0x9E']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384, code_point: ['0xC0', '0x24']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, code_point: ['0xC0', '0x23']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384, code_point: ['0xC0', '0x28']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, code_point: ['0xC0', '0x27']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x0A']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x09']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x14']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x13']}
+      - {name: TLS_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0x9D']}
+      - {name: TLS_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0x9C']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA256, code_point: ['0x00', '0x3D']}
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0x3C']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x35']}
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x2F']}
+      - {name: TLS_RSA_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x0A']}
+      - {name: TLS_RSA_WITH_NULL_SHA256, code_point: ['0x00', '0x3B']}
+      - {name: TLS_RSA_WITH_NULL_SHA, code_point: ['0x00', '0x02']}
+      - {name: TLS_DHE_RSA_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x39']}
+      - {name: TLS_DHE_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x33']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA256, code_point: ['0x00', '0x6A']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0x40']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x38']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x32']}
+      - {name: TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x13']}
+      - {name: TLS_RSA_WITH_RC4_128_SHA, code_point: ['0x00', '0x05']}
+      - {name: TLS_RSA_WITH_RC4_128_MD5, code_point: ['0x00', '0x04']}
+      - {name: TLS_RSA_WITH_DES_CBC_SHA, code_point: ['0x00', '0x09']}
+      - {name: TLS_DHE_DSS_WITH_DES_CBC_SHA, code_point: ['0x00', '0x12']}
+      - {name: TLS_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x63']}  # (not in IANA data)
+      - {name: TLS_RSA_WITH_NULL_MD5, code_point: ['0x00', '0x01']}
+      - {name: TLS_RSA_EXPORT1024_WITH_RC4_56_SHA, code_point: ['0x00', '0x64']}  # (not in IANA data)
+      - {name: TLS_RSA_EXPORT_WITH_RC4_40_MD5, code_point: ['0x00', '0x03']}
+      - {name: TLS_RSA_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x62']}  # (not in IANA data)
+      - {name: TLS_PSK_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0xA9']}
+      - {name: TLS_PSK_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0xA8']}
+      - {name: TLS_PSK_WITH_AES_256_CBC_SHA384, code_point: ['0x00', '0xAF']}
+      - {name: TLS_PSK_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0xAE']}
+      - {name: TLS_PSK_WITH_NULL_SHA384, code_point: ['0x00', '0xB1']}
+      - {name: TLS_PSK_WITH_NULL_SHA256, code_point: ['0x00', '0xB0']}
+  - label: Windows 10 1809
+    source: https://learn.microsoft.com/en-us/windows/win32/secauthn/tls-cipher-suites-in-windows-10-v1809
+    suites:
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, code_point: ['0xC0', '0x2C']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, code_point: ['0xC0', '0x2B']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0xC0', '0x30']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0xC0', '0x2F']}
+      - {name: TLS_DHE_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0x9F']}
+      - {name: TLS_DHE_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0x9E']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384, code_point: ['0xC0', '0x24']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, code_point: ['0xC0', '0x23']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384, code_point: ['0xC0', '0x28']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, code_point: ['0xC0', '0x27']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x0A']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x09']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x14']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x13']}
+      - {name: TLS_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0x9D']}
+      - {name: TLS_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0x9C']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA256, code_point: ['0x00', '0x3D']}
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0x3C']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x35']}
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x2F']}
+      - {name: TLS_RSA_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x0A']}
+      - {name: TLS_RSA_WITH_NULL_SHA256, code_point: ['0x00', '0x3B']}
+      - {name: TLS_RSA_WITH_NULL_SHA, code_point: ['0x00', '0x02']}
+      - {name: TLS_DHE_RSA_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x39']}
+      - {name: TLS_DHE_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x33']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA256, code_point: ['0x00', '0x6A']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0x40']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x38']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x32']}
+      - {name: TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x13']}
+      - {name: TLS_RSA_WITH_RC4_128_SHA, code_point: ['0x00', '0x05']}
+      - {name: TLS_RSA_WITH_RC4_128_MD5, code_point: ['0x00', '0x04']}
+      - {name: TLS_RSA_WITH_DES_CBC_SHA, code_point: ['0x00', '0x09']}
+      - {name: TLS_DHE_DSS_WITH_DES_CBC_SHA, code_point: ['0x00', '0x12']}
+      - {name: TLS_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x63']}  # (not in IANA data)
+      - {name: TLS_RSA_WITH_NULL_MD5, code_point: ['0x00', '0x01']}
+      - {name: TLS_RSA_EXPORT1024_WITH_RC4_56_SHA, code_point: ['0x00', '0x64']}  # (not in IANA data)
+      - {name: TLS_RSA_EXPORT_WITH_RC4_40_MD5, code_point: ['0x00', '0x03']}
+      - {name: TLS_RSA_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x62']}  # (not in IANA data)
+      - {name: TLS_PSK_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0xA9']}
+      - {name: TLS_PSK_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0xA8']}
+      - {name: TLS_PSK_WITH_AES_256_CBC_SHA384, code_point: ['0x00', '0xAF']}
+      - {name: TLS_PSK_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0xAE']}
+      - {name: TLS_PSK_WITH_NULL_SHA384, code_point: ['0x00', '0xB1']}
+      - {name: TLS_PSK_WITH_NULL_SHA256, code_point: ['0x00', '0xB0']}
+  - label: Windows 10 1903
+    # Page also covers 1909 and 2004.
+    source: https://learn.microsoft.com/en-us/windows/win32/secauthn/tls-cipher-suites-in-windows-10-v1903
+    suites:
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, code_point: ['0xC0', '0x2C']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, code_point: ['0xC0', '0x2B']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0xC0', '0x30']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0xC0', '0x2F']}
+      - {name: TLS_DHE_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0x9F']}
+      - {name: TLS_DHE_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0x9E']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384, code_point: ['0xC0', '0x24']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, code_point: ['0xC0', '0x23']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384, code_point: ['0xC0', '0x28']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, code_point: ['0xC0', '0x27']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x0A']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x09']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x14']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x13']}
+      - {name: TLS_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0x9D']}
+      - {name: TLS_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0x9C']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA256, code_point: ['0x00', '0x3D']}
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0x3C']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x35']}
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x2F']}
+      - {name: TLS_RSA_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x0A']}
+      - {name: TLS_RSA_WITH_NULL_SHA256, code_point: ['0x00', '0x3B']}
+      - {name: TLS_RSA_WITH_NULL_SHA, code_point: ['0x00', '0x02']}
+      - {name: TLS_DHE_RSA_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x39']}
+      - {name: TLS_DHE_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x33']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA256, code_point: ['0x00', '0x6A']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0x40']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x38']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x32']}
+      - {name: TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x13']}
+      - {name: TLS_RSA_WITH_RC4_128_SHA, code_point: ['0x00', '0x05']}
+      - {name: TLS_RSA_WITH_RC4_128_MD5, code_point: ['0x00', '0x04']}
+      - {name: TLS_RSA_WITH_DES_CBC_SHA, code_point: ['0x00', '0x09']}
+      - {name: TLS_DHE_DSS_WITH_DES_CBC_SHA, code_point: ['0x00', '0x12']}
+      - {name: TLS_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x63']}  # (not in IANA data)
+      - {name: TLS_RSA_WITH_NULL_MD5, code_point: ['0x00', '0x01']}
+      - {name: TLS_RSA_EXPORT1024_WITH_RC4_56_SHA, code_point: ['0x00', '0x64']}  # (not in IANA data)
+      - {name: TLS_RSA_EXPORT_WITH_RC4_40_MD5, code_point: ['0x00', '0x03']}
+      - {name: TLS_RSA_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x62']}  # (not in IANA data)
+      - {name: TLS_PSK_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0xA9']}
+      - {name: TLS_PSK_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0xA8']}
+      - {name: TLS_PSK_WITH_AES_256_CBC_SHA384, code_point: ['0x00', '0xAF']}
+      - {name: TLS_PSK_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0xAE']}
+      - {name: TLS_PSK_WITH_NULL_SHA384, code_point: ['0x00', '0xB1']}
+      - {name: TLS_PSK_WITH_NULL_SHA256, code_point: ['0x00', '0xB0']}
+  - label: Windows 10 20H2
+    # Page also covers 21H1 and 21H2.
+    source: https://learn.microsoft.com/en-us/windows/win32/secauthn/tls-cipher-suites-in-windows-10-v20h2
+    suites:
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, code_point: ['0xC0', '0x2C']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, code_point: ['0xC0', '0x2B']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0xC0', '0x30']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0xC0', '0x2F']}
+      - {name: TLS_DHE_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0x9F']}
+      - {name: TLS_DHE_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0x9E']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384, code_point: ['0xC0', '0x24']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, code_point: ['0xC0', '0x23']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384, code_point: ['0xC0', '0x28']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, code_point: ['0xC0', '0x27']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x0A']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x09']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x14']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x13']}
+      - {name: TLS_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0x9D']}
+      - {name: TLS_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0x9C']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA256, code_point: ['0x00', '0x3D']}
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0x3C']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x35']}
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x2F']}
+      - {name: TLS_RSA_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x0A']}
+      - {name: TLS_RSA_WITH_NULL_SHA256, code_point: ['0x00', '0x3B']}
+      - {name: TLS_RSA_WITH_NULL_SHA, code_point: ['0x00', '0x02']}
+      - {name: TLS_DHE_RSA_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x39']}
+      - {name: TLS_DHE_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x33']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA256, code_point: ['0x00', '0x6A']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0x40']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x38']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x32']}
+      - {name: TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x13']}
+      - {name: TLS_RSA_WITH_RC4_128_SHA, code_point: ['0x00', '0x05']}
+      - {name: TLS_RSA_WITH_RC4_128_MD5, code_point: ['0x00', '0x04']}
+      - {name: TLS_RSA_WITH_DES_CBC_SHA, code_point: ['0x00', '0x09']}
+      - {name: TLS_DHE_DSS_WITH_DES_CBC_SHA, code_point: ['0x00', '0x12']}
+      - {name: TLS_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x63']}  # (not in IANA data)
+      - {name: TLS_RSA_WITH_NULL_MD5, code_point: ['0x00', '0x01']}
+      - {name: TLS_RSA_EXPORT1024_WITH_RC4_56_SHA, code_point: ['0x00', '0x64']}  # (not in IANA data)
+      - {name: TLS_RSA_EXPORT_WITH_RC4_40_MD5, code_point: ['0x00', '0x03']}
+      - {name: TLS_RSA_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x62']}  # (not in IANA data)
+      - {name: TLS_PSK_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0xA9']}
+      - {name: TLS_PSK_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0xA8']}
+      - {name: TLS_PSK_WITH_AES_256_CBC_SHA384, code_point: ['0x00', '0xAF']}
+      - {name: TLS_PSK_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0xAE']}
+      - {name: TLS_PSK_WITH_NULL_SHA384, code_point: ['0x00', '0xB1']}
+      - {name: TLS_PSK_WITH_NULL_SHA256, code_point: ['0x00', '0xB0']}
+  - label: Windows Server 2022
+    # TLS_RSA_WITH_3DES_EDE_CBC_SHA, TLS_DHE_RSA_WITH_AES_256_GCM_SHA384 and TLS_DHE_RSA_WITH_AES_128_GCM_SHA256 are disabled by default from 23H2 but remain supported, so they stay listed.
+    source: https://learn.microsoft.com/en-us/windows/win32/secauthn/tls-cipher-suites-in-windows-server-2022
+    suites:
+      - {name: TLS_AES_256_GCM_SHA384, code_point: ['0x13', '0x02']}
+      - {name: TLS_AES_128_GCM_SHA256, code_point: ['0x13', '0x01']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, code_point: ['0xC0', '0x2C']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, code_point: ['0xC0', '0x2B']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0xC0', '0x30']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0xC0', '0x2F']}
+      - {name: TLS_DHE_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0x9F']}
+      - {name: TLS_DHE_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0x9E']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384, code_point: ['0xC0', '0x24']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, code_point: ['0xC0', '0x23']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384, code_point: ['0xC0', '0x28']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, code_point: ['0xC0', '0x27']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x0A']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x09']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x14']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x13']}
+      - {name: TLS_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0x9D']}
+      - {name: TLS_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0x9C']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA256, code_point: ['0x00', '0x3D']}
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0x3C']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x35']}
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x2F']}
+      - {name: TLS_RSA_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x0A']}
+      - {name: TLS_RSA_WITH_NULL_SHA256, code_point: ['0x00', '0x3B']}
+      - {name: TLS_RSA_WITH_NULL_SHA, code_point: ['0x00', '0x02']}
+      - {name: TLS_CHACHA20_POLY1305_SHA256, code_point: ['0x13', '0x03']}
+      - {name: TLS_DHE_RSA_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x39']}
+      - {name: TLS_DHE_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x33']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA256, code_point: ['0x00', '0x6A']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0x40']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x38']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x32']}
+      - {name: TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x13']}
+      - {name: TLS_RSA_WITH_RC4_128_SHA, code_point: ['0x00', '0x05']}
+      - {name: TLS_RSA_WITH_RC4_128_MD5, code_point: ['0x00', '0x04']}
+      - {name: TLS_RSA_WITH_DES_CBC_SHA, code_point: ['0x00', '0x09']}
+      - {name: TLS_DHE_DSS_WITH_DES_CBC_SHA, code_point: ['0x00', '0x12']}
+      - {name: TLS_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x63']}  # (not in IANA data)
+      - {name: TLS_RSA_WITH_NULL_MD5, code_point: ['0x00', '0x01']}
+      - {name: TLS_RSA_EXPORT1024_WITH_RC4_56_SHA, code_point: ['0x00', '0x64']}  # (not in IANA data)
+      - {name: TLS_RSA_EXPORT_WITH_RC4_40_MD5, code_point: ['0x00', '0x03']}
+      - {name: TLS_RSA_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x62']}  # (not in IANA data)
+      - {name: TLS_PSK_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0xA9']}
+      - {name: TLS_PSK_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0xA8']}
+      - {name: TLS_PSK_WITH_AES_256_CBC_SHA384, code_point: ['0x00', '0xAF']}
+      - {name: TLS_PSK_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0xAE']}
+      - {name: TLS_PSK_WITH_NULL_SHA384, code_point: ['0x00', '0xB1']}
+      - {name: TLS_PSK_WITH_NULL_SHA256, code_point: ['0x00', '0xB0']}
+  - label: Windows 11
+    source: https://learn.microsoft.com/en-us/windows/win32/secauthn/tls-cipher-suites-in-windows-11
+    suites:
+      - {name: TLS_AES_256_GCM_SHA384, code_point: ['0x13', '0x02']}
+      - {name: TLS_AES_128_GCM_SHA256, code_point: ['0x13', '0x01']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, code_point: ['0xC0', '0x2C']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, code_point: ['0xC0', '0x2B']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0xC0', '0x30']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0xC0', '0x2F']}
+      - {name: TLS_DHE_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0x9F']}
+      - {name: TLS_DHE_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0x9E']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384, code_point: ['0xC0', '0x24']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, code_point: ['0xC0', '0x23']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384, code_point: ['0xC0', '0x28']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, code_point: ['0xC0', '0x27']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x0A']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x09']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x14']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x13']}
+      - {name: TLS_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0x9D']}
+      - {name: TLS_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0x9C']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA256, code_point: ['0x00', '0x3D']}
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0x3C']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x35']}
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x2F']}
+      - {name: TLS_RSA_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x0A']}
+      - {name: TLS_RSA_WITH_NULL_SHA256, code_point: ['0x00', '0x3B']}
+      - {name: TLS_RSA_WITH_NULL_SHA, code_point: ['0x00', '0x02']}
+      - {name: TLS_CHACHA20_POLY1305_SHA256, code_point: ['0x13', '0x03']}
+      - {name: TLS_DHE_RSA_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x39']}
+      - {name: TLS_DHE_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x33']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA256, code_point: ['0x00', '0x6A']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0x40']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x38']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x32']}
+      - {name: TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x13']}
+      - {name: TLS_RSA_WITH_RC4_128_SHA, code_point: ['0x00', '0x05']}
+      - {name: TLS_RSA_WITH_RC4_128_MD5, code_point: ['0x00', '0x04']}
+      - {name: TLS_RSA_WITH_DES_CBC_SHA, code_point: ['0x00', '0x09']}
+      - {name: TLS_DHE_DSS_WITH_DES_CBC_SHA, code_point: ['0x00', '0x12']}
+      - {name: TLS_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x63']}  # (not in IANA data)
+      - {name: TLS_RSA_WITH_NULL_MD5, code_point: ['0x00', '0x01']}
+      - {name: TLS_RSA_EXPORT1024_WITH_RC4_56_SHA, code_point: ['0x00', '0x64']}  # (not in IANA data)
+      - {name: TLS_RSA_EXPORT_WITH_RC4_40_MD5, code_point: ['0x00', '0x03']}
+      - {name: TLS_RSA_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x62']}  # (not in IANA data)
+      - {name: TLS_PSK_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0xA9']}
+      - {name: TLS_PSK_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0xA8']}
+      - {name: TLS_PSK_WITH_AES_256_CBC_SHA384, code_point: ['0x00', '0xAF']}
+      - {name: TLS_PSK_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0xAE']}
+      - {name: TLS_PSK_WITH_NULL_SHA384, code_point: ['0x00', '0xB1']}
+      - {name: TLS_PSK_WITH_NULL_SHA256, code_point: ['0x00', '0xB0']}
+  - label: Windows 11 22H2
+    # Page covers Windows 11 22H2 and later.
+    source: https://learn.microsoft.com/en-us/windows/win32/secauthn/tls-cipher-suites-in-windows-11-v22h2
+    suites:
+      - {name: TLS_AES_256_GCM_SHA384, code_point: ['0x13', '0x02']}
+      - {name: TLS_AES_128_GCM_SHA256, code_point: ['0x13', '0x01']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, code_point: ['0xC0', '0x2C']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, code_point: ['0xC0', '0x2B']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0xC0', '0x30']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0xC0', '0x2F']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384, code_point: ['0xC0', '0x24']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, code_point: ['0xC0', '0x23']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384, code_point: ['0xC0', '0x28']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, code_point: ['0xC0', '0x27']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x0A']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x09']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x14']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x13']}
+      - {name: TLS_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0x9D']}
+      - {name: TLS_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0x9C']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA256, code_point: ['0x00', '0x3D']}
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0x3C']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x35']}
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x2F']}
+      - {name: TLS_RSA_WITH_NULL_SHA256, code_point: ['0x00', '0x3B']}
+      - {name: TLS_RSA_WITH_NULL_SHA, code_point: ['0x00', '0x02']}
+      - {name: TLS_DHE_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0x9F']}
+      - {name: TLS_DHE_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0x9E']}
+      - {name: TLS_RSA_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x0A']}
+      - {name: TLS_CHACHA20_POLY1305_SHA256, code_point: ['0x13', '0x03']}
+      - {name: TLS_DHE_RSA_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x39']}
+      - {name: TLS_DHE_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x33']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA256, code_point: ['0x00', '0x6A']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0x40']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x38']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x32']}
+      - {name: TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x13']}
+      - {name: TLS_RSA_WITH_RC4_128_SHA, code_point: ['0x00', '0x05']}
+      - {name: TLS_RSA_WITH_RC4_128_MD5, code_point: ['0x00', '0x04']}
+      - {name: TLS_RSA_WITH_DES_CBC_SHA, code_point: ['0x00', '0x09']}
+      - {name: TLS_DHE_DSS_WITH_DES_CBC_SHA, code_point: ['0x00', '0x12']}
+      - {name: TLS_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x63']}  # (not in IANA data)
+      - {name: TLS_RSA_WITH_NULL_MD5, code_point: ['0x00', '0x01']}
+      - {name: TLS_RSA_EXPORT1024_WITH_RC4_56_SHA, code_point: ['0x00', '0x64']}  # (not in IANA data)
+      - {name: TLS_RSA_EXPORT_WITH_RC4_40_MD5, code_point: ['0x00', '0x03']}
+      - {name: TLS_RSA_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x62']}  # (not in IANA data)
+      - {name: TLS_PSK_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0xA9']}
+      - {name: TLS_PSK_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0xA8']}
+      - {name: TLS_PSK_WITH_AES_256_CBC_SHA384, code_point: ['0x00', '0xAF']}
+      - {name: TLS_PSK_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0xAE']}
+      - {name: TLS_PSK_WITH_NULL_SHA384, code_point: ['0x00', '0xB1']}
+      - {name: TLS_PSK_WITH_NULL_SHA256, code_point: ['0x00', '0xB0']}
+  - label: Windows 10 22H2
+    source: https://learn.microsoft.com/en-us/windows/win32/secauthn/tls-cipher-suites-in-windows-10-v22h2
+    suites:
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, code_point: ['0xC0', '0x2C']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, code_point: ['0xC0', '0x2B']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0xC0', '0x30']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0xC0', '0x2F']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384, code_point: ['0xC0', '0x24']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, code_point: ['0xC0', '0x23']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384, code_point: ['0xC0', '0x28']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, code_point: ['0xC0', '0x27']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x0A']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x09']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x14']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x13']}
+      - {name: TLS_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0x9D']}
+      - {name: TLS_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0x9C']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA256, code_point: ['0x00', '0x3D']}
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0x3C']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x35']}
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x2F']}
+      - {name: TLS_RSA_WITH_NULL_SHA256, code_point: ['0x00', '0x3B']}
+      - {name: TLS_RSA_WITH_NULL_SHA, code_point: ['0x00', '0x02']}
+      - {name: TLS_DHE_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0x9F']}
+      - {name: TLS_DHE_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0x9E']}
+      - {name: TLS_RSA_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x0A']}
+      - {name: TLS_DHE_RSA_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x39']}
+      - {name: TLS_DHE_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x33']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA256, code_point: ['0x00', '0x6A']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0x40']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x38']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x32']}
+      - {name: TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x13']}
+      - {name: TLS_RSA_WITH_RC4_128_SHA, code_point: ['0x00', '0x05']}
+      - {name: TLS_RSA_WITH_RC4_128_MD5, code_point: ['0x00', '0x04']}
+      - {name: TLS_RSA_WITH_DES_CBC_SHA, code_point: ['0x00', '0x09']}
+      - {name: TLS_DHE_DSS_WITH_DES_CBC_SHA, code_point: ['0x00', '0x12']}
+      - {name: TLS_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x63']}  # (not in IANA data)
+      - {name: TLS_RSA_WITH_NULL_MD5, code_point: ['0x00', '0x01']}
+      - {name: TLS_RSA_EXPORT1024_WITH_RC4_56_SHA, code_point: ['0x00', '0x64']}  # (not in IANA data)
+      - {name: TLS_RSA_EXPORT_WITH_RC4_40_MD5, code_point: ['0x00', '0x03']}
+      - {name: TLS_RSA_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x62']}  # (not in IANA data)
+      - {name: TLS_PSK_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0xA9']}
+      - {name: TLS_PSK_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0xA8']}
+      - {name: TLS_PSK_WITH_AES_256_CBC_SHA384, code_point: ['0x00', '0xAF']}
+      - {name: TLS_PSK_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0xAE']}
+      - {name: TLS_PSK_WITH_NULL_SHA384, code_point: ['0x00', '0xB1']}
+      - {name: TLS_PSK_WITH_NULL_SHA256, code_point: ['0x00', '0xB0']}
+  - label: Windows Server 2025
+    # Page covers Windows Server 2025 and later.
+    source: https://learn.microsoft.com/en-us/windows/win32/secauthn/tls-cipher-suites-in-windows-server-2025
+    suites:
+      - {name: TLS_AES_256_GCM_SHA384, code_point: ['0x13', '0x02']}
+      - {name: TLS_AES_128_GCM_SHA256, code_point: ['0x13', '0x01']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, code_point: ['0xC0', '0x2C']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, code_point: ['0xC0', '0x2B']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0xC0', '0x30']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0xC0', '0x2F']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384, code_point: ['0xC0', '0x24']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, code_point: ['0xC0', '0x23']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384, code_point: ['0xC0', '0x28']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, code_point: ['0xC0', '0x27']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x0A']}
+      - {name: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x09']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, code_point: ['0xC0', '0x14']}
+      - {name: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, code_point: ['0xC0', '0x13']}
+      - {name: TLS_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0x9D']}
+      - {name: TLS_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0x9C']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA256, code_point: ['0x00', '0x3D']}
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0x3C']}
+      - {name: TLS_RSA_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x35']}
+      - {name: TLS_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x2F']}
+      - {name: TLS_RSA_WITH_NULL_SHA256, code_point: ['0x00', '0x3B']}
+      - {name: TLS_RSA_WITH_NULL_SHA, code_point: ['0x00', '0x02']}
+      - {name: TLS_DHE_RSA_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0x9F']}
+      - {name: TLS_DHE_RSA_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0x9E']}
+      - {name: TLS_RSA_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x0A']}
+      - {name: TLS_CHACHA20_POLY1305_SHA256, code_point: ['0x13', '0x03']}
+      - {name: TLS_DHE_RSA_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x39']}
+      - {name: TLS_DHE_RSA_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x33']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA256, code_point: ['0x00', '0x6A']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0x40']}
+      - {name: TLS_DHE_DSS_WITH_AES_256_CBC_SHA, code_point: ['0x00', '0x38']}
+      - {name: TLS_DHE_DSS_WITH_AES_128_CBC_SHA, code_point: ['0x00', '0x32']}
+      - {name: TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA, code_point: ['0x00', '0x13']}
+      - {name: TLS_RSA_WITH_RC4_128_SHA, code_point: ['0x00', '0x05']}
+      - {name: TLS_RSA_WITH_RC4_128_MD5, code_point: ['0x00', '0x04']}
+      - {name: TLS_RSA_WITH_DES_CBC_SHA, code_point: ['0x00', '0x09']}
+      - {name: TLS_DHE_DSS_WITH_DES_CBC_SHA, code_point: ['0x00', '0x12']}
+      - {name: TLS_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x63']}  # (not in IANA data)
+      - {name: TLS_RSA_WITH_NULL_MD5, code_point: ['0x00', '0x01']}
+      - {name: TLS_RSA_EXPORT1024_WITH_RC4_56_SHA, code_point: ['0x00', '0x64']}  # (not in IANA data)
+      - {name: TLS_RSA_EXPORT_WITH_RC4_40_MD5, code_point: ['0x00', '0x03']}
+      - {name: TLS_RSA_EXPORT1024_WITH_DES_CBC_SHA, code_point: ['0x00', '0x62']}  # (not in IANA data)
+      - {name: TLS_PSK_WITH_AES_256_GCM_SHA384, code_point: ['0x00', '0xA9']}
+      - {name: TLS_PSK_WITH_AES_128_GCM_SHA256, code_point: ['0x00', '0xA8']}
+      - {name: TLS_PSK_WITH_AES_256_CBC_SHA384, code_point: ['0x00', '0xAF']}
+      - {name: TLS_PSK_WITH_AES_128_CBC_SHA256, code_point: ['0x00', '0xAE']}
+      - {name: TLS_PSK_WITH_NULL_SHA384, code_point: ['0x00', '0xB1']}
+      - {name: TLS_PSK_WITH_NULL_SHA256, code_point: ['0x00', '0xB0']}

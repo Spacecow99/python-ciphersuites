@@ -1,0 +1,183 @@
+"""Tests for the hand-curated Schannel adapter."""
+
+from __future__ import annotations
+
+from importlib import resources
+from pathlib import Path
+
+import pytest
+import yaml
+
+from ciphersuites.scrape.adapters import ADAPTERS, get_adapter
+from ciphersuites.scrape.adapters.schannel import Schannel, load_curated
+from ciphersuites.scrape.core import Record, Version, normalize_code_point
+
+FILE = "schannel_curated.yaml"
+V1 = (
+    Path(__file__).resolve().parents[2]
+    / "ciphersuites"
+    / "_ciphersuites"
+    / "schannel.yaml"
+)
+
+
+def _curated_text():
+    return (
+        resources.files("ciphersuites.scrape.data")
+        .joinpath(FILE)
+        .read_text(encoding="utf-8")
+    )
+
+
+def _entries():
+    return yaml.safe_load(_curated_text())["versions"]
+
+
+def _doc(*versions):
+    return yaml.safe_dump({"versions": list(versions)})
+
+
+def _entry(label, *suites):
+    return {
+        "label": label,
+        "source": f"https://learn.microsoft.com/{label}",
+        "suites": [{"name": n, "code_point": cp} for n, cp in suites],
+    }
+
+
+def _parse_version(version):
+    adapter = Schannel()
+    files = adapter.fetch_files(version, fetcher=None)
+    return adapter.parse({k: v.decode("utf-8") for k, v in files.items()})
+
+
+def test_registered():
+    assert ADAPTERS["schannel"] is Schannel
+    assert isinstance(get_adapter("schannel"), Schannel)
+    assert Schannel.repo is None
+
+
+def test_every_code_point_normalises():
+    for entry in _entries():
+        for suite in entry["suites"]:
+            cp = suite["code_point"]
+            assert normalize_code_point(cp) == tuple(cp), suite["name"]
+
+
+def test_covers_v1_code_points_or_documents_the_gap():
+    v1 = {
+        tuple(
+            row["fields"][k]
+            for k in ("hex_byte_1", "hex_byte_2", "hex_byte_3")
+            if k in row["fields"]
+        ): row["pk"]
+        for row in yaml.safe_load(V1.read_text(encoding="utf-8"))
+    }
+    curated = {tuple(s["code_point"]) for e in _entries() for s in e["suites"]}
+    text = _curated_text()
+    for cp, name in v1.items():
+        if cp not in curated:
+            assert f"# not in any Microsoft Learn page: {name}" in text, name
+
+
+def test_newest_windows_has_tls13():
+    newest = Schannel().discover_versions()[-1]
+    records = _parse_version(newest).records
+    assert Record("TLS_AES_128_GCM_SHA256", ("0x13", "0x01")) in records
+
+
+def test_discover_versions_one_per_entry_in_file_order():
+    entries = _entries()
+    versions = Schannel().discover_versions()
+    assert versions == [Version(e["label"], e["source"], None) for e in entries]
+    assert len(versions) == 18
+    assert versions[0].label == "Windows Vista"
+    assert versions[-1].label == "Windows Server 2025"
+    assert all(
+        v.ref.startswith("https://learn.microsoft.com/") for v in versions
+    )
+
+
+def test_version_order_is_file_order_not_line_key():
+    adapter = Schannel()
+    labels = [v.label for v in adapter.discover_versions()]
+    assert adapter.version_order(list(reversed(labels))) == labels
+    assert adapter.version_order(["Windows 8.1", "Windows 7"]) == [
+        "Windows 7",
+        "Windows 8.1",
+    ]
+
+
+def test_files_and_source_url():
+    adapter = Schannel()
+    version = adapter.discover_versions()[3]
+    assert adapter.files_for(version) == [FILE]
+    assert adapter.source_url(version, FILE) == version.ref
+
+
+def test_parse_each_version_gives_exactly_its_suites():
+    adapter = Schannel()
+    for version, entry in zip(adapter.discover_versions(), _entries()):
+        result = _parse_version(version)
+        expected = [
+            Record(s["name"], tuple(s["code_point"])) for s in entry["suites"]
+        ]
+        assert result.records == expected, version.label
+        assert result.total_keys == len(entry["suites"])
+        assert not result.unmatched_keys
+
+
+def test_fetch_files_returns_only_that_versions_slice():
+    adapter = Schannel()
+    first, last = (
+        adapter.discover_versions()[0],
+        adapter.discover_versions()[-1],
+    )
+    one = adapter.fetch_files(first, fetcher=None)
+    two = adapter.fetch_files(last, fetcher=None)
+    assert list(one) == [FILE] == list(two)
+    assert one[FILE] != two[FILE]
+    assert len(yaml.safe_load(one[FILE])["versions"]) == 1
+
+
+def test_names_unique_within_each_version():
+    for entry in _entries():
+        names = [s["name"] for s in entry["suites"]]
+        assert len(names) == len(set(names)), entry["label"]
+
+
+def test_curated_data_passes_validation():
+    assert [e["label"] for e in load_curated(_curated_text())] == [
+        e["label"] for e in _entries()
+    ]
+
+
+def test_duplicate_name_within_version_is_an_error():
+    text = _doc(_entry("A", ("X", ["0x00", "0x01"]), ("X", ["0x00", "0x01"])))
+    with pytest.raises(ValueError, match="duplicate"):
+        load_curated(text)
+
+
+def test_name_with_two_code_points_across_versions_is_an_error():
+    text = _doc(
+        _entry("A", ("X", ["0x00", "0x01"])),
+        _entry("B", ("X", ["0x00", "0x02"])),
+    )
+    with pytest.raises(ValueError, match="two code points"):
+        load_curated(text)
+
+
+def test_bad_code_point_is_an_error():
+    with pytest.raises(ValueError):
+        load_curated(_doc(_entry("A", ("X", ["0x00", "0xZZ"]))))
+
+
+def test_duplicate_label_is_an_error():
+    text = _doc(_entry("A"), _entry("A"))
+    with pytest.raises(ValueError, match="label"):
+        load_curated(text)
+
+
+def test_missing_keys_are_an_error():
+    with pytest.raises(ValueError, match="versions"):
+        load_curated("other: []\n")

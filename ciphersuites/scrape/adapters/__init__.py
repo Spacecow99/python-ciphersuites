@@ -28,6 +28,7 @@ from ciphersuites.scrape.adapters import (  # noqa: E402,F401
     nss,
     openssl,
     s2n,
+    schannel,
 )
 
 __all__ = ["ADAPTERS", "Adapter", "get_adapter", "register"]
