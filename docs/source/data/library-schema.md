@@ -306,10 +306,13 @@ Example from `iana.yaml` at data commit `c24a21e`:
     recommended: Y
 ```
 
-The values of `recommended` have no quotes in the file. PyYAML reads
-them as the strings `'Y'`, `'N'` and `'D'`. The YAML 1.1 specification
-lists an unquoted `Y` or `N` as a boolean, and some parsers follow it.
-Check that your parser reads these values as strings.
+The values of `recommended` have no quotes in the file. PyYAML's
+`yaml.safe_load` reads them as the strings `'Y'`, `'N'` and `'D'`.
+(PyYAML reads the unquoted words `yes` and `no` as booleans, but not
+`Y` and `N`.) Other YAML 1.1 parsers may read these values differently.
+Compare the values as strings, and check what your parser returns. The
+meaning of each value is in
+[`iana.yaml`](reference-sources.md#ianayaml).
 
 ## Check the examples against the real file
 

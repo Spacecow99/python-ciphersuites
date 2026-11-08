@@ -72,7 +72,8 @@ For each code point, it gives:
 
 - a name, for example `TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256`;
 - whether the suite may be used with DTLS;
-- whether the {term}`IETF` recommends the suite.
+- a "Recommended" value: `Y`, `N` or `D`. The registry defines these
+  values; see [`iana.yaml`](../data/reference-sources.md#ianayaml).
 
 The names in the IANA registry start with `TLS_`. This documentation
 calls them *IANA names*. The project reads the registry as one of its

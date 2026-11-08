@@ -92,10 +92,14 @@ state its purpose.
 ## The workflow file
 
 `.github/workflows/scrape_format_ciphersuites.yaml` is a GitHub Actions
-workflow. It runs the scraper and commits the new data files. It has a
-weekly schedule (Sundays at 00:00 UTC) and can also be started by hand.
-At commit `c24a21e`, this version of the workflow exists only on the
-branch `claude/modest-tesla-n4t2ke`, not on `main`. The
+workflow. It runs the scraper and commits the new data files. The file
+defines a weekly schedule (Sundays at 00:00 UTC) and a manual start. At
+commit `c24a21e`, this version of the workflow exists only on the
+branch `claude/modest-tesla-n4t2ke`, not on `main`. GitHub runs
+scheduled workflows on the latest commit of the default branch. So the
+weekly schedule takes effect only when the workflow file is on the data
+repository's default branch. Until then, the workflow runs on the branch
+only when someone starts it by hand. The
 [developer guide](../developer/data-repo-workflow.md) describes it.
 
 The workflow commits only the fourteen data files that the scraper
