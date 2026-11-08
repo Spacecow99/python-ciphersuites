@@ -37,6 +37,7 @@ scrape-libressl = "ciphersuites._scripts.scrape_libressl:main"
 scrape-boringssl = "ciphersuites._scripts.scrape_boringssl:main"
 scrape-s2n = "ciphersuites._scripts.scrape_s2n:main"
 scrape-mbedtls = "ciphersuites._scripts.scrape_mbedtls:main"
+ciphersuites-scrape = "ciphersuites.scrape.cli:main"
 
 
 [project.urls]
