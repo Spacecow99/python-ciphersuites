@@ -1,6 +1,6 @@
 # Task reports — plan: docs/superpowers/plans/2026-11-08-scraping-robustness.md
 
-Implementer reports for Tasks 1-15, concatenated from the git-ignored SDD workspace.
+Implementer reports for Tasks 1-16, concatenated from the git-ignored SDD workspace.
 
 ---
 
@@ -441,3 +441,17 @@ Diff reviewed; no adapter catches exceptions except per-item parse tolerance ret
 - `keep_last = 1` on Iana, TestSsl, Scanigma (rolling stays True); parametrised test asserts both.
 - Scanigma `fetch_files` skips items with empty/missing/null url (no `detail/.html` fetch); they stay unmatched and counted in total; test added. Comment at the detail-fetch loop documents that a failed detail fetch propagates and fails the version.
 - Verification: pytest 377 passed (also 3.9 via uv, uv.lock removed); black clean; pylint 10.00 zero messages; bandit no findings.
+
+---
+
+<!-- task-16-report.md -->
+
+# Task 16 report
+Status: DONE
+Commits: 020a6de golden (generated from the old function first); c536343 move + tests.
+Implemented: ciphersuites/parse_name.py with complete_cs_instance(name, code_point); second (unreachable) SCSV branch deleted; CodePoint imported under TYPE_CHECKING only (no runtime import of scrape code, avoids circular import). ciphersuites/__init__.py keeps a thin wrapper (instance -> name + code point tuple) because _scripts/complete_cs_instance.py and public users call it; unused `import re` removed there.
+Golden: tests/fixtures/expected/parse_name_iana.yaml, 358 IANA records keyed by name (names unique).
+Tests: tests/test_parse_name.py (8): golden, key set, SCSV, CCM_8, TLS1.3 GCM, TLS_SHA256_SHA256 at C0B4, GOST at C100 (KUZNYECHIK_CTR_OMAC), SSLv2 3-byte case. All brief assertions held against the current function's output.
+TDD: RED = collection error, module missing. GREEN = 8 passed, golden unchanged (not regenerated after the move).
+Verification: pytest 385 passed; black clean; pylint 10/10 no messages; bandit clean (existing nosec warnings only); py3.9 uv run 385 passed; uv.lock removed.
+Concerns: none. Note some golden values reflect legacy quirks (e.g. TLS_AES_128_CCM_ASCONHASH256 parsed with authentication "128 CCM ASCONHASH256", aead false); characterised as-is, not fixed.

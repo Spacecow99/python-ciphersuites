@@ -186,3 +186,8 @@ Task 15: fix round 1/5 dispatched to a2128c6b7f002e830 (keep_last=1 + test; skip
 Task 15: fix round 1/5 (3 addressed, 0 open — keep_last=1 on iana/testssl/scanigma + test; empty-url items skipped and unmatched + test; all-or-nothing detail fetch documented; commit f230f69). Scoped re-review done by controller on the 35-line diff (all 3 findings verified); 377 passed (3.13+3.9), lint clean.
 Task 15: minor (deferred, final review): IANA denominator counts range rows once while records expand; testssl total_keys includes 4 nameless lines (total != records at full coverage, note for gates); import ordering in adapters/__init__.py and test_fetch.py; Scanigma SSL_CK_NULL_WITH_MD5 page gives 2-byte termCode 0x00,0x00 (kept as published; testssl has 3 bytes); no politeness delay across ~418 Scanigma requests.
 Task 15: complete (commits 55eeed8..f230f69, review clean)
+Task 16: implementer aff27911d263d2255 (sonnet), base 604e58c.
+Task 16: first head c536343 (DONE; 020a6de golden, c536343 move). Controller verified: 385 passed (3.13+3.9), lint clean, golden byte-identical across move. Wrapper kept in __init__.py for _scripts; CodePoint under TYPE_CHECKING. Reviewer a8c373d8908feab9f (sonnet) dispatched.
+Task 16: review approved (0 Crit/Imp). Deleted SCSV branch proven unreachable (identical condition); wrapper preserves _scripts call shape; golden len guard catches name collisions.
+Task 16: minor (deferred, final review / follow-up): golden characterises bad legacy parses of new IANA names (e.g. TLS_AES_128_{CCM,GCM}_ASCONHASH256 -> aead false, key_exchange AES, encryption ''); wrapper pylint disable is function-wide.
+Task 16: complete (commits 604e58c..c536343, review clean)
