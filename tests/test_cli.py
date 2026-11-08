@@ -36,6 +36,29 @@ def test_bad_accept_and_unknown_library(tmp_path):
         assert exc.value.code == 2
 
 
+def test_accept_keys_are_stripped(tmp_path, monkeypatch):
+    captured = {}
+    monkeypatch.setattr(cli, "run", fake_run(captured))
+    cli.main(
+        [
+            "--out",
+            str(tmp_path),
+            "--accept",
+            " schannel : X ",
+            "--reason",
+            "why",
+        ]
+    )
+    assert captured["options"].accepts == {("schannel", "X"): "why"}
+
+
+def test_blank_accept_part_is_rejected(tmp_path, monkeypatch):
+    monkeypatch.setattr(cli, "run", fake_run({}))
+    with pytest.raises(SystemExit) as exc:
+        cli.main(["--out", str(tmp_path), "--accept", " :3.0", "--reason", "x"])
+    assert exc.value.code == 2
+
+
 def test_options_are_passed_through(tmp_path, monkeypatch):
     captured = {}
     monkeypatch.setattr(cli, "run", fake_run(captured))

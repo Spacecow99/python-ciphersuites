@@ -48,6 +48,7 @@ def _accepts(
         parser.error("--accept requires --reason")
     for item in args.accept or []:
         library, sep, version = item.partition(":")
+        library, version = library.strip(), version.strip()
         if not (sep and library and version):
             parser.error(f"--accept expects LIB:VER, got {item!r}")
         accepts[(library, version)] = args.reason
