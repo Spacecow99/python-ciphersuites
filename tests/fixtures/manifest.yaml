@@ -18,6 +18,16 @@
   url: https://raw.githubusercontent.com/google/boringssl/0131ae9d78e42fcc2c1811315e62410ad96d8230/include/openssl/tls1.h
   path: include/openssl/tls1.h
   sha256: sha256:56615a8877a7af97a6411a55555664c9589baf907747bedaf03a1d49b8b90cc1
+- library: go
+  label: '1.12'
+  url: https://raw.githubusercontent.com/golang/go/46cb016190389b7e37b21f04e5343a628ca1f662/src/crypto/tls/cipher_suites.go
+  path: src/crypto/tls/cipher_suites.go
+  sha256: sha256:9a8f65b558b3023091d25c8f35f634368384f928e3e3601d80f94aff7221fbce
+- library: go
+  label: '1.27'
+  url: https://raw.githubusercontent.com/golang/go/2aae1000ea1d4b28923b96db28acf4e3b99d6aff/src/crypto/tls/cipher_suites.go
+  path: src/crypto/tls/cipher_suites.go
+  sha256: sha256:c4287a0bc707876b78f792f086944ce43b9622750b57a79f68ac1de6e468b2b1
 - library: libressl
   label: '2.5'
   url: https://raw.githubusercontent.com/libressl/openbsd/5273db82477cf71f48f9875120989578a47493af/src/lib/libssl/ssl2.h

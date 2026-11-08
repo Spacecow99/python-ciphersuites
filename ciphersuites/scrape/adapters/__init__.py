@@ -20,6 +20,7 @@ from ciphersuites.scrape.adapters.base import (
 # pylint: disable-next=wrong-import-position,unused-import
 from ciphersuites.scrape.adapters import (  # noqa: E402,F401
     boringssl,
+    go,
     libressl,
     openssl,
 )
