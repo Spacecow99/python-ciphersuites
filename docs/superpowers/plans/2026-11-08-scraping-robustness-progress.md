@@ -229,3 +229,12 @@ Task 20: complete (commits a912b4b..bad464c, review clean)
 Task 20a (LibreSSL <=2.4 header path fix, from Task 20 dry run): implementer af2ea495ca63f7bb2 (sonnet), base 07dc2e7. Ruling: fix as a separate follow-up task before Task 21 — real data defect blocking Task 22 parity — cost: one extra review cycle.
 Task 20a: head 304b9a6 (DONE). Controller verified 494 passed (3.13+3.9), lint clean; diff read in full (files_for base by line <2.5; 2.4 fixture libressl-v2.4.5, 185 records, coverage 0.9737 == 2.5). Live --library libressl dry run: exit 0, no FILE_MISSING. Review: controller-only (10-line code change).
 Task 20a: complete (commits 07dc2e7..304b9a6, review clean)
+Task 21: implementer a43a9ad59fb586cf8 (sonnet), base bcfbc3a.
+Task 21: Ruling: supported_in/first_seen/last_seen include stale versions (stale = best known membership) — if wrong, API over-reports support during outages.
+Task 21: Ruling: only tuples/lists are code points in get(); strings are always names — avoids "0xC02F"-style guessing — if wrong, callers must pass tuples.
+Task 21: first head 9bf5df5 (DONE). Controller verified 517 passed (3.13+3.9), lint clean. Added schema.loads; packaging test copies catalog+scrape; fixture adds testssl.yaml.
+Task 21: controller found nondeterministic Candidate.versions order (set iteration; test_ambiguous_name fails ~3/4 runs). Pre-review fix sent to a43a9ad59fb586cf8 (written version order; audit set-derived ordering; multi-PYTHONHASHSEED evidence).
+Task 21: pre-review fix head 1ead5f1. Controller verified 518 passed at PYTHONHASHSEED 11/22/33/44 and on 3.9; lint clean.
+Task 21: review approved (0 Crit/Imp). Probed RC4-MD5 narrowing (3.0 resolves, 1.0.2 ambiguous), import has no requests/disk read, v1 dir -> DataNotFoundError.
+Task 21: minor (deferred, final review): get(code_point, library=, version=) ignores narrowing (consider KeyError when not a member); v1 error message lacks submodule hint; supported_by docstring omits KeyError; CipherSuite._bind uses object.__setattr__.
+Task 21: complete (commits bcfbc3a..1ead5f1, review clean)

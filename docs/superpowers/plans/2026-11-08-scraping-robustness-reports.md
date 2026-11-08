@@ -1,6 +1,6 @@
 # Task reports — plan: docs/superpowers/plans/2026-11-08-scraping-robustness.md
 
-Implementer reports for Tasks 1-20, concatenated from the git-ignored SDD workspace.
+Implementer reports for Tasks 1-21, concatenated from the git-ignored SDD workspace.
 
 ---
 
@@ -582,3 +582,34 @@ Notes: libressl 2.0-2.4 fail with FILE_MISSING for src/lib/libssl/ssl2.h at thos
 - Minor 6 done: helpers moved to ciphersuites/scrape/merge.py (runner.py 358 lines, merge.py 153).
 - New codes in validate.py: RUNNER_ERROR, CATALOGUE_SKIPPED.
 - Tests: 491 passed (py3.9 too), black/pylint/bandit clean. Live scrape not re-run.
+
+---
+
+<!-- task-21-report.md -->
+
+# Task 21 report: Catalog query API
+
+Status: DONE. Commit 9bf5df5 "Add lazy catalog query API".
+
+RED: tests/test_catalog.py failed at collection (no ciphersuites.catalog).
+GREEN: 517 passed on 3.x and on Python 3.9 (uv). black, pylint (10.00), bandit clean.
+
+Files:
+- ciphersuites/catalog.py (new): DataNotFoundError, Candidate, AmbiguousNameError, CipherSuite, Catalog, module functions with lazy locked default (`_default`, `_default_location()` are the monkeypatch points).
+- ciphersuites/__init__.py: imports DataNotFoundError from catalog.
+- ciphersuites/scrape/schema.py: added public `loads(text, where)` (wraps `_parse`) so Traversable text can be parsed with the same safe loader.
+- tests/fixtures/catalog_v2/: ciphersuites, openssl (1.0.2/1.1.1/3.0), go, iana, testssl; generated with to_doc/dump/build_catalog. Includes RC4-MD5 ambiguity, an openssl code point (0x56,0x00) absent from the catalogue.
+- tests/test_catalog.py (new); tests/test_data_packaging.py: the uninitialised-submodule subprocess test copies only __init__.py, so it now also copies catalog.py and scrape/ (needed because __init__ imports catalog).
+
+Notes / concerns:
+- get() by code point ignores library/version (narrowing applies to names only).
+- Name index includes reference docs (library="iana" etc.) and catalogue names (library None); narrowing by library excludes catalogue entries.
+- supported_by/versions accept reference libraries too; libraries() excludes them.
+- Fallback name for catalogue-absent code points uses kind=library docs only, libraries in sorted order.
+- Testing for fixture-absent-from-catalogue name is synthetic ("TLS_FALLBACK_SCSV_X").
+
+## Fix report: hash-seed nondeterminism
+Cause: Candidate.versions was built from a set of labels (order = PYTHONHASHSEED). Fix: `Catalog._candidates` now orders each candidate's versions by the library's written version order. Audit of catalog.py: all other outputs are already ordered (find/supported_by sorted by code point; names_of sorted names within written-order versions; membership uses written order; fallback name uses min over (rank, name); candidates sorted by code point then library). Only that one spot was set-ordered.
+Regression: `test_deterministic_under_hash_seeds` runs the ambiguous lookup in subprocesses with PYTHONHASHSEED 0-5 and requires identical output; test_ambiguous_name asserts the exact order.
+Multi-seed run (`PYTHONHASHSEED=s pytest -q tests/test_catalog.py`, s=0..5): 24 passed in each of the six runs.
+Full: 518 passed (also on 3.9); black, pylint, bandit clean.
