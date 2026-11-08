@@ -18,6 +18,16 @@
   url: https://raw.githubusercontent.com/google/boringssl/0131ae9d78e42fcc2c1811315e62410ad96d8230/include/openssl/tls1.h
   path: include/openssl/tls1.h
   sha256: sha256:56615a8877a7af97a6411a55555664c9589baf907747bedaf03a1d49b8b90cc1
+- library: gnutls
+  label: '3.6'
+  url: https://raw.githubusercontent.com/gnutls/gnutls/95342ca6b0f96453ee4dd93f113e46e8d5cabac0/lib/algorithms/ciphersuites.c
+  path: lib/algorithms/ciphersuites.c
+  sha256: sha256:825e03c93724153773a698f63f2cd50e8055fbe48a470776c7fb63fe063bb3cd
+- library: gnutls
+  label: '3.8'
+  url: https://raw.githubusercontent.com/gnutls/gnutls/b390d80208ed60f1b33ad899475951a8efb40ccd/lib/algorithms/ciphersuites.c
+  path: lib/algorithms/ciphersuites.c
+  sha256: sha256:3bb5f1bf2be148048d6590bcf50920e97c897c71331296852b30e56173e73db6
 - library: go
   label: '1.12'
   url: https://raw.githubusercontent.com/golang/go/46cb016190389b7e37b21f04e5343a628ca1f662/src/crypto/tls/cipher_suites.go
