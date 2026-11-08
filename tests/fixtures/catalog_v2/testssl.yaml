@@ -1,0 +1,23 @@
+schema_version: 2
+kind: reference
+library: testssl
+source: https://example.invalid/testssl
+versions:
+- label: '3.2'
+  ref: ref-3.2
+  commit: null
+  files:
+    f.h: sha256:00
+  scraped_at: '2026-11-08T00:00:00Z'
+  status: ok
+  last_error: null
+  accepted: null
+suites:
+- code_point:
+  - '0x01'
+  - '0x00'
+  - '0x80'
+  names:
+  - name: SSL_CK_RC4_128_WITH_MD5
+    versions:
+    - '3.2'

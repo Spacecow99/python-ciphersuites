@@ -223,6 +223,11 @@ def _parse(text: str, where: str) -> Any:
         raise SchemaError(f"{where}: invalid YAML: {exc}") from exc
 
 
+def loads(text: str, where: str) -> Any:
+    """Parse YAML ``text`` with a safe loader; errors become SchemaError."""
+    return _parse(text, where)
+
+
 def load_yaml(path: Path) -> Any:
     """Load a YAML file with a safe loader; YAML errors become SchemaError."""
     return _parse(path.read_text(encoding="utf-8"), str(path))

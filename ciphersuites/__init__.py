@@ -10,11 +10,9 @@ from importlib import resources
 
 import yaml
 
+from ciphersuites.catalog import DataNotFoundError
+
 __version__ = "0.0.1"
-
-
-class DataNotFoundError(RuntimeError):
-    """Raised when the bundled ciphersuite data files cannot be loaded."""
 
 
 def _load_yaml(name):

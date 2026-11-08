@@ -44,6 +44,12 @@ def test_uninitialised_submodule_raises_clear_error(tmp_path):
     pkg = tmp_path / "ciphersuites"
     pkg.mkdir()
     shutil.copy(REPO_ROOT / "ciphersuites" / "__init__.py", pkg / "__init__.py")
+    shutil.copy(REPO_ROOT / "ciphersuites" / "catalog.py", pkg / "catalog.py")
+    shutil.copytree(
+        REPO_ROOT / "ciphersuites" / "scrape",
+        pkg / "scrape",
+        ignore=shutil.ignore_patterns("__pycache__"),
+    )
     (pkg / "_ciphersuites").mkdir()
     code = "import ciphersuites\n"
     proc = subprocess.run(
