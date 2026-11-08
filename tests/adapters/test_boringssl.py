@@ -2,13 +2,16 @@
 
 from __future__ import annotations
 
+import re
 import shutil
+import subprocess
 from pathlib import Path
 
 import pytest
 import yaml
 
 from ciphersuites.catalog import Catalog
+from ciphersuites.scrape import versions as versions_module
 from ciphersuites.scrape.adapters import boringssl
 from ciphersuites.scrape.adapters._openssl_family import parse_ck_txt
 from ciphersuites.scrape.adapters.boringssl import BoringSSL, default_build
@@ -20,20 +23,6 @@ TAGS_FILE = FIXTURE_DIR / "tags" / "boringssl.txt"
 LABELS = ["2014-09-15", "2016-06-02", "2016-08-26", "2026-11-08"]
 RC4_SHA = ("0x00", "0x05")
 SHA = "0" * 40
-
-
-def _captured_tags():
-    tags = {}
-    peeled = {}
-    for line in TAGS_FILE.read_text(encoding="utf-8").splitlines():
-        sha, ref = line.split("\t")
-        name = ref[len("refs/tags/") :]
-        if name.endswith("^{}"):
-            peeled[name[:-3]] = sha
-        else:
-            tags[name] = sha
-    tags.update({n: s for n, s in peeled.items() if n in tags})
-    return tags
 
 
 def _points(result):
@@ -127,8 +116,30 @@ def test_parse_counts_unresolved_ids():
     assert result.join_coverage < 1
 
 
+def _fake_runner(extra=()):
+    lines = TAGS_FILE.read_text(encoding="utf-8").splitlines()
+    lines += [f"{SHA}\trefs/tags/{name}" for name in extra]
+
+    def run(argv, **_):
+        return subprocess.CompletedProcess(argv, 0, "\n".join(lines) + "\n")
+
+    return run
+
+
 def test_discover_versions(monkeypatch):
-    monkeypatch.setattr(boringssl, "ls_remote_tags", lambda _: _captured_tags())
+    near_misses = [
+        "0.2024091.0",
+        "0.20240913.0-rc1",
+        "0.20240913",
+        "x0.20240913.0",
+    ]
+    monkeypatch.setattr(
+        boringssl,
+        "ls_remote_tags",
+        lambda repo: versions_module.ls_remote_tags(
+            repo, runner=_fake_runner(near_misses)
+        ),
+    )
     versions = BoringSSL().discover_versions()
     frozen = versions[:18]
     assert [v.label for v in frozen][0] == "2014-09-15"
@@ -136,10 +147,17 @@ def test_discover_versions(monkeypatch):
     assert all(v.ref == v.commit for v in frozen)
     tags = versions[18:]
     assert tags
-    assert all(v.label.startswith("0.") for v in tags)
-    assert all(v.ref == v.label and v.commit for v in tags)
+    assert all(re.fullmatch(r"0\.\d{8}\.\d+", v.label) for v in tags)
+    assert not {v.label for v in tags} & set(near_misses)
     assert not any("fips" in v.label or "cocoapods" in v.label for v in tags)
-    assert tags[0].repo == "https://github.com/google/boringssl"
+    by_label = {v.label: v for v in tags}
+    # Annotated tag: the peeled commit, not the tag object.
+    assert by_label["0.20240913.0"] == Version(
+        "0.20240913.0",
+        "0.20240913.0",
+        "58f3bc83230d2958bb9710bc910972c4f5d382dc",
+        "https://github.com/google/boringssl",
+    )
     assert BoringSSL().rolling is False
 
 
@@ -162,6 +180,102 @@ def test_files_for():
         "ssl/ssl_cipher.cc",
         *headers,
     ]
+
+
+def test_files_for_unknown_label_raises():
+    adapter = BoringSSL()
+    for label in ("2025-03-17", "HEAD", "0.2024091.0"):
+        with pytest.raises(ValueError, match="unknown BoringSSL version"):
+            adapter.files_for(Version(label, SHA, SHA))
+
+
+def _table(*entries):
+    return (
+        "static const SSL_CIPHER kCiphers[] = {\n"
+        + "\n".join(entries)
+        + "\n};\n"
+    )
+
+
+def _parse(table, headers=""):
+    return BoringSSL().parse(
+        {"ssl/ssl_cipher.cc": table, "include/openssl/ssl3.h": headers}
+    )
+
+
+HDR = (
+    '#define SSL3_TXT_A "A-NAME"\n#define SSL3_CK_A 0x0300000A\n'
+    '#define SSL3_TXT_B "B-NAME"\n#define SSL3_CK_B 0x0300000B\n'
+)
+
+
+def test_brace_in_string_does_not_end_table():
+    result = _parse(
+        _table(
+            '{ SSL3_TXT_A, "}", SSL3_CK_A, x },',
+            "{ SSL3_TXT_B, SSL3_CK_B, x },",
+        ),
+        HDR,
+    )
+    assert [r.name for r in result.records] == ["A-NAME", "B-NAME"]
+    assert not result.unmatched_keys
+    assert result.total_keys == 2
+
+
+def test_brace_in_string_with_escaped_quote():
+    result = _parse(_table(r'{ SSL3_TXT_A, "a\"}", SSL3_CK_A, x },'), HDR)
+    assert len(result.records) == 1
+
+
+def test_nested_braces_in_entry():
+    result = _parse(
+        _table(
+            "{ SSL3_TXT_A, SSL3_CK_A, {1, 2}, x },",
+            "{ SSL3_TXT_B, SSL3_CK_B, x },",
+        ),
+        HDR,
+    )
+    assert [r.name for r in result.records] == ["A-NAME", "B-NAME"]
+    assert not result.unmatched_keys
+
+
+def test_second_id_token_in_entry_lowers_coverage():
+    result = _parse(_table("{ SSL3_TXT_A, SSL3_CK_A, SSL3_CK_B, x },"), HDR)
+    assert len(result.records) == 1
+    assert result.total_keys == 2
+    assert result.unmatched_keys == ["SSL3_CK_B"]
+    assert result.join_coverage == 0.5
+
+
+def test_unclosed_entry_raises():
+    with pytest.raises(ValueError, match="unterminated cipher table"):
+        _parse(
+            _table(
+                "{ SSL3_TXT_A, SSL3_CK_A, x },", "{ SSL3_TXT_B, SSL3_CK_B, x"
+            ),
+            HDR,
+        )
+
+
+def test_invalid_entry_is_skipped_and_not_counted():
+    result = _parse(
+        _table(
+            "{ 0, SSL3_TXT_A, SSL3_CK_A, x },",
+            "{ 1, SSL3_TXT_B, SSL3_CK_B, x },",
+        ),
+        HDR,
+    )
+    assert [r.name for r in result.records] == ["B-NAME"]
+    assert result.total_keys == 1
+    assert not result.unmatched_keys
+
+
+def test_wide_id_raises():
+    headers = (
+        HDR + "#define SSL3_CK_W 0x02010080\n" + '#define SSL3_TXT_W "W"\n'
+    )
+    with pytest.raises(ValueError, match="wider than 16 bits"):
+        _parse(_table("{ SSL3_TXT_W, SSL3_CK_W, x },"), headers)
 
 
 def test_version_order_mixed():
@@ -218,6 +332,9 @@ def test_default_build(text, kept):
         "#define X 1",
         "#if 1\nA",
         "#if 1\n#else\n#else\n#endif",
+        "#else\nA\n#endif",
+        "#endif",
+        "#if defined X\nA\n#endif",
     ],
 )
 def test_default_build_rejects_unsupported(text):

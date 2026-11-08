@@ -10,6 +10,7 @@ has no releases: versions are a frozen list of dated change points plus the
 from __future__ import annotations
 
 import re
+from collections import Counter
 from typing import Dict, List, Optional, Tuple
 
 from ciphersuites.scrape.adapters._openssl_family import (
@@ -17,7 +18,7 @@ from ciphersuites.scrape.adapters._openssl_family import (
     blank_comments,
 )
 from ciphersuites.scrape.adapters.base import Adapter, register
-from ciphersuites.scrape.core import ParseResult, Record, Version
+from ciphersuites.scrape.core import CodePoint, ParseResult, Record, Version
 from ciphersuites.scrape.helpers import resolve_aliases, split_hex_word
 from ciphersuites.scrape.versions import ls_remote_tags
 
@@ -168,9 +169,20 @@ def _table_body(text: str) -> str:
     if start is None:
         raise ValueError("cipher table not found")
     depth = 1
+    quoted = False
+    escaped = False
     for pos in range(start.end(), len(text)):
         char = text[pos]
-        if char == "{":
+        if quoted:
+            if escaped:
+                escaped = False
+            elif char == "\\":
+                escaped = True
+            elif char == '"':
+                quoted = False
+        elif char == '"':
+            quoted = True
+        elif char == "{":
             depth += 1
         elif char == "}":
             depth -= 1
@@ -185,35 +197,39 @@ def _entries(body: str) -> List[List[str]]:
     fields: Optional[List[str]] = None
     current: List[str] = []
     parens = 0
+    braces = 0
     quoted = False
+    escaped = False
     for char in body:
-        if quoted:
-            current.append(char)
-            quoted = char != '"'
-        elif fields is None:
+        if fields is None:
             if char == "{":
                 fields = []
                 current = []
-                parens = 0
+                parens = braces = 0
+            continue
+        if quoted:
+            current.append(char)
+            if escaped:
+                escaped = False
+            elif char == "\\":
+                escaped = True
+            elif char == '"':
+                quoted = False
         elif char == '"':
             quoted = True
             current.append(char)
-        elif char == "(":
-            parens += 1
-            current.append(char)
-        elif char == ")":
-            parens -= 1
-            current.append(char)
-        elif char == "," and parens == 0:
-            fields.append("".join(current).strip())
-            current = []
-        elif char == "}" and parens == 0:
+        elif char == "}" and parens == 0 and braces == 0:
             last = "".join(current).strip()
             if last:
                 fields.append(last)
             entries.append(fields)
             fields = None
+        elif char == "," and parens == 0 and braces == 0:
+            fields.append("".join(current).strip())
+            current = []
         else:
+            parens += (char == "(") - (char == ")")
+            braces += (char == "{") - (char == "}")
             current.append(char)
     return entries
 
@@ -240,6 +256,13 @@ def _resolve_name(token: str, defines: Dict[str, str]) -> Optional[str]:
     return None
 
 
+def _code_point(literal: str) -> CodePoint:
+    number = int(literal.rstrip("uUlL"), 16)
+    if number >> 16 not in (0, 0x0300):
+        raise ValueError(f"cipher id wider than 16 bits: {literal!r}")
+    return split_hex_word(f"{number & 0xFFFF:04X}")
+
+
 def _scsv_records(defines: Dict[str, str]) -> List[Record]:
     kinds = sorted({k for m, k in _SCSV_MACROS.items() if m in defines})
     return [Record(*SIGNALLING[kind]) for kind in kinds]
@@ -263,7 +286,13 @@ class BoringSSL(Adapter):
         return versions
 
     def files_for(self, version: Version) -> List[str]:
-        return [_TABLE_PATHS.get(version.label, _CC)] + _HEADERS
+        if version.label in _TABLE_PATHS:
+            table = _TABLE_PATHS[version.label]
+        elif _TAG.fullmatch(version.label):
+            table = _CC
+        else:
+            raise ValueError(f"unknown BoringSSL version {version.label!r}")
+        return [table] + _HEADERS
 
     def parse(self, files: Dict[str, str]) -> ParseResult:
         tables = [p for p in files if p not in _HEADERS]
@@ -271,29 +300,31 @@ class BoringSSL(Adapter):
             raise ValueError(f"expected one cipher table file, got {tables}")
         defines = _defines(files)
         table = default_build(_table_body(blank_comments(files[tables[0]])))
-        total = len(_ID_TOKEN.findall(table))
+        counted = Counter(_ID_TOKEN.findall(table))
         code_points, _ = resolve_aliases(
             defines, lambda v: bool(_LITERAL.fullmatch(v))
         )
+        used: Counter = Counter()
         records: List[Record] = []
-        unmatched: List[str] = []
         for fields in _entries(table):
+            ids = [f for f in fields if _ID_TOKEN.fullmatch(f)]
             if fields and fields[0] == "0":
+                # Intentionally skipped: not counted, not a record.
+                counted.subtract(ids)
                 continue
             if fields and fields[0] == "1":
                 fields = fields[1:]
-            ids = [f for f in fields if _ID_TOKEN.fullmatch(f)]
             name = _resolve_name(fields[0], defines) if fields else None
             if not ids or ids[0] not in code_points or name is None:
-                unmatched.append(ids[0] if ids else "?")
                 continue
-            number = int(code_points[ids[0]].rstrip("uUlL"), 16) & 0xFFFF
-            records.append(Record(name, split_hex_word(f"{number:04X}")))
+            records.append(Record(name, _code_point(code_points[ids[0]])))
+            used[ids[0]] += 1
+        unmatched = sorted((counted - used).elements())
         scsv = _scsv_records(defines)
         return ParseResult(
             records=records + scsv,
-            total_keys=total + len(scsv),
-            unmatched_keys=sorted(unmatched),
+            total_keys=sum(counted.values()) + len(scsv),
+            unmatched_keys=unmatched,
         )
 
     def version_order(self, labels: List[str]) -> List[str]:
