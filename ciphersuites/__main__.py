@@ -11,10 +11,7 @@ import os
 import sys
 import json
 
-from ciphersuites import (
-    __version__,
-    CIPHERSUITES
-)
+from ciphersuites import __version__, CIPHERSUITES
 
 
 def main():
@@ -30,4 +27,3 @@ if __name__ == "__main__":
         main()
     except KeyboardInterrupt:
         print("")
-

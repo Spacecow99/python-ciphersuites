@@ -2,20 +2,14 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field, replace
+from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional, Set, Tuple
 
 from ciphersuites.scrape.adapters.base import Adapter
 from ciphersuites.scrape.build_catalog import PRECEDENCE, build_catalog
-from ciphersuites.scrape.core import (
-    CodePoint,
-    ParseResult,
-    Record,
-    Version,
-    code_point_sort_key,
-)
+from ciphersuites.scrape.core import ParseResult, Version
 from ciphersuites.scrape.fetch import (
     Fetcher,
     FetchError,
@@ -23,10 +17,16 @@ from ciphersuites.scrape.fetch import (
     decode_text,
     sha256_digest,
 )
+from ciphersuites.scrape.merge import (
+    Diff,
+    assemble,
+    diffs as compute_diffs,
+    mark_all_stale,
+    newest_entry,
+)
 from ciphersuites.scrape.schema import (
     BaselineData,
     LibraryData,
-    V1Baseline,
     VersionEntry,
     dump,
     load_baseline,
@@ -36,10 +36,12 @@ from ciphersuites.scrape.schema import (
 from ciphersuites.scrape.validate import (
     ACCEPTED,
     BASELINE_ERROR,
+    CATALOGUE_SKIPPED,
     FAIL,
     FETCH_ERROR,
     FILE_MISSING,
     PARSE_ERROR,
+    RUNNER_ERROR,
     WARN,
     Finding,
     apply_accepts,
@@ -50,7 +52,6 @@ from ciphersuites.scrape.validate import (
 )
 
 CATALOGUE = "ciphersuites"
-Diff = Dict[str, List[CodePoint]]
 
 
 @dataclass
@@ -123,155 +124,24 @@ def _scrape_version(
     return entry, parsed, []
 
 
-def _cps(records: Set[Record]) -> Set[CodePoint]:
-    return {rec.code_point for rec in records}
-
-
-def _baseline_cps(
-    adapter: Adapter, baseline: Optional[BaselineData], label: str, newest: str
-) -> Optional[Set[CodePoint]]:
-    """Code points the baseline holds for the version ``label``."""
-    if isinstance(baseline, V1Baseline):
-        return set(baseline.code_points) if label == newest else None
-    if not isinstance(baseline, LibraryData) or not baseline.versions:
-        return None
-    if adapter.rolling or adapter.kind == "reference":
-        label = _newest(adapter, [v.label for v in baseline.versions])
-    if label not in baseline.members:
-        return None
-    return _cps(baseline.members[label])
-
-
-def _newest(adapter: Adapter, labels: List[str]) -> str:
-    return adapter.version_order(labels)[-1]
-
-
-def _diffs(
+def _scrape_library(
     adapter: Adapter,
+    fetcher: Fetcher,
+    options: RunOptions,
     baseline: Optional[BaselineData],
-    parsed: Dict[str, ParseResult],
-) -> Dict[str, Diff]:
-    if not parsed:
-        return {}
-    newest = _newest(adapter, list(parsed))
-    out: Dict[str, Diff] = {}
-    for label, result in sorted(parsed.items()):
-        old = _baseline_cps(adapter, baseline, label, newest)
-        if old is None:
-            continue
-        new = {rec.code_point for rec in result.records}
-        out[label] = {
-            "added": sorted(new - old, key=code_point_sort_key),
-            "removed": sorted(old - new, key=code_point_sort_key),
-        }
-    return out
-
-
-def _assemble(
-    adapter: Adapter,
-    baseline: Optional[BaselineData],
-    fresh: Dict[str, Tuple[VersionEntry, ParseResult]],
-    failed: Dict[str, str],
-    accepted: Dict[str, Dict[str, str]],
-) -> Optional[LibraryData]:
-    """Combine baseline and fresh versions into the data to write.
-
-    Failed labels keep their baseline entry marked stale. A rolling adapter
-    whose new snapshot failed marks its newest snapshot stale instead.
-    """
-    old = baseline if isinstance(baseline, LibraryData) else None
-    entries = {v.label: v for v in old.versions} if old else {}
-    members = {k: set(v) for k, v in old.members.items()} if old else {}
-    attrs = {k: dict(v) for k, v in old.attributes.items()} if old else {}
-    if adapter.rolling and fresh and not failed:
-        # A successful refresh clears staleness left by earlier failures.
-        for label, item in list(entries.items()):
-            entries[label] = replace(item, status="ok", last_error=None)
-    for label in adapter.version_order(list(fresh)):
-        if label in failed:
-            continue
-        entry, parsed = fresh[label]
-        entries[label] = replace(entry, accepted=accepted.get(label))
-        members[label] = set(parsed.records)
-        for point, values in parsed.attributes.items():
-            attrs[point] = dict(values)
-    for label, message in sorted(failed.items()):
-        target = label
-        if label not in entries and adapter.rolling and entries:
-            target = _newest(adapter, list(entries))
-        if target in entries:
-            entries[target] = replace(
-                entries[target], status="stale", last_error=message
-            )
-    order = adapter.version_order(list(entries))
-    if adapter.rolling:
-        order = order[-adapter.keep_last :]
-    if not order:
-        return None
-    kept = _cps(set().union(*(members.get(label, set()) for label in order)))
-    return LibraryData(
-        library=adapter.name,
-        kind=adapter.kind,
-        source=adapter.repo or entries[order[-1]].ref,
-        versions=[entries[label] for label in order],
-        members={label: members.get(label, set()) for label in order},
-        attributes={k: v for k, v in attrs.items() if k in kept},
-    )
-
-
-def _restore_reference(
-    adapter: Adapter, baseline: Optional[BaselineData], message: str
-) -> Optional[LibraryData]:
-    """Baseline of a failed reference with its newest entry marked stale."""
-    if adapter.kind != "reference" or not isinstance(baseline, LibraryData):
-        return None
-    return _assemble(adapter, baseline, {}, {"": message}, {})
-
-
-def _newest_entry(
-    adapter: Adapter, baseline: Optional[BaselineData]
-) -> Optional[VersionEntry]:
-    if not adapter.rolling or not isinstance(baseline, LibraryData):
-        return None
-    if not baseline.versions:
-        return None
-    label = _newest(adapter, [v.label for v in baseline.versions])
-    return next(v for v in baseline.versions if v.label == label)
-
-
-def _process(
-    adapter: Adapter, fetcher: Fetcher, options: RunOptions
+    discovered: List[Version],
+    findings: List[Finding],
 ) -> _Outcome:
-    # pylint: disable=too-many-locals
+    # pylint: disable=too-many-locals,too-many-positional-arguments
     lib = adapter.name
-    try:
-        baseline = load_baseline(options.out_dir, lib, options.baseline_ref)
-    except Exception as exc:  # pylint: disable=broad-exception-caught
-        return _Outcome(
-            [Finding(FAIL, BASELINE_ERROR, lib, None, _describe(exc))]
-        )
-    try:
-        discovered = adapter.discover_versions()
-    except Exception as exc:  # pylint: disable=broad-exception-caught
-        msg = _describe(exc)
-        return _Outcome(
-            [Finding(FAIL, FETCH_ERROR, lib, None, msg)],
-            _restore_reference(adapter, baseline, msg),
-        )
-    findings = check_discovery(adapter, discovered, baseline)
-    if any(f.level == FAIL for f in findings):
-        data = _restore_reference(adapter, baseline, findings[0].message)
-        return _Outcome(findings, data)
-
-    newest_old = _newest_entry(adapter, baseline)
+    old = newest_entry(adapter, baseline)
     fresh: Dict[str, Tuple[VersionEntry, ParseResult]] = {}
     failed: Dict[str, str] = {}
     for version in discovered:
         if options.versions and version.label not in options.versions:
             continue
-        if newest_old and version.commit == newest_old.commit:
-            if version.commit is not None:
-                continue
+        if old and version.commit is not None and version.commit == old.commit:
+            continue
         entry, parsed, problems = _scrape_version(
             adapter, version, fetcher, options.now
         )
@@ -283,7 +153,7 @@ def _process(
             fresh[version.label] = (entry, parsed)
 
     if fresh:
-        trial = _assemble(adapter, baseline, fresh, {}, {})
+        trial = assemble(adapter, baseline, fresh, {}, {})
         if trial is not None:
             findings.extend(
                 check_against_baseline(adapter, trial, baseline, set(fresh))
@@ -300,9 +170,43 @@ def _process(
     for found in checked:
         if found.level == FAIL and found.version in fresh:
             failed.setdefault(found.version, f"{found.code}: {found.message}")
-    data = _assemble(adapter, baseline, fresh, failed, accepted)
-    diffs = _diffs(adapter, baseline, {k: v[1] for k, v in fresh.items()})
-    return _Outcome(checked, data, diffs)
+    data = assemble(adapter, baseline, fresh, failed, accepted)
+    found_diffs = compute_diffs(
+        adapter, baseline, {k: v[1] for k, v in fresh.items()}
+    )
+    return _Outcome(checked, data, found_diffs)
+
+
+def _process(
+    adapter: Adapter, fetcher: Fetcher, options: RunOptions
+) -> _Outcome:
+    """Process one library; never raises."""
+    lib = adapter.name
+    try:
+        baseline = load_baseline(options.out_dir, lib, options.baseline_ref)
+    except Exception as exc:  # pylint: disable=broad-exception-caught
+        return _Outcome(
+            [Finding(FAIL, BASELINE_ERROR, lib, None, _describe(exc))]
+        )
+    findings: List[Finding] = []
+    try:
+        try:
+            discovered = adapter.discover_versions()
+        except Exception as exc:  # pylint: disable=broad-exception-caught
+            msg = _describe(exc)
+            found = Finding(FAIL, FETCH_ERROR, lib, None, msg)
+            return _Outcome([found], mark_all_stale(baseline, msg))
+        findings = check_discovery(adapter, discovered, baseline)
+        if any(f.level == FAIL for f in findings):
+            data = mark_all_stale(baseline, findings[0].message)
+            return _Outcome(findings, data)
+        return _scrape_library(
+            adapter, fetcher, options, baseline, discovered, findings
+        )
+    except Exception as exc:  # pylint: disable=broad-exception-caught
+        msg = _describe(exc)
+        found = Finding(FAIL, RUNNER_ERROR, lib, None, msg)
+        return _Outcome(findings + [found], mark_all_stale(baseline, msg))
 
 
 def _reference_data(
@@ -341,6 +245,77 @@ def _finding_key(found: Finding) -> Tuple[str, str, str, str, str]:
     )
 
 
+def _render(
+    selected: List[Adapter],
+    finals: Dict[str, LibraryData],
+    findings: List[Finding],
+) -> Dict[str, str]:
+    """Render every library document; failures drop that library."""
+    texts: Dict[str, str] = {}
+    for adapter in selected:
+        if adapter.name not in finals:
+            continue
+        try:
+            doc = to_doc(finals[adapter.name], adapter.version_order)
+            texts[adapter.name] = dump(doc)
+        except Exception as exc:  # pylint: disable=broad-exception-caught
+            findings.append(
+                Finding(FAIL, RUNNER_ERROR, adapter.name, None, _describe(exc))
+            )
+            del finals[adapter.name]
+    return texts
+
+
+def _catalogue(
+    refs: Dict[str, LibraryData],
+    finals: Dict[str, LibraryData],
+    options: RunOptions,
+    findings: List[Finding],
+) -> Optional[str]:
+    """Return the catalogue text, or ``None`` with a finding explaining."""
+    missing = [name for name in PRECEDENCE if name not in refs]
+    if missing:
+        findings.append(
+            Finding(
+                WARN,
+                CATALOGUE_SKIPPED,
+                CATALOGUE,
+                None,
+                "ciphersuites.yaml not written; no reference data for "
+                + ", ".join(missing),
+            )
+        )
+        return None
+    try:
+        catalogue = build_catalog(refs)
+        text = dump(catalogue)
+        found = check_catalog(catalogue, {**finals, **refs}, options.now)
+    except Exception as exc:  # pylint: disable=broad-exception-caught
+        findings.append(
+            Finding(FAIL, RUNNER_ERROR, CATALOGUE, None, _describe(exc))
+        )
+        return None
+    findings.extend(found)
+    return text
+
+
+def _write_all(
+    out_dir: Path, texts: Dict[str, str], findings: List[Finding]
+) -> List[Path]:
+    written: List[Path] = []
+    for name, text in texts.items():
+        path = out_dir / f"{name}.yaml"
+        try:
+            out_dir.mkdir(parents=True, exist_ok=True)
+            write_atomic(path, text)
+        except Exception as exc:  # pylint: disable=broad-exception-caught
+            msg = f"cannot write {path}: {_describe(exc)}"
+            findings.append(Finding(FAIL, RUNNER_ERROR, name, None, msg))
+        else:
+            written.append(path)
+    return written
+
+
 def run(
     adapters: List[Adapter], fetcher: Fetcher, options: RunOptions
 ) -> RunResult:
@@ -364,43 +339,20 @@ def run(
         if outcome.data is not None:
             finals[adapter.name] = outcome.data
 
+    # Render everything before any write, so a bad document writes nothing.
+    texts = _render(selected, finals, findings)
     refs, extra = _reference_data(
         {k: v for k, v in finals.items() if k in PRECEDENCE},
         {a.name for a in selected},
         options,
     )
     findings.extend(extra)
-    catalogue = None
-    if refs:
-        catalogue = build_catalog(refs)
-        every = {**finals, **refs}
-        findings.extend(check_catalog(catalogue, every, options.now))
-    else:
-        # No reference data at all: the catalogue cannot be built. A WARN,
-        # not a FAIL, because a partial run (--library) legitimately lacks
-        # references; FETCH_ERROR is reused as the nearest existing code.
-        findings.append(
-            Finding(
-                WARN,
-                FETCH_ERROR,
-                CATALOGUE,
-                None,
-                "no reference data available; ciphersuites.yaml not written",
-            )
-        )
+    catalogue_text = _catalogue(refs, finals, options, findings)
+    if catalogue_text is not None:
+        texts[CATALOGUE] = catalogue_text
 
     written: List[Path] = []
     if not options.dry_run:
-        options.out_dir.mkdir(parents=True, exist_ok=True)
-        for adapter in selected:
-            if adapter.name in finals:
-                doc = to_doc(finals[adapter.name], adapter.version_order)
-                path = options.out_dir / f"{adapter.name}.yaml"
-                write_atomic(path, dump(doc))
-                written.append(path)
-        if catalogue is not None:
-            path = options.out_dir / f"{CATALOGUE}.yaml"
-            write_atomic(path, dump(catalogue))
-            written.append(path)
+        written = _write_all(options.out_dir, texts, findings)
     findings.sort(key=_finding_key)
     return RunResult(findings, written, diffs)

@@ -27,10 +27,12 @@ from ciphersuites.scrape.schema import (
 from ciphersuites.scrape.validate import (
     BASELINE_ERROR,
     FAIL,
+    CATALOGUE_SKIPPED,
     FETCH_ERROR,
     FILE_MISSING,
     PARSE_ERROR,
     PATCH_REMOVAL,
+    RUNNER_ERROR,
     V1_PARITY,
     WARN,
 )
@@ -295,13 +297,15 @@ def test_rolling_keeps_eight_snapshots(tmp_path):
 
 def test_rolling_same_commit_is_skipped(tmp_path):
     rolling_baseline(tmp_path, 2)
-    adapter = Rolling({"2026-11-08": [], "x": []}, commits={})
-    adapter.table = {"2026-11-08": ["unused"]}
-    adapter.commits = {"2026-11-08": f"{1:040d}"}
+    adapter = Rolling(
+        {"2026-11-08": recs(9)}, commits={"2026-11-08": f"{1:040d}"}
+    )
     result = run([adapter], None, opts(tmp_path))
     assert result.exit_code == 0
     assert len(read(tmp_path, "fake").versions) == 2
     assert not result.diffs
+    assert not [f for f in result.findings if "LINE_MISSING" in f.code]
+    assert codes(result) == [("ciphersuites", CATALOGUE_SKIPPED)]
 
 
 def test_rolling_failure_marks_newest_snapshot_stale(tmp_path):
@@ -323,7 +327,7 @@ def test_library_filter_and_catalogue_warning(tmp_path):
         opts(tmp_path, libraries=["fake"]),
     )
     assert {p.name for p in result.written} == {"fake.yaml"}
-    assert codes(result, WARN) == [("ciphersuites", FETCH_ERROR)]
+    assert codes(result, WARN) == [("ciphersuites", CATALOGUE_SKIPPED)]
     assert result.exit_code == 0
 
 
@@ -340,6 +344,12 @@ def test_reference_builds_catalogue_and_restores_stale(tmp_path):
         {"2026-10-01": (recs(1, 2), entry("2026-10-01"))},
         kind="reference",
     )
+    write_baseline(
+        tmp_path,
+        "scanigma",
+        {"2026-10-01": (recs(3), entry("2026-10-01"))},
+        kind="reference",
+    )
     ok = Ref({"2026-11-08": recs(1, 2, 3)})
     ok.name = "testssl"
     bad = Ref({"2026-11-08": FetchError("down")})
@@ -353,7 +363,7 @@ def test_reference_builds_catalogue_and_restores_stale(tmp_path):
         tuple(s["code_point"]): s["sources"] for s in catalogue["suites"]
     }
     assert sources[cp(1)] == ["iana", "testssl"]
-    assert sources[cp(3)] == ["testssl"]
+    assert sources[cp(3)] == ["testssl", "scanigma"]
     assert tmp_path / "ciphersuites.yaml" in result.written
 
 
@@ -364,11 +374,17 @@ def test_partial_run_loads_other_references_from_baseline(tmp_path):
         {"2026-10-01": (recs(1), entry("2026-10-01"))},
         kind="reference",
     )
+    write_baseline(
+        tmp_path,
+        "scanigma",
+        {"2026-10-01": (recs(3), entry("2026-10-01"))},
+        kind="reference",
+    )
     ok = Ref({"2026-11-08": recs(2)})
     ok.name = "testssl"
     run([ok], None, opts(tmp_path))
     catalogue = load_yaml(tmp_path / "ciphersuites.yaml")
-    assert len(catalogue["suites"]) == 2
+    assert len(catalogue["suites"]) == 3
 
 
 def test_report_json_and_markdown(tmp_path):
@@ -425,3 +441,106 @@ def test_unexpected_discovery_error_fails_library(tmp_path):
     assert (
         "RuntimeError" in finding.message and "git exploded" in finding.message
     )
+
+
+def test_discovery_failure_marks_all_baseline_stale_and_writes(tmp_path):
+    class Broken(Fake):
+        def discover_versions(self):
+            raise RuntimeError("git exploded")
+
+    write_baseline(
+        tmp_path,
+        "fake",
+        {"1.0": (recs(1), entry("1.0")), "2.0": (recs(2), entry("2.0"))},
+    )
+    result = run([Broken({})], None, opts(tmp_path))
+    assert result.exit_code == 1
+    data = read(tmp_path, "fake")
+    assert [v.status for v in data.versions] == ["stale", "stale"]
+    assert "git exploded" in data.versions[0].last_error
+    assert data.members["2.0"] == set(recs(2))
+
+
+def test_no_versions_marks_baseline_stale(tmp_path):
+    write_baseline(tmp_path, "fake", {"1.0": (recs(1), entry("1.0"))})
+    result = run([Fake({})], None, opts(tmp_path))
+    assert result.exit_code == 1
+    assert read(tmp_path, "fake").versions[0].status == "stale"
+
+
+def test_incomplete_references_skip_catalogue(tmp_path):
+    ok = Ref({"2026-11-08": recs(2)})
+    ok.name = "iana"
+    result = run([ok], None, opts(tmp_path))
+    assert not (tmp_path / "ciphersuites.yaml").exists()
+    assert (CATALOGUE_SKIPPED, WARN) in [
+        (f.code, f.level) for f in result.findings
+    ]
+
+
+class BadOrder(Fake):
+    def version_order(self, labels):
+        raise RuntimeError("bad label")
+
+
+def test_version_order_raising_is_contained(tmp_path):
+    write_baseline(tmp_path, "aaa", {"1.0": (recs(1), entry("1.0"))})
+    bad = BadOrder({"1.0": recs(1, 2)})
+    bad.name = "aaa"
+    good = Fake({"1.0": recs(1)})
+    good.name = "zzz"
+    result = run([bad, good], None, opts(tmp_path))
+    assert result.exit_code == 1
+    failure = next(f for f in result.findings if f.library == "aaa")
+    assert failure.code == RUNNER_ERROR and "bad label" in failure.message
+    assert read(tmp_path, "zzz").members["1.0"] == set(recs(1))
+    assert read(tmp_path, "aaa").versions[0].status == "ok"  # untouched
+
+
+def test_to_doc_failure_is_caught_even_in_dry_run(tmp_path):
+    for dry in (True, False):
+        bad = Fake({"1.0": recs(1)})
+        bad.name = "aaa"
+        bad.kind = "weird"
+        good = Fake({"1.0": recs(1)})
+        good.name = "zzz"
+        result = run([bad, good], None, opts(tmp_path, dry_run=dry))
+        found = [f for f in result.findings if f.library == "aaa"]
+        assert [f.code for f in found] == [RUNNER_ERROR]
+        assert not (tmp_path / "aaa.yaml").exists()
+        assert ("zzz.yaml" in {p.name for p in result.written}) == (not dry)
+
+
+def test_write_failure_is_per_file(tmp_path):
+    (tmp_path / "bbb.yaml").mkdir()  # os.replace onto a directory fails
+    adapters = []
+    for name in ("aaa", "bbb", "ccc"):
+        adapter = Fake({"1.0": recs(1)})
+        adapter.name = name
+        adapters.append(adapter)
+    result = run(adapters, None, opts(tmp_path))
+    assert result.exit_code == 1
+    assert {p.name for p in result.written} == {"aaa.yaml", "ccc.yaml"}
+    failure = next(f for f in result.findings if f.library == "bbb")
+    assert failure.code == RUNNER_ERROR and "bbb.yaml" in failure.message
+    assert (tmp_path / "ccc.yaml").is_file()
+
+
+def test_build_catalog_exception_is_contained(tmp_path, monkeypatch):
+    from ciphersuites.scrape import runner  # pylint: disable=C0415
+
+    def boom(refs):
+        raise RuntimeError(f"catalogue broke {len(refs)}")
+
+    monkeypatch.setattr(runner, "build_catalog", boom)
+    adapters = []
+    for name in ("iana", "testssl", "scanigma"):
+        adapter = Ref({"2026-11-08": recs(1)})
+        adapter.name = name
+        adapters.append(adapter)
+    result = run(adapters, None, opts(tmp_path))
+    assert result.exit_code == 1
+    failure = next(f for f in result.findings if f.library == "ciphersuites")
+    assert failure.code == RUNNER_ERROR and "catalogue broke" in failure.message
+    assert not (tmp_path / "ciphersuites.yaml").exists()
+    assert (tmp_path / "iana.yaml").is_file()

@@ -10,7 +10,6 @@ from importlib import resources
 
 import yaml
 
-
 __version__ = "0.0.1"
 
 
@@ -42,7 +41,9 @@ _TECHNOLOGIES = _load_yaml("technologies.yaml")
 # Associate applicable vulnerability details to technologies
 TECHNOLOGIES = []
 for technology in _TECHNOLOGIES:
-    for i, vulnerability_pk in enumerate(technology["fields"]["vulnerabilities"]):
+    for i, vulnerability_pk in enumerate(
+        technology["fields"]["vulnerabilities"]
+    ):
         for vuln in _VULNERABILITIES:
             if vuln["pk"] == vulnerability_pk:
                 # TODO: I would like to see this turn in to a {pk: description, ...} rather than [{...}]
@@ -54,7 +55,7 @@ for technology in _TECHNOLOGIES:
 del _TECHNOLOGIES
 del _VULNERABILITIES
 
-#Load all ciphersuite related YAML files
+# Load all ciphersuite related YAML files
 IANA = _load_yaml("iana.yaml")
 
 OPENSSL = _load_yaml("openssl.yaml")
@@ -83,25 +84,53 @@ _CIPHERSUITES = _load_yaml("ciphersuites.yaml")
 CIPHERSUITES = []
 for ciphersuite in _CIPHERSUITES:
 
-    ciphersuite_hexcode = list(filter(partial(is_not, None), [
-        ciphersuite["fields"]["hex_byte_1"],
-        ciphersuite["fields"]["hex_byte_2"],
-        ciphersuite["fields"].get("hex_byte_3", None)
-    ]))
-    
-    for format in [IANA, OPENSSL, GNUTLS, GO, NSS, JSSE, BORINGSSL, LIBRESSL, S2N, SCHANNEL, MBEDTLS]:
+    ciphersuite_hexcode = list(
+        filter(
+            partial(is_not, None),
+            [
+                ciphersuite["fields"]["hex_byte_1"],
+                ciphersuite["fields"]["hex_byte_2"],
+                ciphersuite["fields"].get("hex_byte_3", None),
+            ],
+        )
+    )
+
+    for format in [
+        IANA,
+        OPENSSL,
+        GNUTLS,
+        GO,
+        NSS,
+        JSSE,
+        BORINGSSL,
+        LIBRESSL,
+        S2N,
+        SCHANNEL,
+        MBEDTLS,
+    ]:
         for entry in format:
-            if ciphersuite_hexcode == list(filter(partial(is_not, None), [
-                entry["fields"]["hex_byte_1"],
-                entry["fields"]["hex_byte_2"],
-                entry["fields"].get("hex_byte_3", None)
-            ])):
+            if ciphersuite_hexcode == list(
+                filter(
+                    partial(is_not, None),
+                    [
+                        entry["fields"]["hex_byte_1"],
+                        entry["fields"]["hex_byte_2"],
+                        entry["fields"].get("hex_byte_3", None),
+                    ],
+                )
+            ):
                 ciphersuite["fields"].setdefault(entry["model"], [])
                 ciphersuite["fields"][entry["model"]].append(entry["pk"])
 
     # Iterate over technology fields and substitute in details
     # NOTE: I would like a cleaner way to do this substitution rather than a static list
-    for field in ["protocol", "key_exchange", "authentication", "encryption", "hashing"]:
+    for field in [
+        "protocol",
+        "key_exchange",
+        "authentication",
+        "encryption",
+        "hashing",
+    ]:
         cipher = ciphersuite["fields"][field]
         for technology in TECHNOLOGIES:
             if technology["model"] == field and technology["pk"] == cipher:

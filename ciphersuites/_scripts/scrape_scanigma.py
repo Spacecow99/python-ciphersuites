@@ -7,6 +7,7 @@ CLI utility used for scraping ciphersuite details.
 """
 
 import argparse
+
 # import os
 # import sys
 import re
@@ -14,7 +15,7 @@ import re
 import requests
 import yaml
 
-from ciphersuites  import __version__
+from ciphersuites import __version__
 
 
 def main():
@@ -25,18 +26,17 @@ def main():
     rows = []
 
     html = requests.get("https://scanigma.com/knowledge-base")
-    matches = re.findall('<li><a href="(?P<url>.+)">Detailed info about (?P<iana>\w+) \((?P<hex>.+)\) cipher suite.</a></li>', html.text)
+    matches = re.findall(
+        '<li><a href="(?P<url>.+)">Detailed info about (?P<iana>\w+) \((?P<hex>.+)\) cipher suite.</a></li>',
+        html.text,
+    )
 
     for match in matches:
         hexcodes = {}
-        hexcode = match[2].replace(' ', '').upper().replace('X', 'x')
-        for count, value in enumerate(hexcode.split(','), start=1):
+        hexcode = match[2].replace(" ", "").upper().replace("X", "x")
+        for count, value in enumerate(hexcode.split(","), start=1):
             hexcodes[f"hex_byte_{count}"] = value
-        rows.append({
-            "model": "scanigma",
-            "pk": match[1],
-            "fields": hexcodes
-        })
+        rows.append({"model": "scanigma", "pk": match[1], "fields": hexcodes})
 
     print(yaml.dump(rows, sort_keys=False))
 

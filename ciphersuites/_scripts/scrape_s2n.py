@@ -1,7 +1,7 @@
-
 #!/usr/bin/env python3
 
 import argparse
+
 # import os
 import sys
 import json
@@ -10,13 +10,18 @@ import re
 import requests
 import yaml
 
-from ciphersuites  import __version__
+from ciphersuites import __version__
 
+HEXCODE_REGEX = (
+    "#define (?P<key>TLS_\w+)\s+(?P<hex>0x[a-fA-F0-9]{2}(, 0x)?[a-fA-F0-9]{2})"
+)
+NAME_REGEX = (
+    '\s{4}\.name = "(?P<name>[\w-]+)",\n\s{4}\.iana_name = "(?P<key>\w+)",'
+)
 
-HEXCODE_REGEX = "#define (?P<key>TLS_\w+)\s+(?P<hex>0x[a-fA-F0-9]{2}(, 0x)?[a-fA-F0-9]{2})"
-NAME_REGEX = "\s{4}\.name = \"(?P<name>[\w-]+)\",\n\s{4}\.iana_name = \"(?P<key>\w+)\","
-
-CIPHER_NAME_URL = "https://raw.githubusercontent.com/aws/s2n-tls/main/tls/s2n_cipher_suites.c"
+CIPHER_NAME_URL = (
+    "https://raw.githubusercontent.com/aws/s2n-tls/main/tls/s2n_cipher_suites.c"
+)
 CIPHER_HEXCODE_URL = "https://raw.githubusercontent.com/aws/s2n-tls/main/tls/s2n_tls_parameters.h"
 
 
@@ -38,9 +43,9 @@ def main():
 
             code_point = {
                 "hex_byte_1": f"{hex[0:4]}",
-                "hex_byte_2": f"{hex[6:10]}"
+                "hex_byte_2": f"{hex[6:10]}",
             }
-                
+
             openssl_ck_values[key] = code_point
 
         r = requests.get(CIPHER_NAME_URL)
@@ -56,7 +61,7 @@ def main():
             if key not in openssl_txt_values:
                 # TODO: I just don't think that there's an entry for the AES 128 TLSv1.3 ciphers
                 continue
-            
+
             # IDK what I expect this to catch
             if key not in openssl_ck_values:
                 continue
@@ -64,14 +69,14 @@ def main():
             record = {
                 "model": "s2n",
                 "pk": openssl_txt_values[key],
-                "fields": openssl_ck_values[key]
+                "fields": openssl_ck_values[key],
             }
             if record not in unique_rows:
                 unique_rows.append(record)
 
     except Exception as e:
         print(type(e).__name__, e, file=sys.stderr)
-        print(f'Unable to retrieve or parse s2n cipher list', file=sys.stderr)
+        print(f"Unable to retrieve or parse s2n cipher list", file=sys.stderr)
 
     print(yaml.dump(unique_rows, sort_keys=False))
 

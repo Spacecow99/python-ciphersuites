@@ -14,13 +14,15 @@ import yaml
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("SOURCE", help="Source list to perform comparison on.")
-    parser.add_argument("SECONDARY", help="Secondary list to be compared to source list.")
+    parser.add_argument(
+        "SECONDARY", help="Secondary list to be compared to source list."
+    )
     args = parser.parse_args()
 
-    with open(args.SOURCE, 'r') as f:
+    with open(args.SOURCE, "r") as f:
         source = yaml.safe_load(f)
 
-    with open(args.SECONDARY, 'r') as f:
+    with open(args.SECONDARY, "r") as f:
         secondary = yaml.safe_load(f)
 
     final_list = [x for x in source]

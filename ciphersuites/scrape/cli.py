@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
@@ -55,8 +56,8 @@ def _accepts(
 
 def main(argv: Optional[List[str]] = None) -> int:
     """Run the scraper and return the process exit code."""
-    args_list = list(argv) if argv is not None else None
-    if args_list and "--capture-fixtures" in args_list:
+    args_list = list(sys.argv[1:] if argv is None else argv)
+    if "--capture-fixtures" in args_list:
         args_list.remove("--capture-fixtures")
         return fixtures.main(args_list)
     parser = _parser()

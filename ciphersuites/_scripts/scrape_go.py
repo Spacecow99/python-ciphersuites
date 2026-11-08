@@ -7,6 +7,7 @@ CLI utility used for scraping ciphersuite details.
 """
 
 import argparse
+
 # import os
 import sys
 import json
@@ -15,7 +16,7 @@ import re
 import requests
 import yaml
 
-from ciphersuites  import __version__
+from ciphersuites import __version__
 
 
 def main():
@@ -37,16 +38,18 @@ def main():
                 if match.group("hex"):
                     hexcodes = {
                         "hex_byte_1": f"0x{match.group('hex')[2:4].upper()}",
-                        "hex_byte_2": f"0x{match.group('hex')[4:].upper()}"
+                        "hex_byte_2": f"0x{match.group('hex')[4:].upper()}",
                     }
-                    ciphers.append({
-                        "model": "go",
-                        "pk": match.group("cipher"),
-                        "fields": hexcodes
-                    })
+                    ciphers.append(
+                        {
+                            "model": "go",
+                            "pk": match.group("cipher"),
+                            "fields": hexcodes,
+                        }
+                    )
                 if match.group("alt"):
-                    remap.append({match.group("cipher"): match.group("alt") })
-            
+                    remap.append({match.group("cipher"): match.group("alt")})
+
             for remapping in remap:
                 alt = list(remapping.keys())[0]
                 orig = list(remapping.values())[0]
@@ -58,9 +61,9 @@ def main():
 
     except Exception as e:
         print(e)
-        print('Unable to retrieve or parse go cipher list', file=sys.stderr)
+        print("Unable to retrieve or parse go cipher list", file=sys.stderr)
 
-    #[print(i) for i in ciphers]
+    # [print(i) for i in ciphers]
 
     print(yaml.dump(ciphers, sort_keys=False))
 

@@ -114,3 +114,20 @@ def test_capture_fixtures_delegates(monkeypatch):
     monkeypatch.setattr(cli.fixtures, "main", fake_main)
     assert cli.main(["--capture-fixtures", "openssl", "openssl-3.0.0"]) == 7
     assert seen["argv"] == ["openssl", "openssl-3.0.0"]
+
+
+def test_capture_fixtures_reads_sys_argv_when_argv_is_none(monkeypatch):
+    seen = {}
+
+    def fake_main(argv):
+        seen["argv"] = argv
+        return 3
+
+    monkeypatch.setattr(cli.fixtures, "main", fake_main)
+    monkeypatch.setattr(
+        cli.sys,
+        "argv",
+        ["ciphersuites-scrape", "--capture-fixtures", "go", "go1.22"],
+    )
+    assert cli.main() == 3
+    assert seen["argv"] == ["go", "go1.22"]

@@ -7,6 +7,7 @@ CLI utility used for scraping ciphersuite details.
 """
 
 import argparse
+
 # import os
 import sys
 import json
@@ -15,7 +16,7 @@ import re
 import requests
 import yaml
 
-from ciphersuites  import __version__
+from ciphersuites import __version__
 
 
 def main():
@@ -25,7 +26,7 @@ def main():
 
     # Absolute pain
     REGEX = (
-        '\s+(?:TLS|SSL)_.+\(\s+'
+        "\s+(?:TLS|SSL)_.+\(\s+"
         '(?P<hexcode>0x\w{4}), (?:true|false), "(?P<cipher>(?:TLS|SSL)_[A-Za-z0-9_]+)",(?: "",)?\s+'
         '(:?"(?P<alt>(?:TLS|SSL)_[A-Za-z0-9_]+)",)?'
     )
@@ -33,17 +34,19 @@ def main():
     unique_rows = []
 
     try:
-        r = requests.get("https://raw.githubusercontent.com/openjdk/jdk/master/src/java.base/share/classes/sun/security/ssl/CipherSuite.java")
+        r = requests.get(
+            "https://raw.githubusercontent.com/openjdk/jdk/master/src/java.base/share/classes/sun/security/ssl/CipherSuite.java"
+        )
         for match in re.finditer(REGEX, r.text):
             # A typical line would look like: #define TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256   0xC02F
             hex_bytes = {
-                "hex_byte_1": '0x' + match.group("hexcode")[2:4],
-                "hex_byte_2": '0x' + match.group("hexcode")[4:6]
+                "hex_byte_1": "0x" + match.group("hexcode")[2:4],
+                "hex_byte_2": "0x" + match.group("hexcode")[4:6],
             }
             cipher = {
                 "model": "jsse",
                 "pk": match.group("cipher"),
-                "fields": hex_bytes
+                "fields": hex_bytes,
             }
             unique_rows.append(cipher)
             if match.group("alt"):
@@ -53,7 +56,7 @@ def main():
 
     except Exception as e:
         print(e, file=sys.stderr)
-        print('Unable to retrieve or parse JSSE cipher list', file=sys.stderr)
+        print("Unable to retrieve or parse JSSE cipher list", file=sys.stderr)
 
     print(yaml.dump(unique_rows, sort_keys=False))
 
