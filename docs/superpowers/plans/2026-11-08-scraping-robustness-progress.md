@@ -279,3 +279,5 @@ FINAL RE-REVIEW (opus a7ed6e2ab52a4af17): all I1/I2/I3/I4/I6 + 9 fix-now address
 Ruling: m4 fixed by controller (commit job allowlists 14 data filenames, no symlinks; data repo 3f205bf). Left with reasons: m1 long Retry-After ignored (bounded retries; rare); m2 19 recurring collision warnings (WARN only, informative); m3 SCSVs in supported_by unmarked (pre-existing across go/nss/jsse; follow-up: 'signalling' attribute).
 Ruling: I5 is a merge-time process step for the user (pin install to full SHA at release, merge data branch without squash) — cannot be completed before the user merges.
 STOP POINT: push data repo commits a745aa9, 75564b1, 3f205bf to claude/modest-tesla-n4t2ke awaiting user.
+USER APPROVED push: data branch -> 3f205bf. Package gitlink advanced to 3f205bf (data identical to 75564b1; tip kept reachable by a merge); packaging test pin updated. libressl 2.5 via CLI shows 0xCC13-15. Pushed.
+FINAL REVIEW: clean (residual minors m1-m3 left with reasons; I5/T22 = user merge-time steps).
