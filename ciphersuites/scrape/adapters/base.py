@@ -55,20 +55,29 @@ class Adapter(ABC):
     def files_for(self, version: Version) -> List[str]:
         """Return the repository paths needed to parse ``version``."""
 
+    def source_url(self, version: Version, path: str) -> str:
+        """Return the exact URL ``path`` is fetched from for ``version``.
+
+        Adapters that override ``fetch_files`` must override this too, since
+        fixture capture records this URL in the manifest.
+        """
+        repo = version.repo or self.repo
+        if repo is None or version.commit is None:
+            raise NotImplementedError(
+                f"{type(self).__name__} cannot locate {version.label} "
+                "without a repo and commit; override source_url"
+            )
+        return raw_url(repo, version.commit, path)
+
     def fetch_files(
         self, version: Version, fetcher: Fetcher
     ) -> Dict[str, bytes]:
         """Download every file of ``files_for(version)`` at its commit."""
         repo = version.repo or self.repo
-        if repo is None or version.commit is None:
-            raise NotImplementedError(
-                f"{type(self).__name__} cannot fetch {version.label} "
-                "without a repo and commit; override fetch_files"
-            )
         return {
             path: fetcher.get(
-                raw_url(repo, version.commit, path),
-                cache_key=(repo, version.commit, path),
+                self.source_url(version, path),
+                cache_key=(str(repo), str(version.commit), path),
             )
             for path in self.files_for(version)
         }

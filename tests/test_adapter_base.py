@@ -2,6 +2,10 @@
 
 from __future__ import annotations
 
+import importlib
+import subprocess
+import sys
+import pkgutil
 from datetime import datetime, timezone
 from typing import Dict, List
 from unittest import mock
@@ -149,3 +153,40 @@ def test_version_order_default():
         "1.9",
         "1.10",
     ]
+
+
+def test_source_url_default():
+    version = Version("1.0", "v1.0", SHA, repo="https://github.com/x/y")
+    assert make_class()().source_url(version, "d/a.h") == (
+        f"https://raw.githubusercontent.com/x/y/{SHA}/d/a.h"
+    )
+
+
+def test_every_adapter_module_is_imported_and_registers():
+    package = importlib.import_module("ciphersuites.scrape.adapters")
+    names = []
+    for info in pkgutil.walk_packages(
+        package.__path__, "ciphersuites.scrape.adapters."
+    ):
+        leaf = info.name.rsplit(".", 1)[-1]
+        if info.ispkg or leaf.startswith("_") or leaf == "base":
+            continue
+        names.append(info.name)
+    # Importing the package alone (fresh interpreter) must register them all.
+    code = (
+        "import sys, ciphersuites.scrape.adapters as a;"
+        "print(' '.join(m for m in sys.modules if m.startswith("
+        "'ciphersuites.scrape.adapters.')))"
+    )
+    out = subprocess.run(  # nosec B603
+        [sys.executable, "-I", "-c", code],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.split()
+    for name in names:
+        assert name in out, f"{name} is not imported by adapters/__init__.py"
+        importlib.import_module(name)
+        assert any(
+            cls.__module__ == name for cls in base.ADAPTERS.values()
+        ), f"{name} registers no adapter"

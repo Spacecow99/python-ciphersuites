@@ -108,6 +108,14 @@ class Fetcher:
                 pass
             raise
 
+    def evict(self, cache_key: Tuple[str, ...]) -> Optional[Path]:
+        """Delete a cached entry; return its path if one was removed."""
+        path = self._cache_path(cache_key)
+        if path is None or not path.is_file():
+            return None
+        path.unlink()
+        return path
+
     def get(
         self, url: str, cache_key: Optional[Tuple[str, ...]] = None
     ) -> bytes:

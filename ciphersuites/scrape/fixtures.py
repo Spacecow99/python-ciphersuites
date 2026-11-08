@@ -26,7 +26,6 @@ from ciphersuites.scrape.fetch import (
     FetchError,
     Fetcher,
     decode_text,
-    raw_url,
     sha256_digest,
 )
 from ciphersuites.scrape.versions import ls_remote_tags
@@ -102,15 +101,12 @@ def capture(
     manifest_path: Path,
 ) -> List[ManifestEntry]:
     """Fetch the version's files and record them in the manifest."""
-    repo = version.repo or adapter.repo
-    if repo is None or version.commit is None:
-        raise FixtureError(f"{version.label}: need a repo and a commit")
     files = adapter.fetch_files(version, fetcher)
     entries = [
         ManifestEntry(
             library=adapter.name,
             label=version.label,
-            url=raw_url(repo, version.commit, path),
+            url=adapter.source_url(version, path),
             path=path,
             sha256=sha256_digest(data),
         )
@@ -156,9 +152,15 @@ def load_fixture(
         data = fetcher.get(entry.url, cache_key=(entry.url,))
         actual = sha256_digest(data)
         if actual != entry.sha256:
+            evicted = fetcher.evict((entry.url,))
+            note = (
+                f"; removed bad cache entry {evicted}, rerun to re-download"
+                if evicted
+                else ""
+            )
             raise FixtureError(
                 f"{library} {label} {entry.path}: sha256 mismatch, manifest "
-                f"has {entry.sha256} but {entry.url} gave {actual}"
+                f"has {entry.sha256} but {entry.url} gave {actual}{note}"
             )
         out[entry.path] = decode_text(data)
     return out

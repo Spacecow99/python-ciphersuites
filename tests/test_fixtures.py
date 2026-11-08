@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import contextlib
 from typing import Dict, List
 from unittest import mock
 
@@ -102,12 +103,7 @@ def test_capture_url(manifest, tmp_path):
 
 
 def test_main_tag_form(dummy, manifest, tmp_path):
-    with (
-        mock.patch.object(
-            fixtures, "ls_remote_tags", return_value={"v1.0.0": SHA}
-        ),
-        responses.RequestsMock() as rsps,
-    ):
+    with tag_env() as rsps:
         rsps.add(responses.GET, raw_url(REPO, SHA, "a.h"), body=BODY)
         code = fixtures.main(
             ["dummy", "v1.0.0", "--manifest", str(manifest)]
@@ -119,12 +115,7 @@ def test_main_tag_form(dummy, manifest, tmp_path):
 
 
 def test_main_tag_label_override(dummy, manifest, tmp_path):
-    with (
-        mock.patch.object(
-            fixtures, "ls_remote_tags", return_value={"v1.0.0": SHA}
-        ),
-        responses.RequestsMock() as rsps,
-    ):
+    with tag_env() as rsps:
         rsps.add(responses.GET, raw_url(REPO, SHA, "a.h"), body=BODY)
         fixtures.main(
             ["dummy", "v1.0.0", "--label", "L", "--manifest", str(manifest)]
@@ -203,12 +194,7 @@ def test_main_unknown_library(manifest, capsys):
 
 
 def test_main_fetch_failure(dummy, manifest, tmp_path, capsys):
-    with (
-        mock.patch.object(
-            fixtures, "ls_remote_tags", return_value={"v1.0.0": SHA}
-        ),
-        responses.RequestsMock() as rsps,
-    ):
+    with tag_env() as rsps:
         rsps.add(responses.GET, raw_url(REPO, SHA, "a.h"), status=404)
         code = fixtures.main(
             ["dummy", "v1.0.0", "--manifest", str(manifest)]
@@ -217,6 +203,16 @@ def test_main_fetch_failure(dummy, manifest, tmp_path, capsys):
     assert code != 0
     assert capsys.readouterr().err
     assert dummy.name == "dummy"
+
+
+@contextlib.contextmanager
+def tag_env():
+    """Mock ls-remote for tag v1.0.0 and HTTP; yield the RequestsMock."""
+    with mock.patch.object(
+        fixtures, "ls_remote_tags", return_value={"v1.0.0": SHA}
+    ):
+        with responses.RequestsMock() as rsps:
+            yield rsps
 
 
 def write_entry(manifest, body=BODY, sha=None):
@@ -333,3 +329,62 @@ def test_golden_missing_fails(golden_root):
     with pytest.raises(AssertionError, match="--update-goldens"):
         golden.assert_matches_golden(False, "lib", "9", result())
     assert not golden_root.exists()
+
+
+@responses.activate
+def test_load_fixture_evicts_bad_cache(manifest, tmp_path):
+    url = write_entry(manifest)
+    fetcher = fetcher_for(tmp_path)
+    responses.add(responses.GET, url, body=BODY[:3])  # truncated download
+    with pytest.raises(fixtures.FixtureError, match="cache"):
+        fixtures.load_fixture(manifest, "dummy", "1.0", fetcher)
+    assert not list((tmp_path / "cache").glob("*"))
+    responses.replace(responses.GET, url, body=BODY)
+    out = fixtures.load_fixture(manifest, "dummy", "1.0", fetcher)
+    assert out == {"a.h": BODY.decode()}
+    assert len(responses.calls) == 2
+
+
+@responses.activate
+def test_load_fixture_cached_bad_bytes(manifest, tmp_path):
+    url = write_entry(manifest)
+    fetcher = fetcher_for(tmp_path)
+    responses.add(responses.GET, url, body=BODY)
+    # poison the cache directly
+    fetcher.evict((url,))
+    fixtures_cache = tmp_path / "cache"
+    fixtures_cache.mkdir(parents=True, exist_ok=True)
+    poisoned = Fetcher(fixtures_cache, offline=False)
+    with responses.RequestsMock() as rsps:
+        rsps.add(responses.GET, url, body=b"bad")
+        poisoned.get(url, cache_key=(url,))
+    with pytest.raises(fixtures.FixtureError):
+        fixtures.load_fixture(manifest, "dummy", "1.0", fetcher)
+    assert not list(fixtures_cache.glob("*"))
+    assert fixtures.load_fixture(manifest, "dummy", "1.0", fetcher)
+
+
+def test_capture_records_adapter_source_url(manifest, tmp_path):
+    class Local(Adapter):
+        """Overrides fetching and the recorded URL."""
+
+        name = "local"
+
+        def files_for(self, version):
+            return ["p"]
+
+        def source_url(self, version, path):
+            return "https://example.org/" + path
+
+        def fetch_files(self, version, fetcher):
+            return {"p": fetcher.get(self.source_url(version, "p"))}
+
+        def parse(self, files):
+            return ParseResult([], 0, [])
+
+    with responses.RequestsMock() as rsps:
+        rsps.add(responses.GET, "https://example.org/p", body=b"x")
+        entries = fixtures.capture(
+            Local(), Version("1", "r", None), fetcher_for(tmp_path), manifest
+        )
+    assert entries[0].url == "https://example.org/p"
