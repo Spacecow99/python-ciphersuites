@@ -118,15 +118,6 @@ def assemble(
     )
 
 
-def restore_reference(
-    adapter: Adapter, baseline: Optional[BaselineData], message: str
-) -> Optional[LibraryData]:
-    """Baseline of a failed reference with its newest entry marked stale."""
-    if adapter.kind != "reference" or not isinstance(baseline, LibraryData):
-        return None
-    return assemble(adapter, baseline, {}, {"": message}, {})
-
-
 def newest_entry(
     adapter: Adapter, baseline: Optional[BaselineData]
 ) -> Optional[VersionEntry]:
