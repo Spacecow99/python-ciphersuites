@@ -32,15 +32,27 @@
   - ['0x00', '0x10']
 - - EXP-DHE-DSS-DES-CBC-SHA
   - ['0x00', '0x11']
+- - EXP-EDH-DSS-DES-CBC-SHA
+  - ['0x00', '0x11']
 - - DHE-DSS-DES-CBC-SHA
+  - ['0x00', '0x12']
+- - EDH-DSS-DES-CBC-SHA
   - ['0x00', '0x12']
 - - DHE-DSS-DES-CBC3-SHA
   - ['0x00', '0x13']
+- - EDH-DSS-DES-CBC3-SHA
+  - ['0x00', '0x13']
 - - EXP-DHE-RSA-DES-CBC-SHA
+  - ['0x00', '0x14']
+- - EXP-EDH-RSA-DES-CBC-SHA
   - ['0x00', '0x14']
 - - DHE-RSA-DES-CBC-SHA
   - ['0x00', '0x15']
+- - EDH-RSA-DES-CBC-SHA
+  - ['0x00', '0x15']
 - - DHE-RSA-DES-CBC3-SHA
+  - ['0x00', '0x16']
+- - EDH-RSA-DES-CBC3-SHA
   - ['0x00', '0x16']
 - - EXP-ADH-RC4-MD5
   - ['0x00', '0x17']

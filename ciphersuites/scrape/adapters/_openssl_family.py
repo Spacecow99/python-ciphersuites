@@ -18,9 +18,10 @@ CK_PATTERN = (
 )
 TXT_PATTERN = (
     r"# *define\s+(?:TLS1|SSL[23])_(?:3_)?TXT_(?P<key>\w+)"
-    r'\s+"(?P<value>[^"]+)"'
+    r'\s+(?:\\\s+)?"(?P<value>[^"]+)"'
 )
 _LITERAL = re.compile(r"0[xX][0-9a-fA-F]+")
+_CK_PREFIX = re.compile(r"(?:TLS1|SSL[23])_(?:3_)?CK_")
 
 
 def _tls13_keys(text: str) -> Set[str]:
@@ -31,6 +32,23 @@ def _tls13_keys(text: str) -> Set[str]:
     }
 
 
+def _ck_values(text: str) -> Dict[str, str]:
+    """Collect CK values; an alias of another CK is stored by its bare key.
+
+    A literal always beats an alias of the same key (BoringSSL keeps
+    ``TLS1_CK_X`` as a legacy alias of ``TLS1_3_CK_X``).
+    """
+    out: Dict[str, str] = {}
+    for match in re.finditer(CK_PATTERN, text, re.MULTILINE):
+        key = match.group("key")
+        value = _CK_PREFIX.sub("", match.group("value"), count=1)
+        if key in out and _LITERAL.fullmatch(out[key]):
+            if not _LITERAL.fullmatch(value):
+                continue
+        out[key] = value
+    return out
+
+
 def parse_ck_txt(files: Dict[str, str]) -> ParseResult:
     """Join ``*_CK_*`` code points with ``*_TXT_*`` names across ``files``.
 
@@ -38,7 +56,7 @@ def parse_ck_txt(files: Dict[str, str]) -> ParseResult:
     """
     text = "\n".join(files[path] for path in sorted(files))
     code_points, _ = resolve_aliases(
-        extract_defines(text, CK_PATTERN), lambda v: bool(_LITERAL.fullmatch(v))
+        _ck_values(text), lambda v: bool(_LITERAL.fullmatch(v))
     )
     names = extract_defines(text, TXT_PATTERN)
     tls13 = _tls13_keys(text)
