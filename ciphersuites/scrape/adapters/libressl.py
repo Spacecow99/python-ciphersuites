@@ -15,6 +15,8 @@ parse_libressl_tag = semver_tag(
 )
 _CHACHA_KEY = re.compile(r"(?P<kx>\w+?)(?<!_WITH)_CHACHA20_POLY1305")
 _BASE = "src/lib/libssl/"
+# Lines up to 2.4 keep the headers one level deeper in the OpenBSD mirror.
+_OLD_BASE = "src/lib/libssl/src/ssl/"
 
 
 def _rekey(key: str) -> str:
@@ -36,9 +38,11 @@ class LibreSSL(Adapter):
         return parse_libressl_tag(tag)
 
     def files_for(self, version: Version) -> List[str]:
-        files = [f"{_BASE}ssl3.h", f"{_BASE}tls1.h"]
-        if line_key(version.label) < (4, 0):
-            files.insert(0, f"{_BASE}ssl2.h")
+        line = line_key(version.label)
+        base = _OLD_BASE if line < (2, 5) else _BASE
+        files = [f"{base}ssl3.h", f"{base}tls1.h"]
+        if line < (4, 0):
+            files.insert(0, f"{base}ssl2.h")
         return files
 
     def parse(self, files: Dict[str, str]) -> ParseResult:

@@ -18,7 +18,7 @@ TAGS_FILE = (
     / "libressl.txt"
 )
 SHA = "0" * 40
-LABELS = ["2.5", "3.9", "4.0"]
+LABELS = ["2.4", "2.5", "3.9", "4.0"]
 
 
 def _captured_tags():
@@ -58,6 +58,22 @@ def test_files_for_ssl2_boundary():
     old = adapter.files_for(Version("3.9", "t", SHA))
     assert "src/lib/libssl/ssl2.h" in old
     assert "src/lib/libssl/tls1.h" in old
+
+
+def test_files_for_layout_change_at_2_5():
+    adapter = LibreSSL()
+    old_base = "src/lib/libssl/src/ssl/"
+    for label in ("2.0", "2.4"):
+        assert adapter.files_for(Version(label, "t", SHA)) == [
+            f"{old_base}ssl2.h",
+            f"{old_base}ssl3.h",
+            f"{old_base}tls1.h",
+        ]
+    assert adapter.files_for(Version("2.5", "t", SHA)) == [
+        "src/lib/libssl/ssl2.h",
+        "src/lib/libssl/ssl3.h",
+        "src/lib/libssl/tls1.h",
+    ]
 
 
 def test_discovery_over_captured_tags():

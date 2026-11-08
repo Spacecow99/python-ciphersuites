@@ -59,6 +59,21 @@
   path: jdk/src/share/classes/sun/security/ssl/CipherSuite.java
   sha256: sha256:84813f43407304f303bec9dec13ec1022c1f1d262aa60770cd61053a35785cc2
 - library: libressl
+  label: '2.4'
+  url: https://raw.githubusercontent.com/libressl/openbsd/f319f250a309eb73664f1042f428e97d05d6c19e/src/lib/libssl/src/ssl/ssl2.h
+  path: src/lib/libssl/src/ssl/ssl2.h
+  sha256: sha256:bc0ddab2acb054786a022f44fb08ff602239419a335ea791ebd1a970ff9550f8
+- library: libressl
+  label: '2.4'
+  url: https://raw.githubusercontent.com/libressl/openbsd/f319f250a309eb73664f1042f428e97d05d6c19e/src/lib/libssl/src/ssl/ssl3.h
+  path: src/lib/libssl/src/ssl/ssl3.h
+  sha256: sha256:d2a30dfdd32d767d5432ac15499f597c900cb272d1301dd783c5afe683dea5d0
+- library: libressl
+  label: '2.4'
+  url: https://raw.githubusercontent.com/libressl/openbsd/f319f250a309eb73664f1042f428e97d05d6c19e/src/lib/libssl/src/ssl/tls1.h
+  path: src/lib/libssl/src/ssl/tls1.h
+  sha256: sha256:891f0c744d128f241c729665337098217bc613b1e1031ddd7fb0793f218949af
+- library: libressl
   label: '2.5'
   url: https://raw.githubusercontent.com/libressl/openbsd/5273db82477cf71f48f9875120989578a47493af/src/lib/libssl/ssl2.h
   path: src/lib/libssl/ssl2.h
