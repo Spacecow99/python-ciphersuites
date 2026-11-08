@@ -676,6 +676,90 @@ def test_lazy_load_missing_data(monkeypatch, tmp_path):  # import succeeds; firs
     - s2n: last present in line 1.4, not "<= 1.6".
   - Fix them in the same data regeneration, and note the correction in the commit message.
 
+### Task 26: Full documentation suite for three audiences
+
+**Status:** OPEN -- not executed in the Tasks 1-23 run.
+
+**Goal:** Write a complete Sphinx (MyST Markdown) documentation set in `docs/source/`. It serves three separate audiences. Each reader is a human with no prior knowledge of the package, its layout or its purpose, and may be a beginner developer.
+
+**Audiences:**
+1. **Package user.** Installs `python-ciphersuites` and uses the Python API (`ciphersuites.catalog`) and `python -m ciphersuites`.
+2. **Repository developer and maintainer.** Needs to understand, run, test, extend and release the code: the scraper, adapters, validation gates, runner, fixtures, CI and the data submodule.
+3. **Data consumer.** Reads the generated YAML files (`<library>.yaml`, `ciphersuites.yaml`) directly in another project or process, without the Python package.
+
+**Writing rules:**
+- **Accuracy is mandatory. Do NOT guess or assume.**
+  - Every statement about behaviour, field names, flags, defaults, exit codes, file paths or data values must be verified against the code, tests or real data at the commit being documented.
+  - If behaviour cannot be verified, do not document it. List it in the task report as an open question.
+  - Never describe planned or intended behaviour as if it exists. Tasks 24 and 25 are not done.
+- **ASD-STE100 (Simplified Technical English) is guidance, not a strict standard.** Apply it like this:
+  - Use short sentences: about 20 words or fewer for procedures, about 25 for descriptions.
+  - Give one instruction per sentence, in the imperative.
+  - Use the active voice.
+  - Use one term for one concept, and use it the same way everywhere.
+  - Define every technical term on first use and in the glossary.
+  - Avoid idioms, metaphors and stacked noun clusters.
+  - Technical names (code identifiers, YAML keys, CLI flags, TLS terms) are allowed as they are.
+- Write every page for a reader who knows nothing about this project. Explain why before how. Link to prerequisite pages instead of assuming knowledge.
+- Show working, copy-paste-ready examples. Every code example must be executed and its output checked (see Step 5).
+- Use ASCII only, unless a character is needed.
+
+**Proposed structure** (adjust in Step 2 if research shows a better split; record the reason):
+
+```
+docs/source/
+  index.md                    # what the project is, the 3 audiences, where to start
+  glossary.md                 # cipher suite, code point, IANA, SSLv2 3-byte code, SCSV,
+                              # library, version/line, snapshot, reference source, stale,
+                              # baseline, gate, accept, schema v2, catalogue, ...
+  concepts/                   # shared background, linked from all 3 guides
+    cipher-suites.md          # TLS cipher suites and code points, from zero
+    data-model.md             # how libraries, versions and suites relate (spec 5.1-5.4)
+  user/                       # audience 1
+    index.md, install.md, quickstart.md, api.md, cli.md,
+    name-resolution.md (ambiguous names, narrowing), errors.md, faq.md
+  developer/                  # audience 2
+    index.md, repo-layout.md, dev-setup.md, architecture.md,
+    adapters.md (contract + every adapter, incl. Schannel curated data),
+    adding-an-adapter.md, fetching-and-cache.md, validation-gates.md,
+    runner-and-cli.md (ciphersuites-scrape, --accept, stale handling),
+    testing.md (fixtures, manifest, goldens, --update-goldens, coverage gate),
+    data-repo-workflow.md, releasing.md (merge order, tag, gitlink pin),
+    known-limitations.md (live IANA/Scanigma fixtures, BoringSSL history, open tasks)
+  data/                       # audience 3
+    index.md, files.md (which file holds what), library-schema.md,
+    catalogue-schema.md, reference-sources.md, versions-and-labels.md,
+    status-and-staleness.md, reading-the-data.md (examples in Python, jq, yq),
+    stability-and-versioning.md (schema_version, what may change)
+```
+
+**Steps:**
+- [ ] **Step 1: Research inventory.** Read the spec, the plan, the ledger rulings and the code. Write an inventory to the SDD workspace: every public function and class, CLI flag, exit code, YAML key, finding code and file in the data repo. For each, record its source (file:line) and which page will document it. This inventory is the accuracy checklist for Step 6.
+- [ ] **Step 2: Fix the Sphinx configuration.** In `docs/source/conf.py`:
+  - Take `release` from `ciphersuites.__version__`; it currently says `0.0.1`.
+  - Fix the read-the-docs check: `os.environ.get("READTHEDOCS") == True` is always false, because the environment value is a string.
+  - Create or remove the missing `_static` path.
+  - Enable `sphinx.ext.autodoc`/`autosummary` for the API pages, or document the API by hand. Choose one and record the choice.
+  - Add a `docs` build to CI, using `sphinx-build -W --keep-going`, so warnings fail the build.
+- [ ] **Step 3: Write the shared pages.** Write `index.md`, `glossary.md` and `concepts/` first; the three guides link to them.
+- [ ] **Step 4: Write the three guides.** Each guide is complete without the other two, apart from links to the shared pages.
+  - **Data guide:** document every YAML key with its type, meaning and an example taken from the real data at the pinned submodule commit. Explain `status: stale`, `accepted`, version label formats per library, 3-byte SSLv2 code points, and SCSV records.
+  - **User guide:** cover every public function in `ciphersuites.catalog`, `AmbiguousNameError` and narrowing, `DataNotFoundError` and the submodule hint, and every `python -m ciphersuites` flag, including `-V`.
+  - **Developer guide:** cover every `ciphersuites-scrape` flag and exit code, every finding code and its level, the adapter contract and the rules every adapter follows, the fixtures CLI forms, and the release order.
+- [ ] **Step 5: Test every example.**
+  - Put every Python and shell example under test, using `sphinx.ext.doctest`, MyST code-cell testing, or a pytest test that extracts and runs the fenced blocks.
+  - Run the examples against the packaged data, and against `tests/fixtures/catalog_v2` where output must be stable.
+  - An example that cannot be tested must be marked and listed in the report.
+- [ ] **Step 6: Accuracy review.**
+  - A fresh reviewer, who did not write the pages, checks every factual claim against the code and the Step 1 inventory. Use a strong model.
+  - Every claim that cannot be verified is removed or fixed.
+  - A second pass checks readability for a beginner and the ASD-STE100 guidance on a sample of pages.
+- [ ] **Step 7: Verify and commit.**
+  - Run `sphinx-build -W --keep-going -b html docs/source docs/build/html` with no warnings.
+  - The example tests pass, and the full test suite still passes.
+  - `docs/build/` is not committed.
+  - Update `README.md` to point to the three guides.
+
 ---
 
 ## Spec coverage map
