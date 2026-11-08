@@ -20,10 +20,11 @@ _FILE = "etc/cipher-mapping.txt"
 _BYTE = r"0[xX][0-9a-fA-F]{2}"
 # Every line that starts with a code point counts as an entry, whether or
 # not the rest of it can be read.
-_ENTRY = re.compile(rf"^\s*{_BYTE}\s*,", re.MULTILINE)
+_ENTRY = re.compile(rf"^[ \t]*{_BYTE}[ \t]*,", re.MULTILINE)
 # value - openssl-name iana-name protocol Kx=.. Au=.. Enc=.. Mac=..
 _FULL = re.compile(
-    rf"^\s*(?P<value>{_BYTE}(?:\s*,\s*{_BYTE}){{1,2}})\s+-\s+(?P<openssl>\S+)"
+    rf"^[ \t]*(?P<value>{_BYTE}(?:\s*,\s*{_BYTE}){{1,2}})"
+    r"\s+-\s+(?P<openssl>\S+)"
     r"\s+(?P<name>\S+)\s+(?P<protocol>\S+)\s+Kx=\S+\s+Au=\S+\s+Enc=\S+"
     r"\s+Mac=\S+",
 )

@@ -257,6 +257,38 @@ def test_testssl_ignores_non_entry_lines():
     assert result.total_keys == 1
 
 
+def test_testssl_blank_lines_between_entries_lose_nothing():
+    result = _testssl(
+        "\n\n"
+        + _tline("0x00,0x2F", "TLS_A")
+        + "\n   \n\t\n"
+        + _tline("0x00,0x35", "TLS_B")
+        + "\n"
+        + _tline("0xC0,0x2F", "TLS_C")
+    )
+    assert sorted(r.name for r in result.records) == [
+        "TLS_A",
+        "TLS_B",
+        "TLS_C",
+    ]
+    assert result.total_keys == 3
+    assert not result.unmatched_keys
+
+
+def test_testssl_fixture_with_blank_lines_keeps_every_record(upstream):
+    files = upstream("testssl", LABEL)
+    plain = TestSsl().parse(files)
+    text = files["etc/cipher-mapping.txt"]
+    spaced = TestSsl().parse(
+        {"etc/cipher-mapping.txt": text.replace("\n", "\n\n")}
+    )
+    assert sorted(spaced.records, key=lambda r: r.name) == sorted(
+        plain.records, key=lambda r: r.name
+    )
+    assert "" not in spaced.unmatched_keys
+    assert spaced.unmatched_keys == plain.unmatched_keys
+
+
 def test_testssl_conflicting_names_for_one_code_point():
     with pytest.raises(ValueError, match="0x00"):
         _testssl(_tline("0x00,0x2F", "TLS_A") + _tline("0x00,0x2F", "TLS_B"))
