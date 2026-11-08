@@ -19,7 +19,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install lint tools
-        run: pip install black pylint bandit .
+        run: pip install black pylint bandit ".[test]"
       - name: Black
         run: |
           paths=""
@@ -72,4 +72,6 @@ jobs:
       - name: Build
         run: pip install flit && flit build
       - name: Check wheel contains data
-        run: unzip -l dist/*.whl | grep -q "ciphersuites/_ciphersuites/ciphersuites.yaml"
+        run: |
+          unzip -l dist/*.whl > wheel-contents.txt
+          grep -q "ciphersuites/_ciphersuites/ciphersuites.yaml" wheel-contents.txt
