@@ -1,0 +1,3580 @@
+TLS_AEGIS_128L_SHA256:
+  aead: false
+  authentication: '-'
+  encryption: AEGIS 128L
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: '-'
+  old: false
+  protocol: TLS
+TLS_AEGIS_256_SHA512:
+  aead: false
+  authentication: '-'
+  encryption: AEGIS 256
+  export: false
+  fips: false
+  hashing: SHA512
+  key_exchange: '-'
+  old: false
+  protocol: TLS
+TLS_AES_128_CCM_8_SHA256:
+  aead: true
+  authentication: '-'
+  encryption: AES 128 CCM 8
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: '-'
+  old: false
+  protocol: TLS
+TLS_AES_128_CCM_ASCONHASH256:
+  aead: false
+  authentication: 128 CCM ASCONHASH256
+  encryption: ''
+  export: false
+  fips: false
+  hashing: ''
+  key_exchange: AES
+  old: false
+  protocol: TLS
+TLS_AES_128_CCM_SHA256:
+  aead: true
+  authentication: '-'
+  encryption: AES 128 CCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: '-'
+  old: false
+  protocol: TLS
+TLS_AES_128_GCM_ASCONHASH256:
+  aead: false
+  authentication: 128 GCM ASCONHASH256
+  encryption: ''
+  export: false
+  fips: false
+  hashing: ''
+  key_exchange: AES
+  old: false
+  protocol: TLS
+TLS_AES_128_GCM_SHA256:
+  aead: true
+  authentication: '-'
+  encryption: AES 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: '-'
+  old: false
+  protocol: TLS
+TLS_AES_256_GCM_SHA384:
+  aead: true
+  authentication: '-'
+  encryption: AES 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: '-'
+  old: false
+  protocol: TLS
+TLS_ASCONAEAD128_ASCONHASH256:
+  aead: false
+  authentication: ASCONHASH256
+  encryption: ''
+  export: false
+  fips: false
+  hashing: ''
+  key_exchange: ASCONAEAD128
+  old: false
+  protocol: TLS
+TLS_ASCONAEAD128_SHA256:
+  aead: false
+  authentication: SHA256
+  encryption: ''
+  export: false
+  fips: false
+  hashing: ''
+  key_exchange: ASCONAEAD128
+  old: false
+  protocol: TLS
+TLS_BASH_PRG_AE2561_BASH256:
+  aead: false
+  authentication: PRG AE2561 BASH256
+  encryption: ''
+  export: false
+  fips: false
+  hashing: ''
+  key_exchange: BASH
+  old: false
+  protocol: TLS
+TLS_BELT_CHE256_BELT_HASH:
+  aead: false
+  authentication: CHE256 BELT HASH
+  encryption: ''
+  export: false
+  fips: false
+  hashing: ''
+  key_exchange: BELT
+  old: false
+  protocol: TLS
+TLS_CHACHA20_POLY1305_SHA256:
+  aead: true
+  authentication: '-'
+  encryption: CHACHA20 POLY1305
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: '-'
+  old: false
+  protocol: TLS
+TLS_DHE_DSS_EXPORT_WITH_DES40_CBC_SHA:
+  aead: false
+  authentication: DSS
+  encryption: DES40 CBC
+  export: true
+  fips: false
+  hashing: SHA
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA:
+  aead: false
+  authentication: DSS
+  encryption: 3DES EDE CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_DSS_WITH_AES_128_CBC_SHA:
+  aead: false
+  authentication: DSS
+  encryption: AES 128 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_DSS_WITH_AES_128_CBC_SHA256:
+  aead: false
+  authentication: DSS
+  encryption: AES 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_DSS_WITH_AES_128_GCM_SHA256:
+  aead: true
+  authentication: DSS
+  encryption: AES 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_DSS_WITH_AES_256_CBC_SHA:
+  aead: false
+  authentication: DSS
+  encryption: AES 256 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_DSS_WITH_AES_256_CBC_SHA256:
+  aead: false
+  authentication: DSS
+  encryption: AES 256 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_DSS_WITH_AES_256_GCM_SHA384:
+  aead: true
+  authentication: DSS
+  encryption: AES 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_DSS_WITH_ARIA_128_CBC_SHA256:
+  aead: false
+  authentication: DSS
+  encryption: ARIA 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_DSS_WITH_ARIA_128_GCM_SHA256:
+  aead: true
+  authentication: DSS
+  encryption: ARIA 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_DSS_WITH_ARIA_256_CBC_SHA384:
+  aead: false
+  authentication: DSS
+  encryption: ARIA 256 CBC
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_DSS_WITH_ARIA_256_GCM_SHA384:
+  aead: true
+  authentication: DSS
+  encryption: ARIA 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_DSS_WITH_CAMELLIA_128_CBC_SHA:
+  aead: false
+  authentication: DSS
+  encryption: CAMELLIA 128 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_DSS_WITH_CAMELLIA_128_CBC_SHA256:
+  aead: false
+  authentication: DSS
+  encryption: CAMELLIA 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_DSS_WITH_CAMELLIA_128_GCM_SHA256:
+  aead: true
+  authentication: DSS
+  encryption: CAMELLIA 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_DSS_WITH_CAMELLIA_256_CBC_SHA:
+  aead: false
+  authentication: DSS
+  encryption: CAMELLIA 256 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_DSS_WITH_CAMELLIA_256_CBC_SHA256:
+  aead: false
+  authentication: DSS
+  encryption: CAMELLIA 256 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_DSS_WITH_CAMELLIA_256_GCM_SHA384:
+  aead: true
+  authentication: DSS
+  encryption: CAMELLIA 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_DSS_WITH_DES_CBC_SHA:
+  aead: false
+  authentication: DSS
+  encryption: DES CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_DSS_WITH_SEED_CBC_SHA:
+  aead: false
+  authentication: DSS
+  encryption: SEED CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_PSK_WITH_3DES_EDE_CBC_SHA:
+  aead: false
+  authentication: PSK
+  encryption: 3DES EDE CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_PSK_WITH_AES_128_CBC_SHA:
+  aead: false
+  authentication: PSK
+  encryption: AES 128 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_PSK_WITH_AES_128_CBC_SHA256:
+  aead: false
+  authentication: PSK
+  encryption: AES 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_PSK_WITH_AES_128_CCM:
+  aead: true
+  authentication: PSK
+  encryption: AES 128 CCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_PSK_WITH_AES_128_GCM_SHA256:
+  aead: true
+  authentication: PSK
+  encryption: AES 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_PSK_WITH_AES_256_CBC_SHA:
+  aead: false
+  authentication: PSK
+  encryption: AES 256 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_PSK_WITH_AES_256_CBC_SHA384:
+  aead: false
+  authentication: PSK
+  encryption: AES 256 CBC
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_PSK_WITH_AES_256_CCM:
+  aead: true
+  authentication: PSK
+  encryption: AES 256 CCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_PSK_WITH_AES_256_GCM_SHA384:
+  aead: true
+  authentication: PSK
+  encryption: AES 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_PSK_WITH_ARIA_128_CBC_SHA256:
+  aead: false
+  authentication: PSK
+  encryption: ARIA 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_PSK_WITH_ARIA_128_GCM_SHA256:
+  aead: true
+  authentication: PSK
+  encryption: ARIA 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_PSK_WITH_ARIA_256_CBC_SHA384:
+  aead: false
+  authentication: PSK
+  encryption: ARIA 256 CBC
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_PSK_WITH_ARIA_256_GCM_SHA384:
+  aead: true
+  authentication: PSK
+  encryption: ARIA 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_PSK_WITH_CAMELLIA_128_CBC_SHA256:
+  aead: false
+  authentication: PSK
+  encryption: CAMELLIA 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_PSK_WITH_CAMELLIA_128_GCM_SHA256:
+  aead: true
+  authentication: PSK
+  encryption: CAMELLIA 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_PSK_WITH_CAMELLIA_256_CBC_SHA384:
+  aead: false
+  authentication: PSK
+  encryption: CAMELLIA 256 CBC
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_PSK_WITH_CAMELLIA_256_GCM_SHA384:
+  aead: true
+  authentication: PSK
+  encryption: CAMELLIA 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_PSK_WITH_CHACHA20_POLY1305_SHA256:
+  aead: true
+  authentication: PSK
+  encryption: CHACHA20 POLY1305
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_PSK_WITH_NULL_SHA:
+  aead: false
+  authentication: PSK
+  encryption: 'NULL'
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_PSK_WITH_NULL_SHA256:
+  aead: false
+  authentication: PSK
+  encryption: 'NULL'
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_PSK_WITH_NULL_SHA384:
+  aead: false
+  authentication: PSK
+  encryption: 'NULL'
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_PSK_WITH_RC4_128_SHA:
+  aead: false
+  authentication: PSK
+  encryption: RC4 128
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA:
+  aead: false
+  authentication: RSA
+  encryption: DES40 CBC
+  export: true
+  fips: false
+  hashing: SHA
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_RSA_WITH_3DES_EDE_CBC_SHA:
+  aead: false
+  authentication: RSA
+  encryption: 3DES EDE CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_RSA_WITH_AES_128_CBC_SHA:
+  aead: false
+  authentication: RSA
+  encryption: AES 128 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_RSA_WITH_AES_128_CBC_SHA256:
+  aead: false
+  authentication: RSA
+  encryption: AES 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_RSA_WITH_AES_128_CCM:
+  aead: true
+  authentication: RSA
+  encryption: AES 128 CCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_RSA_WITH_AES_128_CCM_8:
+  aead: true
+  authentication: RSA
+  encryption: AES 128 CCM 8
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_RSA_WITH_AES_128_GCM_SHA256:
+  aead: true
+  authentication: RSA
+  encryption: AES 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_RSA_WITH_AES_256_CBC_SHA:
+  aead: false
+  authentication: RSA
+  encryption: AES 256 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_RSA_WITH_AES_256_CBC_SHA256:
+  aead: false
+  authentication: RSA
+  encryption: AES 256 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_RSA_WITH_AES_256_CCM:
+  aead: true
+  authentication: RSA
+  encryption: AES 256 CCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_RSA_WITH_AES_256_CCM_8:
+  aead: true
+  authentication: RSA
+  encryption: AES 256 CCM 8
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_RSA_WITH_AES_256_GCM_SHA384:
+  aead: true
+  authentication: RSA
+  encryption: AES 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_RSA_WITH_ARIA_128_CBC_SHA256:
+  aead: false
+  authentication: RSA
+  encryption: ARIA 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_RSA_WITH_ARIA_128_GCM_SHA256:
+  aead: true
+  authentication: RSA
+  encryption: ARIA 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_RSA_WITH_ARIA_256_CBC_SHA384:
+  aead: false
+  authentication: RSA
+  encryption: ARIA 256 CBC
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_RSA_WITH_ARIA_256_GCM_SHA384:
+  aead: true
+  authentication: RSA
+  encryption: ARIA 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA:
+  aead: false
+  authentication: RSA
+  encryption: CAMELLIA 128 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA256:
+  aead: false
+  authentication: RSA
+  encryption: CAMELLIA 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_RSA_WITH_CAMELLIA_128_GCM_SHA256:
+  aead: true
+  authentication: RSA
+  encryption: CAMELLIA 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA:
+  aead: false
+  authentication: RSA
+  encryption: CAMELLIA 256 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA256:
+  aead: false
+  authentication: RSA
+  encryption: CAMELLIA 256 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_RSA_WITH_CAMELLIA_256_GCM_SHA384:
+  aead: true
+  authentication: RSA
+  encryption: CAMELLIA 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_RSA_WITH_CHACHA20_POLY1305_SHA256:
+  aead: true
+  authentication: RSA
+  encryption: CHACHA20 POLY1305
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_RSA_WITH_DES_CBC_SHA:
+  aead: false
+  authentication: RSA
+  encryption: DES CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DHE_RSA_WITH_SEED_CBC_SHA:
+  aead: false
+  authentication: RSA
+  encryption: SEED CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_DH_DSS_EXPORT_WITH_DES40_CBC_SHA:
+  aead: false
+  authentication: DSS
+  encryption: DES40 CBC
+  export: true
+  fips: false
+  hashing: SHA
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_DSS_WITH_3DES_EDE_CBC_SHA:
+  aead: false
+  authentication: DSS
+  encryption: 3DES EDE CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_DSS_WITH_AES_128_CBC_SHA:
+  aead: false
+  authentication: DSS
+  encryption: AES 128 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_DSS_WITH_AES_128_CBC_SHA256:
+  aead: false
+  authentication: DSS
+  encryption: AES 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_DSS_WITH_AES_128_GCM_SHA256:
+  aead: true
+  authentication: DSS
+  encryption: AES 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_DSS_WITH_AES_256_CBC_SHA:
+  aead: false
+  authentication: DSS
+  encryption: AES 256 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_DSS_WITH_AES_256_CBC_SHA256:
+  aead: false
+  authentication: DSS
+  encryption: AES 256 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_DSS_WITH_AES_256_GCM_SHA384:
+  aead: true
+  authentication: DSS
+  encryption: AES 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_DSS_WITH_ARIA_128_CBC_SHA256:
+  aead: false
+  authentication: DSS
+  encryption: ARIA 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_DSS_WITH_ARIA_128_GCM_SHA256:
+  aead: true
+  authentication: DSS
+  encryption: ARIA 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_DSS_WITH_ARIA_256_CBC_SHA384:
+  aead: false
+  authentication: DSS
+  encryption: ARIA 256 CBC
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_DSS_WITH_ARIA_256_GCM_SHA384:
+  aead: true
+  authentication: DSS
+  encryption: ARIA 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_DSS_WITH_CAMELLIA_128_CBC_SHA:
+  aead: false
+  authentication: DSS
+  encryption: CAMELLIA 128 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_DSS_WITH_CAMELLIA_128_CBC_SHA256:
+  aead: false
+  authentication: DSS
+  encryption: CAMELLIA 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_DSS_WITH_CAMELLIA_128_GCM_SHA256:
+  aead: true
+  authentication: DSS
+  encryption: CAMELLIA 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_DSS_WITH_CAMELLIA_256_CBC_SHA:
+  aead: false
+  authentication: DSS
+  encryption: CAMELLIA 256 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_DSS_WITH_CAMELLIA_256_CBC_SHA256:
+  aead: false
+  authentication: DSS
+  encryption: CAMELLIA 256 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_DSS_WITH_CAMELLIA_256_GCM_SHA384:
+  aead: true
+  authentication: DSS
+  encryption: CAMELLIA 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_DSS_WITH_DES_CBC_SHA:
+  aead: false
+  authentication: DSS
+  encryption: DES CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_DSS_WITH_SEED_CBC_SHA:
+  aead: false
+  authentication: DSS
+  encryption: SEED CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_RSA_EXPORT_WITH_DES40_CBC_SHA:
+  aead: false
+  authentication: RSA
+  encryption: DES40 CBC
+  export: true
+  fips: false
+  hashing: SHA
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_RSA_WITH_3DES_EDE_CBC_SHA:
+  aead: false
+  authentication: RSA
+  encryption: 3DES EDE CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_RSA_WITH_AES_128_CBC_SHA:
+  aead: false
+  authentication: RSA
+  encryption: AES 128 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_RSA_WITH_AES_128_CBC_SHA256:
+  aead: false
+  authentication: RSA
+  encryption: AES 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_RSA_WITH_AES_128_GCM_SHA256:
+  aead: true
+  authentication: RSA
+  encryption: AES 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_RSA_WITH_AES_256_CBC_SHA:
+  aead: false
+  authentication: RSA
+  encryption: AES 256 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_RSA_WITH_AES_256_CBC_SHA256:
+  aead: false
+  authentication: RSA
+  encryption: AES 256 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_RSA_WITH_AES_256_GCM_SHA384:
+  aead: true
+  authentication: RSA
+  encryption: AES 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_RSA_WITH_ARIA_128_CBC_SHA256:
+  aead: false
+  authentication: RSA
+  encryption: ARIA 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_RSA_WITH_ARIA_128_GCM_SHA256:
+  aead: true
+  authentication: RSA
+  encryption: ARIA 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_RSA_WITH_ARIA_256_CBC_SHA384:
+  aead: false
+  authentication: RSA
+  encryption: ARIA 256 CBC
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_RSA_WITH_ARIA_256_GCM_SHA384:
+  aead: true
+  authentication: RSA
+  encryption: ARIA 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_RSA_WITH_CAMELLIA_128_CBC_SHA:
+  aead: false
+  authentication: RSA
+  encryption: CAMELLIA 128 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_RSA_WITH_CAMELLIA_128_CBC_SHA256:
+  aead: false
+  authentication: RSA
+  encryption: CAMELLIA 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_RSA_WITH_CAMELLIA_128_GCM_SHA256:
+  aead: true
+  authentication: RSA
+  encryption: CAMELLIA 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_RSA_WITH_CAMELLIA_256_CBC_SHA:
+  aead: false
+  authentication: RSA
+  encryption: CAMELLIA 256 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_RSA_WITH_CAMELLIA_256_CBC_SHA256:
+  aead: false
+  authentication: RSA
+  encryption: CAMELLIA 256 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_RSA_WITH_CAMELLIA_256_GCM_SHA384:
+  aead: true
+  authentication: RSA
+  encryption: CAMELLIA 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_RSA_WITH_DES_CBC_SHA:
+  aead: false
+  authentication: RSA
+  encryption: DES CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_RSA_WITH_SEED_CBC_SHA:
+  aead: false
+  authentication: RSA
+  encryption: SEED CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_anon_EXPORT_WITH_DES40_CBC_SHA:
+  aead: false
+  authentication: anon
+  encryption: DES40 CBC
+  export: true
+  fips: false
+  hashing: SHA
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_anon_EXPORT_WITH_RC4_40_MD5:
+  aead: false
+  authentication: anon
+  encryption: RC4 40
+  export: true
+  fips: false
+  hashing: MD5
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_anon_WITH_3DES_EDE_CBC_SHA:
+  aead: false
+  authentication: anon
+  encryption: 3DES EDE CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_anon_WITH_AES_128_CBC_SHA:
+  aead: false
+  authentication: anon
+  encryption: AES 128 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_anon_WITH_AES_128_CBC_SHA256:
+  aead: false
+  authentication: anon
+  encryption: AES 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_anon_WITH_AES_128_GCM_SHA256:
+  aead: true
+  authentication: anon
+  encryption: AES 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_anon_WITH_AES_256_CBC_SHA:
+  aead: false
+  authentication: anon
+  encryption: AES 256 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_anon_WITH_AES_256_CBC_SHA256:
+  aead: false
+  authentication: anon
+  encryption: AES 256 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_anon_WITH_AES_256_GCM_SHA384:
+  aead: true
+  authentication: anon
+  encryption: AES 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_anon_WITH_ARIA_128_CBC_SHA256:
+  aead: false
+  authentication: anon
+  encryption: ARIA 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_anon_WITH_ARIA_128_GCM_SHA256:
+  aead: true
+  authentication: anon
+  encryption: ARIA 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_anon_WITH_ARIA_256_CBC_SHA384:
+  aead: false
+  authentication: anon
+  encryption: ARIA 256 CBC
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_anon_WITH_ARIA_256_GCM_SHA384:
+  aead: true
+  authentication: anon
+  encryption: ARIA 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_anon_WITH_CAMELLIA_128_CBC_SHA:
+  aead: false
+  authentication: anon
+  encryption: CAMELLIA 128 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_anon_WITH_CAMELLIA_128_CBC_SHA256:
+  aead: false
+  authentication: anon
+  encryption: CAMELLIA 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_anon_WITH_CAMELLIA_128_GCM_SHA256:
+  aead: true
+  authentication: anon
+  encryption: CAMELLIA 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_anon_WITH_CAMELLIA_256_CBC_SHA:
+  aead: false
+  authentication: anon
+  encryption: CAMELLIA 256 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_anon_WITH_CAMELLIA_256_CBC_SHA256:
+  aead: false
+  authentication: anon
+  encryption: CAMELLIA 256 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_anon_WITH_CAMELLIA_256_GCM_SHA384:
+  aead: true
+  authentication: anon
+  encryption: CAMELLIA 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_anon_WITH_DES_CBC_SHA:
+  aead: false
+  authentication: anon
+  encryption: DES CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_anon_WITH_RC4_128_MD5:
+  aead: false
+  authentication: anon
+  encryption: RC4 128
+  export: false
+  fips: false
+  hashing: MD5
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_DH_anon_WITH_SEED_CBC_SHA:
+  aead: false
+  authentication: anon
+  encryption: SEED CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: DH
+  old: false
+  protocol: TLS
+TLS_ECCPWD_WITH_AES_128_CCM_SHA256:
+  aead: true
+  authentication: ECCPWD
+  encryption: AES 128 CCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECCPWD
+  old: false
+  protocol: TLS
+TLS_ECCPWD_WITH_AES_128_GCM_SHA256:
+  aead: true
+  authentication: ECCPWD
+  encryption: AES 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECCPWD
+  old: false
+  protocol: TLS
+TLS_ECCPWD_WITH_AES_256_CCM_SHA384:
+  aead: true
+  authentication: ECCPWD
+  encryption: AES 256 CCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: ECCPWD
+  old: false
+  protocol: TLS
+TLS_ECCPWD_WITH_AES_256_GCM_SHA384:
+  aead: true
+  authentication: ECCPWD
+  encryption: AES 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: ECCPWD
+  old: false
+  protocol: TLS
+TLS_ECDHE_ECDSA_WITH_3DES_EDE_CBC_SHA:
+  aead: false
+  authentication: ECDSA
+  encryption: 3DES EDE CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA:
+  aead: false
+  authentication: ECDSA
+  encryption: AES 128 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256:
+  aead: false
+  authentication: ECDSA
+  encryption: AES 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_ECDSA_WITH_AES_128_CCM:
+  aead: true
+  authentication: ECDSA
+  encryption: AES 128 CCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_ECDSA_WITH_AES_128_CCM_8:
+  aead: true
+  authentication: ECDSA
+  encryption: AES 128 CCM 8
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256:
+  aead: true
+  authentication: ECDSA
+  encryption: AES 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA:
+  aead: false
+  authentication: ECDSA
+  encryption: AES 256 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384:
+  aead: false
+  authentication: ECDSA
+  encryption: AES 256 CBC
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_ECDSA_WITH_AES_256_CCM:
+  aead: true
+  authentication: ECDSA
+  encryption: AES 256 CCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_ECDSA_WITH_AES_256_CCM_8:
+  aead: true
+  authentication: ECDSA
+  encryption: AES 256 CCM 8
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384:
+  aead: true
+  authentication: ECDSA
+  encryption: AES 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_ECDSA_WITH_ARIA_128_CBC_SHA256:
+  aead: false
+  authentication: ECDSA
+  encryption: ARIA 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_ECDSA_WITH_ARIA_128_GCM_SHA256:
+  aead: true
+  authentication: ECDSA
+  encryption: ARIA 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_ECDSA_WITH_ARIA_256_CBC_SHA384:
+  aead: false
+  authentication: ECDSA
+  encryption: ARIA 256 CBC
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_ECDSA_WITH_ARIA_256_GCM_SHA384:
+  aead: true
+  authentication: ECDSA
+  encryption: ARIA 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_ECDSA_WITH_CAMELLIA_128_CBC_SHA256:
+  aead: false
+  authentication: ECDSA
+  encryption: CAMELLIA 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_ECDSA_WITH_CAMELLIA_128_GCM_SHA256:
+  aead: true
+  authentication: ECDSA
+  encryption: CAMELLIA 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_ECDSA_WITH_CAMELLIA_256_CBC_SHA384:
+  aead: false
+  authentication: ECDSA
+  encryption: CAMELLIA 256 CBC
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_ECDSA_WITH_CAMELLIA_256_GCM_SHA384:
+  aead: true
+  authentication: ECDSA
+  encryption: CAMELLIA 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256:
+  aead: true
+  authentication: ECDSA
+  encryption: CHACHA20 POLY1305
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_ECDSA_WITH_NULL_SHA:
+  aead: false
+  authentication: ECDSA
+  encryption: 'NULL'
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_ECDSA_WITH_RC4_128_SHA:
+  aead: false
+  authentication: ECDSA
+  encryption: RC4 128
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_PSK_WITH_3DES_EDE_CBC_SHA:
+  aead: false
+  authentication: PSK
+  encryption: 3DES EDE CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_PSK_WITH_AES_128_CBC_SHA:
+  aead: false
+  authentication: PSK
+  encryption: AES 128 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_PSK_WITH_AES_128_CBC_SHA256:
+  aead: false
+  authentication: PSK
+  encryption: AES 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_PSK_WITH_AES_128_CCM_8_SHA256:
+  aead: true
+  authentication: PSK
+  encryption: AES 128 CCM 8
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_PSK_WITH_AES_128_CCM_SHA256:
+  aead: true
+  authentication: PSK
+  encryption: AES 128 CCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_PSK_WITH_AES_128_GCM_SHA256:
+  aead: true
+  authentication: PSK
+  encryption: AES 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_PSK_WITH_AES_256_CBC_SHA:
+  aead: false
+  authentication: PSK
+  encryption: AES 256 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_PSK_WITH_AES_256_CBC_SHA384:
+  aead: false
+  authentication: PSK
+  encryption: AES 256 CBC
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_PSK_WITH_AES_256_GCM_SHA384:
+  aead: true
+  authentication: PSK
+  encryption: AES 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_PSK_WITH_ARIA_128_CBC_SHA256:
+  aead: false
+  authentication: PSK
+  encryption: ARIA 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_PSK_WITH_ARIA_256_CBC_SHA384:
+  aead: false
+  authentication: PSK
+  encryption: ARIA 256 CBC
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_PSK_WITH_CAMELLIA_128_CBC_SHA256:
+  aead: false
+  authentication: PSK
+  encryption: CAMELLIA 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_PSK_WITH_CAMELLIA_256_CBC_SHA384:
+  aead: false
+  authentication: PSK
+  encryption: CAMELLIA 256 CBC
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_PSK_WITH_CHACHA20_POLY1305_SHA256:
+  aead: true
+  authentication: PSK
+  encryption: CHACHA20 POLY1305
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_PSK_WITH_NULL_SHA:
+  aead: false
+  authentication: PSK
+  encryption: 'NULL'
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_PSK_WITH_NULL_SHA256:
+  aead: false
+  authentication: PSK
+  encryption: 'NULL'
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_PSK_WITH_NULL_SHA384:
+  aead: false
+  authentication: PSK
+  encryption: 'NULL'
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_PSK_WITH_RC4_128_SHA:
+  aead: false
+  authentication: PSK
+  encryption: RC4 128
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA:
+  aead: false
+  authentication: RSA
+  encryption: 3DES EDE CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA:
+  aead: false
+  authentication: RSA
+  encryption: AES 128 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256:
+  aead: false
+  authentication: RSA
+  encryption: AES 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256:
+  aead: true
+  authentication: RSA
+  encryption: AES 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA:
+  aead: false
+  authentication: RSA
+  encryption: AES 256 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384:
+  aead: false
+  authentication: RSA
+  encryption: AES 256 CBC
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384:
+  aead: true
+  authentication: RSA
+  encryption: AES 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_RSA_WITH_ARIA_128_CBC_SHA256:
+  aead: false
+  authentication: RSA
+  encryption: ARIA 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_RSA_WITH_ARIA_128_GCM_SHA256:
+  aead: true
+  authentication: RSA
+  encryption: ARIA 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_RSA_WITH_ARIA_256_CBC_SHA384:
+  aead: false
+  authentication: RSA
+  encryption: ARIA 256 CBC
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_RSA_WITH_ARIA_256_GCM_SHA384:
+  aead: true
+  authentication: RSA
+  encryption: ARIA 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_RSA_WITH_CAMELLIA_128_CBC_SHA256:
+  aead: false
+  authentication: RSA
+  encryption: CAMELLIA 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_RSA_WITH_CAMELLIA_128_GCM_SHA256:
+  aead: true
+  authentication: RSA
+  encryption: CAMELLIA 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_RSA_WITH_CAMELLIA_256_CBC_SHA384:
+  aead: false
+  authentication: RSA
+  encryption: CAMELLIA 256 CBC
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_RSA_WITH_CAMELLIA_256_GCM_SHA384:
+  aead: true
+  authentication: RSA
+  encryption: CAMELLIA 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256:
+  aead: true
+  authentication: RSA
+  encryption: CHACHA20 POLY1305
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_RSA_WITH_NULL_SHA:
+  aead: false
+  authentication: RSA
+  encryption: 'NULL'
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDHE_RSA_WITH_RC4_128_SHA:
+  aead: false
+  authentication: RSA
+  encryption: RC4 128
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: ECDHE
+  old: false
+  protocol: TLS
+TLS_ECDH_ECDSA_WITH_3DES_EDE_CBC_SHA:
+  aead: false
+  authentication: ECDSA
+  encryption: 3DES EDE CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA:
+  aead: false
+  authentication: ECDSA
+  encryption: AES 128 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA256:
+  aead: false
+  authentication: ECDSA
+  encryption: AES 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_ECDSA_WITH_AES_128_GCM_SHA256:
+  aead: true
+  authentication: ECDSA
+  encryption: AES 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA:
+  aead: false
+  authentication: ECDSA
+  encryption: AES 256 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA384:
+  aead: false
+  authentication: ECDSA
+  encryption: AES 256 CBC
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_ECDSA_WITH_AES_256_GCM_SHA384:
+  aead: true
+  authentication: ECDSA
+  encryption: AES 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_ECDSA_WITH_ARIA_128_CBC_SHA256:
+  aead: false
+  authentication: ECDSA
+  encryption: ARIA 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_ECDSA_WITH_ARIA_128_GCM_SHA256:
+  aead: true
+  authentication: ECDSA
+  encryption: ARIA 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_ECDSA_WITH_ARIA_256_CBC_SHA384:
+  aead: false
+  authentication: ECDSA
+  encryption: ARIA 256 CBC
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_ECDSA_WITH_ARIA_256_GCM_SHA384:
+  aead: true
+  authentication: ECDSA
+  encryption: ARIA 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_ECDSA_WITH_CAMELLIA_128_CBC_SHA256:
+  aead: false
+  authentication: ECDSA
+  encryption: CAMELLIA 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_ECDSA_WITH_CAMELLIA_128_GCM_SHA256:
+  aead: true
+  authentication: ECDSA
+  encryption: CAMELLIA 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_ECDSA_WITH_CAMELLIA_256_CBC_SHA384:
+  aead: false
+  authentication: ECDSA
+  encryption: CAMELLIA 256 CBC
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_ECDSA_WITH_CAMELLIA_256_GCM_SHA384:
+  aead: true
+  authentication: ECDSA
+  encryption: CAMELLIA 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_ECDSA_WITH_NULL_SHA:
+  aead: false
+  authentication: ECDSA
+  encryption: 'NULL'
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_ECDSA_WITH_RC4_128_SHA:
+  aead: false
+  authentication: ECDSA
+  encryption: RC4 128
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_RSA_WITH_3DES_EDE_CBC_SHA:
+  aead: false
+  authentication: RSA
+  encryption: 3DES EDE CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_RSA_WITH_AES_128_CBC_SHA:
+  aead: false
+  authentication: RSA
+  encryption: AES 128 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_RSA_WITH_AES_128_CBC_SHA256:
+  aead: false
+  authentication: RSA
+  encryption: AES 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_RSA_WITH_AES_128_GCM_SHA256:
+  aead: true
+  authentication: RSA
+  encryption: AES 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_RSA_WITH_AES_256_CBC_SHA:
+  aead: false
+  authentication: RSA
+  encryption: AES 256 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_RSA_WITH_AES_256_CBC_SHA384:
+  aead: false
+  authentication: RSA
+  encryption: AES 256 CBC
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_RSA_WITH_AES_256_GCM_SHA384:
+  aead: true
+  authentication: RSA
+  encryption: AES 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_RSA_WITH_ARIA_128_CBC_SHA256:
+  aead: false
+  authentication: RSA
+  encryption: ARIA 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_RSA_WITH_ARIA_128_GCM_SHA256:
+  aead: true
+  authentication: RSA
+  encryption: ARIA 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_RSA_WITH_ARIA_256_CBC_SHA384:
+  aead: false
+  authentication: RSA
+  encryption: ARIA 256 CBC
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_RSA_WITH_ARIA_256_GCM_SHA384:
+  aead: true
+  authentication: RSA
+  encryption: ARIA 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_RSA_WITH_CAMELLIA_128_CBC_SHA256:
+  aead: false
+  authentication: RSA
+  encryption: CAMELLIA 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_RSA_WITH_CAMELLIA_128_GCM_SHA256:
+  aead: true
+  authentication: RSA
+  encryption: CAMELLIA 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_RSA_WITH_CAMELLIA_256_CBC_SHA384:
+  aead: false
+  authentication: RSA
+  encryption: CAMELLIA 256 CBC
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_RSA_WITH_CAMELLIA_256_GCM_SHA384:
+  aead: true
+  authentication: RSA
+  encryption: CAMELLIA 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_RSA_WITH_NULL_SHA:
+  aead: false
+  authentication: RSA
+  encryption: 'NULL'
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_RSA_WITH_RC4_128_SHA:
+  aead: false
+  authentication: RSA
+  encryption: RC4 128
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_anon_WITH_3DES_EDE_CBC_SHA:
+  aead: false
+  authentication: anon
+  encryption: 3DES EDE CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_anon_WITH_AES_128_CBC_SHA:
+  aead: false
+  authentication: anon
+  encryption: AES 128 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_anon_WITH_AES_256_CBC_SHA:
+  aead: false
+  authentication: anon
+  encryption: AES 256 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_anon_WITH_NULL_SHA:
+  aead: false
+  authentication: anon
+  encryption: 'NULL'
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_ECDH_anon_WITH_RC4_128_SHA:
+  aead: false
+  authentication: anon
+  encryption: RC4 128
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: ECDH
+  old: false
+  protocol: TLS
+TLS_EMPTY_RENEGOTIATION_INFO_SCSV:
+  aead: false
+  authentication: '-'
+  encryption: '-'
+  export: false
+  fips: false
+  hashing: '-'
+  key_exchange: '-'
+  old: false
+  protocol: TLS
+TLS_FALLBACK_SCSV:
+  aead: false
+  authentication: '-'
+  encryption: '-'
+  export: false
+  fips: false
+  hashing: '-'
+  key_exchange: '-'
+  old: false
+  protocol: TLS
+TLS_GOSTR341112_256_WITH_28147_CNT_IMIT:
+  aead: false
+  authentication: GOSTR341012
+  encryption: 28147 CNT IMIT
+  export: false
+  fips: false
+  hashing: GOSTR341112
+  key_exchange: GOSTR341012
+  old: false
+  protocol: TLS
+TLS_GOSTR341112_256_WITH_KUZNYECHIK_CTR_OMAC:
+  aead: false
+  authentication: GOSTR341012
+  encryption: KUZNYECHIK CTR OMAC
+  export: false
+  fips: false
+  hashing: GOSTR341112
+  key_exchange: GOSTR341012
+  old: false
+  protocol: TLS
+TLS_GOSTR341112_256_WITH_KUZNYECHIK_MGM_L:
+  aead: true
+  authentication: '-'
+  encryption: KUZNYECHIK MGM L
+  export: false
+  fips: false
+  hashing: GOSTR341112
+  key_exchange: '-'
+  old: false
+  protocol: TLS
+TLS_GOSTR341112_256_WITH_KUZNYECHIK_MGM_S:
+  aead: true
+  authentication: '-'
+  encryption: KUZNYECHIK MGM S
+  export: false
+  fips: false
+  hashing: GOSTR341112
+  key_exchange: '-'
+  old: false
+  protocol: TLS
+TLS_GOSTR341112_256_WITH_MAGMA_CTR_OMAC:
+  aead: false
+  authentication: GOSTR341012
+  encryption: MAGMA CTR OMAC
+  export: false
+  fips: false
+  hashing: GOSTR341112
+  key_exchange: GOSTR341012
+  old: false
+  protocol: TLS
+TLS_GOSTR341112_256_WITH_MAGMA_MGM_L:
+  aead: true
+  authentication: '-'
+  encryption: MAGMA MGM L
+  export: false
+  fips: false
+  hashing: GOSTR341112
+  key_exchange: '-'
+  old: false
+  protocol: TLS
+TLS_GOSTR341112_256_WITH_MAGMA_MGM_S:
+  aead: true
+  authentication: '-'
+  encryption: MAGMA MGM S
+  export: false
+  fips: false
+  hashing: GOSTR341112
+  key_exchange: '-'
+  old: false
+  protocol: TLS
+TLS_KRB5_EXPORT_WITH_DES_CBC_40_MD5:
+  aead: false
+  authentication: KRB5
+  encryption: DES CBC 40
+  export: true
+  fips: false
+  hashing: MD5
+  key_exchange: KRB5
+  old: false
+  protocol: TLS
+TLS_KRB5_EXPORT_WITH_DES_CBC_40_SHA:
+  aead: false
+  authentication: KRB5
+  encryption: DES CBC 40
+  export: true
+  fips: false
+  hashing: SHA
+  key_exchange: KRB5
+  old: false
+  protocol: TLS
+TLS_KRB5_EXPORT_WITH_RC2_CBC_40_MD5:
+  aead: false
+  authentication: KRB5
+  encryption: RC2 CBC 40
+  export: true
+  fips: false
+  hashing: MD5
+  key_exchange: KRB5
+  old: false
+  protocol: TLS
+TLS_KRB5_EXPORT_WITH_RC2_CBC_40_SHA:
+  aead: false
+  authentication: KRB5
+  encryption: RC2 CBC 40
+  export: true
+  fips: false
+  hashing: SHA
+  key_exchange: KRB5
+  old: false
+  protocol: TLS
+TLS_KRB5_EXPORT_WITH_RC4_40_MD5:
+  aead: false
+  authentication: KRB5
+  encryption: RC4 40
+  export: true
+  fips: false
+  hashing: MD5
+  key_exchange: KRB5
+  old: false
+  protocol: TLS
+TLS_KRB5_EXPORT_WITH_RC4_40_SHA:
+  aead: false
+  authentication: KRB5
+  encryption: RC4 40
+  export: true
+  fips: false
+  hashing: SHA
+  key_exchange: KRB5
+  old: false
+  protocol: TLS
+TLS_KRB5_WITH_3DES_EDE_CBC_MD5:
+  aead: false
+  authentication: KRB5
+  encryption: 3DES EDE CBC
+  export: false
+  fips: false
+  hashing: MD5
+  key_exchange: KRB5
+  old: false
+  protocol: TLS
+TLS_KRB5_WITH_3DES_EDE_CBC_SHA:
+  aead: false
+  authentication: KRB5
+  encryption: 3DES EDE CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: KRB5
+  old: false
+  protocol: TLS
+TLS_KRB5_WITH_DES_CBC_MD5:
+  aead: false
+  authentication: KRB5
+  encryption: DES CBC
+  export: false
+  fips: false
+  hashing: MD5
+  key_exchange: KRB5
+  old: false
+  protocol: TLS
+TLS_KRB5_WITH_DES_CBC_SHA:
+  aead: false
+  authentication: KRB5
+  encryption: DES CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: KRB5
+  old: false
+  protocol: TLS
+TLS_KRB5_WITH_IDEA_CBC_MD5:
+  aead: false
+  authentication: KRB5
+  encryption: IDEA CBC
+  export: false
+  fips: false
+  hashing: MD5
+  key_exchange: KRB5
+  old: false
+  protocol: TLS
+TLS_KRB5_WITH_IDEA_CBC_SHA:
+  aead: false
+  authentication: KRB5
+  encryption: IDEA CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: KRB5
+  old: false
+  protocol: TLS
+TLS_KRB5_WITH_RC4_128_MD5:
+  aead: false
+  authentication: KRB5
+  encryption: RC4 128
+  export: false
+  fips: false
+  hashing: MD5
+  key_exchange: KRB5
+  old: false
+  protocol: TLS
+TLS_KRB5_WITH_RC4_128_SHA:
+  aead: false
+  authentication: KRB5
+  encryption: RC4 128
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: KRB5
+  old: false
+  protocol: TLS
+TLS_NULL_WITH_NULL_NULL:
+  aead: false
+  authentication: 'NULL'
+  encryption: 'NULL'
+  export: false
+  fips: false
+  hashing: 'NULL'
+  key_exchange: 'NULL'
+  old: false
+  protocol: TLS
+TLS_PSK_DHE_WITH_AES_128_CCM_8:
+  aead: true
+  authentication: PSK
+  encryption: AES 128 CCM 8
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_PSK_DHE_WITH_AES_256_CCM_8:
+  aead: true
+  authentication: PSK
+  encryption: AES 256 CCM 8
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: DHE
+  old: false
+  protocol: TLS
+TLS_PSK_WITH_3DES_EDE_CBC_SHA:
+  aead: false
+  authentication: PSK
+  encryption: 3DES EDE CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: PSK
+  old: false
+  protocol: TLS
+TLS_PSK_WITH_AES_128_CBC_SHA:
+  aead: false
+  authentication: PSK
+  encryption: AES 128 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: PSK
+  old: false
+  protocol: TLS
+TLS_PSK_WITH_AES_128_CBC_SHA256:
+  aead: false
+  authentication: PSK
+  encryption: AES 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: PSK
+  old: false
+  protocol: TLS
+TLS_PSK_WITH_AES_128_CCM:
+  aead: true
+  authentication: PSK
+  encryption: AES 128 CCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: PSK
+  old: false
+  protocol: TLS
+TLS_PSK_WITH_AES_128_CCM_8:
+  aead: true
+  authentication: PSK
+  encryption: AES 128 CCM 8
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: PSK
+  old: false
+  protocol: TLS
+TLS_PSK_WITH_AES_128_GCM_SHA256:
+  aead: true
+  authentication: PSK
+  encryption: AES 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: PSK
+  old: false
+  protocol: TLS
+TLS_PSK_WITH_AES_256_CBC_SHA:
+  aead: false
+  authentication: PSK
+  encryption: AES 256 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: PSK
+  old: false
+  protocol: TLS
+TLS_PSK_WITH_AES_256_CBC_SHA384:
+  aead: false
+  authentication: PSK
+  encryption: AES 256 CBC
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: PSK
+  old: false
+  protocol: TLS
+TLS_PSK_WITH_AES_256_CCM:
+  aead: true
+  authentication: PSK
+  encryption: AES 256 CCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: PSK
+  old: false
+  protocol: TLS
+TLS_PSK_WITH_AES_256_CCM_8:
+  aead: true
+  authentication: PSK
+  encryption: AES 256 CCM 8
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: PSK
+  old: false
+  protocol: TLS
+TLS_PSK_WITH_AES_256_GCM_SHA384:
+  aead: true
+  authentication: PSK
+  encryption: AES 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: PSK
+  old: false
+  protocol: TLS
+TLS_PSK_WITH_ARIA_128_CBC_SHA256:
+  aead: false
+  authentication: PSK
+  encryption: ARIA 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: PSK
+  old: false
+  protocol: TLS
+TLS_PSK_WITH_ARIA_128_GCM_SHA256:
+  aead: true
+  authentication: PSK
+  encryption: ARIA 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: PSK
+  old: false
+  protocol: TLS
+TLS_PSK_WITH_ARIA_256_CBC_SHA384:
+  aead: false
+  authentication: PSK
+  encryption: ARIA 256 CBC
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: PSK
+  old: false
+  protocol: TLS
+TLS_PSK_WITH_ARIA_256_GCM_SHA384:
+  aead: true
+  authentication: PSK
+  encryption: ARIA 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: PSK
+  old: false
+  protocol: TLS
+TLS_PSK_WITH_CAMELLIA_128_CBC_SHA256:
+  aead: false
+  authentication: PSK
+  encryption: CAMELLIA 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: PSK
+  old: false
+  protocol: TLS
+TLS_PSK_WITH_CAMELLIA_128_GCM_SHA256:
+  aead: true
+  authentication: PSK
+  encryption: CAMELLIA 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: PSK
+  old: false
+  protocol: TLS
+TLS_PSK_WITH_CAMELLIA_256_CBC_SHA384:
+  aead: false
+  authentication: PSK
+  encryption: CAMELLIA 256 CBC
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: PSK
+  old: false
+  protocol: TLS
+TLS_PSK_WITH_CAMELLIA_256_GCM_SHA384:
+  aead: true
+  authentication: PSK
+  encryption: CAMELLIA 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: PSK
+  old: false
+  protocol: TLS
+TLS_PSK_WITH_CHACHA20_POLY1305_SHA256:
+  aead: true
+  authentication: PSK
+  encryption: CHACHA20 POLY1305
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: PSK
+  old: false
+  protocol: TLS
+TLS_PSK_WITH_NULL_SHA:
+  aead: false
+  authentication: PSK
+  encryption: 'NULL'
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: PSK
+  old: false
+  protocol: TLS
+TLS_PSK_WITH_NULL_SHA256:
+  aead: false
+  authentication: PSK
+  encryption: 'NULL'
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: PSK
+  old: false
+  protocol: TLS
+TLS_PSK_WITH_NULL_SHA384:
+  aead: false
+  authentication: PSK
+  encryption: 'NULL'
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: PSK
+  old: false
+  protocol: TLS
+TLS_PSK_WITH_RC4_128_SHA:
+  aead: false
+  authentication: PSK
+  encryption: RC4 128
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: PSK
+  old: false
+  protocol: TLS
+TLS_RSA_EXPORT_WITH_DES40_CBC_SHA:
+  aead: false
+  authentication: RSA
+  encryption: DES40 CBC
+  export: true
+  fips: false
+  hashing: SHA
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_EXPORT_WITH_RC2_CBC_40_MD5:
+  aead: false
+  authentication: RSA
+  encryption: RC2 CBC 40
+  export: true
+  fips: false
+  hashing: MD5
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_EXPORT_WITH_RC4_40_MD5:
+  aead: false
+  authentication: RSA
+  encryption: RC4 40
+  export: true
+  fips: false
+  hashing: MD5
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_PSK_WITH_3DES_EDE_CBC_SHA:
+  aead: false
+  authentication: PSK
+  encryption: 3DES EDE CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_PSK_WITH_AES_128_CBC_SHA:
+  aead: false
+  authentication: PSK
+  encryption: AES 128 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_PSK_WITH_AES_128_CBC_SHA256:
+  aead: false
+  authentication: PSK
+  encryption: AES 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_PSK_WITH_AES_128_GCM_SHA256:
+  aead: true
+  authentication: PSK
+  encryption: AES 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_PSK_WITH_AES_256_CBC_SHA:
+  aead: false
+  authentication: PSK
+  encryption: AES 256 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_PSK_WITH_AES_256_CBC_SHA384:
+  aead: false
+  authentication: PSK
+  encryption: AES 256 CBC
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_PSK_WITH_AES_256_GCM_SHA384:
+  aead: true
+  authentication: PSK
+  encryption: AES 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_PSK_WITH_ARIA_128_CBC_SHA256:
+  aead: false
+  authentication: PSK
+  encryption: ARIA 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_PSK_WITH_ARIA_128_GCM_SHA256:
+  aead: true
+  authentication: PSK
+  encryption: ARIA 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_PSK_WITH_ARIA_256_CBC_SHA384:
+  aead: false
+  authentication: PSK
+  encryption: ARIA 256 CBC
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_PSK_WITH_ARIA_256_GCM_SHA384:
+  aead: true
+  authentication: PSK
+  encryption: ARIA 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_PSK_WITH_CAMELLIA_128_CBC_SHA256:
+  aead: false
+  authentication: PSK
+  encryption: CAMELLIA 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_PSK_WITH_CAMELLIA_128_GCM_SHA256:
+  aead: true
+  authentication: PSK
+  encryption: CAMELLIA 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_PSK_WITH_CAMELLIA_256_CBC_SHA384:
+  aead: false
+  authentication: PSK
+  encryption: CAMELLIA 256 CBC
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_PSK_WITH_CAMELLIA_256_GCM_SHA384:
+  aead: true
+  authentication: PSK
+  encryption: CAMELLIA 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_PSK_WITH_CHACHA20_POLY1305_SHA256:
+  aead: true
+  authentication: PSK
+  encryption: CHACHA20 POLY1305
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_PSK_WITH_NULL_SHA:
+  aead: false
+  authentication: PSK
+  encryption: 'NULL'
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_PSK_WITH_NULL_SHA256:
+  aead: false
+  authentication: PSK
+  encryption: 'NULL'
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_PSK_WITH_NULL_SHA384:
+  aead: false
+  authentication: PSK
+  encryption: 'NULL'
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_PSK_WITH_RC4_128_SHA:
+  aead: false
+  authentication: PSK
+  encryption: RC4 128
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_WITH_3DES_EDE_CBC_SHA:
+  aead: false
+  authentication: RSA
+  encryption: 3DES EDE CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_WITH_AES_128_CBC_SHA:
+  aead: false
+  authentication: RSA
+  encryption: AES 128 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_WITH_AES_128_CBC_SHA256:
+  aead: false
+  authentication: RSA
+  encryption: AES 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_WITH_AES_128_CCM:
+  aead: true
+  authentication: RSA
+  encryption: AES 128 CCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_WITH_AES_128_CCM_8:
+  aead: true
+  authentication: RSA
+  encryption: AES 128 CCM 8
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_WITH_AES_128_GCM_SHA256:
+  aead: true
+  authentication: RSA
+  encryption: AES 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_WITH_AES_256_CBC_SHA:
+  aead: false
+  authentication: RSA
+  encryption: AES 256 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_WITH_AES_256_CBC_SHA256:
+  aead: false
+  authentication: RSA
+  encryption: AES 256 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_WITH_AES_256_CCM:
+  aead: true
+  authentication: RSA
+  encryption: AES 256 CCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_WITH_AES_256_CCM_8:
+  aead: true
+  authentication: RSA
+  encryption: AES 256 CCM 8
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_WITH_AES_256_GCM_SHA384:
+  aead: true
+  authentication: RSA
+  encryption: AES 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_WITH_ARIA_128_CBC_SHA256:
+  aead: false
+  authentication: RSA
+  encryption: ARIA 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_WITH_ARIA_128_GCM_SHA256:
+  aead: true
+  authentication: RSA
+  encryption: ARIA 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_WITH_ARIA_256_CBC_SHA384:
+  aead: false
+  authentication: RSA
+  encryption: ARIA 256 CBC
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_WITH_ARIA_256_GCM_SHA384:
+  aead: true
+  authentication: RSA
+  encryption: ARIA 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_WITH_CAMELLIA_128_CBC_SHA:
+  aead: false
+  authentication: RSA
+  encryption: CAMELLIA 128 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_WITH_CAMELLIA_128_CBC_SHA256:
+  aead: false
+  authentication: RSA
+  encryption: CAMELLIA 128 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_WITH_CAMELLIA_128_GCM_SHA256:
+  aead: true
+  authentication: RSA
+  encryption: CAMELLIA 128 GCM
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_WITH_CAMELLIA_256_CBC_SHA:
+  aead: false
+  authentication: RSA
+  encryption: CAMELLIA 256 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_WITH_CAMELLIA_256_CBC_SHA256:
+  aead: false
+  authentication: RSA
+  encryption: CAMELLIA 256 CBC
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_WITH_CAMELLIA_256_GCM_SHA384:
+  aead: true
+  authentication: RSA
+  encryption: CAMELLIA 256 GCM
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_WITH_DES_CBC_SHA:
+  aead: false
+  authentication: RSA
+  encryption: DES CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_WITH_IDEA_CBC_SHA:
+  aead: false
+  authentication: RSA
+  encryption: IDEA CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_WITH_NULL_MD5:
+  aead: false
+  authentication: RSA
+  encryption: 'NULL'
+  export: false
+  fips: false
+  hashing: MD5
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_WITH_NULL_SHA:
+  aead: false
+  authentication: RSA
+  encryption: 'NULL'
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_WITH_NULL_SHA256:
+  aead: false
+  authentication: RSA
+  encryption: 'NULL'
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_WITH_RC4_128_MD5:
+  aead: false
+  authentication: RSA
+  encryption: RC4 128
+  export: false
+  fips: false
+  hashing: MD5
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_WITH_RC4_128_SHA:
+  aead: false
+  authentication: RSA
+  encryption: RC4 128
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_RSA_WITH_SEED_CBC_SHA:
+  aead: false
+  authentication: RSA
+  encryption: SEED CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: RSA
+  old: false
+  protocol: TLS
+TLS_SHA256_SHA256:
+  aead: false
+  authentication: SHA256
+  encryption: 'NULL'
+  export: false
+  fips: false
+  hashing: SHA256
+  key_exchange: '-'
+  old: false
+  protocol: TLS
+TLS_SHA384_SHA384:
+  aead: false
+  authentication: SHA384
+  encryption: 'NULL'
+  export: false
+  fips: false
+  hashing: SHA384
+  key_exchange: '-'
+  old: false
+  protocol: TLS
+TLS_SM4_CCM_SM3:
+  aead: true
+  authentication: '-'
+  encryption: SM4 CCM
+  export: false
+  fips: false
+  hashing: SM3
+  key_exchange: '-'
+  old: false
+  protocol: TLS
+TLS_SM4_GCM_SM3:
+  aead: true
+  authentication: '-'
+  encryption: SM4 GCM
+  export: false
+  fips: false
+  hashing: SM3
+  key_exchange: '-'
+  old: false
+  protocol: TLS
+TLS_SRP_SHA_DSS_WITH_3DES_EDE_CBC_SHA:
+  aead: false
+  authentication: SHA DSS
+  encryption: 3DES EDE CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: SRP
+  old: false
+  protocol: TLS
+TLS_SRP_SHA_DSS_WITH_AES_128_CBC_SHA:
+  aead: false
+  authentication: SHA DSS
+  encryption: AES 128 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: SRP
+  old: false
+  protocol: TLS
+TLS_SRP_SHA_DSS_WITH_AES_256_CBC_SHA:
+  aead: false
+  authentication: SHA DSS
+  encryption: AES 256 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: SRP
+  old: false
+  protocol: TLS
+TLS_SRP_SHA_RSA_WITH_3DES_EDE_CBC_SHA:
+  aead: false
+  authentication: SHA RSA
+  encryption: 3DES EDE CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: SRP
+  old: false
+  protocol: TLS
+TLS_SRP_SHA_RSA_WITH_AES_128_CBC_SHA:
+  aead: false
+  authentication: SHA RSA
+  encryption: AES 128 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: SRP
+  old: false
+  protocol: TLS
+TLS_SRP_SHA_RSA_WITH_AES_256_CBC_SHA:
+  aead: false
+  authentication: SHA RSA
+  encryption: AES 256 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: SRP
+  old: false
+  protocol: TLS
+TLS_SRP_SHA_WITH_3DES_EDE_CBC_SHA:
+  aead: false
+  authentication: SHA
+  encryption: 3DES EDE CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: SRP
+  old: false
+  protocol: TLS
+TLS_SRP_SHA_WITH_AES_128_CBC_SHA:
+  aead: false
+  authentication: SHA
+  encryption: AES 128 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: SRP
+  old: false
+  protocol: TLS
+TLS_SRP_SHA_WITH_AES_256_CBC_SHA:
+  aead: false
+  authentication: SHA
+  encryption: AES 256 CBC
+  export: false
+  fips: false
+  hashing: SHA
+  key_exchange: SRP
+  old: false
+  protocol: TLS
