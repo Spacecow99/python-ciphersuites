@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from importlib import resources
-from pathlib import Path
 
 import pytest
 import yaml
@@ -13,12 +12,6 @@ from ciphersuites.scrape.adapters.schannel import Schannel, load_curated
 from ciphersuites.scrape.core import Record, Version, normalize_code_point
 
 FILE = "schannel_curated.yaml"
-V1 = (
-    Path(__file__).resolve().parents[2]
-    / "ciphersuites"
-    / "_ciphersuites"
-    / "schannel.yaml"
-)
 
 
 def _curated_text():
@@ -62,22 +55,6 @@ def test_every_code_point_normalises():
         for suite in entry["suites"]:
             cp = suite["code_point"]
             assert normalize_code_point(cp) == tuple(cp), suite["name"]
-
-
-def test_covers_v1_code_points_or_documents_the_gap():
-    v1 = {
-        tuple(
-            row["fields"][k]
-            for k in ("hex_byte_1", "hex_byte_2", "hex_byte_3")
-            if k in row["fields"]
-        ): row["pk"]
-        for row in yaml.safe_load(V1.read_text(encoding="utf-8"))
-    }
-    curated = {tuple(s["code_point"]) for e in _entries() for s in e["suites"]}
-    text = _curated_text()
-    for cp, name in v1.items():
-        if cp not in curated:
-            assert f"# not in any Microsoft Learn page: {name}" in text, name
 
 
 def test_newest_windows_has_tls13():

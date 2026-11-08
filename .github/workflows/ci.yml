@@ -58,7 +58,7 @@ jobs:
       - name: Install
         run: pip install .[test]
       - name: Pytest
-        run: pytest
+        run: pytest --cov=ciphersuites.scrape --cov=ciphersuites.catalog --cov-branch --cov-fail-under=85
 
   build:
     runs-on: ubuntu-latest

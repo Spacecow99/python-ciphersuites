@@ -23,22 +23,7 @@ test = ["tox", "pytest", "pytest-cov", "responses"]
 docs = ["sphinx", "sphinx-rtd-theme", "myst-parser"]
 
 [project.scripts]
-complete-ciphersuites = "ciphersuites._scripts.complete_cs_instance:main"
-deduplicate-ciphers = "ciphersuites._scripts.deduplicate_ciphers:main"
-scrape-gnutls = "ciphersuites._scripts.scrape_gnutls:main"
-scrape-iana = "ciphersuites._scripts.scrape_iana:main"
-scrape-nss = "ciphersuites._scripts.scrape_nss:main"
-scrape-openssl = "ciphersuites._scripts.scrape_openssl:main"
-scrape-scanigma = "ciphersuites._scripts.scrape_scanigma:main"
-scrape-testssl = "ciphersuites._scripts.scrape_testssl:main"
-scrape-go = "ciphersuites._scripts.scrape_go:main"
-scrape-jsse = "ciphersuites._scripts.scrape_jsse:main"
-scrape-libressl = "ciphersuites._scripts.scrape_libressl:main"
-scrape-boringssl = "ciphersuites._scripts.scrape_boringssl:main"
-scrape-s2n = "ciphersuites._scripts.scrape_s2n:main"
-scrape-mbedtls = "ciphersuites._scripts.scrape_mbedtls:main"
 ciphersuites-scrape = "ciphersuites.scrape.cli:main"
-
 
 [project.urls]
 Source = "https://pypi.org/project/python-ciphersuites"
@@ -64,6 +49,10 @@ include = "\\.py[iw]?$"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+# Import PyYAML before pytest-cov starts. With dotted --cov targets coverage
+# imports the package (and so PyYAML) while configuring, then forgets those
+# modules; PyYAML's C loader breaks when re-imported ("tag None" errors).
+addopts = "-p yaml"
 
 [tool.bandit]
 skips = []

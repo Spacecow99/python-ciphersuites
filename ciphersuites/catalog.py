@@ -226,7 +226,8 @@ class Catalog:
         docs = _read(entries)
         if _CATALOGUE_FILE not in docs:
             raise DataNotFoundError(
-                f"{_CATALOGUE_FILE} not found in {data_dir}"
+                f"{_CATALOGUE_FILE} not found in {data_dir}. If this is a "
+                "source checkout, run `git submodule update --init`."
             )
         try:
             suites = _catalogue_suites(docs.pop(_CATALOGUE_FILE))
@@ -350,6 +351,13 @@ class Catalog:
             )
         return result
 
+    def suites(self) -> List[CipherSuite]:
+        """Every suite in the catalogue, sorted by code point."""
+        return [
+            self._suites[cp]
+            for cp in sorted(self._suites, key=code_point_sort_key)
+        ]
+
     def libraries(self) -> List[str]:
         """Sorted names of the libraries (reference sources excluded)."""
         return list(self._libraries)
@@ -392,6 +400,11 @@ def find(
 def supported_by(library: str, version: str) -> List[CipherSuite]:
     """See :meth:`Catalog.supported_by`."""
     return _catalog().supported_by(library, version)
+
+
+def all_suites() -> List[CipherSuite]:
+    """See :meth:`Catalog.suites`."""
+    return _catalog().suites()
 
 
 def libraries() -> List[str]:
