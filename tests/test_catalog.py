@@ -250,3 +250,17 @@ def test_deterministic_under_hash_seeds():
         )
         outs.add(proc.stdout)
     assert len(outs) == 1
+
+
+def test_legacy_non_suite_files_are_skipped(tmp_path):
+    shutil.copytree(FIXTURES, tmp_path / "d")
+    for name in ("technologies.yaml", "vulnerabilities.yaml"):
+        (tmp_path / "d" / name).write_text("- model: x\n  pk: 1\n")
+    assert Catalog.load(tmp_path / "d").libraries() == ["go", "openssl"]
+
+
+def test_other_list_shaped_yaml_still_rejected(tmp_path):
+    shutil.copytree(FIXTURES, tmp_path / "d")
+    (tmp_path / "d" / "foo.yaml").write_text("- model: x\n  pk: 1\n")
+    with pytest.raises(DataNotFoundError, match="foo.yaml"):
+        Catalog.load(tmp_path / "d")

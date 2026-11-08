@@ -26,6 +26,8 @@ from ciphersuites.scrape.schema import (
 )
 
 _CATALOGUE_FILE = "ciphersuites.yaml"
+# Legacy list-shaped data files shipped beside the v2 files; skipped by name.
+_NON_SUITE_FILES = frozenset({"technologies.yaml", "vulnerabilities.yaml"})
 _PARSED_FIELDS = (
     "protocol",
     "key_exchange",
@@ -126,7 +128,7 @@ def _read(entries: Iterable[Any]) -> Dict[str, Any]:
     docs: Dict[str, Any] = {}
     for entry in entries:
         name = entry.name
-        if not name.endswith(".yaml"):
+        if not name.endswith(".yaml") or name in _NON_SUITE_FILES:
             continue
         try:
             docs[name] = loads(entry.read_text(encoding="utf-8"), name)
