@@ -1,6 +1,6 @@
 # Task reports — plan: docs/superpowers/plans/2026-11-08-scraping-robustness.md
 
-Implementer reports for Tasks 1-16, concatenated from the git-ignored SDD workspace.
+Implementer reports for Tasks 1-17, concatenated from the git-ignored SDD workspace.
 
 ---
 
@@ -455,3 +455,27 @@ Tests: tests/test_parse_name.py (8): golden, key set, SCSV, CCM_8, TLS1.3 GCM, T
 TDD: RED = collection error, module missing. GREEN = 8 passed, golden unchanged (not regenerated after the move).
 Verification: pytest 385 passed; black clean; pylint 10/10 no messages; bandit clean (existing nosec warnings only); py3.9 uv run 385 passed; uv.lock removed.
 Concerns: none. Note some golden values reflect legacy quirks (e.g. TLS_AES_128_CCM_ASCONHASH256 parsed with authentication "128 CCM ASCONHASH256", aead false); characterised as-is, not fixed.
+
+---
+
+<!-- task-17-report.md -->
+
+# Task 17 report
+Status: DONE. Files: ciphersuites/scrape/schema.py, tests/test_schema.py.
+Tests: 416 passed (py3.12 and uv py3.9); black, pylint 10/10, bandit clean (only "nosec unneeded" warnings, same as versions.py).
+Notes:
+- v1 shape is Django-fixture rows (model/pk/fields.hex_byte_1..3); normalised to 0xAB tuples, 3 bytes only when hex_byte_3 present.
+- Suite attributes (dtls_ok, recommended) stored as an optional per-suite `attributes` mapping (spec does not fix the location).
+- Unsafe ref (empty, leading "-", whitespace, ":") and bad library raise SchemaError; git timeout 30s; absent file -> None; other git failure -> SchemaError.
+- Tests written alongside the module (not observed failing first).
+- No brief/spec assertion conflicts found.
+
+## Fix round 1
+- from_doc: label isinstance(str) check before membership test; tests for [["1"]], [{}], [1], [None].
+- test_bad_ref_rejected now patches subprocess.run, asserts no call and "unsafe git ref" message.
+- v1: falsy hex_byte_3 treated as absent (test). git runs with LC_ALL=C. Comments/docstring for attributes and data_dir=repo root.
+- to_doc raises ValueError on unknown member labels or kind not in library/reference (tests).
+- 423 tests pass (3.9 too), black/pylint/bandit clean.
+
+## Fix round 1b
+- Item 4 (LC_ALL=C env in _git_show) was genuinely missing; added with a test asserting env and timeout. An intermediate commit afdb872 had the test but not the fix; the next commit fixes it. All checks green.

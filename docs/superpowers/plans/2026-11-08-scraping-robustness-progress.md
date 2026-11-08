@@ -191,3 +191,10 @@ Task 16: first head c536343 (DONE; 020a6de golden, c536343 move). Controller ver
 Task 16: review approved (0 Crit/Imp). Deleted SCSV branch proven unreachable (identical condition); wrapper preserves _scripts call shape; golden len guard catches name collisions.
 Task 16: minor (deferred, final review / follow-up): golden characterises bad legacy parses of new IANA names (e.g. TLS_AES_128_{CCM,GCM}_ASCONHASH256 -> aead false, key_exchange AES, encryption ''); wrapper pylint disable is function-wide.
 Task 16: complete (commits 604e58c..c536343, review clean)
+Task 17: implementer ab5b5b797cda66d7d (sonnet), base 7325071. Dispatch adds: --baseline-ref validation (no leading '-', no whitespace/':'), library name regex, git timeout, safe loaders only.
+Task 17: first head 0bce634 (DONE). Controller verified: 416 passed (3.13+3.9), lint clean. Attributes stored as optional per-suite 'attributes' mapping (spec 5.2 silent). Tests written alongside (no RED evidence).
+Task 17: review Needs fixes, 2 Important (from_doc TypeError on unhashable labels; ref-guard test cannot detect guard removal).
+Task 17: fix round 1/5 dispatched to ab5b5b797cda66d7d (2 Important + cheap minors: falsy hex_byte_3, LC_ALL=C for git, attributes comment, to_doc kind/orphan-members validation).
+Task 17: fix round 1/5 (6 addressed, 0 open — isinstance label check; ref-guard test patches subprocess.run (controller mutation-tested: 6 fail with guard removed); falsy hex_byte_3; LC_ALL=C (needed a nudge, afdb872 test + 4ebb39e fix); attributes/data_dir comments; to_doc kind + orphan-members ValueError; commits 0bce634..4ebb39e). Scoped re-review by controller on the diff; 424 passed (3.13+3.9), lint clean.
+Task 17: minor (deferred, final review): commit afdb872 is a red test-only commit (bisect hazard, harmless).
+Task 17: complete (commits 7325071..4ebb39e, review clean)
