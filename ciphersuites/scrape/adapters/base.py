@@ -32,10 +32,10 @@ class Adapter(ABC):
     def __init__(self, now: Optional[datetime] = None) -> None:
         self.now = now if now is not None else datetime.now(timezone.utc)
 
+    # pylint: disable-next=useless-return,unused-argument
     def tag_version(self, tag: str) -> Optional[TagVersion]:
         """Parse a git tag; ``None`` means the tag is not a release."""
-        del tag
-        return None  # pylint: disable=useless-return
+        return None
 
     def discover_versions(self) -> List[Version]:
         """Return one version per release line, ascending."""
