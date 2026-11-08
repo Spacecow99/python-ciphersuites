@@ -106,3 +106,22 @@ def test_join_coverage_meets_threshold(upstream, label):
 def test_golden(upstream, update_goldens, label):
     result = OpenSSL().parse(upstream("openssl", label))
     assert_matches_golden(update_goldens, "openssl", label, result)
+
+
+def test_102_comment_adjacent_suites_present(upstream):
+    """Suites whose CK value is directly followed by a comment are kept."""
+    points = {
+        r.code_point
+        for r in OpenSSL().parse(upstream("openssl", "1.0.2")).records
+    }
+    for code_point in (
+        ("0x00", "0x00", "0x00"),
+        ("0x00", "0x60"),
+        ("0x00", "0x61"),
+        ("0x06", "0x01", "0x40"),
+        ("0x07", "0x01", "0xC0"),
+        ("0x08", "0x00", "0x80"),
+        ("0xFF", "0x08", "0x00"),
+        ("0xFF", "0x08", "0x10"),
+    ):
+        assert code_point in points

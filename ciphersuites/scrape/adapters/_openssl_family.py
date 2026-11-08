@@ -14,14 +14,27 @@ from ciphersuites.scrape.helpers import (
 
 CK_PATTERN = (
     r"# *define\s+(?:TLS1|SSL[23])_(?P<tls13>3_)?CK_(?P<key>\w+)"
-    r"\s+(?P<value>\S+)"
+    r"\s+(?P<value>[^\s/]+)"
 )
 TXT_PATTERN = (
     r"# *define\s+(?:TLS1|SSL[23])_(?:3_)?TXT_(?P<key>\w+)"
     r'\s+(?:\\\s+)?"(?P<value>[^"]+)"'
 )
+_SKIP = re.compile(r'"(?:[^"\\\n]|\\.)*"|//[^\n]*|/\*.*?\*/', re.DOTALL)
 _LITERAL = re.compile(r"0[xX][0-9a-fA-F]+")
 _CK_PREFIX = re.compile(r"(?:TLS1|SSL[23])_(?:3_)?CK_")
+
+
+def _blank_comments(text: str) -> str:
+    """Blank C comments, keeping string literals and line structure."""
+
+    def drop(match: "re.Match[str]") -> str:
+        token = match.group(0)
+        if token.startswith('"'):
+            return token
+        return "\n" * token.count("\n") if token.startswith("/*") else " "
+
+    return _SKIP.sub(drop, text)
 
 
 def _tls13_keys(text: str) -> Set[str]:
@@ -69,7 +82,7 @@ def parse_ck_txt(
     TLS 1.3 suites have no TXT define; they are named ``TLS_<key>``.
     ``rekey`` renames CK keys so they match TXT keys (library quirks).
     """
-    text = "\n".join(files[path] for path in sorted(files))
+    text = _blank_comments("\n".join(files[p] for p in sorted(files)))
     code_points, dangling = resolve_aliases(
         _ck_values(text, rekey), lambda v: bool(_LITERAL.fullmatch(v))
     )

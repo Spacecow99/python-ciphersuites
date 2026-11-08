@@ -97,3 +97,51 @@ def test_same_literal_twice_is_fine():
         '#define TLS1_TXT_X "X"\n'
     )
     assert result.records == [Record("X", ("0x00", "0x2F"))]
+
+
+def test_comment_touching_value():
+    result = _parse(
+        "# define SSL2_CK_NULL_WITH_MD5   0x02000000/* v3 */\n"
+        '# define SSL2_TXT_NULL_WITH_MD5  "NULL-MD5"\n'
+    )
+    assert result.records == [Record("NULL-MD5", ("0x00", "0x00", "0x00"))]
+    assert not result.unmatched_keys
+
+
+def test_comment_spanning_two_lines_after_value():
+    result = _parse(
+        "# define TLS1_CK_X 0x03000060/* not in\n"
+        "                               the spec */\n"
+        '# define TLS1_TXT_X "EXP1024-RC4-56-MD5"\n'
+    )
+    assert result.records == [Record("EXP1024-RC4-56-MD5", ("0x00", "0x60"))]
+    assert not result.unmatched_keys
+
+
+def test_line_comment_touching_value():
+    result = _parse(
+        "#define TLS1_CK_X 0x0300002F// legacy\n"
+        '#define TLS1_TXT_X "X-NAME"\n'
+    )
+    assert result.records == [Record("X-NAME", ("0x00", "0x2F"))]
+    assert not result.unmatched_keys
+
+
+def test_comment_opener_inside_txt_string_is_preserved():
+    result = _parse(
+        "#define TLS1_CK_X 0x0300002F\n"
+        '#define TLS1_TXT_X "A/*B"\n'
+        "#define TLS1_CK_Y 0x03000035\n"
+        '#define TLS1_TXT_Y "C//D"\n'
+    )
+    assert sorted(r.name for r in result.records) == ["A/*B", "C//D"]
+
+
+def test_commented_out_define_is_ignored():
+    result = _parse(
+        "/* #define TLS1_CK_GONE 0x03000001 */\n"
+        "#define TLS1_CK_X 0x0300002F\n"
+        '#define TLS1_TXT_X "X"\n'
+    )
+    assert result.records == [Record("X", ("0x00", "0x2F"))]
+    assert result.total_keys == 1
