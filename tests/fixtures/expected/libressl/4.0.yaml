@@ -236,6 +236,8 @@
   - ['0x00', '0xC4']
 - - ADH-CAMELLIA256-SHA256
   - ['0x00', '0xC5']
+- - TLS_EMPTY_RENEGOTIATION_INFO_SCSV
+  - ['0x00', '0xFF']
 - - AEAD-AES128-GCM-SHA256
   - ['0x13', '0x01']
 - - AEAD-AES256-GCM-SHA384
@@ -246,6 +248,8 @@
   - ['0x13', '0x04']
 - - AEAD-AES128-CCM-8-SHA256
   - ['0x13', '0x05']
+- - TLS_FALLBACK_SCSV
+  - ['0x56', '0x00']
 - - ECDH-ECDSA-NULL-SHA
   - ['0xC0', '0x01']
 - - ECDH-ECDSA-RC4-SHA

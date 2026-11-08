@@ -23,6 +23,12 @@ TXT_PATTERN = (
 _SKIP = re.compile(r'"(?:[^"\\\n]|\\.)*"|//[^\n]*|/\*.*?\*/', re.DOTALL)
 _LITERAL = re.compile(r"0[xX][0-9a-fA-F]+")
 _CK_PREFIX = re.compile(r"(?:TLS1|SSL[23])_(?:3_)?CK_")
+# Signalling cipher suite values have a CK define but no TXT name. They get
+# their IANA names, but only at their IANA code points.
+_SIGNALLING = {
+    "SCSV": ("TLS_EMPTY_RENEGOTIATION_INFO_SCSV", ("0x00", "0xFF")),
+    "FALLBACK_SCSV": ("TLS_FALLBACK_SCSV", ("0x56", "0x00")),
+}
 
 
 def _blank_comments(text: str) -> str:
@@ -79,7 +85,8 @@ def parse_ck_txt(
 ) -> ParseResult:
     """Join ``*_CK_*`` code points with ``*_TXT_*`` names across ``files``.
 
-    TLS 1.3 suites have no TXT define; they are named ``TLS_<key>``.
+    TLS 1.3 suites have no TXT define; they are named ``TLS_<key>``. The
+    signalling values ``SCSV`` and ``FALLBACK_SCSV`` take their IANA names.
     ``rekey`` renames CK keys so they match TXT keys (library quirks).
     """
     text = _blank_comments("\n".join(files[p] for p in sorted(files)))
@@ -95,6 +102,10 @@ def parse_ck_txt(
             name = names[key]
         elif key in tls13:
             name = f"TLS_{key}"
+        elif key in _SIGNALLING and (
+            _SIGNALLING[key][1] == split_hex_word(value)
+        ):
+            name = _SIGNALLING[key][0]
         else:
             unmatched.append(key)
             continue

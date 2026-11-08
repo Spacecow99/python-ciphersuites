@@ -48,6 +48,24 @@ def test_non_tls13_without_txt_is_unmatched():
     assert result.unmatched_keys == ["NOTXT"]
 
 
+def test_signalling_cks_get_their_iana_names():
+    result = _parse(
+        "#define SSL3_CK_SCSV 0x030000FF\n"
+        "#define SSL3_CK_FALLBACK_SCSV 0x03005600\n"
+    )
+    assert sorted(result.records, key=lambda r: r.name) == [
+        Record("TLS_EMPTY_RENEGOTIATION_INFO_SCSV", ("0x00", "0xFF")),
+        Record("TLS_FALLBACK_SCSV", ("0x56", "0x00")),
+    ]
+    assert not result.unmatched_keys
+
+
+def test_signalling_ck_with_unexpected_value_stays_unmatched():
+    result = _parse("#define SSL3_CK_SCSV 0x03000042\n")
+    assert not result.records
+    assert result.unmatched_keys == ["SCSV"]
+
+
 def test_backslash_continued_txt():
     result = _parse(
         "#define TLS1_CK_FOO 0x0300002F\n"

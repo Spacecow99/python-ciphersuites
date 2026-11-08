@@ -7,6 +7,7 @@ from pathlib import Path
 import pytest
 
 from ciphersuites.scrape.adapters.openssl import OpenSSL
+from ciphersuites.scrape.adapters.reference.iana import Iana
 from ciphersuites.scrape.core import Record, Version
 from ciphersuites.scrape.versions import latest_per_line
 from tests.golden import assert_matches_golden
@@ -125,3 +126,13 @@ def test_102_comment_adjacent_suites_present(upstream):
         ("0xFF", "0x08", "0x10"),
     ):
         assert code_point in points
+
+
+def test_signalling_suites_use_iana_names(upstream):
+    """SSL3_CK_SCSV/FALLBACK_SCSV have no TXT; they take the IANA names."""
+    iana = Iana().parse(upstream("iana", "2026-11-08"))
+    iana_names = {r.code_point: r.name for r in iana.records}
+    result = OpenSSL().parse(upstream("openssl", "3.6"))
+    for code_point in (("0x00", "0xFF"), ("0x56", "0x00")):
+        assert Record(iana_names[code_point], code_point) in result.records
+    assert not result.unmatched_keys
