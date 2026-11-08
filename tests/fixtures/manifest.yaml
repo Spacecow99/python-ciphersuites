@@ -68,6 +68,16 @@
   url: https://raw.githubusercontent.com/libressl/openbsd/ce488b78e0bd994780569df718596b9776ff681a/src/lib/libssl/tls1.h
   path: src/lib/libssl/tls1.h
   sha256: sha256:901f42b3ac662aa00253e879723d7ffd24c207e35fcb700bdedab0ba1171f7fa
+- library: nss
+  label: '3.133'
+  url: https://raw.githubusercontent.com/nss-dev/nss/d485b20805d136ce88e658d680fceffa9020d959/lib/ssl/sslproto.h
+  path: lib/ssl/sslproto.h
+  sha256: sha256:2d4c2dd4e0a5ad4075ddc08f53b8df55fb27ae31ff6117336d7e06987c1fa221
+- library: nss
+  label: '3.20'
+  url: https://raw.githubusercontent.com/nss-dev/nss/0c71421b1251d10ae12141cf5d7d88046b613a21/lib/ssl/sslproto.h
+  path: lib/ssl/sslproto.h
+  sha256: sha256:a491386e25760dd5232ef8a59712a19da249cd750c459febed22f5e104a87cbe
 - library: openssl
   label: 1.0.2
   url: https://raw.githubusercontent.com/openssl/openssl/e818b74be2170fbe957a07b0da4401c2b694b3b8/ssl/ssl2.h
