@@ -25,6 +25,7 @@ from ciphersuites.scrape.validate import (
     REFERENCE_SHRINK,
     STALE_TOO_OLD,
     UNKNOWN_CODE_POINT,
+    UNMATCHED_KEYS,
     V1_PARITY,
     WARN,
     ZERO_RECORDS,
@@ -133,8 +134,21 @@ def test_low_join_coverage_lists_unmatched():
     assert found.details["unmatched"] == ["a", "b", "c"]
 
 
-def test_good_parse_and_exact_threshold():
-    assert not check_parse(Dummy(), V, result([rec("A", 1)], 10, ["x"]))
+def test_good_parse_without_unmatched_keys_has_no_findings():
+    assert not check_parse(Dummy(), V, result([rec("A", 1)], 10))
+
+
+def test_unmatched_keys_at_exact_threshold_are_a_warning():
+    res = result([rec("A", 1)], 10, ["x"])
+    found = only(check_parse(Dummy(), V, res), UNMATCHED_KEYS, WARN)
+    assert found.details["unmatched"] == ["x"]
+
+
+def test_unmatched_keys_warning_lists_keys_sorted():
+    res = result([rec("A", 1)], 100, ["c", "a", "b"])
+    found = only(check_parse(Dummy(), V, res), UNMATCHED_KEYS, WARN)
+    assert found.details["unmatched"] == ["a", "b", "c"]
+    assert found.message == "3 unmatched key(s)"
 
 
 def test_discovery_none():

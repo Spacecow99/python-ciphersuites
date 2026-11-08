@@ -112,7 +112,7 @@ def _scrape_version(
     except Exception as exc:  # pylint: disable=broad-exception-caught
         msg = _describe(exc)
         return None, None, [Finding(FAIL, PARSE_ERROR, lib, label, msg)]
-    if problems:
+    if any(p.level == FAIL for p in problems):
         return None, parsed, problems
     entry = VersionEntry(
         label,
@@ -121,7 +121,7 @@ def _scrape_version(
         {p: sha256_digest(b) for p, b in sorted(raw.items())},
         now.isoformat(),
     )
-    return entry, parsed, []
+    return entry, parsed, problems
 
 
 def _scrape_library(
@@ -146,9 +146,9 @@ def _scrape_library(
             adapter, version, fetcher, options.now
         )
         findings.extend(problems)
-        if problems:
-            first = problems[0]
-            failed[version.label] = f"{first.code}: {first.message}"
+        fails = [p for p in problems if p.level == FAIL]
+        if fails:
+            failed[version.label] = f"{fails[0].code}: {fails[0].message}"
         elif entry is not None and parsed is not None:
             fresh[version.label] = (entry, parsed)
 

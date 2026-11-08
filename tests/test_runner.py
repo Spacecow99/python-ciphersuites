@@ -33,6 +33,7 @@ from ciphersuites.scrape.validate import (
     PARSE_ERROR,
     PATCH_REMOVAL,
     RUNNER_ERROR,
+    UNMATCHED_KEYS,
     V1_PARITY,
     WARN,
 )
@@ -143,6 +144,23 @@ def test_failing_version_is_stale_and_other_library_is_written(tmp_path):
     assert stale.members["1.0"] == set(recs(1, 2))
     assert read(tmp_path, "other").members["2.0"] == set(recs(1, 2, 3))
     assert {p.name for p in result.written} == {"fake.yaml", "other.yaml"}
+
+
+def test_unmatched_keys_warning_does_not_stale_the_version(tmp_path):
+    class Partial(Fake):
+        def parse(self, files):
+            item = self.table[files["f"]]
+            return ParseResult(list(item), 20, ["LOST"], {})
+
+    result = run([Partial({"1.0": recs(1, 2)})], None, opts(tmp_path))
+    assert result.exit_code == 0
+    (found,) = [f for f in result.findings if f.library == "fake"]
+    assert (found.code, found.level) == (UNMATCHED_KEYS, WARN)
+    assert found.details["unmatched"] == ["LOST"]
+    assert "(unmatched: LOST)" in render_markdown(result)
+    data = read(tmp_path, "fake")
+    assert [v.status for v in data.versions] == ["ok"]
+    assert data.members["1.0"] == set(recs(1, 2))
 
 
 def test_error_kinds(tmp_path):

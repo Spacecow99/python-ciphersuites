@@ -36,6 +36,7 @@ ZERO_RECORDS = "ZERO_RECORDS"
 BAD_CODE_POINT = "BAD_CODE_POINT"
 DUPLICATE_RECORD = "DUPLICATE_RECORD"
 LOW_JOIN_COVERAGE = "LOW_JOIN_COVERAGE"
+UNMATCHED_KEYS = "UNMATCHED_KEYS"
 NONDETERMINISTIC = "NONDETERMINISTIC"
 PATCH_REMOVAL = "PATCH_REMOVAL"
 NEW_LINE_SHRINK = "NEW_LINE_SHRINK"
@@ -104,7 +105,11 @@ def _sorted(findings: List[Finding]) -> List[Finding]:
 def check_parse(
     adapter: Adapter, version: Version, result: ParseResult
 ) -> List[Finding]:
-    """Check parse invariants (spec 6.1 rows 3-6)."""
+    """Check parse invariants (spec 6.1 rows 3-6).
+
+    Unmatched keys are always listed: inside ``LOW_JOIN_COVERAGE`` when
+    coverage fails, otherwise as an ``UNMATCHED_KEYS`` warning.
+    """
     lib, label = adapter.name, version.label
     if not result.records:
         return [Finding(FAIL, ZERO_RECORDS, lib, label, "zero records")]
@@ -165,6 +170,17 @@ def check_parse(
                     "coverage": result.join_coverage,
                     "unmatched": sorted(result.unmatched_keys),
                 },
+            )
+        )
+    elif result.unmatched_keys:
+        findings.append(
+            Finding(
+                WARN,
+                UNMATCHED_KEYS,
+                lib,
+                label,
+                f"{len(result.unmatched_keys)} unmatched key(s)",
+                {"unmatched": sorted(result.unmatched_keys)},
             )
         )
     return _sorted(findings)
