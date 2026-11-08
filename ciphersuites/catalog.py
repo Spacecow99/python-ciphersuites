@@ -311,7 +311,7 @@ class Catalog:
         if not points:
             raise KeyError(f"no cipher suite named {key!r}")
         if len(points) > 1:
-            raise AmbiguousNameError(key, _candidates(matches))
+            raise AmbiguousNameError(key, self._candidates(matches))
         return self._suites[next(iter(points))]
 
     def supported_by(self, library: str, version: str) -> List[CipherSuite]:
@@ -324,6 +324,30 @@ class Catalog:
             self._suites[cp] for cp in sorted(points, key=code_point_sort_key)
         ]
 
+    def _candidates(
+        self,
+        matches: List[Tuple[Optional[str], Optional[str], CodePoint]],
+    ) -> List[Candidate]:
+        """Group matches; versions follow each library's written order."""
+        grouped: Dict[Tuple[CodePoint, Optional[str]], Set[str]] = {}
+        for lib, ver, cp in matches:
+            labels = grouped.setdefault((cp, lib), set())
+            if ver is not None:
+                labels.add(ver)
+        result = []
+        for (cp, lib), labels in sorted(
+            grouped.items(),
+            key=lambda item: (
+                code_point_sort_key(item[0][0]),
+                item[0][1] or "",
+            ),
+        ):
+            ordered = self.versions(lib) if lib is not None else []
+            result.append(
+                Candidate(cp, lib, tuple(v for v in ordered if v in labels))
+            )
+        return result
+
     def libraries(self) -> List[str]:
         """Sorted names of the libraries (reference sources excluded)."""
         return list(self._libraries)
@@ -331,26 +355,6 @@ class Catalog:
     def versions(self, library: str) -> List[str]:
         """Version labels of ``library`` in written (oldest first) order."""
         return [v.label for v in self._lib(library).versions]
-
-
-def _candidates(
-    matches: List[Tuple[Optional[str], Optional[str], CodePoint]],
-) -> List[Candidate]:
-    grouped: Dict[Tuple[CodePoint, Optional[str]], List[str]] = {}
-    for lib, ver, cp in matches:
-        labels = grouped.setdefault((cp, lib), [])
-        if ver is not None:
-            labels.append(ver)
-    return [
-        Candidate(cp, lib, tuple(vers))
-        for (cp, lib), vers in sorted(
-            grouped.items(),
-            key=lambda item: (
-                code_point_sort_key(item[0][0]),
-                item[0][1] or "",
-            ),
-        )
-    ]
 
 
 _lock = threading.Lock()

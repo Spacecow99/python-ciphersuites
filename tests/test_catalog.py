@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+import os
 import shutil
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -226,3 +229,24 @@ def test_module_functions_use_default_catalog(monkeypatch):
     assert catalog_module.libraries() == ["go", "openssl"]
     assert catalog_module.versions("go") == ["1.21", "1.22"]
     assert len(catalog_module.supported_by("go", "1.21")) == 1
+
+
+def test_deterministic_under_hash_seeds():
+    code = (
+        f"from ciphersuites.catalog import Catalog, AmbiguousNameError\n"
+        f"c = Catalog.load(__import__('pathlib').Path({str(FIXTURES)!r}))\n"
+        "try:\n    c.get('RC4-MD5')\nexcept AmbiguousNameError as e:\n"
+        "    print(e.candidates)\n"
+    )
+    outs = set()
+    for seed in range(6):
+        env = {**os.environ, "PYTHONHASHSEED": str(seed)}
+        proc = subprocess.run(
+            [sys.executable, "-c", code],
+            capture_output=True,
+            text=True,
+            check=True,
+            env=env,
+        )
+        outs.add(proc.stdout)
+    assert len(outs) == 1
