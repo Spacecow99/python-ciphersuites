@@ -17,4 +17,7 @@ from ciphersuites.scrape.adapters.base import (
     register,
 )
 
+# pylint: disable-next=wrong-import-position,unused-import
+from ciphersuites.scrape.adapters import openssl  # noqa: E402,F401
+
 __all__ = ["ADAPTERS", "Adapter", "get_adapter", "register"]

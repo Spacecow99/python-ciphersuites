@@ -1,0 +1,520 @@
+- - NULL-MD5
+  - ['0x00', '0x01']
+- - NULL-SHA
+  - ['0x00', '0x02']
+- - EXP-RC4-MD5
+  - ['0x00', '0x03']
+- - RC4-MD5
+  - ['0x00', '0x04']
+- - RC4-SHA
+  - ['0x00', '0x05']
+- - EXP-RC2-CBC-MD5
+  - ['0x00', '0x06']
+- - IDEA-CBC-SHA
+  - ['0x00', '0x07']
+- - EXP-DES-CBC-SHA
+  - ['0x00', '0x08']
+- - DES-CBC-SHA
+  - ['0x00', '0x09']
+- - DES-CBC3-SHA
+  - ['0x00', '0x0A']
+- - EXP-DH-DSS-DES-CBC-SHA
+  - ['0x00', '0x0B']
+- - DH-DSS-DES-CBC-SHA
+  - ['0x00', '0x0C']
+- - DH-DSS-DES-CBC3-SHA
+  - ['0x00', '0x0D']
+- - EXP-DH-RSA-DES-CBC-SHA
+  - ['0x00', '0x0E']
+- - DH-RSA-DES-CBC-SHA
+  - ['0x00', '0x0F']
+- - DH-RSA-DES-CBC3-SHA
+  - ['0x00', '0x10']
+- - EXP-DHE-DSS-DES-CBC-SHA
+  - ['0x00', '0x11']
+- - DHE-DSS-DES-CBC-SHA
+  - ['0x00', '0x12']
+- - DHE-DSS-DES-CBC3-SHA
+  - ['0x00', '0x13']
+- - EXP-DHE-RSA-DES-CBC-SHA
+  - ['0x00', '0x14']
+- - DHE-RSA-DES-CBC-SHA
+  - ['0x00', '0x15']
+- - DHE-RSA-DES-CBC3-SHA
+  - ['0x00', '0x16']
+- - EXP-ADH-RC4-MD5
+  - ['0x00', '0x17']
+- - ADH-RC4-MD5
+  - ['0x00', '0x18']
+- - EXP-ADH-DES-CBC-SHA
+  - ['0x00', '0x19']
+- - ADH-DES-CBC-SHA
+  - ['0x00', '0x1A']
+- - ADH-DES-CBC3-SHA
+  - ['0x00', '0x1B']
+- - PSK-NULL-SHA
+  - ['0x00', '0x2C']
+- - DHE-PSK-NULL-SHA
+  - ['0x00', '0x2D']
+- - RSA-PSK-NULL-SHA
+  - ['0x00', '0x2E']
+- - AES128-SHA
+  - ['0x00', '0x2F']
+- - DH-DSS-AES128-SHA
+  - ['0x00', '0x30']
+- - DH-RSA-AES128-SHA
+  - ['0x00', '0x31']
+- - DHE-DSS-AES128-SHA
+  - ['0x00', '0x32']
+- - DHE-RSA-AES128-SHA
+  - ['0x00', '0x33']
+- - ADH-AES128-SHA
+  - ['0x00', '0x34']
+- - AES256-SHA
+  - ['0x00', '0x35']
+- - DH-DSS-AES256-SHA
+  - ['0x00', '0x36']
+- - DH-RSA-AES256-SHA
+  - ['0x00', '0x37']
+- - DHE-DSS-AES256-SHA
+  - ['0x00', '0x38']
+- - DHE-RSA-AES256-SHA
+  - ['0x00', '0x39']
+- - ADH-AES256-SHA
+  - ['0x00', '0x3A']
+- - NULL-SHA256
+  - ['0x00', '0x3B']
+- - AES128-SHA256
+  - ['0x00', '0x3C']
+- - AES256-SHA256
+  - ['0x00', '0x3D']
+- - DH-DSS-AES128-SHA256
+  - ['0x00', '0x3E']
+- - DH-RSA-AES128-SHA256
+  - ['0x00', '0x3F']
+- - DHE-DSS-AES128-SHA256
+  - ['0x00', '0x40']
+- - CAMELLIA128-SHA
+  - ['0x00', '0x41']
+- - DH-DSS-CAMELLIA128-SHA
+  - ['0x00', '0x42']
+- - DH-RSA-CAMELLIA128-SHA
+  - ['0x00', '0x43']
+- - DHE-DSS-CAMELLIA128-SHA
+  - ['0x00', '0x44']
+- - DHE-RSA-CAMELLIA128-SHA
+  - ['0x00', '0x45']
+- - ADH-CAMELLIA128-SHA
+  - ['0x00', '0x46']
+- - DHE-RSA-AES128-SHA256
+  - ['0x00', '0x67']
+- - DH-DSS-AES256-SHA256
+  - ['0x00', '0x68']
+- - DH-RSA-AES256-SHA256
+  - ['0x00', '0x69']
+- - DHE-DSS-AES256-SHA256
+  - ['0x00', '0x6A']
+- - DHE-RSA-AES256-SHA256
+  - ['0x00', '0x6B']
+- - ADH-AES128-SHA256
+  - ['0x00', '0x6C']
+- - ADH-AES256-SHA256
+  - ['0x00', '0x6D']
+- - CAMELLIA256-SHA
+  - ['0x00', '0x84']
+- - DH-DSS-CAMELLIA256-SHA
+  - ['0x00', '0x85']
+- - DH-RSA-CAMELLIA256-SHA
+  - ['0x00', '0x86']
+- - DHE-DSS-CAMELLIA256-SHA
+  - ['0x00', '0x87']
+- - DHE-RSA-CAMELLIA256-SHA
+  - ['0x00', '0x88']
+- - ADH-CAMELLIA256-SHA
+  - ['0x00', '0x89']
+- - PSK-RC4-SHA
+  - ['0x00', '0x8A']
+- - PSK-3DES-EDE-CBC-SHA
+  - ['0x00', '0x8B']
+- - PSK-AES128-CBC-SHA
+  - ['0x00', '0x8C']
+- - PSK-AES256-CBC-SHA
+  - ['0x00', '0x8D']
+- - DHE-PSK-RC4-SHA
+  - ['0x00', '0x8E']
+- - DHE-PSK-3DES-EDE-CBC-SHA
+  - ['0x00', '0x8F']
+- - DHE-PSK-AES128-CBC-SHA
+  - ['0x00', '0x90']
+- - DHE-PSK-AES256-CBC-SHA
+  - ['0x00', '0x91']
+- - RSA-PSK-RC4-SHA
+  - ['0x00', '0x92']
+- - RSA-PSK-3DES-EDE-CBC-SHA
+  - ['0x00', '0x93']
+- - RSA-PSK-AES128-CBC-SHA
+  - ['0x00', '0x94']
+- - RSA-PSK-AES256-CBC-SHA
+  - ['0x00', '0x95']
+- - SEED-SHA
+  - ['0x00', '0x96']
+- - DH-DSS-SEED-SHA
+  - ['0x00', '0x97']
+- - DH-RSA-SEED-SHA
+  - ['0x00', '0x98']
+- - DHE-DSS-SEED-SHA
+  - ['0x00', '0x99']
+- - DHE-RSA-SEED-SHA
+  - ['0x00', '0x9A']
+- - ADH-SEED-SHA
+  - ['0x00', '0x9B']
+- - AES128-GCM-SHA256
+  - ['0x00', '0x9C']
+- - AES256-GCM-SHA384
+  - ['0x00', '0x9D']
+- - DHE-RSA-AES128-GCM-SHA256
+  - ['0x00', '0x9E']
+- - DHE-RSA-AES256-GCM-SHA384
+  - ['0x00', '0x9F']
+- - DH-RSA-AES128-GCM-SHA256
+  - ['0x00', '0xA0']
+- - DH-RSA-AES256-GCM-SHA384
+  - ['0x00', '0xA1']
+- - DHE-DSS-AES128-GCM-SHA256
+  - ['0x00', '0xA2']
+- - DHE-DSS-AES256-GCM-SHA384
+  - ['0x00', '0xA3']
+- - DH-DSS-AES128-GCM-SHA256
+  - ['0x00', '0xA4']
+- - DH-DSS-AES256-GCM-SHA384
+  - ['0x00', '0xA5']
+- - ADH-AES128-GCM-SHA256
+  - ['0x00', '0xA6']
+- - ADH-AES256-GCM-SHA384
+  - ['0x00', '0xA7']
+- - PSK-AES128-GCM-SHA256
+  - ['0x00', '0xA8']
+- - PSK-AES256-GCM-SHA384
+  - ['0x00', '0xA9']
+- - DHE-PSK-AES128-GCM-SHA256
+  - ['0x00', '0xAA']
+- - DHE-PSK-AES256-GCM-SHA384
+  - ['0x00', '0xAB']
+- - RSA-PSK-AES128-GCM-SHA256
+  - ['0x00', '0xAC']
+- - RSA-PSK-AES256-GCM-SHA384
+  - ['0x00', '0xAD']
+- - PSK-AES128-CBC-SHA256
+  - ['0x00', '0xAE']
+- - PSK-AES256-CBC-SHA384
+  - ['0x00', '0xAF']
+- - PSK-NULL-SHA256
+  - ['0x00', '0xB0']
+- - PSK-NULL-SHA384
+  - ['0x00', '0xB1']
+- - DHE-PSK-AES128-CBC-SHA256
+  - ['0x00', '0xB2']
+- - DHE-PSK-AES256-CBC-SHA384
+  - ['0x00', '0xB3']
+- - DHE-PSK-NULL-SHA256
+  - ['0x00', '0xB4']
+- - DHE-PSK-NULL-SHA384
+  - ['0x00', '0xB5']
+- - RSA-PSK-AES128-CBC-SHA256
+  - ['0x00', '0xB6']
+- - RSA-PSK-AES256-CBC-SHA384
+  - ['0x00', '0xB7']
+- - RSA-PSK-NULL-SHA256
+  - ['0x00', '0xB8']
+- - RSA-PSK-NULL-SHA384
+  - ['0x00', '0xB9']
+- - CAMELLIA128-SHA256
+  - ['0x00', '0xBA']
+- - DH-DSS-CAMELLIA128-SHA256
+  - ['0x00', '0xBB']
+- - DH-RSA-CAMELLIA128-SHA256
+  - ['0x00', '0xBC']
+- - DHE-DSS-CAMELLIA128-SHA256
+  - ['0x00', '0xBD']
+- - DHE-RSA-CAMELLIA128-SHA256
+  - ['0x00', '0xBE']
+- - ADH-CAMELLIA128-SHA256
+  - ['0x00', '0xBF']
+- - CAMELLIA256-SHA256
+  - ['0x00', '0xC0']
+- - DH-DSS-CAMELLIA256-SHA256
+  - ['0x00', '0xC1']
+- - DH-RSA-CAMELLIA256-SHA256
+  - ['0x00', '0xC2']
+- - DHE-DSS-CAMELLIA256-SHA256
+  - ['0x00', '0xC3']
+- - DHE-RSA-CAMELLIA256-SHA256
+  - ['0x00', '0xC4']
+- - ADH-CAMELLIA256-SHA256
+  - ['0x00', '0xC5']
+- - TLS_AES_128_GCM_SHA256
+  - ['0x13', '0x01']
+- - TLS_AES_256_GCM_SHA384
+  - ['0x13', '0x02']
+- - TLS_CHACHA20_POLY1305_SHA256
+  - ['0x13', '0x03']
+- - TLS_AES_128_CCM_SHA256
+  - ['0x13', '0x04']
+- - TLS_AES_128_CCM_8_SHA256
+  - ['0x13', '0x05']
+- - ECDH-ECDSA-NULL-SHA
+  - ['0xC0', '0x01']
+- - ECDH-ECDSA-RC4-SHA
+  - ['0xC0', '0x02']
+- - ECDH-ECDSA-DES-CBC3-SHA
+  - ['0xC0', '0x03']
+- - ECDH-ECDSA-AES128-SHA
+  - ['0xC0', '0x04']
+- - ECDH-ECDSA-AES256-SHA
+  - ['0xC0', '0x05']
+- - ECDHE-ECDSA-NULL-SHA
+  - ['0xC0', '0x06']
+- - ECDHE-ECDSA-RC4-SHA
+  - ['0xC0', '0x07']
+- - ECDHE-ECDSA-DES-CBC3-SHA
+  - ['0xC0', '0x08']
+- - ECDHE-ECDSA-AES128-SHA
+  - ['0xC0', '0x09']
+- - ECDHE-ECDSA-AES256-SHA
+  - ['0xC0', '0x0A']
+- - ECDH-RSA-NULL-SHA
+  - ['0xC0', '0x0B']
+- - ECDH-RSA-RC4-SHA
+  - ['0xC0', '0x0C']
+- - ECDH-RSA-DES-CBC3-SHA
+  - ['0xC0', '0x0D']
+- - ECDH-RSA-AES128-SHA
+  - ['0xC0', '0x0E']
+- - ECDH-RSA-AES256-SHA
+  - ['0xC0', '0x0F']
+- - ECDHE-RSA-NULL-SHA
+  - ['0xC0', '0x10']
+- - ECDHE-RSA-RC4-SHA
+  - ['0xC0', '0x11']
+- - ECDHE-RSA-DES-CBC3-SHA
+  - ['0xC0', '0x12']
+- - ECDHE-RSA-AES128-SHA
+  - ['0xC0', '0x13']
+- - ECDHE-RSA-AES256-SHA
+  - ['0xC0', '0x14']
+- - AECDH-NULL-SHA
+  - ['0xC0', '0x15']
+- - AECDH-RC4-SHA
+  - ['0xC0', '0x16']
+- - AECDH-DES-CBC3-SHA
+  - ['0xC0', '0x17']
+- - AECDH-AES128-SHA
+  - ['0xC0', '0x18']
+- - AECDH-AES256-SHA
+  - ['0xC0', '0x19']
+- - SRP-3DES-EDE-CBC-SHA
+  - ['0xC0', '0x1A']
+- - SRP-RSA-3DES-EDE-CBC-SHA
+  - ['0xC0', '0x1B']
+- - SRP-DSS-3DES-EDE-CBC-SHA
+  - ['0xC0', '0x1C']
+- - SRP-AES-128-CBC-SHA
+  - ['0xC0', '0x1D']
+- - SRP-RSA-AES-128-CBC-SHA
+  - ['0xC0', '0x1E']
+- - SRP-DSS-AES-128-CBC-SHA
+  - ['0xC0', '0x1F']
+- - SRP-AES-256-CBC-SHA
+  - ['0xC0', '0x20']
+- - SRP-RSA-AES-256-CBC-SHA
+  - ['0xC0', '0x21']
+- - SRP-DSS-AES-256-CBC-SHA
+  - ['0xC0', '0x22']
+- - ECDHE-ECDSA-AES128-SHA256
+  - ['0xC0', '0x23']
+- - ECDHE-ECDSA-AES256-SHA384
+  - ['0xC0', '0x24']
+- - ECDH-ECDSA-AES128-SHA256
+  - ['0xC0', '0x25']
+- - ECDH-ECDSA-AES256-SHA384
+  - ['0xC0', '0x26']
+- - ECDHE-RSA-AES128-SHA256
+  - ['0xC0', '0x27']
+- - ECDHE-RSA-AES256-SHA384
+  - ['0xC0', '0x28']
+- - ECDH-RSA-AES128-SHA256
+  - ['0xC0', '0x29']
+- - ECDH-RSA-AES256-SHA384
+  - ['0xC0', '0x2A']
+- - ECDHE-ECDSA-AES128-GCM-SHA256
+  - ['0xC0', '0x2B']
+- - ECDHE-ECDSA-AES256-GCM-SHA384
+  - ['0xC0', '0x2C']
+- - ECDH-ECDSA-AES128-GCM-SHA256
+  - ['0xC0', '0x2D']
+- - ECDH-ECDSA-AES256-GCM-SHA384
+  - ['0xC0', '0x2E']
+- - ECDHE-RSA-AES128-GCM-SHA256
+  - ['0xC0', '0x2F']
+- - ECDHE-RSA-AES256-GCM-SHA384
+  - ['0xC0', '0x30']
+- - ECDH-RSA-AES128-GCM-SHA256
+  - ['0xC0', '0x31']
+- - ECDH-RSA-AES256-GCM-SHA384
+  - ['0xC0', '0x32']
+- - ECDHE-PSK-RC4-SHA
+  - ['0xC0', '0x33']
+- - ECDHE-PSK-3DES-EDE-CBC-SHA
+  - ['0xC0', '0x34']
+- - ECDHE-PSK-AES128-CBC-SHA
+  - ['0xC0', '0x35']
+- - ECDHE-PSK-AES256-CBC-SHA
+  - ['0xC0', '0x36']
+- - ECDHE-PSK-AES128-CBC-SHA256
+  - ['0xC0', '0x37']
+- - ECDHE-PSK-AES256-CBC-SHA384
+  - ['0xC0', '0x38']
+- - ECDHE-PSK-NULL-SHA
+  - ['0xC0', '0x39']
+- - ECDHE-PSK-NULL-SHA256
+  - ['0xC0', '0x3A']
+- - ECDHE-PSK-NULL-SHA384
+  - ['0xC0', '0x3B']
+- - ARIA128-GCM-SHA256
+  - ['0xC0', '0x50']
+- - ARIA256-GCM-SHA384
+  - ['0xC0', '0x51']
+- - DHE-RSA-ARIA128-GCM-SHA256
+  - ['0xC0', '0x52']
+- - DHE-RSA-ARIA256-GCM-SHA384
+  - ['0xC0', '0x53']
+- - DH-RSA-ARIA128-GCM-SHA256
+  - ['0xC0', '0x54']
+- - DH-RSA-ARIA256-GCM-SHA384
+  - ['0xC0', '0x55']
+- - DHE-DSS-ARIA128-GCM-SHA256
+  - ['0xC0', '0x56']
+- - DHE-DSS-ARIA256-GCM-SHA384
+  - ['0xC0', '0x57']
+- - DH-DSS-ARIA128-GCM-SHA256
+  - ['0xC0', '0x58']
+- - DH-DSS-ARIA256-GCM-SHA384
+  - ['0xC0', '0x59']
+- - ADH-ARIA128-GCM-SHA256
+  - ['0xC0', '0x5A']
+- - ADH-ARIA256-GCM-SHA384
+  - ['0xC0', '0x5B']
+- - ECDHE-ECDSA-ARIA128-GCM-SHA256
+  - ['0xC0', '0x5C']
+- - ECDHE-ECDSA-ARIA256-GCM-SHA384
+  - ['0xC0', '0x5D']
+- - ECDH-ECDSA-ARIA128-GCM-SHA256
+  - ['0xC0', '0x5E']
+- - ECDH-ECDSA-ARIA256-GCM-SHA384
+  - ['0xC0', '0x5F']
+- - ECDHE-ARIA128-GCM-SHA256
+  - ['0xC0', '0x60']
+- - ECDHE-ARIA256-GCM-SHA384
+  - ['0xC0', '0x61']
+- - ECDH-ARIA128-GCM-SHA256
+  - ['0xC0', '0x62']
+- - ECDH-ARIA256-GCM-SHA384
+  - ['0xC0', '0x63']
+- - PSK-ARIA128-GCM-SHA256
+  - ['0xC0', '0x6A']
+- - PSK-ARIA256-GCM-SHA384
+  - ['0xC0', '0x6B']
+- - DHE-PSK-ARIA128-GCM-SHA256
+  - ['0xC0', '0x6C']
+- - DHE-PSK-ARIA256-GCM-SHA384
+  - ['0xC0', '0x6D']
+- - RSA-PSK-ARIA128-GCM-SHA256
+  - ['0xC0', '0x6E']
+- - RSA-PSK-ARIA256-GCM-SHA384
+  - ['0xC0', '0x6F']
+- - ECDHE-ECDSA-CAMELLIA128-SHA256
+  - ['0xC0', '0x72']
+- - ECDHE-ECDSA-CAMELLIA256-SHA384
+  - ['0xC0', '0x73']
+- - ECDH-ECDSA-CAMELLIA128-SHA256
+  - ['0xC0', '0x74']
+- - ECDH-ECDSA-CAMELLIA256-SHA384
+  - ['0xC0', '0x75']
+- - ECDHE-RSA-CAMELLIA128-SHA256
+  - ['0xC0', '0x76']
+- - ECDHE-RSA-CAMELLIA256-SHA384
+  - ['0xC0', '0x77']
+- - ECDH-RSA-CAMELLIA128-SHA256
+  - ['0xC0', '0x78']
+- - ECDH-RSA-CAMELLIA256-SHA384
+  - ['0xC0', '0x79']
+- - PSK-CAMELLIA128-SHA256
+  - ['0xC0', '0x94']
+- - PSK-CAMELLIA256-SHA384
+  - ['0xC0', '0x95']
+- - DHE-PSK-CAMELLIA128-SHA256
+  - ['0xC0', '0x96']
+- - DHE-PSK-CAMELLIA256-SHA384
+  - ['0xC0', '0x97']
+- - RSA-PSK-CAMELLIA128-SHA256
+  - ['0xC0', '0x98']
+- - RSA-PSK-CAMELLIA256-SHA384
+  - ['0xC0', '0x99']
+- - ECDHE-PSK-CAMELLIA128-SHA256
+  - ['0xC0', '0x9A']
+- - ECDHE-PSK-CAMELLIA256-SHA384
+  - ['0xC0', '0x9B']
+- - AES128-CCM
+  - ['0xC0', '0x9C']
+- - AES256-CCM
+  - ['0xC0', '0x9D']
+- - DHE-RSA-AES128-CCM
+  - ['0xC0', '0x9E']
+- - DHE-RSA-AES256-CCM
+  - ['0xC0', '0x9F']
+- - AES128-CCM8
+  - ['0xC0', '0xA0']
+- - AES256-CCM8
+  - ['0xC0', '0xA1']
+- - DHE-RSA-AES128-CCM8
+  - ['0xC0', '0xA2']
+- - DHE-RSA-AES256-CCM8
+  - ['0xC0', '0xA3']
+- - PSK-AES128-CCM
+  - ['0xC0', '0xA4']
+- - PSK-AES256-CCM
+  - ['0xC0', '0xA5']
+- - DHE-PSK-AES128-CCM
+  - ['0xC0', '0xA6']
+- - DHE-PSK-AES256-CCM
+  - ['0xC0', '0xA7']
+- - PSK-AES128-CCM8
+  - ['0xC0', '0xA8']
+- - PSK-AES256-CCM8
+  - ['0xC0', '0xA9']
+- - DHE-PSK-AES128-CCM8
+  - ['0xC0', '0xAA']
+- - DHE-PSK-AES256-CCM8
+  - ['0xC0', '0xAB']
+- - ECDHE-ECDSA-AES128-CCM
+  - ['0xC0', '0xAC']
+- - ECDHE-ECDSA-AES256-CCM
+  - ['0xC0', '0xAD']
+- - ECDHE-ECDSA-AES128-CCM8
+  - ['0xC0', '0xAE']
+- - ECDHE-ECDSA-AES256-CCM8
+  - ['0xC0', '0xAF']
+- - ECDHE-RSA-CHACHA20-POLY1305
+  - ['0xCC', '0xA8']
+- - ECDHE-ECDSA-CHACHA20-POLY1305
+  - ['0xCC', '0xA9']
+- - DHE-RSA-CHACHA20-POLY1305
+  - ['0xCC', '0xAA']
+- - PSK-CHACHA20-POLY1305
+  - ['0xCC', '0xAB']
+- - ECDHE-PSK-CHACHA20-POLY1305
+  - ['0xCC', '0xAC']
+- - DHE-PSK-CHACHA20-POLY1305
+  - ['0xCC', '0xAD']
+- - RSA-PSK-CHACHA20-POLY1305
+  - ['0xCC', '0xAE']
