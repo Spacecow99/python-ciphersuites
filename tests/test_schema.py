@@ -295,3 +295,16 @@ def test_to_doc_rejects_bad_kind():
     data.kind = "other"
     with pytest.raises(ValueError):
         to_doc(data, order)
+
+
+def test_git_runs_with_c_locale(tmp_path, monkeypatch):
+    seen: Dict[str, Any] = {}
+
+    def fake_run(*_args: Any, **kwargs: Any) -> Any:
+        seen.update(kwargs)
+        return subprocess.CompletedProcess([], 0, stdout="[]\n", stderr="")
+
+    monkeypatch.setattr(schema.subprocess, "run", fake_run)
+    load_baseline(tmp_path, "openssl", ref="HEAD")
+    assert seen["env"]["LC_ALL"] == "C"
+    assert seen["timeout"] > 0
