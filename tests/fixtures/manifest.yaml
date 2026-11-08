@@ -128,3 +128,23 @@
   url: https://raw.githubusercontent.com/openssl/openssl/c8bd5a57108599ac650bbae77fcabe3109dab2e8/include/openssl/tls1.h
   path: include/openssl/tls1.h
   sha256: sha256:d34b3d17f1aedf83a072240cb81c6ae0927826f0200bc9e56926897e9b943d48
+- library: s2n
+  label: '1.3'
+  url: https://raw.githubusercontent.com/aws/s2n-tls/ab9a3be5a8abcbc5bd7bdba662497a717737c838/tls/s2n_cipher_suites.c
+  path: tls/s2n_cipher_suites.c
+  sha256: sha256:e717856ac526660aa42d6a0d9e828ad33be2ca505b45aad8b8a5beb5a71deefd
+- library: s2n
+  label: '1.3'
+  url: https://raw.githubusercontent.com/aws/s2n-tls/ab9a3be5a8abcbc5bd7bdba662497a717737c838/tls/s2n_tls_parameters.h
+  path: tls/s2n_tls_parameters.h
+  sha256: sha256:016392579781514e7ebe8b9d1ed6bd90f9f7917dcda62d74286712c7fc74c845
+- library: s2n
+  label: '1.7'
+  url: https://raw.githubusercontent.com/aws/s2n-tls/e7ce83a27fa9525515a621754a7183a51c80246b/tls/s2n_cipher_suites.c
+  path: tls/s2n_cipher_suites.c
+  sha256: sha256:b6f7f1d86f395bbe2074d4891ce4d56a904801bf480f73ba50b4293d62f87ce3
+- library: s2n
+  label: '1.7'
+  url: https://raw.githubusercontent.com/aws/s2n-tls/e7ce83a27fa9525515a621754a7183a51c80246b/tls/s2n_tls_parameters.h
+  path: tls/s2n_tls_parameters.h
+  sha256: sha256:9741a3069ac4661c0f4b6e21264ac9c8a862bcae81160d739f55b08ac0283acd
