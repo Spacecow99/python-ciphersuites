@@ -265,3 +265,5 @@ Task 23: Ruling: commit step adds only '*.yaml' (plan said git add -A) — keeps
 Task 23: Ruling: accept input is comma-separated LIB:VER pairs (plan showed one) — the first real run needed 5 accepts and schannel labels contain spaces — cost if wrong: input format documented in the workflow.
 Task 23: Ruling: added a concurrency group — prevents overlapping scheduled/dispatch runs racing on push — cost: a queued run waits.
 STOP POINT: Task 23 step 4 (push data repo workflow commit) awaiting user. Tag v0.1.0 deferred until package branch merges (user decision).
+Task 23: USER APPROVED push. Data repo branch claude/modest-tesla-n4t2ke -> dc29366.
+Task 23: complete (data repo dc29366; controller-verified: actionlint/shellcheck clean). Remaining: v0.1.0 tag after package merge (user), gitlink re-point after data merge, final whole-branch review.
