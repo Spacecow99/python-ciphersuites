@@ -67,6 +67,11 @@ Out of scope:
   (separate data-enrichment problem; tracked separately).
 - Runtime ground-truth collection (running each library to list enabled
   suites). Possible later cross-check, not part of this design.
+- The GnuTLS HTML manual scrape (`scrape-gnutls manual`). **Decision: dropped.**
+  `lib/algorithms/ciphersuites.c` is authoritative and versioned by tag; the
+  manual is unversioned. The manual contributes no data today: the source
+  scrape yields 188 records and the committed merged `gnutls.yaml` has held
+  exactly 188 at every data commit from `b0e59c6` to `07d09ab`.
 - Scraping Schannel from Microsoft documentation. Schannel stays hand-curated
   but moves to schema v2 and is validated like every other library.
 
@@ -413,8 +418,8 @@ ciphersuites-scrape --capture-fixtures LIB REF   # writes fixture manifest entry
 Before old scrapers are deleted, a one-off test asserts that for each library
 the new adapter's newest-line output is a superset of the code points in
 `<library>.yaml` at the pinned data commit `b0e59c6` (not the regressed data
-repo HEAD) (minus documented exceptions, e.g. the
-GnuTLS manual-only entries). Differences are reviewed and recorded in the PR.
+repo HEAD) (minus documented exceptions; none are
+expected for GnuTLS, see section 3). Differences are reviewed and recorded in the PR.
 
 ## 9. CI and workflow
 
