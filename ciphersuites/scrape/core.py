@@ -36,6 +36,10 @@ def normalize_byte(value: Union[str, int]) -> str:
 
 def normalize_code_point(values: Sequence[Union[str, int]]) -> CodePoint:
     """Normalise a 2-byte (or 3-byte SSLv2) code point."""
+    if isinstance(values, (str, bytes, bytearray)):
+        raise BadCodePoint(
+            f"code point must be a sequence of bytes: {values!r}"
+        )
     if len(values) not in (2, 3):
         raise BadCodePoint(f"code point must have 2 or 3 bytes: {values!r}")
     return tuple(normalize_byte(v) for v in values)

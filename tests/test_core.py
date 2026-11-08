@@ -58,6 +58,13 @@ def test_normalize_code_point_rejects_bad_lengths():
         normalize_code_point([0, 1, 2, 3])
 
 
+@pytest.mark.parametrize("value", ["C0", "0x", "C02", b"\xc0\x2f"])
+def test_normalize_code_point_rejects_a_bare_string(value):
+    """A string is not a sequence of bytes, even when its length fits."""
+    with pytest.raises(BadCodePoint, match="sequence"):
+        normalize_code_point(value)
+
+
 def test_code_point_sort_key():
     """Sort key is numeric, not lexical."""
     assert code_point_sort_key(("0xC0", "0x2F")) == (0xC0, 0x2F)
