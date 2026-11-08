@@ -17,6 +17,9 @@ _CONST = re.compile(
     r"[ \t]*(?://.*)?$",
     re.MULTILINE,
 )
+# Every ``TLS_X ... =`` line is an entry, whether or not ``_CONST`` can
+# read it, so a format change lowers coverage instead of dropping suites.
+_ENTRY = re.compile(r"^[ \t]*(?P<key>TLS_\w+)[^\n]*?=", re.MULTILINE)
 _LITERAL = re.compile(r"0[xX][0-9a-fA-F]+")
 
 
@@ -64,8 +67,10 @@ class Go(Adapter):
             Record(key, split_hex_word(value))
             for key, value in resolved.items()
         ]
+        entries = {m.group("key") for m in _ENTRY.finditer(files[_FILE])}
+        unread = entries - set(values)
         return ParseResult(
             records=records,
-            total_keys=len(values),
-            unmatched_keys=sorted(unresolved),
+            total_keys=len(values) + len(unread),
+            unmatched_keys=sorted(set(unresolved) | unread),
         )

@@ -105,6 +105,17 @@ def test_dangling_alias_counts_as_unmatched():
     assert result.join_coverage == 0.5
 
 
+def test_unparseable_tls_constant_counts_as_unmatched():
+    result = _parse(
+        "\tTLS_A uint16 = 0x0005\n"
+        "\tTLS_B uint16 = 0x0006 /* block comment */\n"
+        "\tTLS_C uint16 = 0x0007; TLS_D = 0x0008\n"
+    )
+    assert [r.name for r in result.records] == ["TLS_A"]
+    assert result.unmatched_keys == ["TLS_B", "TLS_C"]
+    assert result.total_keys == 3
+
+
 def test_conflicting_literals_raise():
     with pytest.raises(ValueError, match="TLS_A"):
         _parse("\tTLS_A uint16 = 0x0005\n\tTLS_A uint16 = 0x0006\n")
