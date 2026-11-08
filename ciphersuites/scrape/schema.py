@@ -285,6 +285,7 @@ def _git_show(data_dir: Path, ref: str, library: str) -> Optional[str]:
             text=True,
             timeout=_GIT_TIMEOUT,
             check=False,
+            env={**os.environ, "LC_ALL": "C"},
         )
     except (OSError, subprocess.TimeoutExpired) as exc:
         raise SchemaError(f"git show failed: {exc}") from exc
