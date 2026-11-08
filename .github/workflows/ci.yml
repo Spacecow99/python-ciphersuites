@@ -60,6 +60,20 @@ jobs:
       - name: Pytest
         run: pytest --cov=ciphersuites.scrape --cov=ciphersuites.catalog --cov-branch --cov-fail-under=85
 
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          submodules: true
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: pip install ".[docs]"
+      - name: Sphinx (warnings are errors)
+        run: sphinx-build -W --keep-going -b html docs/source docs/build/html
+
   build:
     runs-on: ubuntu-latest
     steps:
