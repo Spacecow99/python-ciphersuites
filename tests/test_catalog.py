@@ -205,6 +205,14 @@ def test_load_bad_library_file(tmp_path):
         Catalog.load(tmp_path)
 
 
+def test_load_duplicate_library_is_an_error(tmp_path):
+    for path in FIXTURES.glob("*.yaml"):
+        shutil.copy(path, tmp_path / path.name)
+    shutil.copy(FIXTURES / "go.yaml", tmp_path / "go-copy.yaml")
+    with pytest.raises(DataNotFoundError, match="go.yaml: library 'go'"):
+        Catalog.load(tmp_path)
+
+
 def test_load_nonexistent_dir(tmp_path):
     with pytest.raises(DataNotFoundError):
         Catalog.load(tmp_path / "missing")

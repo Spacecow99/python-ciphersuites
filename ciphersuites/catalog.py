@@ -234,11 +234,16 @@ class Catalog:
         except SchemaError as exc:
             raise DataNotFoundError(str(exc)) from exc
         loaded: Dict[str, LibraryData] = {}
-        for name, doc in docs.items():
+        for name, doc in sorted(docs.items()):
             try:
                 data = from_doc(doc)
             except SchemaError as exc:
                 raise DataNotFoundError(f"{name}: {exc}") from exc
+            if data.library in loaded:
+                raise DataNotFoundError(
+                    f"{name}: library {data.library!r} is defined by more "
+                    "than one data file"
+                )
             loaded[data.library] = data
         return cls(suites, loaded)
 
