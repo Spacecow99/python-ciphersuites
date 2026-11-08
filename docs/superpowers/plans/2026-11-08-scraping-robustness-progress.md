@@ -259,3 +259,9 @@ Task 22: minor (deferred, final review): CI submodule fetch of 92e283f relies on
 Task 22: step 7 follow-up pending: re-point gitlink after data branch merges to data main.
 Task 22: complete (commits e575ef5..7701bf3 plus data repo 92e283f, review clean)
 STOP POINT: Task 23 step 1 (release tag v0.1.0) awaiting user.
+Task 23: USER DECISION: defer v0.1.0 tag until the package branch merges to main; write the data-repo workflow now (pins @v0.1.0, tag created later).
+Task 23: controller-implemented (short, security-sensitive). Data repo commit dc29366 on claude/modest-tesla-n4t2ke (local). Verified: yaml.safe_load ok; actionlint (with shellcheck) clean; arg construction tested with hostile reason and spaced label. Pins: checkout 11d5960 v4.4.0, setup-python a26af69 v5.6.0, cache 0057852 v4.3.0, upload-artifact ea165f8 v4.6.2.
+Task 23: Ruling: commit step adds only '*.yaml' (plan said git add -A) — keeps validation-report.json out of the repo as the plan requires — cost: new non-yaml data files would need the pattern widened.
+Task 23: Ruling: accept input is comma-separated LIB:VER pairs (plan showed one) — the first real run needed 5 accepts and schannel labels contain spaces — cost if wrong: input format documented in the workflow.
+Task 23: Ruling: added a concurrency group — prevents overlapping scheduled/dispatch runs racing on push — cost: a queued run waits.
+STOP POINT: Task 23 step 4 (push data repo workflow commit) awaiting user. Tag v0.1.0 deferred until package branch merges (user decision).
