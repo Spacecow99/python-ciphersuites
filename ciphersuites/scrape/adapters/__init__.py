@@ -22,6 +22,7 @@ from ciphersuites.scrape.adapters import (  # noqa: E402,F401
     boringssl,
     go,
     libressl,
+    jsse,
     nss,
     openssl,
 )

@@ -28,6 +28,21 @@
   url: https://raw.githubusercontent.com/golang/go/2aae1000ea1d4b28923b96db28acf4e3b99d6aff/src/crypto/tls/cipher_suites.go
   path: src/crypto/tls/cipher_suites.go
   sha256: sha256:c4287a0bc707876b78f792f086944ce43b9622750b57a79f68ac1de6e468b2b1
+- library: jsse
+  label: '11'
+  url: https://raw.githubusercontent.com/openjdk/jdk/da75f3c4ad5bdf25167a3ed80e51f567ab3dbd01/src/java.base/share/classes/sun/security/ssl/CipherSuite.java
+  path: src/java.base/share/classes/sun/security/ssl/CipherSuite.java
+  sha256: sha256:5eab759d21da69b2396791d554c63a4f6c033ed9dc4a7841b827293a497f9bde
+- library: jsse
+  label: '27'
+  url: https://raw.githubusercontent.com/openjdk/jdk/815ff4dc327fe17f2433c7d115a5a503af10f3c4/src/java.base/share/classes/sun/security/ssl/CipherSuite.java
+  path: src/java.base/share/classes/sun/security/ssl/CipherSuite.java
+  sha256: sha256:a2e8d33d7a303ca09cec3f38f5b9a3bcd2a61e7d17fbdff087ec838d2022cc9c
+- library: jsse
+  label: '8'
+  url: https://raw.githubusercontent.com/openjdk/jdk8u/b661ee6ff840d6922aa7424a4d8f24760b21cf26/jdk/src/share/classes/sun/security/ssl/CipherSuite.java
+  path: jdk/src/share/classes/sun/security/ssl/CipherSuite.java
+  sha256: sha256:84813f43407304f303bec9dec13ec1022c1f1d262aa60770cd61053a35785cc2
 - library: libressl
   label: '2.5'
   url: https://raw.githubusercontent.com/libressl/openbsd/5273db82477cf71f48f9875120989578a47493af/src/lib/libssl/ssl2.h
