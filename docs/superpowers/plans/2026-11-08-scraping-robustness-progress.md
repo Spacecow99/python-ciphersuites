@@ -226,3 +226,6 @@ Task 20: fix round 1/5 (Imp 1-3, rulings A/B, Minors 1/4/5/6 addressed, 0 open; 
 Task 20: Ruling: keep black reformatting of 17 legacy files bundled in bad464c (AST-identical) — rewriting pushed history costs more than the mixed commit — if wrong, a noisier blame on legacy files.
 Task 20: minor (deferred, final review): dead merge.restore_reference; duplicate RUNNER_ERROR when version_order raises; post-accept exception returns pre-accept findings; residual cli.py:64-65 branch.
 Task 20: complete (commits a912b4b..bad464c, review clean)
+Task 20a (LibreSSL <=2.4 header path fix, from Task 20 dry run): implementer af2ea495ca63f7bb2 (sonnet), base 07dc2e7. Ruling: fix as a separate follow-up task before Task 21 — real data defect blocking Task 22 parity — cost: one extra review cycle.
+Task 20a: head 304b9a6 (DONE). Controller verified 494 passed (3.13+3.9), lint clean; diff read in full (files_for base by line <2.5; 2.4 fixture libressl-v2.4.5, 185 records, coverage 0.9737 == 2.5). Live --library libressl dry run: exit 0, no FILE_MISSING. Review: controller-only (10-line code change).
+Task 20a: complete (commits 07dc2e7..304b9a6, review clean)
