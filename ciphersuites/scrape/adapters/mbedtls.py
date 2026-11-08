@@ -26,6 +26,9 @@ _DEFINE = re.compile(
 # Table rows: ``{ MBEDTLS_TLS_X, "TLS-X",`` with the name possibly on the
 # next line. Rows inside ``#if defined(...)`` guards are matched as well.
 _ENTRY = re.compile(r'\{\s*(?P<key>MBEDTLS_TLS\w*)\s*,\s*"(?P<name>[^"\n]*)"')
+# Every table row counts, even one whose name ``_ENTRY`` cannot read; it is
+# then unmatched under its key.
+_ROW = re.compile(r"\{\s*(?P<key>MBEDTLS_TLS\w*)\s*,")
 # Strings are matched first so that a ``//`` inside one is not a comment.
 _SKIP = re.compile(r'"(?:[^"\\\n]|\\.)*"|//[^\n]*|/\*.*?\*/', re.DOTALL)
 _LITERAL = re.compile(r"0[xX][0-9a-fA-F]+")
@@ -97,8 +100,13 @@ class MbedTls(Adapter):
         found: Dict[str, str] = {}
         unmatched: List[str] = []
         total = 0
-        for match in _ENTRY.finditer(_blank_comments(files[_SOURCE])):
+        source = _blank_comments(files[_SOURCE])
+        for row in _ROW.finditer(source):
             total += 1
+            match = _ENTRY.match(source, row.start())
+            if match is None:
+                unmatched.append(row.group("key"))
+                continue
             name, key = match.group("name"), match.group("key")
             point = resolved.get(key)
             if point is None:

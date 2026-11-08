@@ -152,6 +152,19 @@ def test_entry_without_header_define_is_unmatched():
     assert result.join_coverage == 0.5
 
 
+def test_row_without_a_name_string_is_unmatched():
+    result = _parse(
+        "#define MBEDTLS_TLS_A 0x05\n#define MBEDTLS_TLS_B 0x06\n",
+        _entry("MBEDTLS_TLS_A", "TLS-A")
+        + "    { MBEDTLS_TLS_B, NAME_FROM_A_MACRO,\n"
+        + "      MBEDTLS_CIPHER_NULL, 0 },\n",
+    )
+    assert [r.name for r in result.records] == ["TLS-A"]
+    assert result.total_keys == 2
+    assert result.unmatched_keys == ["MBEDTLS_TLS_B"]
+    assert result.join_coverage == 0.5
+
+
 def test_dangling_alias_is_unmatched():
     result = _parse(
         "#define MBEDTLS_TLS_A MBEDTLS_TLS_MISSING\n",
