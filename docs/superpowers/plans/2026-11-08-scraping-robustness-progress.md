@@ -198,3 +198,11 @@ Task 17: fix round 1/5 dispatched to ab5b5b797cda66d7d (2 Important + cheap mino
 Task 17: fix round 1/5 (6 addressed, 0 open — isinstance label check; ref-guard test patches subprocess.run (controller mutation-tested: 6 fail with guard removed); falsy hex_byte_3; LC_ALL=C (needed a nudge, afdb872 test + 4ebb39e fix); attributes/data_dir comments; to_doc kind + orphan-members ValueError; commits 0bce634..4ebb39e). Scoped re-review by controller on the diff; 424 passed (3.13+3.9), lint clean.
 Task 17: minor (deferred, final review): commit afdb872 is a red test-only commit (bisect hazard, harmless).
 Task 17: complete (commits 7325071..4ebb39e, review clean)
+Task 18: implementer aadfb4f4789ee4bc0 (sonnet), base d554cd7.
+Task 18: Ruling: reference adapters (date label changes each run) are gated against the baseline's newest version regardless of label (IANA_REMOVAL / REFERENCE_SHRINK) — the same-label rules would never fire for them — if wrong, references go ungated.
+Task 18: Ruling: IANA `Recommended` changes (spec 6.2 "reported") get no Finding code — the plan's fixed code list has none; the runner's diff report covers it — cost: changes visible only in per-library diffs.
+Task 18: Ruling: rolling snapshots are "new labels"; nearest lower line = previous snapshot in `new`, so a >50% BoringSSL drop fails NEW_LINE_SHRINK — matches 151->25 history needing --accept — if wrong, rolling gets no shrink gate.
+Task 18: first head 7180f05 (DONE_WITH_CONCERNS: tests after code). Controller verified: 446 passed (3.13+3.9), lint clean.
+Task 18: review approved (0 Crit/Imp). Boundaries pinned (0.90 coverage, 0.5x, 10%, 27/29 days); accepts scoped to BASELINE_CODES + exact pair.
+Task 18: minor (deferred, final review — revisit after Task 22 real run): NEW_NAME_COLLISION noisy for openssl family (libressl/boringssl share openssl names; KNOWN list is openssl-only; repeated per version label); untested: lowest-line NEW_LINE_SHRINK, V1_PARITY newest-not-scraped, exactly-28-days, non-baseline code on accepted pair, missing new_entry; reference --accept key is the run date; Finding unhashable (dict field) — note or eq=False.
+Task 18: complete (commits d554cd7..7180f05, review clean)

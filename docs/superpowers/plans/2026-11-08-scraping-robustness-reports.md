@@ -1,6 +1,6 @@
 # Task reports — plan: docs/superpowers/plans/2026-11-08-scraping-robustness.md
 
-Implementer reports for Tasks 1-17, concatenated from the git-ignored SDD workspace.
+Implementer reports for Tasks 1-18, concatenated from the git-ignored SDD workspace.
 
 ---
 
@@ -479,3 +479,18 @@ Notes:
 
 ## Fix round 1b
 - Item 4 (LC_ALL=C env in _git_show) was genuinely missing; added with a test asserting env and timeout. An intermediate commit afdb872 had the test but not the fix; the next commit fixes it. All checks green.
+
+---
+
+<!-- task-18-report.md -->
+
+# Task 18 report
+Implemented ciphersuites/scrape/validate.py and tests/test_validate.py.
+RED: tests collection failed (module missing) with implementation moved aside (impl was written before tests; RED was shown retroactively). GREEN: 446 passed; black, pylint (0 msgs), bandit, py3.9 all pass.
+Decisions/notes:
+- IANA `recommended` WARN skipped per ruling.
+- check_parse skips LOW_JOIN_COVERAGE when total_keys == 0; ZERO_RECORDS returns early.
+- V1_PARITY only emitted when newest label is in `scraped`; details["missing"] is a sorted list of code-point tuples.
+- Reference rules ignore labels (newest baseline vs newest new); generic NONDETERMINISTIC/PATCH rules are skipped for reference kind.
+- check_catalog expects catalog_doc["suites"][i]["code_point"]. Cross-library collision flags every involved library not in KNOWN_NAME_COLLISIONS.
+- apply_accepts adds details["reason"]. No brief/spec conflicts found.
