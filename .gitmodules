@@ -1,3 +1,4 @@
 [submodule "ciphersuites/_ciphersuites"]
 	path = ciphersuites/_ciphersuites
+	ignore = untracked
 	url = https://github.com/Spacecow99/ciphersuites.git

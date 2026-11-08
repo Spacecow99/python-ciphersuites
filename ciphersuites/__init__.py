@@ -7,7 +7,7 @@ Python library for working with various TLS ciphersuites.
 import re
 from operator import is_not
 from functools import partial
-from importlib import resources as importlib_resources
+from importlib import resources
 
 import yaml
 
@@ -22,10 +22,12 @@ class DataNotFoundError(RuntimeError):
 def _load_yaml(name):
     """Load a YAML data file from the ``ciphersuites._ciphersuites`` submodule."""
     try:
-        resource = importlib_resources.files("ciphersuites._ciphersuites") / name
-        with resource.open("r") as f:
+        resource = resources.files("ciphersuites._ciphersuites") / name
+        with resource.open("r", encoding="utf-8") as f:
             return yaml.safe_load(f)
-    except (ModuleNotFoundError, ImportError, OSError) as e:
+    # AttributeError/TypeError: files() on an empty (namespace) package
+    # directory fails this way on older Python versions.
+    except (ImportError, OSError, AttributeError, TypeError) as e:
         raise DataNotFoundError(
             f"Failed to load data file '{name}' from ciphersuites._ciphersuites: {e}. "
             "If this is a source checkout, fetch the data submodule with "
