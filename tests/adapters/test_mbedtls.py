@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 import pytest
@@ -62,7 +63,9 @@ def test_every_table_entry_is_a_record(upstream, label):
     files = upstream("mbedtls", label)
     result = MbedTls().parse(files)
     assert result.total_keys >= len(result.records) > 0
-    assert result.total_keys == files[SOURCE].count('"TLS')
+    # Commented-out rows do not count; every live name string is one row.
+    live = re.sub(r"/\*.*?\*/|//[^\n]*", "", files[SOURCE], flags=re.DOTALL)
+    assert result.total_keys == live.count('"TLS')
 
 
 def test_tag_version_accepts_both_forms_only_for_releases():
@@ -218,7 +221,7 @@ def test_no_entries_yields_nothing():
 @pytest.mark.parametrize("label", LABELS)
 def test_join_coverage_is_complete(upstream, label):
     result = MbedTls().parse(upstream("mbedtls", label))
-    assert result.join_coverage >= 0.90, result.unmatched_keys
+    assert result.join_coverage == 1.0, result.unmatched_keys
 
 
 @pytest.mark.parametrize("label", LABELS)

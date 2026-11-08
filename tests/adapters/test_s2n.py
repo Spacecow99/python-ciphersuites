@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 import pytest
@@ -56,7 +57,8 @@ def test_newest_has_ecdhe_gcm(upstream):
 def test_every_name_side_suite_is_a_record(upstream, label):
     files = upstream("s2n", label)
     result = S2n().parse(files)
-    assert result.total_keys == files[SOURCE].count(".name = ")
+    live = re.sub(r"/\*.*?\*/|//[^\n]*", "", files[SOURCE], flags=re.DOTALL)
+    assert result.total_keys == live.count(".name = ")
     assert len(result.records) == result.total_keys
 
 
@@ -136,6 +138,16 @@ def test_unresolvable_suites_are_unmatched_not_dropped():
     assert result.total_keys == 3
     assert result.unmatched_keys == ["NO-ID", "NO-MACRO"]
     assert result.join_coverage == pytest.approx(1 / 3)
+
+
+def test_struct_without_iana_does_not_borrow_the_next_struct():
+    result = _parse(
+        "#define TLS_B 0xC0, 0x2F\n",
+        _suite("A-NO-IANA") + _suite("B-OK", ".iana_value = { TLS_B },"),
+    )
+    assert result.records == [Record("B-OK", ("0xC0", "0x2F"))]
+    assert result.unmatched_keys == ["A-NO-IANA"]
+    assert result.total_keys == 2
 
 
 def test_guarded_suites_are_included():
