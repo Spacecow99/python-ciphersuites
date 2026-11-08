@@ -306,7 +306,8 @@ class BoringSSL(Adapter):
         )
         used: Counter = Counter()
         records: List[Record] = []
-        for fields in _entries(table):
+        no_id: List[str] = []
+        for index, fields in enumerate(_entries(table), start=1):
             ids = [f for f in fields if _ID_TOKEN.fullmatch(f)]
             if fields and fields[0] == "0":
                 # Intentionally skipped: not counted, not a record.
@@ -314,16 +315,21 @@ class BoringSSL(Adapter):
                 continue
             if fields and fields[0] == "1":
                 fields = fields[1:]
-            name = _resolve_name(fields[0], defines) if fields else None
-            if not ids or ids[0] not in code_points or name is None:
+            if not ids:
+                # An active entry without a recognised id is a failure to
+                # match, not something to drop silently.
+                no_id.append(fields[0] if fields else f"<entry {index}>")
+                continue
+            name = _resolve_name(fields[0], defines)
+            if ids[0] not in code_points or name is None:
                 continue
             records.append(Record(name, _code_point(code_points[ids[0]])))
             used[ids[0]] += 1
-        unmatched = sorted((counted - used).elements())
+        unmatched = sorted(list((counted - used).elements()) + no_id)
         scsv = _scsv_records(defines)
         return ParseResult(
             records=records + scsv,
-            total_keys=sum(counted.values()) + len(scsv),
+            total_keys=sum(counted.values()) + len(no_id) + len(scsv),
             unmatched_keys=unmatched,
         )
 

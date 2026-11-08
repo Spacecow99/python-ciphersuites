@@ -270,6 +270,22 @@ def test_invalid_entry_is_skipped_and_not_counted():
     assert not result.unmatched_keys
 
 
+def test_entry_with_unknown_id_prefix_is_unmatched():
+    headers = HDR + "#define TLS1_4_CK_FOO 0x0300ABCD\n"
+    result = _parse(
+        _table(
+            "{ SSL3_TXT_A, SSL3_CK_A, x },",
+            "{ SSL3_TXT_FOO, TLS1_4_CK_FOO, x },",
+            "{ 1 },",
+        ),
+        headers,
+    )
+    assert len(result.records) == 1
+    assert result.unmatched_keys == ["<entry 3>", "SSL3_TXT_FOO"]
+    assert result.total_keys == 3
+    assert 0 <= result.join_coverage < 1
+
+
 def test_wide_id_raises():
     headers = (
         HDR + "#define SSL3_CK_W 0x02010080\n" + '#define SSL3_TXT_W "W"\n'
