@@ -614,6 +614,68 @@ def test_lazy_load_missing_data(monkeypatch, tmp_path):  # import succeeds; firs
 - [ ] **Step 4:** Run the full verification (pytest 3.13 + 3.9, black, pylint, bandit). Expected: all pass.
 - [ ] **Step 5:** Commit; remove the "live reference fixtures" deviation note below.
 
+### Task 25: Re-assess BoringSSL version model and recover historical cipher suites
+
+**Status:** OPEN -- not executed in the Tasks 1-23 run. Raised after the first v2 data run (data repo 3f205bf).
+
+**Problem:**
+- BoringSSL is modelled as rolling dated HEAD snapshots, with `keep_last = 8`.
+- The first v2 run therefore produced one snapshot, labelled 2026-11-08, with 27 code points. The v1 data had 151, taken from commit 5584ad8c (2025-03-17).
+- The 126 legacy suites now appear in no BoringSSL version. The V1_PARITY finding was accepted with reason text whose cause ("HEAD pruned legacy suites") is correct.
+- As a result, `catalog` answers "not supported" for every legacy suite in every BoringSSL version. This is wrong for anyone running an older BoringSSL, for example one pinned by an older Chromium, Android or gRPC release.
+- Goal: report accurately which suites a given legacy BoringSSL revision supports.
+
+**Questions to answer first (research step; record findings in the ledger before changing code):**
+1. **Source of truth.** Do the header `#define`s in `include/openssl/ssl3.h`/`tls1.h` reflect what BoringSSL can negotiate? The header-scraping approach would require that. The alternative is the cipher table in `ssl/ssl_cipher.cc` (`kCiphers`), which is authoritative. If they diverge (constants kept for API compatibility after support was removed), the adapter is reporting the wrong thing for current versions too.
+2. **When suites were removed.** Use the history of the authoritative file to find every commit that changed the supported set: `git log --follow -p` over the file, on a blobless clone. Produce a table of commit, date, code points added and code points removed. Expect a small number of change points, such as the RC4, 3DES, CBC-SHA2 and DHE removals.
+3. **What "a legacy BoringSSL version" means to a user.**
+   - BoringSSL has no releases. Users identify it by a commit, or by the product that pins it (Chromium milestone via `DEPS`, Android release, gRPC or Envoy version).
+   - Decide which identifier the data offers: commit only; a commit-date label; or a mapping to product releases.
+   - Weigh the maintenance cost of any mapping.
+4. **Coverage before 2025-03-17.** Does history before that date contain suites that v1 never had? v1 only ever saw recent HEADs. Is any upstream history unavailable from the mirror?
+
+**Candidate approaches (choose one; the ledger records the ruling, its reason, and the cost if wrong):**
+- **A. Change-point snapshots.**
+  - Replace dated HEAD snapshots with one version entry per commit that changed the supported set (from question 2), plus current HEAD.
+  - Labels stay date-based (`YYYY-MM-DD` of the change commit), and `commit` is set.
+  - The history is complete and small. It is deterministic and needs no `keep_last` trimming of meaningful entries.
+  - A legacy commit maps to the latest change-point at or before it.
+- **B. Keep rolling snapshots, seed history once.** Add a one-off backfill of historical snapshots, for example at each change point or at 5584ad8c only. Snapshots older than `keep_last` are protected from trimming. This is cheaper, but the gaps between snapshots remain.
+- **C. Product-release mapping.** Approach A, plus a curated table that maps Chromium milestones (or another product) to BoringSSL commits. Do this only if question 3 shows users need it.
+
+**Files (depending on the chosen approach):**
+- `ciphersuites/scrape/adapters/boringssl.py`: discovery and `files_for`; possibly the `ssl_cipher.cc` parser.
+- `ciphersuites/scrape/runner.py` and `merge.py`: rolling and `keep_last` semantics, if A or B changes them.
+- `ciphersuites/catalog.py`: a helper that resolves a commit to its version entry, if A is chosen.
+- `tests/adapters/test_boringssl.py`; fixtures and goldens at two or three change-point commits.
+- The data repo: regenerated `boringssl.yaml`.
+
+**Steps:**
+- [ ] **Step 1: Research.** Answer questions 1-4 using a blobless clone of `https://github.com/google/boringssl`. Write the change-point table and the source-of-truth finding to the ledger. Verify:
+  - every v1 code point (151 at 5584ad8c) appears in at least one historical state;
+  - every state's set matches what the source of truth says at that commit.
+- [ ] **Step 2: Rule.** Pick approach A, B or C and record it as a ruling. If the source of truth changes (question 1), say whether current versions are affected and how.
+- [ ] **Step 3: Write failing tests first.**
+  - Adapter: discovery yields the expected change-point labels from a captured commit-list fixture.
+  - Golden: one golden per pinned fixture commit, captured with the fixtures CLI `--commit SHA --label`.
+  - Catalog: `supported_by("boringssl", <legacy label>)` contains `TLS_RSA_WITH_RC4_128_SHA` (0x00,0x05) only where history says so.
+  - Catalog: resolving a pre-removal commit gives the right entry.
+- [ ] **Step 4: Implement.**
+  - Follow the existing conventions: coverage denominator independent of the full parse, raw files by commit SHA, adapters never catch exceptions.
+  - Changes to runner rolling semantics need runner tests for trimming and stale handling.
+- [ ] **Step 5: Regenerate the data.**
+  - Run `ciphersuites-scrape --library boringssl` against the current v2 baseline.
+  - New labels are additions. If the HEAD label changes form, a `--accept` with evidence may be needed.
+  - Confirm with a membership diff that no code point is lost from any existing label.
+  - Ask the user before pushing the data repo.
+- [ ] **Step 6: Verify.** Run pytest 3.13 + 3.9 with the coverage gate, black, pylint and bandit, under at least two `PYTHONHASHSEED` values. Then bump the gitlink to the pushed data commit.
+- [ ] **Step 7: Correct the published reason text.**
+  - The first-run `accepted.reason` (data repo 92e283f/75564b1) states three wrong version boundaries:
+    - OpenSSL: removed in 1.1.0 (last present in 1.0.2), not "4.x".
+    - Mbed TLS: removed in 4.0 (last present in 3.6), not "present <= 4.1".
+    - s2n: last present in line 1.4, not "<= 1.6".
+  - Fix them in the same data regeneration, and note the correction in the commit message.
+
 ---
 
 ## Spec coverage map
