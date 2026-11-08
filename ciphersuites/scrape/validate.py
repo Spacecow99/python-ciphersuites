@@ -43,6 +43,7 @@ NEW_LINE_SHRINK = "NEW_LINE_SHRINK"
 LINE_MISSING_FROM_DISCOVERY = "LINE_MISSING_FROM_DISCOVERY"
 NO_VERSIONS = "NO_VERSIONS"
 IANA_REMOVAL = "IANA_REMOVAL"
+IANA_RECOMMENDED_CHANGED = "IANA_RECOMMENDED_CHANGED"
 REFERENCE_SHRINK = "REFERENCE_SHRINK"
 V1_PARITY = "V1_PARITY"
 UNKNOWN_CODE_POINT = "UNKNOWN_CODE_POINT"
@@ -233,6 +234,19 @@ def _entry(data: LibraryData, label: str) -> Optional[VersionEntry]:
     return None
 
 
+def _recommended_changes(
+    new: LibraryData, baseline: LibraryData, common: Set[CodePoint]
+) -> List[Dict[str, Any]]:
+    """``recommended`` changes (spec 6.2) for code points in both files."""
+    changed: List[Dict[str, Any]] = []
+    for point in _sort_cps(common):
+        before = baseline.attributes.get(point, {}).get("recommended")
+        after = new.attributes.get(point, {}).get("recommended")
+        if before != after:
+            changed.append({"code_point": point, "old": before, "new": after})
+    return changed
+
+
 def _check_reference(
     adapter: Adapter, new: LibraryData, baseline: LibraryData
 ) -> List[Finding]:
@@ -243,9 +257,10 @@ def _check_reference(
     new_cps, old_cps = _cps(new, new_label), _cps(baseline, old_label)
     lib = new.library
     if adapter.name == "iana":
+        findings: List[Finding] = []
         removed = old_cps - new_cps
         if removed:
-            return [
+            findings.append(
                 Finding(
                     FAIL,
                     IANA_REMOVAL,
@@ -254,8 +269,20 @@ def _check_reference(
                     f"{len(removed)} IANA assignment(s) removed",
                     {"removed": _sort_cps(removed)},
                 )
-            ]
-        return []
+            )
+        changed = _recommended_changes(new, baseline, new_cps & old_cps)
+        if changed:
+            findings.append(
+                Finding(
+                    WARN,
+                    IANA_RECOMMENDED_CHANGED,
+                    lib,
+                    new_label,
+                    f"{len(changed)} IANA Recommended value(s) changed",
+                    {"changed": changed},
+                )
+            )
+        return findings
     if old_cps and len(new_cps) < len(old_cps) * (
         1 - REFERENCE_SHRINK_THRESHOLD
     ):

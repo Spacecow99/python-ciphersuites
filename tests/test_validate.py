@@ -13,6 +13,7 @@ from ciphersuites.scrape.validate import (
     BAD_CODE_POINT,
     DUPLICATE_RECORD,
     FAIL,
+    IANA_RECOMMENDED_CHANGED,
     IANA_REMOVAL,
     LINE_MISSING_FROM_DISCOVERY,
     LOW_JOIN_COVERAGE,
@@ -216,6 +217,46 @@ def test_iana_removal():
     new = lib({"2026-02-01": [rec("A", 1)]}, kind="reference")
     found = check_against_baseline(Iana(), new, base, {"2026-02-01"})
     only(found, IANA_REMOVAL)
+
+
+def _iana_lib(label, recommended):
+    data = lib({label: [rec(str(n), n) for n in recommended]}, kind="reference")
+    data.attributes = {
+        cp(n): {"dtls_ok": True, "recommended": value}
+        for n, value in recommended.items()
+    }
+    return data
+
+
+def test_iana_recommended_change_is_one_warning():
+    base = _iana_lib("2026-01-01", {1: "Y", 2: "Y", 3: "N"})
+    new = _iana_lib("2026-02-01", {1: "D", 2: "Y", 3: "Y", 4: "Y"})
+    found = only(
+        check_against_baseline(Iana(), new, base, {"2026-02-01"}),
+        IANA_RECOMMENDED_CHANGED,
+        WARN,
+    )
+    assert found.version == "2026-02-01"
+    assert found.details["changed"] == [
+        {"code_point": cp(1), "old": "Y", "new": "D"},
+        {"code_point": cp(3), "old": "N", "new": "Y"},
+    ]
+
+
+def test_iana_recommended_unchanged_gives_no_finding():
+    base = _iana_lib("2026-01-01", {1: "Y", 2: "N"})
+    new = _iana_lib("2026-02-01", {1: "Y", 2: "N", 3: "D"})
+    assert not check_against_baseline(Iana(), new, base, {"2026-02-01"})
+
+
+def test_iana_removal_and_recommended_change_both_reported():
+    base = _iana_lib("2026-01-01", {1: "Y", 2: "Y"})
+    new = _iana_lib("2026-02-01", {1: "N"})
+    found = check_against_baseline(Iana(), new, base, {"2026-02-01"})
+    assert [(f.code, f.level) for f in found] == [
+        (IANA_RECOMMENDED_CHANGED, WARN),
+        (IANA_REMOVAL, FAIL),
+    ]
 
 
 def test_reference_shrink():
