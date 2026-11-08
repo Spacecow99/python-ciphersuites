@@ -1,6 +1,6 @@
 # Task reports — plan: docs/superpowers/plans/2026-11-08-scraping-robustness.md
 
-Implementer reports for Tasks 1-14, concatenated from the git-ignored SDD workspace.
+Implementer reports for Tasks 1-15, concatenated from the git-ignored SDD workspace.
 
 ---
 
@@ -396,3 +396,48 @@ Pages were not re-verified for later edits; transcription date 2026-11-08. HTML 
 - Re-fetched all 18 pages (byte-identical to the saved copies); extractor now reads table first cells and list items, and cross-checks every `(TLS|SSL)_...` token in the page text against what was captured (no uncaptured tokens on any page). Page vs YAML unique-suite counts (curve suffixes collapsed), all match: Vista 24/24, 7 41/41, 8 39/39, 8.1 41/41, 10-1507 43/43, 1511 43/43, 1607..22H2 (1607,1703,1709,1803,1809,1903,20H2) 45/45 each, Server 2022 48/48, 11 48/48, 11 22H2 48/48, 10 22H2 45/45, Server 2025 48/48. Only Vista changed.
 - Tests added: per-version expected count table, Vista regression (TLS_RSA_WITH_DES_CBC_SHA, SSL_CK_DES_64_CBC_WITH_MD5, EXPORT40), version_order ValueError for uncurated label (code fixed).
 - Results: pytest 325 passed; black --check: 42 files unchanged; pylint ciphersuites/scrape tests: 10.00/10, no messages; bandit -q -r ciphersuites/scrape: no findings.
+
+---
+
+<!-- task-15-report.md -->
+
+# Task 15 report: reference adapters (IANA, testssl, Scanigma)
+
+Status: DONE_WITH_CONCERNS
+
+## Implemented
+- `ciphersuites/scrape/adapters/reference/{__init__,iana,testssl,scanigma}.py`, imported from `adapters/__init__.py`.
+- All three: `kind="reference"`, `rolling=True`, one version per run labelled `now.date().isoformat()`.
+- IANA: ref = CSV URL, `commit=None`, `fetch_files` uses no cache key. Reserved/Unassigned rows excluded (not counted); ranges (`0x00,0x10-12`, `0x01-02,*`) expanded for named rows; `attributes[cp] = {"dtls_ok": bool, "recommended": "Y"|"N"|"D"}`. total_keys = non-excluded CSV rows, counted independently; rows with unreadable value/flags/name are unmatched. Same code point with two names -> ValueError. Missing column -> ValueError.
+- testssl: `repo`, `commit=ls_remote_head`, `files_for -> ["etc/cipher-mapping.txt"]`, default commit-keyed fetch. total_keys = every line starting with a code point; unmatched = those the full regex cannot read. Entries whose IANA name is `-` (4 in the fixture) are recognised and skipped (counted in total, not unmatched, no record), as in the legacy scraper. 3-byte SSLv2 codes supported.
+- Scanigma (restructured site, per ruling): ref = listing URL; `fetch_files` fetches listing then each detail URL sequentially (de-duplicated, no cache key); files `listing.html`, `detail/<slug>.html`; parse via BeautifulSoup + json on JSON-LD. total_keys = max(numberOfItems, listed entries); unmatched = listing names with no detail page / no usable termCode / bad code (plus placeholders if the page claims more than it lists). Code points never looked up by name. Malformed listing JSON-LD raises ValueError; malformed detail -> unmatched.
+- Wayback scaffolding: `wayback_id_url(timestamp, url)` in fetch.py (14 digits else ValueError); fixtures CLI `--wayback TIMESTAMP` only with `--url` (error otherwise), records the Wayback URL in the manifest. Unused by any fixture.
+
+## IANA live column findings
+Headers exactly `Value,Description,DTLS-OK,Recommended,Reference,Comment`. DTLS-OK values: Y/N/blank; Recommended: Y/N/D/blank. Blank only on Reserved/Unassigned ranges; all 358 named rows have Y/N and Y/N/D, so the brief's expectation matches. Value cells quoted `"0xC0,0x2F"`; descriptions can contain embedded newlines (needs csv with newline=""). No named row currently has a range. IANA fixture: 358 records, 358 keys, coverage 1.0. 0xC0,0x2F has `{"dtls_ok": True, "recommended": "Y"}` as the brief says (no assertion mismatch).
+
+## Counts
+- testssl @ 7dc4a6f2f49294ffa56f535fbfd0b62421130be8: 374 entry lines, 370 records, 0 unmatched; (0xCC,0xA8) = TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256 and (0xCC,0x13) = ..._SHA256_OLD, distinct.
+- Scanigma listing: 417 entries. Fixture = listing + 8 detail pages (tls-ecdhe-rsa-with-aes-128-gcm-sha256, old-tls-dhe-rsa-with-chacha20-poly1305-sha256, old-tls-ecdhe-rsa-with-chacha20-poly1305-sha256, tls-aes-128-gcm-sha256, tls-aes-256-gcm-sha384, tls-chacha20-poly1305-sha256, ssl-ck-rc4-128-with-md5, tls-rsa-with-aes-128-cbc-sha): 8 records, 409 unmatched, coverage 0.019 by construction (asserted records == 8, unmatched == total - records).
+
+## Tests / verification
+- `python -m pytest -q`: 373 passed. Python 3.9 via uv: 373 passed (uv.lock removed). `black --check`: clean. `pylint ciphersuites/scrape tests`: 10.00, zero messages. `bandit -q -r ciphersuites/scrape`: no findings (two pre-existing nosec warnings).
+- TDD: wayback tests (tests/test_fetch.py, tests/test_fixtures.py) run red (ImportError) before implementation; tests/adapters/test_reference.py run red (collection error) before adapters, then only the 7 fixture-dependent tests failed until fixtures were captured, then goldens generated with --update-goldens and reviewed (iana 358 rows, testssl 370, scanigma 8).
+- Fixtures: IANA/Scanigma captured from live URLs with `--url` (label 2026-11-08), testssl with `--commit`; 11 manifest entries.
+
+## Files
+Created: reference/* (4), tests/adapters/test_reference.py, goldens for iana/testssl/scanigma. Modified: adapters/__init__.py, fetch.py, fixtures.py, tests/test_fetch.py, tests/test_fixtures.py, tests/fixtures/manifest.yaml.
+
+## Concerns
+1. IANA and Scanigma fixtures are live URLs with sha256 pins: the live content changes (IANA registry updates, Scanigma edits), so `load_fixture` will raise a sha256 mismatch on a fresh cache once upstream changes; only the local `.cache/fixtures` keeps the tests passing. This is the expected consequence of the user directive (Task 24 migrates to Wayback).
+2. Scanigma page for SSL_CK_NULL_WITH_MD5 declares termCode "0x00, 0x00" (2 bytes) whereas testssl has 3-byte 0x00,0x00,0x00; kept as the page says (not in the fixture).
+3. `TestSsl` class name triggers pytest collection warnings when imported in tests; handled with `__test__ = False`.
+4. Registry is `rolling = True` for all three reference adapters (matches BoringSSL; retention semantics for the runner unconfirmed).
+
+## Self-review
+Diff reviewed; no adapter catches exceptions except per-item parse tolerance returning unmatched; no network in tests (responses mocks / cached fixtures).
+
+## Fix round 1
+- `keep_last = 1` on Iana, TestSsl, Scanigma (rolling stays True); parametrised test asserts both.
+- Scanigma `fetch_files` skips items with empty/missing/null url (no `detail/.html` fetch); they stay unmatched and counted in total; test added. Comment at the detail-fetch loop documents that a failed detail fetch propagates and fails the version.
+- Verification: pytest 377 passed (also 3.9 via uv, uv.lock removed); black clean; pylint 10.00 zero messages; bandit no findings.
