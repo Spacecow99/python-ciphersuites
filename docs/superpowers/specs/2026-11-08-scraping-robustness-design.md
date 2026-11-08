@@ -22,6 +22,24 @@ The scrapers in `ciphersuites/_scripts/` are brittle and silently fail:
 - `deduplicate_ciphers.py` merges on name rather than code point, which can
   silently drop a distinct code point that shares a name.
 - There are no tests (`tests/test_sample.py` asserts `True`).
+- `ciphersuites/_ciphersuites/` is **not a real submodule**: git tracks it as a
+  plain directory (mode `040000`, not a `160000` gitlink) despite
+  `.gitmodules`. The package ships a frozen copy equal to data-repo commit
+  `11049f0` (2025-03-18) and does not follow the data repo.
+
+Evidence of silent regressions already committed to the data repo
+(`Spacecow99/ciphersuites`) by the scheduled workflow (record counts):
+
+| Data commit | Date | boringssl | mbedtls | s2n | iana | ciphersuites |
+|---|---|---|---|---|---|---|
+| `b0e59c6` | 2025-03-22 | 151 | 129 | 38 | 352 | 387 |
+| `3eab507` | 2025-03-23 | 151 | **106** | **37** | 352 | 387 |
+| `0a2afd7` | 2025-09-14 | 151 | **76** | 37 | 352 | 387 |
+| `d157f36` | 2025-10-12 | **24** | 76 | 37 | 352 | 387 |
+| `07d09ab` | 2026-11-08 | 25 | 76 | 37 | 358 | **358** |
+
+None of these runs failed. Each drop would have been rejected by the gates in
+section 6.2.
 
 ## 2. Goals and success criteria
 
@@ -149,8 +167,8 @@ normalised to `0xAB` (uppercase digits, lowercase `x`).
 
 ### 5.2 Per-library file `<library>.yaml`
 
-Stored at the root of the data repository (mounted as
-`ciphersuites/_ciphersuites/` and shipped as package data).
+Stored at the root of the data repository, which the package consumes as a
+git submodule at `ciphersuites/_ciphersuites/` (see 5.6).
 
 ```yaml
 schema_version: 2
@@ -253,6 +271,37 @@ Name resolution:
 Package version becomes 0.1.0. `__main__` prints the catalogue as JSON
 (optionally filtered by `--library/--version`).
 
+### 5.6 Data packaging (real submodule)
+
+- `ciphersuites/_ciphersuites/` becomes a real git submodule (gitlink, mode
+  `160000`) pointing at `https://github.com/Spacecow99/ciphersuites.git`,
+  replacing the plain directory currently committed. `.gitmodules` already
+  declares this path and URL.
+- **Initial pin: data commit `b0e59c6`** (2025-03-22). Its data files are
+  byte-identical to the currently vendored copy (it differs from `11049f0`
+  only in the workflow file) and it predates every regression in section 1.
+  The data repo's current HEAD (`07d09ab`) must not be pinned.
+- **The package never tracks the data repo's branch tip.** The gitlink is
+  advanced only by a commit/PR in python-ciphersuites after that data commit's
+  scrape run passed validation (exit 0, report attached). This makes the pin
+  the release gate for data: a bad scheduled run cannot reach package users.
+- Until the new scraper (schema v2) has produced validated data, the pin stays
+  at `b0e59c6` and the loader keeps reading schema v1. The switch to schema v2
+  data and the v2 loader land in the same PR, so the package never pins data
+  it cannot read.
+- Build and install requirements:
+  - CI checkouts use `actions/checkout` with `submodules: true`.
+  - `flit build` packages the working tree, so release builds run
+    `git submodule update --init` first; CI asserts the built wheel contains
+    `ciphersuites/_ciphersuites/ciphersuites.yaml` and fails otherwise.
+  - Contributor setup documents `git clone --recurse-submodules` (or
+    `git submodule update --init`) in README.
+  - The loader raises a clear error naming the submodule command when data
+    files are missing, instead of the current `warnings.warn` + empty list.
+- Data-repo remediation: the regressed commits on the data repo's `main`
+  are not rewritten (shared history). The first validated v2 scrape replaces
+  them; until then the pin protects package users.
+
 ## 6. Validation
 
 Outcomes are **fail** or **warn**. A fail on a (library, version) marks it
@@ -315,6 +364,7 @@ ciphersuites-scrape --out DIR
     [--offline]                 # cache only; fail on cache miss
     [--accept LIB:VER --reason TEXT]
     [--report PATH]
+    [--baseline-ref REF]        # git ref of the data repo used as the 6.2 baseline (default: HEAD of --out)
 ciphersuites-scrape --capture-fixtures LIB REF   # writes fixture manifest entry
 ```
 
@@ -361,8 +411,9 @@ ciphersuites-scrape --capture-fixtures LIB REF   # writes fixture manifest entry
 ### 8.4 Migration parity check
 
 Before old scrapers are deleted, a one-off test asserts that for each library
-the new adapter's newest-line output is a superset of the code points in the
-current committed `<library>.yaml` (minus documented exceptions, e.g. the
+the new adapter's newest-line output is a superset of the code points in
+`<library>.yaml` at the pinned data commit `b0e59c6` (not the regressed data
+repo HEAD) (minus documented exceptions, e.g. the
 GnuTLS manual-only entries). Differences are reviewed and recorded in the PR.
 
 ## 9. CI and workflow
@@ -374,6 +425,8 @@ GnuTLS manual-only entries). Differences are reviewed and recorded in the PR.
 - `requires-python` changes from `~=3.8` to `>=3.9` (3.8 is EOL).
 - tox fixed to run `tests/`.
 - Actions pinned by commit SHA; `permissions: contents: read`.
+- `actions/checkout` with `submodules: true`; a build job runs `flit build`
+  and asserts the wheel contains the data files (5.6).
 
 ### 9.2 Scrape workflow (data repo `Spacecow99/ciphersuites`)
 
@@ -388,8 +441,13 @@ GnuTLS manual-only entries). Differences are reviewed and recorded in the PR.
 - `workflow_dispatch` inputs: `accept`, `reason`.
 - Raw-fetch cache via `actions/cache` keyed by commit.
 
-Note: the data repo is outside this session's repository scope; changes there
-require adding it to the session or applying them manually.
+- On first run, the gates compare against the data repo's committed files.
+  Because HEAD is regressed (section 1), the first v2 run seeds its baseline
+  from the pinned commit `b0e59c6` instead (`--baseline-ref b0e59c6`), so the
+  restored BoringSSL/Mbed TLS/s2n data is validated against the last good data,
+  not the broken data.
+- The data repo does not update the python-ciphersuites gitlink; that is a
+  reviewed change in python-ciphersuites (5.6).
 
 ## 10. Risks
 
