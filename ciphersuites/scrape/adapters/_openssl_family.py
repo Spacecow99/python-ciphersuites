@@ -25,13 +25,13 @@ _LITERAL = re.compile(r"0[xX][0-9a-fA-F]+")
 _CK_PREFIX = re.compile(r"(?:TLS1|SSL[23])_(?:3_)?CK_")
 # Signalling cipher suite values have a CK define but no TXT name. They get
 # their IANA names, but only at their IANA code points.
-_SIGNALLING = {
+SIGNALLING = {
     "SCSV": ("TLS_EMPTY_RENEGOTIATION_INFO_SCSV", ("0x00", "0xFF")),
     "FALLBACK_SCSV": ("TLS_FALLBACK_SCSV", ("0x56", "0x00")),
 }
 
 
-def _blank_comments(text: str) -> str:
+def blank_comments(text: str) -> str:
     """Blank C comments, keeping string literals and line structure."""
 
     def drop(match: "re.Match[str]") -> str:
@@ -89,7 +89,7 @@ def parse_ck_txt(
     signalling values ``SCSV`` and ``FALLBACK_SCSV`` take their IANA names.
     ``rekey`` renames CK keys so they match TXT keys (library quirks).
     """
-    text = _blank_comments("\n".join(files[p] for p in sorted(files)))
+    text = blank_comments("\n".join(files[p] for p in sorted(files)))
     code_points, dangling = resolve_aliases(
         _ck_values(text, rekey), lambda v: bool(_LITERAL.fullmatch(v))
     )
@@ -102,10 +102,10 @@ def parse_ck_txt(
             name = names[key]
         elif key in tls13:
             name = f"TLS_{key}"
-        elif key in _SIGNALLING and (
-            _SIGNALLING[key][1] == split_hex_word(value)
+        elif key in SIGNALLING and (
+            SIGNALLING[key][1] == split_hex_word(value)
         ):
-            name = _SIGNALLING[key][0]
+            name = SIGNALLING[key][0]
         else:
             unmatched.append(key)
             continue

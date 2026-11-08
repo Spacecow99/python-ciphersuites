@@ -1,0 +1,96 @@
+- - NULL-SHA
+  - ['0x00', '0x02']
+- - RC4-MD5
+  - ['0x00', '0x04']
+- - RC4-SHA
+  - ['0x00', '0x05']
+- - DES-CBC3-SHA
+  - ['0x00', '0x0A']
+- - AES128-SHA
+  - ['0x00', '0x2F']
+- - DHE-RSA-AES128-SHA
+  - ['0x00', '0x33']
+- - AES256-SHA
+  - ['0x00', '0x35']
+- - DHE-RSA-AES256-SHA
+  - ['0x00', '0x39']
+- - AES128-SHA256
+  - ['0x00', '0x3C']
+- - AES256-SHA256
+  - ['0x00', '0x3D']
+- - DHE-RSA-AES128-SHA256
+  - ['0x00', '0x67']
+- - DHE-RSA-AES256-SHA256
+  - ['0x00', '0x6B']
+- - PSK-RC4-SHA
+  - ['0x00', '0x8A']
+- - PSK-AES128-CBC-SHA
+  - ['0x00', '0x8C']
+- - PSK-AES256-CBC-SHA
+  - ['0x00', '0x8D']
+- - AES128-GCM-SHA256
+  - ['0x00', '0x9C']
+- - AES256-GCM-SHA384
+  - ['0x00', '0x9D']
+- - DHE-RSA-AES128-GCM-SHA256
+  - ['0x00', '0x9E']
+- - DHE-RSA-AES256-GCM-SHA384
+  - ['0x00', '0x9F']
+- - TLS_EMPTY_RENEGOTIATION_INFO_SCSV
+  - ['0x00', '0xFF']
+- - CECPQ1-RSA-CHACHA20-POLY1305-SHA256
+  - ['0x16', '0xB7']
+- - CECPQ1-ECDSA-CHACHA20-POLY1305-SHA256
+  - ['0x16', '0xB8']
+- - CECPQ1-RSA-AES256-GCM-SHA384
+  - ['0x16', '0xB9']
+- - CECPQ1-ECDSA-AES256-GCM-SHA384
+  - ['0x16', '0xBA']
+- - TLS_FALLBACK_SCSV
+  - ['0x56', '0x00']
+- - ECDHE-ECDSA-RC4-SHA
+  - ['0xC0', '0x07']
+- - ECDHE-ECDSA-AES128-SHA
+  - ['0xC0', '0x09']
+- - ECDHE-ECDSA-AES256-SHA
+  - ['0xC0', '0x0A']
+- - ECDHE-RSA-RC4-SHA
+  - ['0xC0', '0x11']
+- - ECDHE-RSA-AES128-SHA
+  - ['0xC0', '0x13']
+- - ECDHE-RSA-AES256-SHA
+  - ['0xC0', '0x14']
+- - ECDHE-ECDSA-AES128-SHA256
+  - ['0xC0', '0x23']
+- - ECDHE-ECDSA-AES256-SHA384
+  - ['0xC0', '0x24']
+- - ECDHE-RSA-AES128-SHA256
+  - ['0xC0', '0x27']
+- - ECDHE-RSA-AES256-SHA384
+  - ['0xC0', '0x28']
+- - ECDHE-ECDSA-AES128-GCM-SHA256
+  - ['0xC0', '0x2B']
+- - ECDHE-ECDSA-AES256-GCM-SHA384
+  - ['0xC0', '0x2C']
+- - ECDHE-RSA-AES128-GCM-SHA256
+  - ['0xC0', '0x2F']
+- - ECDHE-RSA-AES256-GCM-SHA384
+  - ['0xC0', '0x30']
+- - ECDHE-PSK-AES128-CBC-SHA
+  - ['0xC0', '0x35']
+- - ECDHE-PSK-AES256-CBC-SHA
+  - ['0xC0', '0x36']
+- - ECDHE-RSA-CHACHA20-POLY1305
+  - ['0xCC', '0x13']
+- - ECDHE-ECDSA-CHACHA20-POLY1305
+  - ['0xCC', '0x14']
+- - ECDHE-RSA-CHACHA20-POLY1305
+  - ['0xCC', '0xA8']
+- - ECDHE-ECDSA-CHACHA20-POLY1305
+  - ['0xCC', '0xA9']
+- - ECDHE-PSK-CHACHA20-POLY1305
+  - ['0xCC', '0xAC']
+- - ECDHE-PSK-AES128-GCM-SHA256
+  - ['0xD0', '0x01']
+- - ECDHE-PSK-AES256-GCM-SHA384
+  - ['0xD0', '0x02']

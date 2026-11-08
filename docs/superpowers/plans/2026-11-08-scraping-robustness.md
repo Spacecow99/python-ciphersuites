@@ -616,7 +616,7 @@ def test_lazy_load_missing_data(monkeypatch, tmp_path):  # import succeeds; firs
 
 ### Task 25: Re-assess BoringSSL version model and recover historical cipher suites
 
-**Status:** OPEN -- not executed in the Tasks 1-23 run. Raised after the first v2 data run (data repo 3f205bf).
+**Status:** IN PROGRESS -- Steps 2-4 done (cipher-table source, frozen dated change points plus `0.YYYYMMDD.N` tags, non-rolling); Steps 5-7 (data regeneration, gitlink, reason text) pending. Raised after the first v2 data run (data repo 3f205bf).
 
 **Problem:**
 - BoringSSL is modelled as rolling dated HEAD snapshots, with `keep_last = 8`.
@@ -654,13 +654,13 @@ def test_lazy_load_missing_data(monkeypatch, tmp_path):  # import succeeds; firs
 - [ ] **Step 1: Research.** Answer questions 1-4 using a blobless clone of `https://github.com/google/boringssl`. Write the change-point table and the source-of-truth finding to the ledger. Verify:
   - every v1 code point (151 at 5584ad8c) appears in at least one historical state;
   - every state's set matches what the source of truth says at that commit.
-- [ ] **Step 2: Rule.** Pick approach A, B or C and record it as a ruling. If the source of truth changes (question 1), say whether current versions are affected and how.
-- [ ] **Step 3: Write failing tests first.**
+- [x] **Step 2: Rule.** Pick approach A, B or C and record it as a ruling. If the source of truth changes (question 1), say whether current versions are affected and how.
+- [x] **Step 3: Write failing tests first.**
   - Adapter: discovery yields the expected change-point labels from a captured commit-list fixture.
   - Golden: one golden per pinned fixture commit, captured with the fixtures CLI `--commit SHA --label`.
   - Catalog: `supported_by("boringssl", <legacy label>)` contains `TLS_RSA_WITH_RC4_128_SHA` (0x00,0x05) only where history says so.
   - Catalog: resolving a pre-removal commit gives the right entry.
-- [ ] **Step 4: Implement.**
+- [x] **Step 4: Implement.**
   - Follow the existing conventions: coverage denominator independent of the full parse, raw files by commit SHA, adapters never catch exceptions.
   - Changes to runner rolling semantics need runner tests for trimming and stale handling.
 - [ ] **Step 5: Regenerate the data.**

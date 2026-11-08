@@ -137,7 +137,7 @@ class Adapter(ABC):
 |---|---|---|---|
 | OpenSSL | github.com/openssl/openssl | `OpenSSL_1_0_2u`, `openssl-3.x.y` tags | Layout boundary at 1.1.0. Shared CK/TXT helper. |
 | LibreSSL | github.com/libressl/openbsd (OpenBSD tree mirror) | `libressl-vX.Y.Z` tags in the mirror (126 tags, `v2.0.6` to `v4.4.0`) | Headers at `src/lib/libssl/{tls1,ssl3,ssl2}.h` at the release tag; verified 200 for 2.1.3, 2.5.0, 3.0.0, 3.8.0, 3.9.2, 4.0.0. `ssl2.h` was removed in **4.0.0** (present through 3.9.x): `files_for` omits it for >= 4.0. Do **not** use `libressl/portable`'s `OPENBSD_BRANCH` file: tags before 4.0 record `master`, which is not the source shipped in that release. |
-| BoringSSL | github.com/google/boringssl | **Rolling** (no release tags; existing tags are `version_for_cocoapods_*`) | One snapshot per run, labelled `YYYY-MM-DD`, keyed by commit; keep the last N=8 snapshots. |
+| BoringSSL | github.com/google/boringssl | **Frozen change points + release tags** (non-rolling) | Source is the cipher table (`kCiphers` in `ssl/ssl_cipher.cc`, earlier `ssl_cipher.c`/`s3_lib.c`), not the header `#define`s. Versions: dated change-point labels `YYYY-MM-DD` from 2014-09-15 (keyed by commit) plus `0.YYYYMMDD.N` tags; `fips-*` and `version_for_cocoapods_*` are ignored. |
 | GnuTLS | github.com/gnutls/gnutls (gitlab.com/gnutls/gnutls canonical) | `gnutls_3_x_y` tags | Source `lib/algorithms/ciphersuites.c`. The HTML manual scrape is dropped (source is authoritative and versioned). |
 | NSS | github.com/nss-dev/nss | `NSS_3_<n>_RTM` | Moved off hg.mozilla.org. Minor line = `3.<n>`. |
 | Go | github.com/golang/go | `go1.<n>.<p>` | `src/crypto/tls/cipher_suites.go`; alias resolution in helper. |

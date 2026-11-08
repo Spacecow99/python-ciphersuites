@@ -1,13 +1,68 @@
 - library: boringssl
-  label: '2025-03-17'
-  url: https://raw.githubusercontent.com/google/boringssl/5584ad8cd3925c53188ca0a819bf666e737cf230/include/openssl/ssl3.h
-  path: include/openssl/ssl3.h
-  sha256: sha256:9abcadd32696711b2fb99c760de933b8f49cd98d7f3a1634d277d970bfdc8410
+  label: '2014-09-15'
+  url: https://raw.githubusercontent.com/google/boringssl/594a58e0781e06597eafc7599e9f88d5ceaeb566/include/openssl/ssl.h
+  path: include/openssl/ssl.h
+  sha256: sha256:7271f3958e9d08668d68ac48ac54dad51b85566ada24bad2d95e298e7ac68dba
 - library: boringssl
-  label: '2025-03-17'
-  url: https://raw.githubusercontent.com/google/boringssl/5584ad8cd3925c53188ca0a819bf666e737cf230/include/openssl/tls1.h
+  label: '2014-09-15'
+  url: https://raw.githubusercontent.com/google/boringssl/594a58e0781e06597eafc7599e9f88d5ceaeb566/include/openssl/ssl3.h
+  path: include/openssl/ssl3.h
+  sha256: sha256:acf844fb3ce3fd7edf381ee4fd7c2b388c308de7422907f77e48fecba5893cfb
+- library: boringssl
+  label: '2014-09-15'
+  url: https://raw.githubusercontent.com/google/boringssl/594a58e0781e06597eafc7599e9f88d5ceaeb566/include/openssl/tls1.h
   path: include/openssl/tls1.h
-  sha256: sha256:56eb251873f160b040b4e9888f576d9c72404af11df46d62609d070d6d30c01f
+  sha256: sha256:20844c28b9842cdb2dfdbee72301fb1e2b334504636f777c111a0de3d8ee36ed
+- library: boringssl
+  label: '2014-09-15'
+  url: https://raw.githubusercontent.com/google/boringssl/594a58e0781e06597eafc7599e9f88d5ceaeb566/ssl/s3_lib.c
+  path: ssl/s3_lib.c
+  sha256: sha256:1b304cba4b18b42eae38589b4c71c799fc9a7bcf53498c7a04add068866ff608
+- library: boringssl
+  label: '2016-06-02'
+  url: https://raw.githubusercontent.com/google/boringssl/3084e7b87ded165d3dab194f9b4666d02437cbb7/include/openssl/ssl.h
+  path: include/openssl/ssl.h
+  sha256: sha256:2d9673e8da9839df4b986a6423ed77bcf3e5abc35a33604e5ba70d91f8d4d25d
+- library: boringssl
+  label: '2016-06-02'
+  url: https://raw.githubusercontent.com/google/boringssl/3084e7b87ded165d3dab194f9b4666d02437cbb7/include/openssl/ssl3.h
+  path: include/openssl/ssl3.h
+  sha256: sha256:1d594dc17a9c9d9af08051c29f421ebeb1089f11ac349a1b6ac72399425e2550
+- library: boringssl
+  label: '2016-06-02'
+  url: https://raw.githubusercontent.com/google/boringssl/3084e7b87ded165d3dab194f9b4666d02437cbb7/include/openssl/tls1.h
+  path: include/openssl/tls1.h
+  sha256: sha256:eaa5665faa39e19f5f24b9858f8f813e7623c257b8f88f1d4dcd255c42ff16cb
+- library: boringssl
+  label: '2016-06-02'
+  url: https://raw.githubusercontent.com/google/boringssl/3084e7b87ded165d3dab194f9b4666d02437cbb7/ssl/ssl_cipher.c
+  path: ssl/ssl_cipher.c
+  sha256: sha256:6d614c5214864b28db92d0b35db052db4d3ca23f5a2f7db2d426de8330da758e
+- library: boringssl
+  label: '2016-08-26'
+  url: https://raw.githubusercontent.com/google/boringssl/9c8c418853236bee9d582e27896942c3979078a4/include/openssl/ssl.h
+  path: include/openssl/ssl.h
+  sha256: sha256:132f34c7ae15e042cf537385146e5a6f601c0d87feb02c32d6b88b83e0d2627f
+- library: boringssl
+  label: '2016-08-26'
+  url: https://raw.githubusercontent.com/google/boringssl/9c8c418853236bee9d582e27896942c3979078a4/include/openssl/ssl3.h
+  path: include/openssl/ssl3.h
+  sha256: sha256:311156fb2759793a52ed1be3ac0a192952040867efe7816268f3496415f7ec3c
+- library: boringssl
+  label: '2016-08-26'
+  url: https://raw.githubusercontent.com/google/boringssl/9c8c418853236bee9d582e27896942c3979078a4/include/openssl/tls1.h
+  path: include/openssl/tls1.h
+  sha256: sha256:b24066a41f7ad926b1bc86377f70ea01362cf2d381de9965e9d54b9c143cfc39
+- library: boringssl
+  label: '2016-08-26'
+  url: https://raw.githubusercontent.com/google/boringssl/9c8c418853236bee9d582e27896942c3979078a4/ssl/ssl_cipher.c
+  path: ssl/ssl_cipher.c
+  sha256: sha256:25b088c43f4059d73cea406a8e3e36ef440095eb5f017dab10065abc488e2cef
+- library: boringssl
+  label: '2026-11-08'
+  url: https://raw.githubusercontent.com/google/boringssl/0131ae9d78e42fcc2c1811315e62410ad96d8230/include/openssl/ssl.h
+  path: include/openssl/ssl.h
+  sha256: sha256:00a4b1a695f0d16801739f14168f4b847885eb20cee75559b762b2d029d88ae8
 - library: boringssl
   label: '2026-11-08'
   url: https://raw.githubusercontent.com/google/boringssl/0131ae9d78e42fcc2c1811315e62410ad96d8230/include/openssl/ssl3.h
@@ -18,6 +73,11 @@
   url: https://raw.githubusercontent.com/google/boringssl/0131ae9d78e42fcc2c1811315e62410ad96d8230/include/openssl/tls1.h
   path: include/openssl/tls1.h
   sha256: sha256:56615a8877a7af97a6411a55555664c9589baf907747bedaf03a1d49b8b90cc1
+- library: boringssl
+  label: '2026-11-08'
+  url: https://raw.githubusercontent.com/google/boringssl/0131ae9d78e42fcc2c1811315e62410ad96d8230/ssl/ssl_cipher.cc
+  path: ssl/ssl_cipher.cc
+  sha256: sha256:255d900365fcf672e25c21403ee351737de020a5a8bb612030e31649fc0e7e73
 - library: gnutls
   label: '3.6'
   url: https://raw.githubusercontent.com/gnutls/gnutls/95342ca6b0f96453ee4dd93f113e46e8d5cabac0/lib/algorithms/ciphersuites.c
