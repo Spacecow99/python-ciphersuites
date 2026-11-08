@@ -5,6 +5,8 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Dict, List, Optional
 
+import pytest
+
 from ciphersuites.scrape.adapters.base import Adapter
 from ciphersuites.scrape.core import ParseResult, Record, Version
 from ciphersuites.scrape.schema import LibraryData, V1Baseline, VersionEntry
@@ -337,6 +339,61 @@ def test_known_collision_is_silent_and_new_one_warns():
         NEW_NAME_COLLISION,
         WARN,
     )
+
+
+@pytest.mark.parametrize("library", ["libressl", "boringssl"])
+def test_openssl_family_known_collisions_are_silent(library):
+    libs = {
+        library: lib(
+            {
+                "1": [
+                    rec("RC4-MD5", 1),
+                    rec("RC4-MD5", 2),
+                    rec("DES-CBC3-SHA", 3),
+                    rec("DES-CBC3-SHA", 4),
+                ]
+            },
+            name=library,
+        )
+    }
+    points = catalog(cp(1), cp(2), cp(3), cp(4))
+    assert not check_catalog(points, libs, NOW)
+
+
+def test_collision_repeated_in_every_version_is_one_finding():
+    libs = {
+        "x": lib(
+            {label: [rec("N", 1), rec("N", 2)] for label in ("1", "2", "3")},
+            name="x",
+        )
+    }
+    found = only(
+        check_catalog(catalog(cp(1), cp(2)), libs, NOW),
+        NEW_NAME_COLLISION,
+        WARN,
+    )
+    assert found.version is None
+    assert found.details["name"] == "N"
+    assert found.details["versions"] == ["1", "2", "3"]
+    assert found.details["code_points"] == [cp(1), cp(2)]
+
+
+def test_within_and_cross_library_collision_is_one_finding_per_library():
+    libs = {
+        "a": lib(
+            {"1": [rec("N", 1), rec("N", 2)], "2": [rec("N", 1)]}, name="a"
+        ),
+        "b": lib({"1": [rec("N", 3)]}, name="b"),
+    }
+    found = check_catalog(catalog(cp(1), cp(2), cp(3)), libs, NOW)
+    assert [(f.code, f.library) for f in found] == [
+        (NEW_NAME_COLLISION, "a"),
+        (NEW_NAME_COLLISION, "b"),
+    ]
+    assert found[0].details["versions"] == ["1"]
+    assert found[0].details["libraries"] == ["a", "b"]
+    assert found[0].details["code_points"] == [cp(1), cp(2), cp(3)]
+    assert found[1].details["versions"] == []
 
 
 def test_cross_library_collision():

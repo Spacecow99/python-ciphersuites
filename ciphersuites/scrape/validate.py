@@ -61,9 +61,12 @@ BASELINE_CODES = frozenset(
     }
 )
 
+# OpenSSL reuses these names for an SSLv2 and a TLS code point; LibreSSL
+# and BoringSSL inherit OpenSSL's names.
 KNOWN_NAME_COLLISIONS = frozenset(
     {
-        ("openssl", n)
+        (lib, n)
+        for lib in ("openssl", "libressl", "boringssl")
         for n in (
             "RC4-MD5",
             "NULL-MD5",
@@ -408,39 +411,86 @@ def _known_collision(library: str, name: str) -> bool:
     return (library, name) in KNOWN_NAME_COLLISIONS
 
 
+def _collision_findings(
+    libraries: Dict[str, LibraryData],
+) -> List[Finding]:
+    """One ``NEW_NAME_COLLISION`` per (library, name), whatever the repeats.
+
+    A name collides within a library when one version maps it to several
+    code points, and across libraries when the libraries using it disagree.
+    """
+    per_lib: Dict[str, Dict[str, Set[CodePoint]]] = {}
+    within: Dict[Tuple[str, str], List[str]] = {}
+    for lib, data in sorted(libraries.items()):
+        per_name = per_lib.setdefault(lib, {})
+        labels = [v.label for v in data.versions]
+        labels += sorted(set(data.members) - set(labels))
+        for label in labels:
+            by_name: Dict[str, Set[CodePoint]] = {}
+            for rec in data.members.get(label, set()):
+                by_name.setdefault(rec.name, set()).add(rec.code_point)
+            for name, cps in by_name.items():
+                per_name.setdefault(name, set()).update(cps)
+                if len(cps) > 1:
+                    within.setdefault((lib, name), []).append(label)
+    users: Dict[str, List[str]] = {}
+    for lib, per_name in sorted(per_lib.items()):
+        for name in per_name:
+            users.setdefault(name, []).append(lib)
+    findings: List[Finding] = []
+    for lib, per_name in sorted(per_lib.items()):
+        for name, cps in sorted(per_name.items()):
+            if _known_collision(lib, name):
+                continue
+            versions = within.get((lib, name), [])
+            libs = users[name]
+            union: Set[CodePoint] = set().union(
+                *(per_lib[other][name] for other in libs)
+            )
+            across = len(libs) > 1 and len(union) > 1
+            if not versions and not across:
+                continue
+            parts = []
+            if versions:
+                parts.append(
+                    f"maps to several code points in {len(versions)} "
+                    "version(s)"
+                )
+            if across:
+                parts.append("maps to different code points across libraries")
+            findings.append(
+                Finding(
+                    WARN,
+                    NEW_NAME_COLLISION,
+                    lib,
+                    None,
+                    f"name {name} " + " and ".join(parts),
+                    {
+                        "name": name,
+                        "code_points": _sort_cps(union if across else cps),
+                        "versions": versions,
+                        "libraries": libs if across else [lib],
+                    },
+                )
+            )
+    return findings
+
+
 def check_catalog(
     catalog_doc: dict, libraries: Dict[str, LibraryData], now: datetime
 ) -> List[Finding]:
     """Catalogue-level warnings (spec 6.3)."""
-    findings: List[Finding] = []
+    findings: List[Finding] = _collision_findings(libraries)
     known: Set[CodePoint] = set()
     for suite in catalog_doc.get("suites", []):
         try:
             known.add(normalize_code_point(suite["code_point"]))
         except (BadCodePoint, KeyError, TypeError):
             continue
-    names_by_lib: Dict[str, Dict[str, Set[CodePoint]]] = {}
     for lib, data in sorted(libraries.items()):
         every: Set[CodePoint] = set()
-        per_name = names_by_lib.setdefault(lib, {})
-        for label, records in sorted(data.members.items()):
-            by_name: Dict[str, Set[CodePoint]] = {}
-            for rec in records:
-                every.add(rec.code_point)
-                by_name.setdefault(rec.name, set()).add(rec.code_point)
-                per_name.setdefault(rec.name, set()).add(rec.code_point)
-            for name, cps in sorted(by_name.items()):
-                if len(cps) > 1 and not _known_collision(lib, name):
-                    findings.append(
-                        Finding(
-                            WARN,
-                            NEW_NAME_COLLISION,
-                            lib,
-                            label,
-                            f"name {name} maps to {len(cps)} code points",
-                            {"name": name, "code_points": _sort_cps(cps)},
-                        )
-                    )
+        for records in data.members.values():
+            every.update(rec.code_point for rec in records)
         unknown = every - known
         if unknown:
             findings.append(
@@ -467,27 +517,6 @@ def check_catalog(
                         lib,
                         entry.label,
                         f"stale since {entry.scraped_at}",
-                    )
-                )
-    all_names: Dict[str, Dict[str, Set[CodePoint]]] = {}
-    for lib, per_name in names_by_lib.items():
-        for name, cps in per_name.items():
-            all_names.setdefault(name, {})[lib] = cps
-    for name, by_lib in sorted(all_names.items()):
-        union: Set[CodePoint] = set().union(*by_lib.values())
-        if len(by_lib) < 2 or len(union) < 2:
-            continue
-        for lib in sorted(by_lib):
-            if not _known_collision(lib, name):
-                findings.append(
-                    Finding(
-                        WARN,
-                        NEW_NAME_COLLISION,
-                        lib,
-                        None,
-                        f"name {name} maps to different code points "
-                        "across libraries",
-                        {"name": name, "code_points": _sort_cps(union)},
                     )
                 )
     return _sorted(findings)
