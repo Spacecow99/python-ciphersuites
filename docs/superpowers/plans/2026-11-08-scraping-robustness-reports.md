@@ -1,6 +1,6 @@
 # Task reports — plan: docs/superpowers/plans/2026-11-08-scraping-robustness.md
 
-Implementer reports for Tasks 1-21, concatenated from the git-ignored SDD workspace.
+Implementer reports for Tasks 1-22, concatenated from the git-ignored SDD workspace.
 
 ---
 
@@ -613,3 +613,32 @@ Cause: Candidate.versions was built from a set of labels (order = PYTHONHASHSEED
 Regression: `test_deterministic_under_hash_seeds` runs the ambiguous lookup in subprocesses with PYTHONHASHSEED 0-5 and requires identical output; test_ambiguous_name asserts the exact order.
 Multi-seed run (`PYTHONHASHSEED=s pytest -q tests/test_catalog.py`, s=0..5): 24 passed in each of the six runs.
 Full: 518 passed (also on 3.9); black, pylint, bandit clean.
+
+---
+
+<!-- task-22-report.md -->
+
+# Task 22 steps 4-7 report
+
+Status: DONE_WITH_CONCERNS. Commit 7701bf3 (not pushed).
+
+- Gitlink advanced to 92e283fa (fetch OK, not shallow).
+- RED captured first: tests/test_package.py, 10 failed / 2 passed against old package.
+- New: tests/test_package.py (13 tests), `catalog.all_suites()` / `Catalog.suites()` (public, sorted by code point), clearer DataNotFoundError text for missing ciphersuites.yaml.
+- __init__.py per ruling 2; __main__.py per ruling 1 (exit 2 for --version without --library; exit 1 + stderr for unknown library/version/DataNotFoundError).
+- Deleted ciphersuites/_scripts/, build_ciphersuites.sh, all old [project.scripts] (kept ciphersuites-scrape). docs/ had no references to the removed API.
+- CI: coverage flags added to pytest step only.
+
+## Tests changed/removed
+- Removed tests/adapters/test_schannel.py::test_covers_v1_code_points_or_documents_the_gap (and unused V1 constant/Path import): it read the v1-format schannel.yaml from the submodule, which is now v2 data; v1 parity is already gated by the scraper's V1_PARITY check.
+- tests/test_data_packaging.py: gitlink test now checks the index for 92e283fa (git ls-files -s); missing-data test uses Catalog.load on an absent dir (v1 `_load_yaml` is gone); uninitialised-submodule test now expects import to succeed and the first catalog call to raise DataNotFoundError naming `git submodule update --init` (copies parse_name.py too).
+- No scraper/adapter/catalog tests deleted otherwise.
+
+## Concern: pytest-cov breaks PyYAML C loader
+With dotted `--cov=ciphersuites.catalog` targets, coverage imports the `ciphersuites` package (hence PyYAML) while configuring and then drops those modules; the re-imported CSafeLoader returns nodes with tag None (50 failures). Reproduced with plain coverage + pyyaml 6.0.2/6.0.3, py3.12/3.13. Fix: `addopts = "-p yaml"` in pyproject [tool.pytest.ini_options] (pre-imports PyYAML), with a comment. CI uses the same pytest invocation so it benefits too.
+
+## Verification
+- pytest with coverage gate: 539 passed, total coverage 96.09% (gate 85, no extra tests needed).
+- black, pylint (10.00), bandit clean (only pre-existing nosec warnings). Python 3.9 via uv: 539 passed; uv.lock removed.
+- flit build: wheel contains ciphersuites/_ciphersuites/ciphersuites.yaml, no _scripts. Removed the 0.1.0 dist outputs; dist/ is untracked/ignored and held a pre-existing 0.0.1 tarball, left alone.
+- `python -m ciphersuites --library go --version 1.27` prints JSON.

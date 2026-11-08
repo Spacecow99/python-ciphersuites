@@ -249,3 +249,13 @@ Task 22: Ruling: accept the 5 V1_PARITY findings — each removal is upstream, e
 Task 22: integration bug: Catalog.load parses technologies.yaml/vulnerabilities.yaml (legacy lists, out of scope) -> DataNotFoundError on real data. Ruling: explicit _NON_SUITE_FILES skip-by-name, strictness kept for other files — cost: new non-suite files need adding to the list. Fix (Task 22b) sent to a43a9ad59fb586cf8.
 Task 22b: head (Skip legacy technologies/vulnerabilities files) DONE. Controller verified 526 passed; real data loads (10 libraries; 0xC0,0x2F -> TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256). Review: controller-only (skip-by-name constant + 2 tests). complete.
 Task 22: step 3 data commit 92e283f on data repo branch claude/modest-tesla-n4t2ke (local only). STOP POINT: awaiting user approval to push the data branch.
+Task 22: USER APPROVED data push. Pushed data repo branch claude/modest-tesla-n4t2ke -> 92e283f (new branch; main untouched at 07d09ab).
+Task 22: steps 4-7 implementer a1601fa1c9987b49e (sonnet), base c019dfb (+ ledger e575ef5). Ruling: `python -m ciphersuites --version` is the LIBRARY version filter (spec 5.5); package version moves to -V/--package-version — cost if wrong: a CLI flag rename for anyone using --version.
+Task 22: steps 4-7 head 7701bf3 (DONE_WITH_CONCERNS). Controller verified: 539 passed, coverage 96.09% (gate 85), also with cov on 3.9; lint clean. gitlink -> 92e283f.
+Task 22: Ruling: accept pytest addopts "-p yaml" — controller reproduced: without it dotted --cov targets break PyYAML C loader (34 failed, 15 errors); test-tooling only — cost if wrong: an odd pytest option to maintain.
+Task 22: removed test_schannel v1-parity test (submodule now v2; V1_PARITY gate covers it). Added Catalog.suites()/catalog.all_suites() for the CLI.
+Task 22: review approved (0 Crit/Imp). CLI rulings verified live; __init__ reads nothing at import; gitlink exact 92e283f; README examples verified live.
+Task 22: minor (deferred, final review): CI submodule fetch of 92e283f relies on the non-default data branch staying reachable — merge/tag before relying on the pin; schannel curated-YAML gap comments no longer enforced by a test.
+Task 22: step 7 follow-up pending: re-point gitlink after data branch merges to data main.
+Task 22: complete (commits e575ef5..7701bf3 plus data repo 92e283f, review clean)
+STOP POINT: Task 23 step 1 (release tag v0.1.0) awaiting user.
