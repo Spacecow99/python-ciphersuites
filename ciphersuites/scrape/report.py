@@ -46,12 +46,22 @@ def write_json(result: RunResult, path: Path) -> None:
     path.write_text(text, encoding="utf-8")
 
 
+def _inline(value: Any) -> str:
+    """Render upstream-controlled text as one inline code span.
+
+    Backticks and line breaks are removed so the text cannot close the span
+    or start new Markdown blocks in the job summary.
+    """
+    text = " ".join(str(value).replace("`", "'").split())
+    return f"`{text}`"
+
+
 def _bullet(found: Finding) -> str:
     where = found.library + (f" {found.version}" if found.version else "")
-    line = f"- `{found.code}` {where}: {found.message}"
+    line = f"- `{found.code}` {where}: {_inline(found.message)}"
     unmatched = found.details.get("unmatched")
     if unmatched:
-        line += f" (unmatched: {', '.join(str(u) for u in unmatched)})"
+        line += f" (unmatched: {', '.join(_inline(u) for u in unmatched)})"
     return line
 
 

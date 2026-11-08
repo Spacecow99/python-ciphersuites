@@ -157,7 +157,7 @@ def test_unmatched_keys_warning_does_not_stale_the_version(tmp_path):
     (found,) = [f for f in result.findings if f.library == "fake"]
     assert (found.code, found.level) == (UNMATCHED_KEYS, WARN)
     assert found.details["unmatched"] == ["LOST"]
-    assert "(unmatched: LOST)" in render_markdown(result)
+    assert "(unmatched: `LOST`)" in render_markdown(result)
     data = read(tmp_path, "fake")
     assert [v.status for v in data.versions] == ["ok"]
     assert data.members["1.0"] == set(recs(1, 2))
@@ -438,6 +438,21 @@ def test_markdown_fails_before_warnings():
     text = render_markdown(result)
     assert text.index("F_CODE") < text.index("W_CODE")
     assert text.index("Failures") < text.index("Warnings")
+
+
+def test_markdown_neutralises_upstream_text():
+    from ciphersuites.scrape.runner import RunResult  # pylint: disable=C0415
+    from ciphersuites.scrape.validate import Finding  # pylint: disable=C0415
+
+    evil = "x`](http://e) [y](http://e)\n# Heading\r\n- item"
+    result = RunResult(
+        [Finding(WARN, "W_CODE", "a", "1.0", evil, {"unmatched": [evil, "ok"]})]
+    )
+    lines = render_markdown(result).splitlines()
+    (bullet,) = [line for line in lines if "W_CODE" in line]
+    safe = "`x'](http://e) [y](http://e) # Heading - item`"
+    assert bullet == (f"- `W_CODE` a 1.0: {safe} (unmatched: {safe}, `ok`)")
+    assert "# Heading" not in [line.strip() for line in lines]
 
 
 def test_output_deterministic(tmp_path):
