@@ -70,6 +70,14 @@ DTLS
 entry
   Short for {term}`version entry`.
 
+exception
+  In Python, an error that a function raises. A program can catch an
+  exception with `try` and `except`. See [Errors](user/errors.md).
+
+exit code
+  The number that a command returns to the shell when it ends. `0`
+  means success. See [Exit codes](user/cli.md#exit-codes).
+
 export-grade
   Describes cipher suites with weak keys (for example 40-bit keys) that
   were made for old United States export rules. They are not safe. The
@@ -117,6 +125,10 @@ IETF
 ISO 8601
   An international standard format for dates and times, for example
   `2026-11-08T20:13:39.994434+00:00`.
+
+JSON
+  JavaScript Object Notation, a text format for lists and key-value
+  objects. The command `python -m ciphersuites` prints JSON.
 
 kind
   A top-level key of each library file. Its value is `library` for a
@@ -231,4 +243,8 @@ version entry
   One item in the `versions` list of a library file. It describes one
   version of the library: its {term}`label`, the upstream reference, the
   files read, the time of the scrape and the {term}`status`.
+
+virtual environment
+  A separate directory of Python packages for one project, made with
+  `python3 -m venv`. See [Install the package](user/install.md).
 ```

@@ -414,7 +414,6 @@ def missing_api_names(text: str) -> List[str]:
     return sorted(missing)
 
 
-@pytest.mark.xfail(strict=False, reason="api.md not written yet")
 def test_api_page_names_every_public_name() -> None:
     text = API_PAGE.read_text(encoding="utf-8")
     assert missing_api_names(text) == []
