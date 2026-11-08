@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import re
-from typing import Dict, List, Set
+from typing import Callable, Dict, List, Set
 
 from ciphersuites.scrape.core import ParseResult, Record
 from ciphersuites.scrape.helpers import (
@@ -32,36 +32,51 @@ def _tls13_keys(text: str) -> Set[str]:
     }
 
 
-def _ck_values(text: str) -> Dict[str, str]:
+def _ck_values(
+    text: str, rekey: Callable[[str], str] = lambda k: k
+) -> Dict[str, str]:
     """Collect CK values; an alias of another CK is stored by its bare key.
 
     A literal always beats an alias of the same key (BoringSSL keeps
-    ``TLS1_CK_X`` as a legacy alias of ``TLS1_3_CK_X``).
+    ``TLS1_CK_X`` as a legacy alias of ``TLS1_3_CK_X``). Two different
+    literals under one key (across the TLS1/SSL2/SSL3/TLS1_3 prefixes)
+    raise ``ValueError``. ``rekey`` renames keys and alias targets.
     """
     out: Dict[str, str] = {}
     for match in re.finditer(CK_PATTERN, text, re.MULTILINE):
-        key = match.group("key")
+        key = rekey(match.group("key"))
         value = _CK_PREFIX.sub("", match.group("value"), count=1)
-        if key in out and _LITERAL.fullmatch(out[key]):
+        if not _LITERAL.fullmatch(value):
+            value = rekey(value)
+        old = out.get(key)
+        if old is not None and _LITERAL.fullmatch(old):
             if not _LITERAL.fullmatch(value):
                 continue
+            if int(old, 16) != int(value, 16):
+                raise ValueError(
+                    f"conflicting code points for {key}: {old} and {value}"
+                )
         out[key] = value
     return out
 
 
-def parse_ck_txt(files: Dict[str, str]) -> ParseResult:
+def parse_ck_txt(
+    files: Dict[str, str],
+    rekey: Callable[[str], str] = lambda k: k,
+) -> ParseResult:
     """Join ``*_CK_*`` code points with ``*_TXT_*`` names across ``files``.
 
     TLS 1.3 suites have no TXT define; they are named ``TLS_<key>``.
+    ``rekey`` renames CK keys so they match TXT keys (library quirks).
     """
     text = "\n".join(files[path] for path in sorted(files))
-    code_points, _ = resolve_aliases(
-        _ck_values(text), lambda v: bool(_LITERAL.fullmatch(v))
+    code_points, dangling = resolve_aliases(
+        _ck_values(text, rekey), lambda v: bool(_LITERAL.fullmatch(v))
     )
     names = extract_defines(text, TXT_PATTERN)
-    tls13 = _tls13_keys(text)
+    tls13 = {rekey(k) for k in _tls13_keys(text)}
     records: List[Record] = []
-    unmatched: List[str] = []
+    unmatched: List[str] = list(dangling)
     for key, value in code_points.items():
         if key in names:
             name = names[key]
@@ -73,6 +88,6 @@ def parse_ck_txt(files: Dict[str, str]) -> ParseResult:
         records.append(Record(name, split_hex_word(value)))
     return ParseResult(
         records=records,
-        total_keys=len(code_points),
+        total_keys=len(code_points) + len(dangling),
         unmatched_keys=sorted(unmatched),
     )

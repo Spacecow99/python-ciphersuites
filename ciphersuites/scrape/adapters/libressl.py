@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from typing import Dict, List, Optional
 
 from ciphersuites.scrape.adapters._openssl_family import parse_ck_txt
@@ -12,7 +13,16 @@ from ciphersuites.scrape.versions import TagVersion, line_key, semver_tag
 parse_libressl_tag = semver_tag(
     r"libressl-v(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)"
 )
+_CHACHA_KEY = re.compile(r"(?P<kx>\w+?)(?<!_WITH)_CHACHA20_POLY1305")
 _BASE = "src/lib/libssl/"
+
+
+def _rekey(key: str) -> str:
+    """LibreSSL's CK ChaCha keys omit the ``_WITH`` its TXT keys carry."""
+    match = _CHACHA_KEY.fullmatch(key)
+    if match is None:
+        return key
+    return f"{match.group('kx')}_WITH_CHACHA20_POLY1305"
 
 
 @register
@@ -32,4 +42,4 @@ class LibreSSL(Adapter):
         return files
 
     def parse(self, files: Dict[str, str]) -> ParseResult:
-        return parse_ck_txt(files)
+        return parse_ck_txt(files, _rekey)

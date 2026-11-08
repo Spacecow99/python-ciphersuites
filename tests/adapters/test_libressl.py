@@ -81,3 +81,14 @@ def test_join_coverage_meets_threshold(upstream, label):
 def test_golden(upstream, update_goldens, label):
     result = LibreSSL().parse(upstream("libressl", label))
     assert_matches_golden(update_goldens, "libressl", label, result)
+
+
+def test_chacha_suites_joined(upstream):
+    """CK keys lack the _WITH that the TXT keys carry; the join bridges it."""
+    records = LibreSSL().parse(upstream("libressl", "4.0")).records
+    for name, code_point in (
+        ("ECDHE-RSA-CHACHA20-POLY1305", ("0xCC", "0xA8")),
+        ("ECDHE-ECDSA-CHACHA20-POLY1305", ("0xCC", "0xA9")),
+        ("DHE-RSA-CHACHA20-POLY1305", ("0xCC", "0xAA")),
+    ):
+        assert Record(name, code_point) in records

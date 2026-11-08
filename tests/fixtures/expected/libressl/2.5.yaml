@@ -358,6 +358,12 @@
   - ['0xC0', '0x31']
 - - ECDH-RSA-AES256-GCM-SHA384
   - ['0xC0', '0x32']
+- - ECDHE-RSA-CHACHA20-POLY1305
+  - ['0xCC', '0xA8']
+- - ECDHE-ECDSA-CHACHA20-POLY1305
+  - ['0xCC', '0xA9']
+- - DHE-RSA-CHACHA20-POLY1305
+  - ['0xCC', '0xAA']
 - - DES-CFB-M1
   - ['0xFF', '0x08', '0x00']
 - - 'NULL'
