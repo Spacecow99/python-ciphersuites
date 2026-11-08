@@ -2,7 +2,8 @@
 
 Usage::
 
-    python -m ciphersuites.scrape.fixtures LIB TAG [--label LABEL]
+    python -m ciphersuites.scrape.fixtures LIB TAG [--label LABEL] \
+[--repo URL]
     python -m ciphersuites.scrape.fixtures LIB --commit SHA --label LABEL
     python -m ciphersuites.scrape.fixtures LIB --url URL --path PATH \
 --label LABEL
@@ -174,6 +175,10 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("ref", nargs="?", help="a release tag")
     parser.add_argument("--label")
     parser.add_argument("--commit", help="40-hex commit instead of a tag")
+    parser.add_argument(
+        "--repo",
+        help="resolve the tag or commit in this repo, not the adapter's",
+    )
     parser.add_argument("--url", help="unversioned snapshot URL")
     parser.add_argument("--path", help="manifest path for --url")
     parser.add_argument("--manifest", type=Path, default=MANIFEST_PATH)
@@ -182,15 +187,16 @@ def _parser() -> argparse.ArgumentParser:
 
 
 def _version_for(args, adapter: Adapter) -> Version:
+    repo = args.repo or adapter.repo
     if args.commit:
         if not args.label:
             raise FixtureError("--commit requires --label")
-        return Version(args.label, args.commit, args.commit, adapter.repo)
-    if adapter.repo is None:
+        return Version(args.label, args.commit, args.commit, repo)
+    if repo is None:
         raise FixtureError(f"{adapter.name} has no repo; use --commit or --url")
-    commit = ls_remote_tags(adapter.repo).get(args.ref)
+    commit = ls_remote_tags(repo).get(args.ref)
     if commit is None:
-        raise FixtureError(f"tag {args.ref!r} not found in {adapter.repo}")
+        raise FixtureError(f"tag {args.ref!r} not found in {repo}")
     label = args.label
     if label is None:
         parsed = adapter.tag_version(args.ref)
@@ -199,7 +205,7 @@ def _version_for(args, adapter: Adapter) -> Version:
                 f"cannot derive a label from tag {args.ref!r}; pass --label"
             )
         label = parsed.line
-    return Version(label, args.ref, commit, adapter.repo)
+    return Version(label, args.ref, commit, repo)
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:

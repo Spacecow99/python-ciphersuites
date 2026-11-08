@@ -155,6 +155,45 @@ def test_main_commit_form(dummy, manifest, tmp_path):
     assert dummy.name == "dummy"
 
 
+ALT_REPO = "https://github.com/o/alt"
+
+
+def test_main_repo_option_tag(dummy, manifest, tmp_path):
+    seen = []
+
+    def fake_tags(repo):
+        seen.append(repo)
+        return {"v1.0.0": SHA}
+
+    with mock.patch.object(fixtures, "ls_remote_tags", fake_tags):
+        with responses.RequestsMock() as rsps:
+            rsps.add(responses.GET, raw_url(ALT_REPO, SHA, "a.h"), body=BODY)
+            code = fixtures.main(
+                ["dummy", "v1.0.0", "--repo", ALT_REPO, "--manifest"]
+                + [str(manifest), "--cache", str(tmp_path / "c")]
+            )
+    assert code == 0
+    assert seen == [ALT_REPO]
+    assert fixtures.read_manifest(manifest)[0].url == raw_url(
+        ALT_REPO, SHA, "a.h"
+    )
+    assert dummy.repo == REPO
+
+
+def test_main_repo_option_commit(dummy, manifest, tmp_path):
+    with responses.RequestsMock() as rsps:
+        rsps.add(responses.GET, raw_url(ALT_REPO, SHA, "a.h"), body=BODY)
+        code = fixtures.main(
+            ["dummy", "--commit", SHA, "--label", "bs", "--repo", ALT_REPO]
+            + ["--manifest", str(manifest), "--cache", str(tmp_path / "c")]
+        )
+    assert code == 0
+    assert fixtures.read_manifest(manifest)[0].url == raw_url(
+        ALT_REPO, SHA, "a.h"
+    )
+    assert dummy.name == "dummy"
+
+
 def test_main_commit_requires_label(dummy, manifest, capsys):
     code = fixtures.main(
         ["dummy", "--commit", SHA, "--manifest", str(manifest)]
