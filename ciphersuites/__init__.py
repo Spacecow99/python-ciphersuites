@@ -7,7 +7,6 @@ Python library for working with various TLS ciphersuites.
 import re
 from operator import is_not
 from functools import partial
-import warnings
 from importlib import resources as importlib_resources
 
 import yaml
@@ -16,23 +15,28 @@ import yaml
 __version__ = "0.0.1"
 
 
-# Load technologies and vulnerability YAML files
-# TODO: This doesn't work on python > 3.10, find a work around
-try:
-    with importlib_resources.path("ciphersuites._ciphersuites", "vulnerabilities.yaml") as fixture:
-        with open(fixture, 'r') as f:
-            _VULNERABILITIES = yaml.safe_load(f)
-except (ModuleNotFoundError, ImportError, IOError) as e:
-    warnings.warn(f"Failed to load resource 'ciphersuites._ciphersuites:vulnerabilities.yaml': {str(e)}", Warning)
-    _VULNERABILITIES = []
+class DataNotFoundError(RuntimeError):
+    """Raised when the bundled ciphersuite data files cannot be loaded."""
 
-try:
-    with importlib_resources.path(f"ciphersuites._ciphersuites", "technologies.yaml") as fixture:
-        with open(fixture, 'r') as f:
-            _TECHNOLOGIES = yaml.safe_load(f)
-except (ModuleNotFoundError, ImportError, IOError) as e:
-    warnings.warn(f"Failed to load resource 'ciphersuites._ciphersuites:technologies.yaml': {str(e)}", Warning)
-    _TECHNOLOGIES  = []
+
+def _load_yaml(name):
+    """Load a YAML data file from the ``ciphersuites._ciphersuites`` submodule."""
+    try:
+        resource = importlib_resources.files("ciphersuites._ciphersuites") / name
+        with resource.open("r") as f:
+            return yaml.safe_load(f)
+    except (ModuleNotFoundError, ImportError, OSError) as e:
+        raise DataNotFoundError(
+            f"Failed to load data file '{name}' from ciphersuites._ciphersuites: {e}. "
+            "If this is a source checkout, fetch the data submodule with "
+            "`git submodule update --init`."
+        ) from e
+
+
+# Load technologies and vulnerability YAML files
+_VULNERABILITIES = _load_yaml("vulnerabilities.yaml")
+
+_TECHNOLOGIES = _load_yaml("technologies.yaml")
 
 # Associate applicable vulnerability details to technologies
 TECHNOLOGIES = []
@@ -50,101 +54,29 @@ del _TECHNOLOGIES
 del _VULNERABILITIES
 
 #Load all ciphersuite related YAML files
-try:
-    with importlib_resources.path(f"ciphersuites._ciphersuites", "iana.yaml") as fixture:
-        with open(fixture, 'r') as f:
-            IANA = yaml.safe_load(f)
-except (ModuleNotFoundError, ImportError, IOError) as e:
-    warnings.warn(f"Failed to load resource 'ciphersuites._ciphersuites:iana.yaml': {str(e)}", Warning)
-    IANA = []
+IANA = _load_yaml("iana.yaml")
 
-try:
-    with importlib_resources.path(f"ciphersuites._ciphersuites", "openssl.yaml") as fixture:
-        with open(fixture, 'r') as f:
-            OPENSSL = yaml.safe_load(f)
-except (ModuleNotFoundError, ImportError, IOError) as e:
-    warnings.warn(f"Failed to load resource 'ciphersuites._ciphersuites:openssl.yaml': {str(e)}", Warning)
-    OPENSSL = []
+OPENSSL = _load_yaml("openssl.yaml")
 
-try:
-    with importlib_resources.path(f"ciphersuites._ciphersuites", "gnutls.yaml") as fixture:
-        with open(fixture, 'r') as f:
-            GNUTLS = yaml.safe_load(f)
-except (ModuleNotFoundError, ImportError, IOError) as e:
-    warnings.warn(f"Failed to load resource 'ciphersuites._ciphersuites:gnutls.yaml': {str(e)}", Warning)
-    GNUTLS = []
+GNUTLS = _load_yaml("gnutls.yaml")
 
-try:
-    with importlib_resources.path(f"ciphersuites._ciphersuites", "go.yaml") as fixture:
-        with open(fixture, 'r') as f:
-            GO = yaml.safe_load(f)
-except (ModuleNotFoundError, ImportError, IOError) as e:
-    warnings.warn(f"Failed to load resource 'ciphersuites._ciphersuites:go.yaml': {str(e)}", Warning)
-    GO = []
+GO = _load_yaml("go.yaml")
 
-try:
-    with importlib_resources.path(f"ciphersuites._ciphersuites", "nss.yaml") as fixture:
-        with open(fixture, 'r') as f:
-            NSS = yaml.safe_load(f)
-except (ModuleNotFoundError, ImportError, IOError) as e:
-    warnings.warn(f"Failed to load resource 'ciphersuites._ciphersuites:nss.yaml': {str(e)}", Warning)
-    NSS = []
+NSS = _load_yaml("nss.yaml")
 
-try:
-    with importlib_resources.path(f"ciphersuites._ciphersuites", "jsse.yaml") as fixture:
-        with open(fixture, 'r') as f:
-            JSSE = yaml.safe_load(f)
-except (ModuleNotFoundError, ImportError, IOError) as e:
-    warnings.warn(f"Failed to load resource 'ciphersuites._ciphersuites:jsse.yaml': {str(e)}", Warning)
-    JSSE = []
+JSSE = _load_yaml("jsse.yaml")
 
-try:
-    with importlib_resources.path(f"ciphersuites._ciphersuites", "boringssl.yaml") as fixture:
-        with open(fixture, 'r') as f:
-            BORINGSSL = yaml.safe_load(f)
-except (ModuleNotFoundError, ImportError, IOError) as e:
-    warnings.warn(f"Failed to load resource 'ciphersuites._ciphersuites:borinssl.yaml': {str(e)}", Warning)
-    BORINGSSL = []
+BORINGSSL = _load_yaml("boringssl.yaml")
 
-try:
-    with importlib_resources.path(f"ciphersuites._ciphersuites", "libressl.yaml") as fixture:
-        with open(fixture, 'r') as f:
-            LIBRESSL = yaml.safe_load(f)
-except (ModuleNotFoundError, ImportError, IOError) as e:
-    warnings.warn(f"Failed to load resource 'ciphersuites._ciphersuites:libressl.yaml': {str(e)}", Warning)
-    LIBRESSL = []
+LIBRESSL = _load_yaml("libressl.yaml")
 
-try:
-    with importlib_resources.path(f"ciphersuites._ciphersuites", "s2n.yaml") as fixture:
-        with open(fixture, 'r') as f:
-            S2N = yaml.safe_load(f)
-except (ModuleNotFoundError, ImportError, IOError) as e:
-    warnings.warn(f"Failed to load resource 'ciphersuites._ciphersuites:s2n.yaml': {str(e)}", Warning)
-    S2N = []
+S2N = _load_yaml("s2n.yaml")
 
-try:
-    with importlib_resources.path(f"ciphersuites._ciphersuites", "schannel.yaml") as fixture:
-        with open(fixture, 'r') as f:
-            SCHANNEL = yaml.safe_load(f)
-except (ModuleNotFoundError, ImportError, IOError) as e:
-    warnings.warn(f"Failed to load resource 'ciphersuites._ciphersuites:schannel.yaml': {str(e)}", Warning)
-    SCHANNEL = []
+SCHANNEL = _load_yaml("schannel.yaml")
 
-try:
-    with importlib_resources.path(f"ciphersuites._ciphersuites", "mbedtls.yaml") as fixture:
-        with open(fixture, 'r') as f:
-            MBEDTLS = yaml.safe_load(f)
-except (ModuleNotFoundError, ImportError, IOError) as e:
-    warnings.warn(f"Failed to load resource 'ciphersuites._ciphersuites:mbedtls.yaml': {str(e)}", Warning)
-    MBEDTLS = []
+MBEDTLS = _load_yaml("mbedtls.yaml")
 
-try:
-    with importlib_resources.path(f"ciphersuites._ciphersuites", "ciphersuites.yaml") as fixture:
-        with open(fixture, 'r') as f:
-            _CIPHERSUITES = yaml.safe_load(f)
-except (ModuleNotFoundError, ImportError, IOError) as e:
-    warnings.warn(f"Failed to load resource 'ciphersuites._ciphersuites:ciphersuites.yaml': {str(e)}", Warning)
-    _CIPHERSUITES = []
+_CIPHERSUITES = _load_yaml("ciphersuites.yaml")
 
 # Iterate over ciphersuites and substitue alternative ciphersuite naming and technologies.
 CIPHERSUITES = []
