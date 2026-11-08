@@ -108,3 +108,13 @@ def test_chacha_suites_joined(upstream):
         ("DHE-RSA-CHACHA20-POLY1305", ("0xCC", "0xAA")),
     ):
         assert Record(name, code_point) in records
+
+
+def test_old_chacha_suites_joined_in_2_5(upstream):
+    """2.4/2.5 ship the pre-standard ChaCha suites under ``*_OLD`` keys."""
+    result = LibreSSL().parse(upstream("libressl", "2.5"))
+    by_cp = {r.code_point: r.name for r in result.records}
+    assert by_cp[("0xCC", "0x13")] == "ECDHE-RSA-CHACHA20-POLY1305-OLD"
+    assert by_cp[("0xCC", "0x14")] == "ECDHE-ECDSA-CHACHA20-POLY1305-OLD"
+    assert by_cp[("0xCC", "0x15")] == "DHE-RSA-CHACHA20-POLY1305-OLD"
+    assert not any(k.endswith("_OLD") for k in result.unmatched_keys)
