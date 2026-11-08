@@ -55,6 +55,12 @@ def test_registered_as_reference_adapters():
     assert Scanigma.kind == "reference"
 
 
+@pytest.mark.parametrize("cls", [Iana, TestSsl, Scanigma])
+def test_reference_adapters_keep_one_rolling_version(cls):
+    assert cls.rolling is True
+    assert cls.keep_last == 1
+
+
 # -------------------------------------------------------------------- IANA
 
 
@@ -442,3 +448,19 @@ def test_scanigma_malformed_json_ld_is_an_error():
     html = '<script type="application/ld+json">{oops</script>'
     with pytest.raises(ValueError):
         _scan(html)
+
+
+def test_scanigma_item_without_url_is_unmatched_and_not_fetched():
+    adapter = Scanigma(now=NOW)
+    (version,) = adapter.discover_versions()
+    listing = _listing(("TLS_A", ""), ("TLS_B", _url("b")))
+    listing = listing.replace('"url": ""', '"url": null', 1)
+    with responses.RequestsMock() as rsps:
+        rsps.add(responses.GET, LISTING, body=listing)
+        rsps.add(responses.GET, _url("b"), body="B")
+        files = adapter.fetch_files(version, Fetcher(None))
+    assert sorted(files) == ["detail/b.html", "listing.html"]
+    result = _scan(listing, b=_detail("TLS_B", "0x00, 0x01"))
+    assert [r.name for r in result.records] == ["TLS_B"]
+    assert result.total_keys == 2
+    assert result.unmatched_keys == ["TLS_A"]

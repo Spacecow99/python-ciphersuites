@@ -90,6 +90,7 @@ class Scanigma(Adapter):
     name = "scanigma"
     kind = "reference"
     rolling = True
+    keep_last = 1
 
     def discover_versions(self) -> List[Version]:
         return [Version(self.now.date().isoformat(), _LISTING_URL, None)]
@@ -113,7 +114,13 @@ class Scanigma(Adapter):
         files = {_LISTING: listing}
         items, _ = _listing_entries(listing.decode("utf-8"))
         for item in items:
-            path = f"{_DETAIL}{_slug(str(item.get('url', '')))}.html"
+            slug = _slug(str(item.get("url") or ""))
+            if not slug:
+                continue  # no page to fetch; parse leaves it unmatched
+            path = f"{_DETAIL}{slug}.html"
+            # By ruling, one failed detail fetch propagates and fails the
+            # whole Scanigma version: adapters never catch exceptions and
+            # the runner restores the stale baseline.
             if path not in files:
                 files[path] = fetcher.get(self.source_url(version, path))
         return files
@@ -123,8 +130,9 @@ class Scanigma(Adapter):
         names: Dict[CodePoint, str] = {}
         unmatched: List[str] = []
         for item in items:
-            path = f"{_DETAIL}{_slug(str(item.get('url', '')))}.html"
-            term = _detail_term(files[path]) if path in files else None
+            slug = _slug(str(item.get("url") or ""))
+            path = f"{_DETAIL}{slug}.html"
+            term = _detail_term(files[path]) if slug and path in files else None
             point = _term_code(term) if term is not None else None
             if term is None or point is None:
                 unmatched.append(str(item.get("name") or item.get("url")))

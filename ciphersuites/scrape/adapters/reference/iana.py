@@ -73,6 +73,7 @@ class Iana(Adapter):
     name = "iana"
     kind = "reference"
     rolling = True
+    keep_last = 1
 
     def discover_versions(self) -> List[Version]:
         return [Version(self.now.date().isoformat(), _URL, None)]

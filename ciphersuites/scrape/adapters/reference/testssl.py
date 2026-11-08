@@ -38,6 +38,7 @@ class TestSsl(Adapter):
     kind = "reference"
     repo = _REPO
     rolling = True
+    keep_last = 1
 
     def discover_versions(self) -> List[Version]:
         return [
