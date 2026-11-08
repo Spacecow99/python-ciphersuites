@@ -99,6 +99,54 @@ def test_other_4xx_not_retried(tmp_path):
 
 
 @responses.activate
+def test_429_retried_on_backoff_schedule(tmp_path):
+    """429 without Retry-After is retried like 5xx."""
+    responses.add(responses.GET, URL, status=429)
+    responses.add(responses.GET, URL, status=429)
+    responses.add(responses.GET, URL, body=b"ok")
+    fetcher, sleeps = make(tmp_path)
+    assert fetcher.get(URL) == b"ok"
+    assert sleeps == [2, 4]
+
+
+@responses.activate
+def test_429_gives_up_after_four_retries(tmp_path):
+    for _ in range(5):
+        responses.add(responses.GET, URL, status=429)
+    fetcher, sleeps = make(tmp_path)
+    with pytest.raises(FetchError, match="429"):
+        fetcher.get(URL)
+    assert sleeps == [2, 4, 8, 16]
+    assert len(responses.calls) == 5
+
+
+@responses.activate
+@pytest.mark.parametrize(
+    "header, first",
+    [
+        ("1", 1),  # shorter than the schedule: honoured
+        ("0", 0),
+        ("3600", 2),  # longer: capped at the schedule
+        ("soon", 2),  # unparseable: the schedule
+        ("-5", 2),
+        ("\u00b2", 2),  # a non-ASCII digit is not delta-seconds
+        ("Wed, 21 Oct 2015 07:28:00 GMT", 0),  # date in the past
+        ("Wed, 21 Oct 2015 07:28:00 -0000", 0),  # naive date
+        ("Fri, 31 Dec 9999 23:59:59 GMT", 2),  # far future: capped
+    ],
+)
+def test_429_retry_after_capped_at_schedule(tmp_path, header, first):
+    responses.add(
+        responses.GET, URL, status=429, headers={"Retry-After": header}
+    )
+    responses.add(responses.GET, URL, status=429)
+    responses.add(responses.GET, URL, body=b"ok")
+    fetcher, sleeps = make(tmp_path)
+    assert fetcher.get(URL) == b"ok"
+    assert sleeps == [first, 4]
+
+
+@responses.activate
 def test_cache_hit_skips_network(tmp_path):
     """A second get with the same key makes no request."""
     responses.add(responses.GET, URL, body=b"data")

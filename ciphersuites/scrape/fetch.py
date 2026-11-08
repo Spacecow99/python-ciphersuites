@@ -7,6 +7,8 @@ import os
 import re
 import tempfile
 import time
+from datetime import timezone
+from email.utils import parsedate_to_datetime
 from urllib.parse import quote
 from pathlib import Path
 from typing import Callable, Optional, Tuple
@@ -76,8 +78,31 @@ def decode_text(data: bytes) -> str:
         return data.decode("latin-1")
 
 
+def retry_after_seconds(value: Optional[str], now: float) -> Optional[float]:
+    """Seconds asked for by a ``Retry-After`` header, or ``None``.
+
+    Accepts delta-seconds or an HTTP-date; a date in the past means 0.
+    """
+    if not value:
+        return None
+    value = value.strip()
+    if re.fullmatch(r"[0-9]+", value):
+        return float(value)
+    try:
+        when = parsedate_to_datetime(value)
+    except (TypeError, ValueError, IndexError, OverflowError):
+        return None
+    if when.tzinfo is None:  # "-0000" means UTC with no source zone
+        when = when.replace(tzinfo=timezone.utc)
+    return max(0.0, when.timestamp() - now)
+
+
 class Fetcher:
-    """HTTP fetcher with retries on transient failures and an optional cache."""
+    """HTTP fetcher with retries on transient failures and an optional cache.
+
+    Connection errors, timeouts, 5xx and 429 are retried (4 retries, 2/4/8/16
+    s apart); a 429's ``Retry-After`` can shorten, never lengthen, a wait.
+    """
 
     # pylint: disable=too-many-arguments,too-many-positional-arguments
     def __init__(
@@ -146,9 +171,14 @@ class Fetcher:
     def _download(self, url: str) -> bytes:
         attempts = len(RETRY_DELAYS) + 1
         last = ""
+        asked: Optional[float] = None
         for attempt in range(attempts):
             if attempt:
-                self._sleep(RETRY_DELAYS[attempt - 1])
+                delay: float = RETRY_DELAYS[attempt - 1]
+                if asked is not None:
+                    delay = min(delay, asked)
+                asked = None
+                self._sleep(delay)
             try:
                 response = self.session.get(url, timeout=self.timeout)
             except requests.exceptions.SSLError as exc:
@@ -169,8 +199,14 @@ class Fetcher:
                 return response.content
             if status == 404:
                 raise FileMissingError(f"HTTP 404 for {url}")
-            if status >= 500:
+            if status >= 500 or status == 429:
+                # 429 honours Retry-After, but never waits longer than the
+                # backoff schedule would.
                 last = f"HTTP {status}"
+                if status == 429:
+                    asked = retry_after_seconds(
+                        response.headers.get("Retry-After"), time.time()
+                    )
                 continue
             raise FetchError(f"HTTP {status} for {url}")
         raise FetchError(
