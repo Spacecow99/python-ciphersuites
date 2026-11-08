@@ -221,9 +221,14 @@ def test_baseline_unknown_ref_is_schema_error(tmp_path):
 @pytest.mark.parametrize(
     "ref", ["--output=x", "-p", "a b", "HEAD:x", "a\tb", ""]
 )
-def test_bad_ref_rejected(tmp_path, ref):
-    with pytest.raises((SchemaError, ValueError)):
+def test_bad_ref_rejected(tmp_path, monkeypatch, ref):
+    calls: List[Any] = []
+    monkeypatch.setattr(
+        schema.subprocess, "run", lambda *a, **k: calls.append(a)
+    )
+    with pytest.raises(SchemaError, match="unsafe git ref"):
         load_baseline(tmp_path, "openssl", ref=ref)
+    assert not calls
 
 
 @pytest.mark.parametrize("library", ["../x", "Open SSL", "a/b", "", "a.b"])
@@ -258,3 +263,35 @@ def test_write_atomic_preserves_original_on_failure(tmp_path, monkeypatch):
         write_atomic(path, "new")
     assert path.read_text(encoding="utf-8") == "original"
     assert os.listdir(tmp_path) == ["x.yaml"]
+
+
+@pytest.mark.parametrize("bad", [[["1"]], [{}], [1], [None]])
+def test_from_doc_rejects_non_str_labels(bad):
+    doc = make_doc()
+    doc["suites"][0]["names"][0]["versions"] = bad
+    with pytest.raises(SchemaError):
+        from_doc(doc)
+
+
+def test_v1_empty_third_byte_is_absent(tmp_path):
+    text = (
+        "- model: openssl\n  pk: A\n  fields:\n"
+        "    hex_byte_1: '0x00'\n    hex_byte_2: '0x16'\n"
+        "    hex_byte_3: ''\n"
+    )
+    (tmp_path / "openssl.yaml").write_text(text, encoding="utf-8")
+    assert load_baseline(tmp_path, "openssl") == V1Baseline({("0x00", "0x16")})
+
+
+def test_to_doc_rejects_unknown_member_labels():
+    data = from_doc(make_doc())
+    data.members["9.9"] = set()
+    with pytest.raises(ValueError):
+        to_doc(data, order)
+
+
+def test_to_doc_rejects_bad_kind():
+    data = from_doc(make_doc())
+    data.kind = "other"
+    with pytest.raises(ValueError):
+        to_doc(data, order)

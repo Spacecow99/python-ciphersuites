@@ -83,7 +83,12 @@ def to_doc(
     data: LibraryData, order: Callable[[List[str]], List[str]]
 ) -> Dict[str, Any]:
     """Convert ``data`` to the deterministic spec 5.2 document layout."""
+    if data.kind not in ("library", "reference"):
+        raise ValueError(f"invalid kind: {data.kind!r}")
     labels = [v.label for v in data.versions]
+    unknown = set(data.members) - set(labels)
+    if unknown:
+        raise ValueError(f"members for unknown versions: {sorted(unknown)}")
     ordered = order(labels)
     rank = {label: i for i, label in enumerate(ordered)}
     by_label = {v.label: v for v in data.versions}
@@ -105,6 +110,9 @@ def to_doc(
         ]
         entries.sort(key=lambda e: (rank[e["versions"][0]], e["name"]))
         suite: Dict[str, Any] = {"code_point": list(cp), "names": entries}
+        # Spec 5.2 is silent on attributes (e.g. IANA dtls_ok/recommended):
+        # they are stored per suite, beside code_point and names. Task 19
+        # consumes this shape.
         if data.attributes.get(cp):
             suite["attributes"] = dict(sorted(data.attributes[cp].items()))
         suites.append(suite)
@@ -181,7 +189,7 @@ def from_doc(doc: Any) -> LibraryData:
         for entry in _require(suite, "names", list, "suite"):
             name = _require(entry, "name", str, "suite name")
             for label in _require(entry, "versions", list, "suite name"):
-                if label not in labels:
+                if not isinstance(label, str) or label not in labels:
                     raise SchemaError(f"unknown version label {label!r}")
                 members[label].add(Record(name, cp))
         attrs = _opt(suite, "attributes", dict, "suite")
@@ -246,7 +254,7 @@ def _v1_baseline(rows: List[Any], where: str) -> V1Baseline:
         if not isinstance(fields, dict):
             raise SchemaError(f"{where}: malformed v1 row")
         raw = [fields.get(f"hex_byte_{i}") for i in (1, 2, 3)]
-        raw = [b for b in raw if b is not None]
+        raw = [b for b in raw if b]  # falsy hex_byte_3 means absent
         try:
             points.add(normalize_code_point(raw))
         except BadCodePoint as exc:
@@ -291,7 +299,11 @@ def _git_show(data_dir: Path, ref: str, library: str) -> Optional[str]:
 def load_baseline(
     data_dir: Path, library: str, ref: Optional[str] = None
 ) -> Optional[BaselineData]:
-    """Load the previous per-library file from disk or a git ``ref``."""
+    """Load the previous per-library file from disk or a git ``ref``.
+
+    ``data_dir`` must be the root of the data git repository, because the
+    ``ref`` is resolved as ``<ref>:<library>.yaml`` relative to that root.
+    """
     if not _LIBRARY_RE.fullmatch(library):
         raise SchemaError(f"invalid library name: {library!r}")
     where = f"{library}.yaml"
