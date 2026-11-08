@@ -616,7 +616,7 @@ def test_lazy_load_missing_data(monkeypatch, tmp_path):  # import succeeds; firs
 
 ### Task 25: Re-assess BoringSSL version model and recover historical cipher suites
 
-**Status:** IN PROGRESS -- Steps 2-4 done (cipher-table source, frozen dated change points plus `0.YYYYMMDD.N` tags, non-rolling); Steps 5-7 (data regeneration, gitlink, reason text) pending. Raised after the first v2 data run (data repo 3f205bf).
+**Status:** COMPLETE (2026-11-08). Research found the header #defines listed unimplemented suites (upstream 8aa95db78); the adapter now reads the cipher table, with 17 dated change points from 2014-09-15, the 2026-11-08 snapshot and the `0.YYYYMMDD.N` release tags (non-rolling). Data repo c24a21e; the first-run accept reasons are cleared and corrected in its commit message. Raised after the first v2 data run (data repo 3f205bf).
 
 **Problem:**
 - BoringSSL is modelled as rolling dated HEAD snapshots, with `keep_last = 8`.
@@ -651,7 +651,7 @@ def test_lazy_load_missing_data(monkeypatch, tmp_path):  # import succeeds; firs
 - The data repo: regenerated `boringssl.yaml`.
 
 **Steps:**
-- [ ] **Step 1: Research.** Answer questions 1-4 using a blobless clone of `https://github.com/google/boringssl`. Write the change-point table and the source-of-truth finding to the ledger. Verify:
+- [x] **Step 1: Research.** Answer questions 1-4 using a blobless clone of `https://github.com/google/boringssl`. Write the change-point table and the source-of-truth finding to the ledger. Verify:
   - every v1 code point (151 at 5584ad8c) appears in at least one historical state;
   - every state's set matches what the source of truth says at that commit.
 - [x] **Step 2: Rule.** Pick approach A, B or C and record it as a ruling. If the source of truth changes (question 1), say whether current versions are affected and how.
@@ -663,13 +663,13 @@ def test_lazy_load_missing_data(monkeypatch, tmp_path):  # import succeeds; firs
 - [x] **Step 4: Implement.**
   - Follow the existing conventions: coverage denominator independent of the full parse, raw files by commit SHA, adapters never catch exceptions.
   - Changes to runner rolling semantics need runner tests for trimming and stale handling.
-- [ ] **Step 5: Regenerate the data.**
+- [x] **Step 5: Regenerate the data.**
   - Run `ciphersuites-scrape --library boringssl` against the current v2 baseline.
   - New labels are additions. If the HEAD label changes form, a `--accept` with evidence may be needed.
   - Confirm with a membership diff that no code point is lost from any existing label.
   - Ask the user before pushing the data repo.
-- [ ] **Step 6: Verify.** Run pytest 3.13 + 3.9 with the coverage gate, black, pylint and bandit, under at least two `PYTHONHASHSEED` values. Then bump the gitlink to the pushed data commit.
-- [ ] **Step 7: Correct the published reason text.**
+- [x] **Step 6: Verify.** Run pytest 3.13 + 3.9 with the coverage gate, black, pylint and bandit, under at least two `PYTHONHASHSEED` values. Then bump the gitlink to the pushed data commit.
+- [x] **Step 7: Correct the published reason text.**
   - The first-run `accepted.reason` (data repo 92e283f/75564b1) states three wrong version boundaries:
     - OpenSSL: removed in 1.1.0 (last present in 1.0.2), not "4.x".
     - Mbed TLS: removed in 4.0 (last present in 3.6), not "present <= 4.1".

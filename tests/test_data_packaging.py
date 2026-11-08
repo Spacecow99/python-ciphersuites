@@ -21,7 +21,7 @@ def test_data_dir_is_gitlink():
         check=True,
         cwd=REPO_ROOT,
     ).stdout
-    assert out.startswith("160000 3f205bf200dadc629263e209324c28780831f5b4")
+    assert out.startswith("160000 c24a21eb2cf4253bcdaf15b09d5d13da6fe21773")
 
 
 def test_missing_data_raises_clear_error(tmp_path):
