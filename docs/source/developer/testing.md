@@ -18,10 +18,11 @@ $ python -m pytest -q
 
 Run one module, or one test, with its path:
 
-% notest: downloads pinned upstream files on the first run
 ```console
 $ python -m pytest -q tests/adapters/test_go.py
+...
 $ python -m pytest -q "tests/adapters/test_go.py::test_tag_version"
+...
 ```
 
 `pyproject.toml` sets `testpaths = ["tests"]` and `addopts = "-p yaml"`.
@@ -69,7 +70,8 @@ The entries are sorted by library, label and path.
 A test gets the files of one version through the pytest fixture
 `upstream` (in `tests/conftest.py`):
 
-```text
+% notest: fragment; needs the pytest fixture `upstream`
+```python
 files = upstream("go", "1.12")      # {path: text}
 result = Go().parse(files)
 ```
@@ -140,7 +142,9 @@ For each captured file, the command prints one line:
 `<library> <label> <path> sha256:<hex>`. Then it exits with code 0.
 
 On an error it prints `error: <message>` on stderr and exits with code
-1. Argument errors of the parser exit with code 2. These examples need no
+1. Other errors, for example a failing `git ls-remote`, print a Python
+traceback and also exit with code 1. Argument errors of the parser exit
+with code 2. These examples need no
 network:
 
 ```console
@@ -290,20 +294,25 @@ The fence language decides what happens:
 | Language | What the harness does |
 |---|---|
 | `pycon` | Runs the block as a doctest: lines with `>>>` and `...` prompts, followed by the expected output. `...` inside output matches any text (ELLIPSIS). Each block starts with empty globals, so import what you use in each block. |
-| `console` | Runs each line that starts with `$ ` as a shell command, from the top directory of the repository. The lines after it are the expected stdout. A line that is only `...` matches any number of lines. Trailing white space and trailing blank lines are ignored. |
+| `console` | Runs each line that starts with `$ ` as a shell command with `bash -o pipefail`, from the top directory of the repository, with stdin closed. The lines after it are the expected stdout. A line that is only `...` matches any number of lines. Trailing white space and trailing blank lines are ignored. |
 | `python` | Runs the block. It must not raise an exception. |
 | `yaml` | Loads the block with `yaml.safe_load`. It must be valid YAML. |
-| `bash`, `sh`, `shell`, `shell-session`, `zsh`, `doscon`, `py`, `python3`, `ipython`, `yml` | Fails. Use one of the four languages above. |
-| any other, for example `text` or `json` | Not run. Use these for output samples and syntax, not for examples. |
+| `text`, `markdown`, `md`, `json`, `toml`, `ini`, `diff`, or no language | Not run. Use these for output samples and syntax, not for examples. MyST directives such as `{toctree}` are not examples either. |
+| any other, for example `bash`, `sh`, `py`, `python3` or `pycon3` | Fails. Use one of the four languages above. |
 
 Rules for `console` blocks:
 
-- Every command must exit with code 0. To show a failing command, end it
-  with `; echo "exit=$?"` and show the `exit=` line. Add `2>&1` to show
-  stderr.
-- `python` and `python3` run the same interpreter as pytest. The harness
-  sets `COLUMNS=80`, so the help texts have a fixed width, and removes
-  `GITHUB_STEP_SUMMARY`.
+- Every command must exit with code 0. Because of `pipefail`, a failing
+  command before a `|` also fails the example. To show a failing
+  command, end it with `; echo "exit=$?"` and show the `exit=` line. Add
+  `2>&1` to show stderr.
+- Each `$ ` line runs in a new shell in the top directory. `cd` and
+  shell variables do not carry over to the next line. Put dependent
+  commands on one line with `;`.
+- `python` and `python3` run the same interpreter as pytest.
+- For every block, not only `console` blocks, the harness sets
+  `COLUMNS=80`, so the help texts have a fixed width, and removes
+  `GITHUB_STEP_SUMMARY`. It restores both after the block.
 - Write each command on one line. The harness does not join lines that
   end with `\`.
 
@@ -325,7 +334,8 @@ line. Other examples load `tests/fixtures/catalog_v2`.
 The test `test_api_page_names_every_public_name` checks that
 `docs/source/user/api.md` names every public name of
 `ciphersuites.catalog` and of the package root. Name class members
-with their class, for example `CipherSuite.first_seen`.
+with their class, for example `CipherSuite.first_seen`. The match is
+exact: `Catalog.loads` does not count as `Catalog.load`.
 
 ## tox
 

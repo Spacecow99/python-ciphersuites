@@ -4,23 +4,28 @@ Fenced blocks in ``docs/source/**/*.md`` are found and run by language:
 
 - ``pycon``: a doctest (``>>>``/``...`` prompts, expected output, ELLIPSIS
   on). Each block starts with fresh globals.
-- ``console``: each line starting with ``$ `` is a shell command, run from
-  the repository root. The lines after it, up to the next ``$ ``, are the
+- ``console``: each line starting with ``$ `` is a shell command, run by
+  ``bash -o pipefail`` from the repository root with stdin closed. Each
+  line runs in a new shell, so ``cd`` and shell variables do not carry
+  over to the next line. The lines after it, up to the next ``$ ``, are the
   expected stdout, compared line by line after trailing whitespace is
   stripped. A line that is only ``...`` matches any number of lines. The
-  command must exit 0; to show a failing command, append
-  ``; echo "exit=$?"`` and show that line.
+  command must exit 0; with ``pipefail`` a failing command before a ``|``
+  also fails it. To show a failing command, append ``; echo "exit=$?"`` and
+  show that line.
 - ``python``: executed; it must not raise.
 - ``yaml``: must load with ``yaml.safe_load``.
 
 The working directory is the repository root, so examples can load
 ``tests/fixtures/catalog_v2``. ``python`` on ``PATH`` is the interpreter
-running pytest.
+running pytest. Every block runs without ``GITHUB_STEP_SUMMARY`` and with
+``COLUMNS=80``.
 
 A block whose previous non-blank line is the MyST comment
 ``% notest: <reason>`` is skipped; ``test_skipped_examples_summary`` lists
-every skipped block. Blocks in ``bash``, ``sh``, ``shell``, ``py`` and the
-like fail: use one of the four tested languages instead.
+every skipped block. A block in any language that is neither tested nor
+in ``DISPLAY_ONLY`` (``bash``, ``sh``, ``py``, ``pycon3`` and so on) fails:
+use one of the four tested languages instead.
 
 ``test_api_page_names_every_public_name`` checks that ``user/api.md``
 mentions every public name of ``ciphersuites.catalog`` and the package root
@@ -36,6 +41,7 @@ import doctest
 import io
 import os
 import re
+import shlex
 import shutil
 import subprocess  # nosec B404
 import sys
@@ -60,19 +66,13 @@ HARNESS_FIXTURES = (
 )
 
 TESTED = ("pycon", "console", "python", "yaml")
-# Languages that look like examples but would not be run.
-UNTESTED_ALIASES = (
-    "bash",
-    "doscon",
-    "ipython",
-    "py",
-    "python3",
-    "sh",
-    "shell",
-    "shell-session",
-    "yml",
-    "zsh",
-)
+# Languages that only display text. A block in any other language that is
+# not in TESTED (for example ``bash`` or ``pycon3``) is an example that
+# would not run, so it fails. MyST directives (``{toctree}``) are not blocks.
+DISPLAY_ONLY = ("", "text", "markdown", "md", "json", "toml", "ini", "diff")
+# Variables removed from the environment of every example.
+REMOVED_ENV = ("GITHUB_STEP_SUMMARY",)  # the scraper would write there
+EXAMPLE_ENV = {"COLUMNS": "80"}  # stable argparse help layout
 ELLIPSIS_LINE = "..."
 COMMAND_TIMEOUT = 300
 
@@ -161,14 +161,18 @@ def _notest_reason(lines: Sequence[str], fence_index: int) -> Optional[str]:
     return None
 
 
+def is_example(lang: str) -> bool:
+    """True unless ``lang`` only displays text or names a MyST directive."""
+    return lang not in DISPLAY_ONLY and not lang.startswith("{")
+
+
 def example_blocks(paths: Sequence[Path]) -> List[Block]:
-    """Blocks of ``paths`` that are examples (tested or untested aliases)."""
-    wanted = set(TESTED) | set(UNTESTED_ALIASES)
+    """Blocks of ``paths`` that are examples (tested or not)."""
     return [
         block
         for path in paths
         for block in parse_blocks(path)
-        if block.lang in wanted
+        if is_example(block.lang)
     ]
 
 
@@ -204,15 +208,40 @@ def _shim_dir() -> str:
     for name in ("python", "python3"):
         path = os.path.join(shim, name)
         with open(path, "w", encoding="utf-8") as handle:
-            handle.write(f'#!/bin/sh\nexec "{sys.executable}" "$@"\n')
+            handle.write(
+                f'#!/bin/sh\nexec {shlex.quote(sys.executable)} "$@"\n'
+            )
         os.chmod(path, 0o755)  # nosec B103
     return shim
 
 
+@contextlib.contextmanager
+def _example_environment() -> Iterator[None]:
+    """Remove REMOVED_ENV and set EXAMPLE_ENV in ``os.environ``, then restore.
+
+    In-process blocks (``pycon``, ``python``) see ``os.environ`` itself, so
+    the change must be made there, not only in a subprocess environment.
+    """
+    names = set(REMOVED_ENV) | set(EXAMPLE_ENV)
+    saved = {name: os.environ.get(name) for name in names}
+    for name in REMOVED_ENV:
+        os.environ.pop(name, None)
+    os.environ.update(EXAMPLE_ENV)
+    try:
+        yield
+    finally:
+        for name, value in saved.items():
+            if value is None:
+                os.environ.pop(name, None)
+            else:
+                os.environ[name] = value
+
+
 def _command_env() -> dict:
     env = dict(os.environ)
-    env.pop("GITHUB_STEP_SUMMARY", None)  # the scraper would write there
-    env["COLUMNS"] = "80"  # stable argparse help layout
+    for name in REMOVED_ENV:
+        env.pop(name, None)
+    env.update(EXAMPLE_ENV)
     env["PATH"] = os.pathsep.join(
         [_shim_dir(), os.path.dirname(sys.executable), env.get("PATH", "")]
     )
@@ -220,15 +249,28 @@ def _command_env() -> dict:
 
 
 def lines_match(expected: Sequence[str], actual: Sequence[str]) -> bool:
-    """Match lines; an ``...`` line in ``expected`` matches any lines."""
-    if not expected:
-        return not actual
-    head, rest = expected[0], expected[1:]
-    if head == ELLIPSIS_LINE:
-        return any(
-            lines_match(rest, actual[i:]) for i in range(len(actual) + 1)
-        )
-    return bool(actual) and actual[0] == head and lines_match(rest, actual[1:])
+    """Match lines; an ``...`` line in ``expected`` matches any lines.
+
+    Iterative wildcard matching, so long output cannot hit the recursion
+    limit.
+    """
+    exp, act = 0, 0
+    star, star_act = -1, 0  # last ``...`` in expected; where it resumed
+    while act < len(actual):
+        if exp < len(expected) and expected[exp] == ELLIPSIS_LINE:
+            star, star_act = exp, act
+            exp += 1
+        elif exp < len(expected) and expected[exp] == actual[act]:
+            exp += 1
+            act += 1
+        elif star >= 0:
+            star_act += 1
+            exp, act = star + 1, star_act
+        else:
+            return False
+    while exp < len(expected) and expected[exp] == ELLIPSIS_LINE:
+        exp += 1
+    return exp == len(expected)
 
 
 def _normalise(text_lines: Sequence[str]) -> List[str]:
@@ -257,9 +299,9 @@ def parse_console(body: str, where: str = "") -> List[Tuple[str, List[str]]]:
 
 def _run_console(block: Block) -> None:
     for command, expected in parse_console(block.body, block.test_id):
-        result = subprocess.run(  # nosec B602
-            command,
-            shell=True,
+        result = subprocess.run(  # nosec B603 B607
+            ["bash", "-o", "pipefail", "-c", command],
+            stdin=subprocess.DEVNULL,
             cwd=ROOT,
             env=_command_env(),
             capture_output=True,
@@ -338,7 +380,8 @@ def run_block(block: Block) -> None:
             f"{block.test_id}: language {block.lang!r} is not tested; use "
             "one of " + ", ".join(TESTED)
         )
-    runner(block)
+    with _example_environment():
+        runner(block)
 
 
 # -- documentation tests ---------------------------------------------------
@@ -376,7 +419,9 @@ def _public_class_members(cls: type) -> Set[str]:
     if dataclasses.is_dataclass(cls):
         names |= {f.name for f in dataclasses.fields(cls)}
     for name, value in vars(cls).items():
-        if callable(value) or isinstance(value, (classmethod, staticmethod)):
+        if callable(value) or isinstance(
+            value, (classmethod, staticmethod, property)
+        ):
             names.add(name)
     return {n for n in names if not n.startswith("_")}
 
@@ -405,13 +450,11 @@ def public_api_names() -> Tuple[Set[str], Set[str]]:
 def missing_api_names(text: str) -> List[str]:
     """Public names that ``text`` does not mention."""
     module, members = public_api_names()
-    missing = [
+    return sorted(
         name
-        for name in module
+        for name in module | members
         if not re.search(rf"(?<!\w){re.escape(name)}(?!\w)", text)
-    ]
-    missing += [name for name in members if name not in text]
-    return sorted(missing)
+    )
 
 
 def test_api_page_names_every_public_name() -> None:
@@ -452,7 +495,7 @@ def test_harness_runs_passing_examples() -> None:
 
 def test_harness_detects_every_failing_example() -> None:
     blocks = _fixture_blocks("failing.md")
-    assert len(blocks) == 9
+    assert len(blocks) == 11
     for block in blocks:
         with pytest.raises(ExampleFailed):
             run_block(block)
@@ -462,6 +505,69 @@ def test_harness_reports_the_failing_doctest_line() -> None:
     block = _fixture_blocks("failing.md")[0]
     with pytest.raises(ExampleFailed, match=r"failing\.md\", line 6"):
         run_block(block)
+
+
+def test_harness_fails_a_pipeline_when_its_first_command_fails() -> None:
+    block = _fixture_blocks("failing.md")[9]
+    assert "| cat" in block.body
+    with pytest.raises(ExampleFailed, match="exited 1"):
+        run_block(block)
+
+
+def test_harness_rejects_an_unknown_example_language() -> None:
+    block = _fixture_blocks("failing.md")[10]
+    assert block.lang == "pycon3"
+    with pytest.raises(ExampleFailed, match="is not tested"):
+        run_block(block)
+
+
+def test_harness_ignores_display_only_blocks_and_directives() -> None:
+    assert not is_example("text")
+    assert not is_example("{toctree}")
+    assert is_example("bash")
+
+
+_ENV_CHECK = (
+    "import os\n"
+    "assert 'GITHUB_STEP_SUMMARY' not in os.environ, 'summary set'\n"
+    "assert os.environ['COLUMNS'] == '80'\n"
+)
+
+
+@pytest.mark.parametrize(
+    "lang, body",
+    [
+        ("python", _ENV_CHECK),
+        (
+            "pycon",
+            ">>> import os\n"
+            ">>> 'GITHUB_STEP_SUMMARY' in os.environ, os.environ['COLUMNS']\n"
+            "(False, '80')\n",
+        ),
+        (
+            "console",
+            '$ python -c "import os; '
+            "print('GITHUB_STEP_SUMMARY' in os.environ, "
+            "os.environ['COLUMNS'])\"\n"
+            "False 80\n",
+        ),
+    ],
+)
+def test_harness_removes_step_summary_for_every_kind(
+    lang: str, body: str, monkeypatch, tmp_path: Path
+) -> None:
+    summary = tmp_path / "summary.md"
+    monkeypatch.setenv("GITHUB_STEP_SUMMARY", str(summary))
+    monkeypatch.setenv("COLUMNS", "200")
+    run_block(Block(path=tmp_path / "page.md", line=1, lang=lang, body=body))
+    assert os.environ["GITHUB_STEP_SUMMARY"] == str(summary)  # restored
+    assert os.environ["COLUMNS"] == "200"
+
+
+def test_harness_quotes_the_interpreter_path_in_the_shim() -> None:
+    shim = Path(_shim_dir()) / "python"
+    text = shim.read_text(encoding="utf-8")
+    assert f"exec {shlex.quote(sys.executable)} " in text
 
 
 @pytest.mark.parametrize(
@@ -477,6 +583,9 @@ def test_harness_reports_the_failing_doctest_line() -> None:
         (["a", "...", "d"], ["a", "d"], True),
         (["a", "...", "d"], ["a", "b", "c"], False),
         (["...", "b", "..."], ["a", "b", "c"], True),
+        (["a", "...", "b", "c"], ["a", "b", "x", "b", "c"], True),
+        (["...", "a"], ["a", "b"], False),
+        (["...", "..."], ["a"], True),
     ],
 )
 def test_lines_match(expected, actual, ok) -> None:
@@ -493,3 +602,12 @@ def test_api_drift_check_reports_missing_names() -> None:
     assert missing_api_names(full.replace("Catalog.load", "")) == [
         "Catalog.load"
     ]
+    # An exact name match: a longer name does not count as the shorter one.
+    assert "Catalog.load" in missing_api_names(
+        full.replace("Catalog.load", "Catalog.loads")
+    )
+
+
+def test_lines_match_handles_long_output() -> None:
+    lines = [str(n) for n in range(5000)]
+    assert lines_match(["0", "...", "4999"], lines)

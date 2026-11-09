@@ -42,3 +42,13 @@ print("a notest marker without a reason is an error")
 ```bash
 echo "use a console block, not bash"
 ```
+
+```console
+$ python -c "import sys; print('x'); sys.exit(1)" | cat
+x
+```
+
+```pycon3
+>>> 1 + 1
+2
+```

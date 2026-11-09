@@ -70,7 +70,7 @@ list. Its text depends on the Python version: `options:` or
 | `--dry-run` | off | Do everything except write files. |
 | `--offline` | off | Read files only from the fetch cache. A file that is not in the cache fails with `FETCH_ERROR`. |
 | `--accept LIB:VER` | none | Accept the acceptable gate failures of library `LIB`, version `VER`, for this run. You can give the option more than once. |
-| `--reason TEXT` | none | The reason for the acceptance. Required when `--accept` is given. One reason applies to every `--accept`. Without `--accept` it has no effect. |
+| `--reason REASON` | none | The reason for the acceptance. Required when `--accept` is given. One reason applies to every `--accept`. Without `--accept` it has no effect. |
 | `--report PATH` | none | Also write the findings as JSON to `PATH`. |
 | `--baseline-ref REF` | none | Read the baseline from git revision `REF` of the `--out` repository, not from the files on disk. |
 | `--cache-dir CACHE_DIR` | `~/.cache/python-ciphersuites` | The fetch cache directory. `~` is expanded. |
@@ -250,7 +250,7 @@ check the upstream change and record the evidence. Then run the scraper
 again with:
 
 - `--accept LIB:VER` for each affected version;
-- `--reason TEXT` with the evidence.
+- `--reason REASON` with the evidence.
 
 The rules:
 
@@ -367,7 +367,7 @@ With `--report PATH`, the run also writes a JSON file with these keys:
 | `exit_code` | `0` or `1` |
 | `findings` | a list of findings, each with `level`, `code`, `library`, `version`, `message` and `details` |
 | `written` | the paths of the files written (empty for a dry run) |
-| `diffs` | for each library and scraped version: `added` and `removed` code points |
+| `diffs` | for each scraped version that has a counterpart in the baseline: `added` and `removed` code points. For a rolling adapter or a reference source, the counterpart is the newest snapshot of the baseline. |
 
 The findings are sorted by library, version, code, level and message.
 
@@ -391,7 +391,7 @@ schannel.yaml
 | Code | Meaning |
 |---|---|
 | `0` | The run has no finding at level `fail`. Warnings and accepted findings do not change the exit code. |
-| `1` | The run has at least one finding at level `fail`. The files are still written, unless `--dry-run` is given; see [What a run writes](#what-a-run-writes). |
+| `1` | The run has at least one finding at level `fail`. The files are still written, unless `--dry-run` is given; see [What a run writes](#what-a-run-writes). Or the command stopped with a Python traceback (see below). |
 | `2` | The command line is wrong. The run does not start. |
 
 With `--capture-fixtures`, the exit codes are those of the fixtures
@@ -400,19 +400,27 @@ command. See [Testing](testing.md#the-fixtures-command).
 The command does not catch an interrupt (Ctrl+C). Python then prints a
 traceback.
 
-Exit code 2 has these causes, and each prints an error on stderr:
+Any other unexpected error outside the run stops the command with a
+Python traceback and exit code 1. An example is a `--report` path in a
+directory that does not exist. The data files can already be written at
+that point. So exit code 1 with a traceback and no `fail` finding is a
+crash, not a validation failure.
+
+Exit code 2 has these causes. Each prints an error on stderr. The
+examples show the last line of the output and the exit code:
 
 ```console
-$ ciphersuites-scrape --library go 2>&1 | tail -n 1
+$ (ciphersuites-scrape --library go 2>&1; echo "exit=$?") | tail -n 2
 ciphersuites-scrape: error: --out is required
-$ ciphersuites-scrape --out data --accept go:1.12 2>&1 | tail -n 1
+exit=2
+$ (ciphersuites-scrape --out data --accept go:1.12 2>&1; echo "exit=$?") | tail -n 2
 ciphersuites-scrape: error: --accept requires --reason
-$ ciphersuites-scrape --out data --accept go --reason test 2>&1 | tail -n 1
+exit=2
+$ (ciphersuites-scrape --out data --accept go --reason test 2>&1; echo "exit=$?") | tail -n 2
 ciphersuites-scrape: error: --accept expects LIB:VER, got 'go'
-$ ciphersuites-scrape --out data --library foo 2>&1 | tail -n 1
+exit=2
+$ (ciphersuites-scrape --out data --library foo 2>&1; echo "exit=$?") | tail -n 2
 ciphersuites-scrape: error: unknown library 'foo'
-$ ciphersuites-scrape --out data --library foo; echo "exit=$?"
-...
 exit=2
 ```
 
@@ -453,5 +461,6 @@ Accept a reviewed failure for one version:
 $ ciphersuites-scrape --out ciphersuites/_ciphersuites --library openssl --accept openssl:3.0 --reason "Removed upstream in 3.0.x, see the release notes"
 ```
 
-The data repository runs the scraper every week in GitHub Actions. See
-[The data repository workflow](data-repo-workflow.md).
+The data repository has a workflow that runs the scraper in GitHub
+Actions. See [The data repository workflow](data-repo-workflow.md) for
+when its weekly schedule applies.
