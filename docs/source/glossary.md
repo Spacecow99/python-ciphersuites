@@ -38,6 +38,12 @@ catalogue
   and some properties derived from that name. See
   [The catalogue file](data/catalogue-schema.md).
 
+CI
+  Continuous integration: checks that run automatically on every change
+  of a repository. This repository's CI is the GitHub Actions workflow
+  `.github/workflows/ci.yml`. See
+  [Set up a development environment](developer/dev-setup.md#the-ci-of-this-repository).
+
 cipher suite
   A named set of algorithms that two programs use together to protect a
   {term}`TLS` connection. For example, `TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256`.
@@ -92,6 +98,15 @@ finding
   One result of a check that the {term}`scraper` makes. Each finding has a
   level: `fail`, `warn` or `accepted`.
 
+fixture
+  In the tests, fixed input data that a test uses. The adapter tests use
+  pinned upstream files as fixtures. See [Testing](developer/testing.md).
+
+fixture manifest
+  The file `tests/fixtures/manifest.yaml`. It lists each pinned upstream
+  file with its URL and its {term}`SHA-256` hash. See
+  [Testing](developer/testing.md#upstream-fixtures-and-the-manifest).
+
 gate
   A check that compares new data with the {term}`baseline`, for example
   "a version lost cipher suites". A gate failure stops the new data for
@@ -104,6 +119,11 @@ git tag
 gitlink
   The entry in a git repository that records which {term}`commit` of a
   {term}`submodule` to use.
+
+golden file
+  A file that holds the expected result of a test, for example the
+  suites that a parser must find in one pinned upstream file. See
+  [Testing](developer/testing.md#golden-files).
 
 handshake
   The first step of a {term}`TLS` connection. In the handshake, the two
@@ -129,6 +149,11 @@ ISO 8601
 JSON
   JavaScript Object Notation, a text format for lists and key-value
   objects. The command `python -m ciphersuites` prints JSON.
+
+join coverage
+  The share of the entries in a source file that an {term}`adapter`
+  could turn into records. A value below 0.90 fails the scrape of that
+  version. See [Validation gates](developer/validation-gates.md#parse-checks).
 
 kind
   A top-level key of each library file. Its value is `library` for a
@@ -247,4 +272,10 @@ version entry
 virtual environment
   A separate directory of Python packages for one project, made with
   `python3 -m venv`. See [Install the package](user/install.md).
+
+workflow
+  A GitHub Actions automation, defined in a YAML file under
+  `.github/workflows/`. The {term}`data repository` has a workflow that
+  runs the {term}`scraper`. See
+  [The data repository workflow](developer/data-repo-workflow.md).
 ```
