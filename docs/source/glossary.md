@@ -87,7 +87,8 @@ exit code
 export-grade
   Describes cipher suites with weak keys (for example 40-bit keys) that
   were made for old United States export rules. They are not safe. The
-  {term}`catalogue` has an `export` flag.
+  {term}`catalogue` has an `export` flag. The flag is `false` for the
+  SSLv2 export-grade suites.
 
 fallback suite
   A {term}`code point` that a library file lists but the {term}`catalogue`

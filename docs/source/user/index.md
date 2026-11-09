@@ -51,8 +51,10 @@ The [Glossary](../glossary.md) defines every technical term.
 
 ## About the examples
 
-Every example in this guide was run, and its output was checked, when
-the documentation was built. Some examples use the data that comes with
+Every Python and command example in this guide is run by the
+documentation tests, and its output is checked. The installation
+commands are the exception: they need network access, so they were run
+by hand. Some examples use the data that comes with
 the package. Those examples show only values that do not change when the
 data is updated, for example old versions whose content is fixed. Other
 examples use a small invented data set from the package's tests, so that

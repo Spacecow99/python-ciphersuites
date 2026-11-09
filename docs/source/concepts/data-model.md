@@ -13,10 +13,11 @@ The project must answer one main question: "which versions of which
 library support this cipher suite?" Three facts shape the answer:
 
 - Suites have many names, but one {term}`code point`. So the code point is
-  the key that joins everything.
+  the key that connects the files: to combine data from two files, match
+  records that have the same code point.
 - Each library has many versions, and the set of suites changes between
   them. So the data records suites per version, not per library.
-- Upstream sources can fail or change format. So each version records
+- {term}`Upstream <upstream>` sources can fail or change format. So each version records
   where its data came from and whether the last attempt to read it
   worked.
 
@@ -69,15 +70,17 @@ A {term}`version entry` describes one version of a library. A
 - For a reference source, the version is a {term}`snapshot`, labelled
   with the date (UTC) on which it was read.
 
-The versions in a file are in order, oldest first. The order comes from
-the library's own version numbers, not from alphabetical order. For
+The versions in a file are in order, oldest first. The order is the
+library's own version order, not alphabetical order: version numbers for
+most libraries, dates for BoringSSL, and release order for Schannel. For
 example, NSS `3.100` comes after NSS `3.99`. The page
 [Versions and labels](../data/versions-and-labels.md) lists every label
 format.
 
-Each version entry also records where its data came from: the upstream
-`ref` (for example a git tag), the exact `commit` when the source is a
-git repository, and a hash of each file that the scraper read.
+Each version entry also records where its data came from. `ref` is what
+the scraper read, for example a git tag. `commit` is the exact git
+commit, when the source is a git repository. `files` holds a hash of
+each file that the scraper read.
 
 ### Suites and names
 
@@ -108,8 +111,8 @@ The {term}`catalogue` is the file `ciphersuites.yaml`. It has one record
 for each code point that the newest snapshot of at least one reference
 source lists. Each record has:
 
-- one preferred name. The IANA name wins; if IANA does not list the code
-  point, the testssl name wins, then the Scanigma name;
+- one preferred name: the IANA name, else the testssl name, else the
+  Scanigma name;
 - `sources`: the reference sources that list the code point;
 - properties derived from the name, such as `key_exchange` and `aead`.
 

@@ -34,7 +34,7 @@ At the commit that this documentation describes, the code that this
 guide documents is on the branch `claude/modest-tesla-n4t2ke` of the
 source repository. The `main` branch has older code that does not
 contain the module `ciphersuites.catalog`. The examples below name the
-branch.
+branch. This changes after the branch is merged into `main`.
 
 The project has no release tags yet. In particular, the tag `v0.1.0`
 does not exist, so do not try to install `@v0.1.0`. The package version

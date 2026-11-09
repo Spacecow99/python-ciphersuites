@@ -93,7 +93,7 @@ golden files.
 
 The CI job `lint` runs three tools. Run them before you push:
 
-% notest: runs the lint tools over the whole code base; run by hand, all clean at this commit
+% notest: needs the `dev` extra, which the test environment does not install; run by hand, clean at this commit
 ```console
 $ black --check ciphersuites/scrape ciphersuites/catalog.py ciphersuites/parse_name.py tests
 $ pylint ciphersuites/scrape ciphersuites/catalog.py ciphersuites/parse_name.py tests
@@ -108,7 +108,7 @@ $ bandit -r ciphersuites/scrape ciphersuites/catalog.py
 
 ## Build the documentation
 
-% notest: builds the whole documentation; run by hand, 0 warnings at this commit
+% notest: needs the `docs` extra, which the test environment does not install; run by hand, 0 warnings at this commit
 ```console
 $ sphinx-build -W --keep-going -b html docs/source docs/build/html
 ```
@@ -130,8 +130,12 @@ version. The configuration is in `pyproject.toml`: the environments are
 $ tox -e py313
 ```
 
-`tox` without `-e` runs every environment. An environment fails when
-its Python version is not installed. tox has no environment for the lint
+`tox` without `-e` runs every environment. What happens to an
+environment whose Python version is not installed depends on the tox
+version. tox 4.67 reports it as `FAIL`, and the run fails. tox 4.23
+reports it as `SKIP`, and the run still passes when at least one
+environment passed. Read the summary at the end to see which versions
+ran. tox has no environment for the lint
 checks or the documentation.
 
 ## Run the scraper

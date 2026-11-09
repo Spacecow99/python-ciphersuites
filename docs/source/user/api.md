@@ -293,7 +293,7 @@ You can put them in a set or use them as dict keys.
 | `CipherSuite.encryption` | `Optional[str]` | The encryption algorithm, for example `AES 128 GCM`. |
 | `CipherSuite.hashing` | `Optional[str]` | The hash algorithm, for example `SHA256`. |
 | `CipherSuite.old` | `Optional[bool]` | `True` when the name contains `OLD`. |
-| `CipherSuite.export` | `Optional[bool]` | `True` for an {term}`export-grade` suite with `EXPORT` in its name. |
+| `CipherSuite.export` | `Optional[bool]` | `True` when the name contains `EXPORT`. Always `False` for SSLv2 suites, also the {term}`export-grade` ones such as `SSL_CK_RC4_128_EXPORT40_WITH_MD5`; see [The derived fields](../data/catalogue-schema.md#the-derived-fields). |
 | `CipherSuite.fips` | `Optional[bool]` | `True` when the name contains `FIPS`. |
 | `CipherSuite.aead` | `Optional[bool]` | `True` when the encryption is an {term}`AEAD` mode. |
 
@@ -413,7 +413,9 @@ default `Catalog`. Create your own with `Catalog.load`.
 
 All methods that take a library name accept reference source names too,
 except where this section says otherwise. An unknown library name raises
-`KeyError("unknown library: '<name>'")`.
+`KeyError("unknown library: '<name>'")`, except in `get` and `find`.
+There, `library` only filters the names. So an unknown library gives
+`KeyError("no cipher suite named ...")` from `get` and `[]` from `find`.
 
 ### `Catalog.load`
 
@@ -427,8 +429,9 @@ A class method. Reads every data file in `data_dir` and returns a new
 - `data_dir` must be a `pathlib.Path` or an `importlib.resources`
   Traversable object. A plain string does not work: it raises
   `DataNotFoundError`.
-- The directory must contain `ciphersuites.yaml` and the library files,
-  all with `schema_version: 2`.
+- The directory must contain `ciphersuites.yaml`. Every other `.yaml`
+  file in it must be a library or reference file. All files must have
+  `schema_version: 2`. Library files are optional.
 - The method reads only files that end in `.yaml`. It skips the legacy
   files `technologies.yaml` and `vulnerabilities.yaml`.
 
@@ -510,7 +513,9 @@ find(name: str, library: Optional[str] = None, version: Optional[str] = None) ->
 
 Returns every suite that carries `name`, sorted by code point. Never
 raises for an unknown name: it returns `[]`. `library` and `version`
-narrow the search in the same way as for `Catalog.get`.
+narrow the search in the same way as for `Catalog.get`. An unknown
+`library` is not an error either: it also gives `[]`. Check the library
+name against `libraries()` first.
 
 The name must match exactly, including upper and lower case.
 

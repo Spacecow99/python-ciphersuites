@@ -24,7 +24,7 @@ So the scraper checks each result in three ways:
    code point missing from the {term}`catalogue`?
 
 A version that fails a check keeps its old data and becomes
-{term}`stale`. The other versions are written as normal. See
+{term}`stale`. The scraper writes the other versions as normal. See
 [Stale handling](runner-and-cli.md#stale-handling).
 
 ## Findings
@@ -43,8 +43,8 @@ Each check produces findings. A finding is a record with these fields
 
 The levels mean:
 
-- `fail`: the version (or the library) is not updated, and the run exits
-  with code 1.
+- `fail`: the scraper does not update the version (or the library). The
+  run exits with code 1.
 - `warn`: the data is written as normal. The finding is only reported.
 - `accepted`: a `fail` that a maintainer accepted with `--accept`. The
   data is written as normal. See [Accept a gate failure](#accept-a-gate-failure).
@@ -62,7 +62,7 @@ column "Accept" tells if `--accept` can turn the `fail` into `accepted`.
 |---|---|---|---|
 | `BASELINE_ERROR` | fail | no | The baseline file of a selected library cannot be read: bad YAML, wrong schema, an unsafe `--baseline-ref`, or a `git show` error. Nothing is written for that library. |
 | `BASELINE_ERROR` | warn | no | The baseline of a reference source that this run did not select cannot be read. The catalogue then lacks that reference. |
-| `FETCH_ERROR` | fail | no | Version discovery raised an error (finding without a version), or fetching a version's files failed: a network error, an HTTP error other than 404 after the retries, an offline cache miss, or any other exception. |
+| `FETCH_ERROR` | fail | no | Version discovery raised an error (finding without a version), or fetching a version's files failed: a network error, an HTTP 5xx or 429 that persists after the retries, any other HTTP error except 404, an offline cache miss, or any other exception. |
 | `NO_VERSIONS` | fail | no | Version discovery returned no versions. |
 | `LINE_MISSING_FROM_DISCOVERY` | warn | no | A label in the baseline is no longer discovered. Only for adapters that are not {term}`rolling`. The old entry is kept unchanged. |
 | `FILE_MISSING` | fail | no | The server answered HTTP 404 for a file. |
@@ -155,10 +155,10 @@ So it runs only when the catalogue can be built (see
 together with the three reference sources:
 
 - `NEW_NAME_COLLISION`: one warning for each (library, name). A known
-  set of names is left out: OpenSSL, LibreSSL and BoringSSL use
+  set of names is left out (`KNOWN_NAME_COLLISIONS`). OpenSSL, LibreSSL
+  and BoringSSL use these names for both an SSLv2 and a TLS code point:
   `RC4-MD5`, `NULL-MD5`, `EXP-RC4-MD5`, `EXP-RC2-CBC-MD5`, `DES-CBC-SHA`
-  and `DES-CBC3-SHA` for both an SSLv2 and a TLS code point
-  (`KNOWN_NAME_COLLISIONS`).
+  and `DES-CBC3-SHA`.
 - `UNKNOWN_CODE_POINT`: one warning for each library or reference that
   has code points outside the catalogue.
 - `STALE_TOO_OLD`: one warning for each stale entry older than 28 days
@@ -185,8 +185,8 @@ A maintainer can accept such a failure for one run with
   your reason.
 - The version is written with the new data, and its entry gets
   `accepted: {reason: <text>, at: <start time of the run>}`.
-- The acceptance lasts for this run only. Nothing stores it for later
-  runs.
+- No list of acceptances is kept for later runs. The `accepted` record
+  stays in the data file until the next run scrapes that version again.
 
 [Runner and command line](runner-and-cli.md#accept-a-gate-failure)
 shows a full, tested example.

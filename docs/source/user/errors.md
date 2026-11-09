@@ -15,7 +15,7 @@ error type and its message.
 | `DataNotFoundError` | `Catalog.load`, and the first call of any module-level function | The data cannot be loaded. |
 | `AmbiguousNameError` | `get`, `Catalog.get` | A name matches more than one code point. |
 | `KeyError` | `get`, `Catalog.get` | An invalid or unknown code point, or an unknown name. |
-| `KeyError` | `supported_by`, `versions`, `CipherSuite.names` and the other methods that take a library name | An unknown library name or version label. |
+| `KeyError` | `supported_by`, `versions`, the `CipherSuite` methods, `Catalog.membership` and `Catalog.names_of` | An unknown library name or version label. |
 
 `DataNotFoundError` and `AmbiguousNameError` are in the module
 `ciphersuites.catalog`. `DataNotFoundError` is also available as
@@ -153,7 +153,7 @@ message is the first item of the error's `args`, so print
 | `invalid code point <key>: <reason>` | `get`, `Catalog.get` | A tuple or list that is not a code point: not two or three items, or an item that is not a byte. |
 | `unknown code point <key>` | `get`, `Catalog.get` | A valid code point that is not in the data. |
 | `no cipher suite named '<name>'` | `get`, `Catalog.get` | No name matches, after `library` and `version` are applied. |
-| `unknown library: '<name>'` | every function and method that takes a library name | The name is not a library or reference source in the data. |
+| `unknown library: '<name>'` | every function and method that takes a library name, except `get` and `find` | The name is not a library or reference source in the data. |
 | `unknown version '<label>' of '<library>'` | `supported_by`, `Catalog.supported_by` | The library has no version with this label. |
 
 Examples with the test data set of the source repository (see

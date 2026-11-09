@@ -130,16 +130,16 @@ In that case the name cannot identify the suite. Use the code point.
 `version` alone matches that label in *every* library. Different
 libraries can use the same label: OpenSSL and LibreSSL both have a
 version `3.0`. This example uses the packaged data. `version="3.0"`
-alone still finds the SSLv2 suite, because LibreSSL 3.0 uses
-`RC4-MD5` for it:
+alone also matches LibreSSL 3.0, which uses `RC4-MD5` for both code
+points, so the lookup is still ambiguous:
 
 ```pycon
 >>> from ciphersuites import catalog
 >>> try:
 ...     catalog.get("RC4-MD5", version="3.0")
 ... except catalog.AmbiguousNameError as error:
-...     print(sorted({c.library for c in error.candidates}))
-['libressl', 'openssl']
+...     print([",".join(c.code_point) for c in error.candidates if c.library == "libressl"])
+['0x00,0x04', '0x01,0x00,0x80']
 ```
 
 So give `library` whenever you give `version`.

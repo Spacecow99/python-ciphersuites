@@ -13,8 +13,8 @@ not write broken data.
 
 So the scraper handles each library version on its own. If one version
 fails, the scraper keeps the old data for that version and marks it as
-{term}`stale`. All other versions are updated as normal. The file is
-always complete.
+{term}`stale`. All other versions are updated as normal. The file always
+keeps an entry for every version that had a good scrape.
 
 ## `status`
 
@@ -29,10 +29,10 @@ A version becomes stale when one of these things happens:
 
 - The scraper cannot fetch the version's files.
 - The scraper cannot read the files (a parse error).
-- The new data fails a {term}`gate`: a check against the previous data,
-  for example "this version lost cipher suites". A maintainer can accept
-  such a failure (see [`accepted`](#accepted)); then the version does not
-  become stale.
+- The new data fails a {term}`gate`. A gate is a check against the
+  previous data, for example "this version lost cipher suites". A
+  maintainer can accept the failure (see [`accepted`](#accepted)). Then
+  the version does not become stale.
 - The scraper cannot list the library's versions at all. Then every entry
   of that library becomes stale.
 
@@ -75,9 +75,9 @@ writes have the same value.
 When `scraped_at` changes:
 
 - For a library, each run that includes the library scrapes every
-  version again. So every `ok` entry of that library gets the new time,
-  even when nothing else changed. A run does not always include every
-  library.
+  version again, unless the run is limited to some versions. So every
+  `ok` entry of that library gets the new time, even when nothing else
+  changed. A run does not always include every library.
 - For `testssl`, the scraper skips the scrape when the testssl.sh `HEAD`
   commit has not changed. The time then stays the same.
 - A stale entry keeps the time of its last good scrape. So, for a stale
@@ -85,8 +85,8 @@ When `scraped_at` changes:
 - An entry whose version the scraper no longer finds upstream is kept
   unchanged, with its old time.
 
-The scraper warns its maintainers when a stale entry is more than 28
-days old. You can apply your own limit with `scraped_at`.
+When the scraper builds the catalogue, it warns its maintainers about
+each stale entry that is more than 28 days old. You can apply your own limit with `scraped_at`.
 
 ## `accepted`
 
@@ -105,17 +105,19 @@ written as normal, and the entry records the acceptance:
 
 An acceptance applies to one run only. The next run that scrapes the
 version without an acceptance writes `accepted: null` again. So a
-non-null `accepted` means: "the run that produced this data had a gate
-failure for this version, and a person accepted it for the reason given".
+non-null `accepted` means this: the run that produced this data had a
+gate failure for this version. A person accepted it for the reason
+given.
 
 ### A real example
 
 At data commit `c24a21e`, every entry has `accepted: null`. An earlier
 data commit has real acceptances: commit
 `92e283fa7e7627db20561054b27a55282c74e84d` (short form `92e283f`), the
-first run of the current scraper. In that run, the comparison with the
-older data format failed for the newest version of five libraries, and
-the maintainer accepted it. This is the `Windows Server 2025` entry of
+first run of the current scraper. In that run, the new data for the
+newest version of five libraries did not match the data in the older
+format. A gate failed for each of them. The maintainer accepted the five
+failures. This is the `Windows Server 2025` entry of
 `schannel.yaml` at that commit:
 
 ```yaml
@@ -132,8 +134,8 @@ the maintainer accepted it. This is the `Windows Server 2025` entry of
     at: '2026-11-08T13:38:55.446080+00:00'
 ```
 
-This example shows the format only. Parts of that reason text were later
-found to be wrong. Data commit `c24a21e` scraped these versions again
+This example shows the format only. The maintainers later found errors
+in parts of that reason text. Data commit `c24a21e` scraped these versions again
 without an acceptance, which cleared the field. Its commit message gives
 the corrected evidence.
 

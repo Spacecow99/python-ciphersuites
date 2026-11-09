@@ -1,21 +1,21 @@
 # Architecture
 
 This page explains how the parts of the repository work together. It
-starts with the big picture, then follows one run of the scraper step
+starts with an overview, then follows one run of the scraper step
 by step, and ends with the read side: the Python API that reads the
 data.
 
 Read [Repository layout](repo-layout.md) first if you do not know where
 the files are.
 
-## The big picture
+## Overview
 
-The project has two halves that meet in the data files:
+The project has two parts. Both use the data files:
 
 - **The write side** is the {term}`scraper`, the command
   `ciphersuites-scrape` (package `ciphersuites.scrape`). It reads the
-  source code of each library version and three reference sources from
-  the internet. It writes one YAML file per library and reference
+  source code of each library version (for Schannel, a hand-copied list)
+  and three reference sources from the internet. It writes one YAML file per library and reference
   source, and the {term}`catalogue` `ciphersuites.yaml`.
 - **The read side** is the module `ciphersuites.catalog` and the
   command `python -m ciphersuites`. They read those YAML files and
@@ -26,8 +26,10 @@ The YAML files live in a separate git repository, the
 This package includes it as a git {term}`submodule` at
 `ciphersuites/_ciphersuites`. A {term}`gitlink` in this repository pins
 the exact data commit. A GitHub Actions {term}`workflow` in the data
-repository runs the scraper every week and commits the new files (see
-[The data repository workflow](data-repo-workflow.md)).
+repository runs the scraper and commits the new files. Its weekly
+schedule starts only after the release steps (see
+[The data repository workflow](data-repo-workflow.md) and
+[Releasing](releasing.md)).
 
 So data moves like this:
 
@@ -63,9 +65,9 @@ So data moves like this:
 ## One run, step by step
 
 The function `run` in `ciphersuites/scrape/runner.py` does the work. The
-command line (`main` in `cli.py`) only checks the options, takes the
-current UTC time as the start time of the run, creates one instance of
-every adapter with that time, and calls `run`.
+command line (`main` in `cli.py`) only checks the options. Then it takes
+the current UTC time as the start time of the run, creates one instance
+of every adapter with that time, and calls `run`.
 
 ### 1. Select the adapters
 

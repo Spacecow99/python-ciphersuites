@@ -117,8 +117,8 @@ The data contains two SCSVs:
 | `0x56,0x00` | `TLS_FALLBACK_SCSV` | the client retried the handshake with a lower protocol version (RFC 7507) |
 
 The data lists an SCSV for a library version when that version defines
-it. For example, every tracked version of OpenSSL, BoringSSL and NSS
-defines both. If you
+it. For example, at data commit `c24a21e`, every tracked version of
+OpenSSL, BoringSSL and NSS defines both. If you
 want only real cipher suites, remove these two code points from your
 results.
 

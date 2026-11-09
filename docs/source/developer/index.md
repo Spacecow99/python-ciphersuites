@@ -10,8 +10,8 @@ this project.
 The repository holds two programs that share one data format:
 
 - **The scraper**, the command `ciphersuites-scrape`. It reads the
-  source code of ten TLS libraries, version by version, and three
-  reference lists of cipher suites. It checks the result and writes
+  source code of nine TLS libraries and a hand-copied list for Schannel,
+  version by version, and three reference lists of cipher suites. It checks the result and writes
   YAML data files.
 - **The read side**, the module `ciphersuites.catalog` and the command
   `python -m ciphersuites`. They answer questions from the data files.
@@ -19,8 +19,9 @@ The repository holds two programs that share one data format:
 
 The data files live in a separate git repository, the
 {term}`data repository`, which this package includes as a
-{term}`submodule`. A GitHub Actions {term}`workflow` there runs the
-scraper every week.
+{term}`submodule`. A GitHub Actions {term}`workflow` there is made to
+run the scraper every week. That weekly run is not active yet; see
+[The data repository workflow](data-repo-workflow.md).
 
 Most developer work is on the scraper: a library changes its source
 files, a new library is added, or a check reports a problem that needs a

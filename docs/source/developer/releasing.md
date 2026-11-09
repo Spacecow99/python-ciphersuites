@@ -6,8 +6,8 @@ together, and how to move the data {term}`gitlink`.
 **State at the commit that this documentation describes.** No release
 has been made. The package repository has no tags at all; in particular,
 the tag `v0.1.0` does not exist (checked with `git ls-remote --tags` on
-2026-11-09). The procedure below is the agreed plan from the project's
-review records; none of its steps has been carried out yet.
+2026-11-09). The procedure below is the plan from the project's review
+records. No step of it is done yet.
 
 ## What a release is
 
@@ -29,7 +29,8 @@ other:
 - The package pins one data commit through the gitlink
   `ciphersuites/_ciphersuites`. A clone with `--recurse-submodules`
   fails when that commit is not reachable from a branch or tag of the
-  data repository.
+  data repository. A commit is reachable when a branch or a tag
+  contains it.
 - The data repository's workflow installs the package from a fixed
   reference (see [The data repository workflow](data-repo-workflow.md)).
   The install fails when that reference does not exist.
@@ -46,8 +47,8 @@ Today, both sides point at work that is only on feature branches:
   package `main` has older code.
 
 A squash merge or a deleted branch would make the pinned data commit
-unreachable. A tag can be moved, so the workflow should install from a
-full commit SHA instead of the tag.
+unreachable. Git can move a tag to a different commit. So the workflow
+must install the package from a full commit SHA, not from a tag.
 
 ## The release procedure
 
@@ -63,7 +64,7 @@ From this moment, the workflow file is on the default branch, so its
 weekly schedule is active (Sundays 00:00 UTC). Until step 4 is done, a
 scheduled run fails at the install step, because `v0.1.0` does not
 exist. Such a run fails before it scrapes, so it does not change the
-data. Do steps 1 to 4 close together.
+data. Do steps 1 to 4 one after the other, in one session.
 
 ### 2. Merge the package branch
 
@@ -99,15 +100,16 @@ python -m pip install "python-ciphersuites @ git+https://github.com/Spacecow99/p
 A commit SHA cannot move; a tag can. Commit this change to the data
 repository's `main`.
 
-### 5. Re-point the gitlink if needed
+### 5. Move the gitlink to the tip of data `main`
 
-After step 1, the newest commit of the data repository's `main` is the
-merge commit, not `c24a21e`. When the gitlink commit differs from the
-merged data commit on `main`, move the gitlink to the merged commit, as
-described below, in a follow-up commit of the package. Data `main`
-(`07d09ab`) is an ancestor of `c24a21e`. So, when `main` gets no other
-commits before the merge, the merge commit has the same files as
-`c24a21e`, and the tests must still pass.
+After step 4, the newest commit of the data repository's `main` is the
+commit that pins the workflow install to the SHA. Move the gitlink to
+that commit, so that the packaged data includes the final workflow
+file. Use the procedure in [Move the data gitlink](#move-the-data-gitlink),
+in a follow-up commit of the package. Data `main` (`07d09ab`) is an
+ancestor of `c24a21e`. So, when `main` gets no other commits, the data
+files at that commit are the same as at `c24a21e`, and the tests must
+still pass.
 
 ## Move the data gitlink
 
@@ -129,12 +131,14 @@ package (for example after weekly runs of the data workflow).
 3. Update the expected commit in `test_data_dir_is_gitlink` in
    `tests/test_data_packaging.py`. The test checks that the gitlink
    points to exactly this commit.
-4. Run the whole test suite. The documentation examples that use the
+4. Update the pages of this documentation that name the old data
+   commit. Search `docs/source` for its short SHA.
+5. Run the whole test suite. The documentation examples that use the
    packaged data show only facts that a data update cannot change, so
    they must still pass. A failure means that the data changed in a way
    that needs review.
-5. Commit the gitlink and the test change together, with the data commit
-   in the message.
+6. Commit the gitlink, the test change and the documentation change
+   together, with the data commit in the message.
 
 Check the result:
 

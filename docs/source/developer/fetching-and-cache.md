@@ -9,7 +9,7 @@ The code is in `ciphersuites/scrape/fetch.py` (downloads and cache) and
 
 ## Why this matters
 
-Upstream servers fail now and then, and some of them limit the number of
+Upstream servers sometimes fail, and some of them limit the number of
 requests. A run must survive a short failure, but it must not hide a
 real one. A run must also be repeatable: the data must say exactly which
 file it came from.

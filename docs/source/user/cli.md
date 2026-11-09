@@ -109,7 +109,7 @@ this order:
 | `encryption` | string or null | The encryption algorithm. |
 | `hashing` | string or null | The hash algorithm. |
 | `old` | boolean or null | The name contains `OLD`. |
-| `export` | boolean or null | An {term}`export-grade` suite. |
+| `export` | boolean or null | The name contains `EXPORT`. Always `false` for SSLv2 suites, also the {term}`export-grade` ones; see `CipherSuite` in the [API reference](api.md#ciphersuite). |
 | `fips` | boolean or null | The name contains `FIPS`. |
 | `aead` | boolean or null | The encryption is an {term}`AEAD` mode. |
 

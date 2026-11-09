@@ -5,8 +5,9 @@ data that comes with the package. Install the package first: see
 [Install the package](install.md).
 
 Each example below is a Python session. Lines that start with `>>>` or
-`...` are what you type. The other lines are what Python prints. You can
-start a session with the command `python`.
+`...` are what you type. The other lines are what Python prints. To
+start a session, type `python` in the terminal of your virtual
+environment.
 
 ## Get a suite by its code point
 

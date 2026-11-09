@@ -84,7 +84,8 @@ file's version order:
 '2016-06-02'
 ```
 
-The SSLv2 code point `0x01,0x00,0x80` is only in OpenSSL `1.0.2`.
+In `openssl.yaml`, the SSLv2 code point `0x01,0x00,0x80` is only in
+version `1.0.2`.
 BoringSSL contained `0x00,0x05` up to its `2016-06-02` version.
 
 To get the first and the last version that contain a code point, take
@@ -263,7 +264,7 @@ $ yq -r '.versions[] | select(.status == "stale") | .label' ciphersuites/_cipher
 If you have `jq` but not `yq`, convert the YAML file to JSON first, for
 example with Python and PyYAML. Then use the same filters with `jq`:
 
-% notest: needs jq, which the test environment does not provide; run by hand with jq 1.7 against data commit c24a21e
+% notest: needs jq, which the package's test dependencies do not include; run by hand with jq 1.7 against data commit c24a21e
 ```console
 $ python3 -c 'import json, sys, yaml; json.dump(yaml.safe_load(open(sys.argv[1])), sys.stdout)' ciphersuites/_ciphersuites/go.yaml > go.json
 $ jq -r '.versions[0].label' go.json

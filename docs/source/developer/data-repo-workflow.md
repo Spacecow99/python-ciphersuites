@@ -24,8 +24,9 @@ current package no longer has. This page does not describe it.
 ## Why the workflow has two jobs
 
 The scraper runs third-party code (its dependencies) on untrusted input
-(upstream HTML, CSV and source files). If that code were compromised, a
-job with a write token could push anything to the data repository. So
+(upstream HTML, CSV and source files). A token is the key that GitHub
+gives a job to access the repository. A compromised dependency in a job
+with a write token can push any change to the data repository. So
 the workflow separates the work:
 
 - the job `scrape` runs the scraper with a token that can only read;
@@ -102,23 +103,26 @@ Permissions: `contents: read`. Steps:
    `python -m pip install "python-ciphersuites @ git+https://github.com/Spacecow99/python-ciphersuites@v0.1.0"`.
    The tag `v0.1.0` does not exist yet, so this step fails until it is
    created. See [Releasing](releasing.md).
-5. **Scrape and validate.** It runs
-   `ciphersuites-scrape --out . --report validation-report.json`, with
-   one `--accept` per pair and `--reason` when `accept` is set, and
-   `--baseline-ref` when `baseline_ref` is set. The inputs reach the
-   script only through environment variables (`ACCEPT`, `REASON`,
-   `BASELINE_REF`) and are always quoted. This prevents script
-   injection. The step does not stop on a failure: it stores the exit
-   code as the job output `rc`. The Markdown summary goes to the job
-   summary page, because GitHub sets `GITHUB_STEP_SUMMARY`.
+5. **Scrape and validate.**
+   - It runs `ciphersuites-scrape --out . --report validation-report.json`.
+   - It adds one `--accept` per pair and `--reason` when `accept` is set.
+     It adds `--baseline-ref` when `baseline_ref` is set.
+   - The inputs reach the script only through environment variables
+     (`ACCEPT`, `REASON`, `BASELINE_REF`) and are always quoted. This
+     prevents script injection.
+   - The step does not stop on a failure. It stores the exit code as the
+     job output `rc`.
+   - The Markdown summary goes to the job summary page, because GitHub
+     sets `GITHUB_STEP_SUMMARY`.
 6. **Upload the data**: every top-level `*.yaml` file, as the artifact
-   `data`. The step fails when there is no such file.
+   `data` (a file bundle that GitHub keeps for the run and that a later
+   job can download). The step fails when there is no such file.
 7. **Upload the report**: `validation-report.json`, as the artifact
    `validation-report`. This step runs even when an earlier step failed.
 
 The scraper writes complete files even when some versions fail; failed
-versions are {term}`stale`. So the data is passed on even when the
-scraper's exit code is 1.
+versions are {term}`stale`. So the job gives the data to the job
+`commit` even when the scraper's exit code is 1.
 
 ## The job `commit`
 
@@ -126,12 +130,13 @@ It runs after `scrape` succeeded. Permissions: `contents: write`. Steps:
 
 1. **Check out** the data repository.
 2. **Download** the artifact `data` into a temporary directory.
-3. **Copy only the known files.** For each of the 14 names
-   `ciphersuites`, `iana`, `testssl`, `scanigma`, `boringssl`, `gnutls`,
-   `go`, `jsse`, `libressl`, `mbedtls`, `nss`, `openssl`, `s2n` and
-   `schannel`, it copies `<name>.yaml` from the artifact when that is a
-   regular file and not a symbolic link. Any other file in the artifact
-   is ignored. The legacy files `technologies.yaml` and
+3. **Copy only the known files.** It copies only these 14 files from the
+   artifact, and only when each is a regular file and not a symbolic
+   link: `ciphersuites.yaml`, `iana.yaml`, `testssl.yaml`,
+   `scanigma.yaml`, `boringssl.yaml`, `gnutls.yaml`, `go.yaml`,
+   `jsse.yaml`, `libressl.yaml`, `mbedtls.yaml`, `nss.yaml`,
+   `openssl.yaml`, `s2n.yaml` and `schannel.yaml`. Any other file in the
+   artifact is ignored. The legacy files `technologies.yaml` and
    `vulnerabilities.yaml` are not in the list.
 4. **Commit and push.** It stages the top-level `*.yaml` files only
    (`git add -- ':(glob)*.yaml'`). When something changed, it commits as

@@ -38,7 +38,7 @@ Every adapter is a subclass of `Adapter` (in
 | `min_line` | `None` | The oldest release line to keep, for example `"1.0.2"`. Older lines are left out of discovery. `None` keeps every line. |
 | `min_join_coverage` | `0.90` | The lowest {term}`join coverage` that passes the parse check. |
 | `min_ratio_new_line` | `0.5` | The `NEW_LINE_SHRINK` gate: a new version must have at least this share of the suites of the version before it. |
-| `rolling` | `False` | `True` for a source with no versions of its own. Each run then makes a new {term}`snapshot` labelled with the date. |
+| `rolling` | `False` | `True` for a source with no versions of its own. The adapter's `discover_versions` must then return one version labelled with the run date, a new {term}`snapshot`. The runner keeps the newest `keep_last` snapshots. |
 | `keep_last` | `8` | For a rolling adapter: how many snapshots the file keeps. Not used when `rolling` is `False`. |
 
 The constructor takes one optional argument, `now`: the start time of
@@ -189,7 +189,7 @@ readers of the data.
   line `X.Y`. There is no minimum line.
 - **Files.** `ssl2.h` (only for lines before 4.0), `ssl3.h` and
   `tls1.h`. For lines from 2.5 on, the directory is `src/lib/libssl/`.
-  For older lines, the headers are one level deeper in the mirror, in
+  For older lines (before 2.5), the headers are in
   `src/lib/libssl/src/ssl/`.
 - **Parse.** The OpenSSL-family parser, with one quirk: the CK keys of
   the ChaCha20 suites lack the `_WITH` that the TXT keys have. The
@@ -209,8 +209,9 @@ constants.
   - A fixed list `_HISTORY` of 18 rows: 17 dates from `2014-09-15` to
     `2026-01-07` on which the set of suites in the table changed (the
     {term}`BoringSSL change point`s), and a snapshot of `2026-11-08`. Each
-    row holds the label, the commit SHA of the last change to the table
-    on that day, and the path of the table file. The list must never be
+    change-point row holds the label, the commit SHA of the last change
+    to the table on that day, and the path of the table file. The
+    `2026-11-08` row holds the `HEAD` commit of that day instead. The list must never be
     edited or reordered. New rows can only be added at the end.
   - Every tag that matches `0.YYYYMMDD.N` (the {term}`release tag`s),
     from `git ls-remote --tags`. Other tags, such as `fips-*` and

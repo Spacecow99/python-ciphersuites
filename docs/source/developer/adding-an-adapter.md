@@ -134,7 +134,8 @@ Other parts of the base class that you may need:
 Add the module to the import list in
 `ciphersuites/scrape/adapters/__init__.py`:
 
-```text
+% notest: excerpt of an existing file
+```python
 from ciphersuites.scrape.adapters import (  # noqa: E402,F401
     boringssl,
     example,
@@ -399,6 +400,11 @@ A new adapter touches more than the package:
   Update the pages that list the libraries, for example the
   [start page](../index.md), the [glossary](../glossary.md) and
   [Files in the data repository](../data/files.md).
+- **Adapter counts and name lists.** Update the adapter count and the
+  name lists in [Set up a development environment](dev-setup.md),
+  [Runner and command line](runner-and-cli.md), [Adapters](adapters.md)
+  and [The data repository workflow](data-repo-workflow.md). The tested
+  example in the development setup page fails until you do.
 
 The read API needs no change: `ciphersuites.catalog` reads every data
 file in the directory.
