@@ -678,7 +678,7 @@ def test_lazy_load_missing_data(monkeypatch, tmp_path):  # import succeeds; firs
 
 ### Task 26: Full documentation suite for three audiences
 
-**Status:** IN PROGRESS, PAUSED after dispatch D3 (2026-11-08). Done: D1 inventory, Sphinx config, CI docs job, example harness; D2 shared pages and data guide; D3 user guide. Next: D4 developer guide, then D5 accuracy review, D6 fixes, README and final verify. Resume from 2026-11-08-scraping-robustness-task26-handoff.md.
+**Status:** COMPLETE (2026-11-09). 35 MyST pages (shared, user, developer, data guides); every example run by tests/test_docs_examples.py or marked % notest with a reason; two accuracy reviews applied; sphinx -W builds with 0 warnings; README points to the three guides.
 
 **Goal:** Write a complete Sphinx (MyST Markdown) documentation set in `docs/source/`. It serves three separate audiences. Each reader is a human with no prior knowledge of the package, its layout or its purpose, and may be a beginner developer.
 
@@ -742,19 +742,19 @@ docs/source/
   - Enable `sphinx.ext.autodoc`/`autosummary` for the API pages, or document the API by hand. Choose one and record the choice.
   - Add a `docs` build to CI, using `sphinx-build -W --keep-going`, so warnings fail the build.
 - [x] **Step 3: Write the shared pages.** Write `index.md`, `glossary.md` and `concepts/` first; the three guides link to them.
-- [ ] **Step 4: Write the three guides.** Each guide is complete without the other two, apart from links to the shared pages.
+- [x] **Step 4: Write the three guides.** Each guide is complete without the other two, apart from links to the shared pages.
   - **Data guide:** document every YAML key with its type, meaning and an example taken from the real data at the pinned submodule commit. Explain `status: stale`, `accepted`, version label formats per library, 3-byte SSLv2 code points, and SCSV records.
   - **User guide:** cover every public function in `ciphersuites.catalog`, `AmbiguousNameError` and narrowing, `DataNotFoundError` and the submodule hint, and every `python -m ciphersuites` flag, including `-V`.
   - **Developer guide:** cover every `ciphersuites-scrape` flag and exit code, every finding code and its level, the adapter contract and the rules every adapter follows, the fixtures CLI forms, and the release order.
-- [ ] **Step 5: Test every example.**
+- [x] **Step 5: Test every example.**
   - Put every Python and shell example under test, using `sphinx.ext.doctest`, MyST code-cell testing, or a pytest test that extracts and runs the fenced blocks.
   - Run the examples against the packaged data, and against `tests/fixtures/catalog_v2` where output must be stable.
   - An example that cannot be tested must be marked and listed in the report.
-- [ ] **Step 6: Accuracy review.**
+- [x] **Step 6: Accuracy review.**
   - A fresh reviewer, who did not write the pages, checks every factual claim against the code and the Step 1 inventory. Use a strong model.
   - Every claim that cannot be verified is removed or fixed.
   - A second pass checks readability for a beginner and the ASD-STE100 guidance on a sample of pages.
-- [ ] **Step 7: Verify and commit.**
+- [x] **Step 7: Verify and commit.**
   - Run `sphinx-build -W --keep-going -b html docs/source docs/build/html` with no warnings.
   - The example tests pass, and the full test suite still passes.
   - `docs/build/` is not committed.

@@ -1,86 +1,73 @@
 # ciphersuites
 
-Python library and CLI for working with a catalogue of TLS ciphersuites and
-the ciphersuites supported by individual TLS libraries and versions
-(OpenSSL, GnuTLS, Go, NSS, JSSE, BoringSSL, LibreSSL, s2n, mbedTLS, Schannel).
+Python library and command line for a catalogue of TLS cipher suites, and
+for the cipher suites that each version of a TLS library supports
+(OpenSSL, BoringSSL, LibreSSL, GnuTLS, NSS, Go, JSSE, Mbed TLS, s2n and
+Schannel).
+
+## Documentation
+
+The documentation in `docs/source/` has three guides. Each one is for a
+different reader:
+
+- [User guide](docs/source/user/index.md): install the package and use
+  the Python API (`ciphersuites.catalog`) and `python -m ciphersuites`.
+- [Developer guide](docs/source/developer/index.md): understand, run,
+  test, extend and release the scraper and the package.
+- [Data guide](docs/source/data/index.md): read the YAML data files
+  directly, without the Python package.
+
+The [start page](docs/source/index.md) explains the project, and the
+[glossary](docs/source/glossary.md) defines its terms.
+
+To build the documentation as HTML, install the `docs` extra and run
+Sphinx from the top directory of the repository:
+
+```console
+$ pip install ".[docs]"
+$ sphinx-build -W --keep-going -b html docs/source docs/build/html
+```
+
+Then open `docs/build/html/index.html` in a web browser.
 
 ## Installation
 
-The data lives in a git submodule, so clone with submodules and install:
+The data lives in a git submodule, so clone with submodules and install
+with pip. Python 3.9 or newer is necessary.
 
-```shell
-$ git clone --recurse-submodules https://github.com/Spacecow99/python-ciphersuites.git
+```console
+$ git clone --recurse-submodules --branch claude/modest-tesla-n4t2ke https://github.com/Spacecow99/python-ciphersuites.git
 $ cd python-ciphersuites
 $ pip install .
 ```
 
-If you already cloned without `--recurse-submodules`, run
-`git submodule update --init` first.
+The command names the branch `claude/modest-tesla-n4t2ke`, because the
+`main` branch does not have the module `ciphersuites.catalog` yet. This
+changes when that branch is merged into `main`. The project has no
+release tags yet. If you already cloned without `--recurse-submodules`,
+run `git submodule update --init`. The
+[installation page](docs/source/user/install.md) gives all the details.
 
-## Usage
+## A short example
 
-### Python API
-
-```python
-from ciphersuites import catalog
-
-catalog.get((0xC0, 0x2F))                 # by code point: always unambiguous
-catalog.get("TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256")
-catalog.find("RC4-MD5")                   # by name: always a list
-catalog.get("RC4-MD5")                    # raises AmbiguousNameError
-catalog.get("ECDHE-RSA-AES128-GCM-SHA256", library="openssl", version="3.0")
-
-cs = catalog.get((0xC0, 0x2F))
-cs.names("openssl")         # {"ECDHE-RSA-AES128-GCM-SHA256": ["1.0.2", ...]}
-cs.supported_in("openssl")  # ["1.0.2", "1.1.0", "1.1.1", "3.0", ...]
-cs.first_seen("openssl"), cs.last_seen("openssl")
-
-catalog.supported_by("go", "1.22")        # list of CipherSuite
-catalog.libraries()
-catalog.versions("nss")
+```pycon
+>>> from ciphersuites import catalog
+>>> suite = catalog.get((0xC0, 0x2F))
+>>> suite.name
+'TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256'
+>>> suite.first_seen("openssl")
+'1.0.2'
 ```
 
-Names are not unique across protocols, so a name that maps to several code
-points raises `AmbiguousNameError` (use a code point or narrow with
-`library=`/`version=`). Missing data raises `ciphersuites.DataNotFoundError`.
+A name can belong to more than one code point. `catalog.get` then raises
+`AmbiguousNameError`; see the
+[name resolution page](docs/source/user/name-resolution.md).
 
-### Command line
-
-`python -m ciphersuites` prints suites as a JSON list sorted by code point.
-
-```shell
-$ python -m ciphersuites                              # whole catalogue
-$ python -m ciphersuites --library go                 # any version of Go
-$ python -m ciphersuites --library go --version 1.22  # library version
-$ python -m ciphersuites --package-version            # or -V
-```
-
-`--version` is the library version and requires `--library`.
-
-### Refreshing the data
-
-`ciphersuites-scrape` rebuilds the data files from upstream sources:
-
-```shell
-$ ciphersuites-scrape --out ../ciphersuites --report validation-report.json
-$ ciphersuites-scrape --out ../ciphersuites --library openssl go --versions 3.0
-$ ciphersuites-scrape --out ../ciphersuites --dry-run --offline
-$ ciphersuites-scrape --out ../ciphersuites --baseline-ref b0e59c6
-```
-
-Flags: `--out`, `--library`, `--versions`, `--dry-run`, `--offline`,
-`--accept`, `--reason`, `--report`, `--baseline-ref`, `--cache-dir`,
-`--capture-fixtures`.
-
-Every scraped (library, version) is validated (parse invariants, comparison
-with the previous data, and v1 parity). A failure marks that version stale,
-keeps its previous data and makes the command exit non-zero. A reviewed
-failure can be overridden for one run, with the reason recorded in the data:
-
-```shell
-$ ciphersuites-scrape --out ../ciphersuites \
-    --accept openssl:1.0.2 --reason "removed upstream, see <link>"
-```
+`python -m ciphersuites` prints suites as a JSON list. The
+[command line page](docs/source/user/cli.md) describes its options.
+`ciphersuites-scrape` rebuilds the data files from the upstream sources.
+The [developer guide](docs/source/developer/runner-and-cli.md) describes
+it.
 
 ## Authors
 
