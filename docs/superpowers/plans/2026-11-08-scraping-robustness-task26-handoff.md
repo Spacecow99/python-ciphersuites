@@ -34,3 +34,8 @@ Task 26 D3: DONE_WITH_CONCERNS b0f2fcd (harness: console `python` now resolves t
 Open for D6: README and user/install.md name the branch claude/modest-tesla-n4t2ke because main lacks ciphersuites.catalog; reword to main (or the tag) after the merge. pyproject declares only requires-python >=3.9; do not claim an upper bound.
 Open for D5: two packaged-data examples rely on maintained lines (RC4-MD5 in OpenSSL 3.0; Go first_seen of 0xC0,0x2F) -- check they cannot change on a weekly scrape, else switch to frozen facts or the fixture.
 PAUSED after D3 at user request (usage limit). Next: D4 developer guide.
+Task 26 D4: DONE_WITH_CONCERNS f8a3abc (13 developer pages, glossary +6). 739 passed, 43 skipped (31 new notest), sphinx 0 warnings.
+Ruling 26.16 (release order): keep the order given to the user (data merge first) with D4s stated consequence (weekly run fails at install until tag + pin); it is a same-session procedure -- cost if wrong: one failed scheduled run.
+Ruling 26.17 (gitlink target): point the gitlink at the tip of data main after the workflow SHA-pin commit (step 4), so the packaged data includes the final workflow; D6 updates releasing.md wording.
+Ruling 26.18 (PYTHONHASHSEED): manual recommendation only, as written.
+D5: two read-only accuracy reviewers in parallel (A: shared + user + data pages; B: developer pages + tests/test_docs_examples.py harness incl. D3 shim change), strong model; each also checks every % notest reason is justified and does a readability/ASD-STE100 pass on 3 sampled pages.
