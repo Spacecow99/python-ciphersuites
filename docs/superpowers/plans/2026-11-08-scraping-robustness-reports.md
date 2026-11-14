@@ -1,0 +1,1093 @@
+# Task reports — plan: docs/superpowers/plans/2026-11-08-scraping-robustness.md
+
+Implementer reports for Tasks 1-23, concatenated from the git-ignored SDD workspace.
+
+---
+
+<!-- task-1-report.md -->
+
+# Task 1 report
+
+Status: DONE. Commit 45ef2e9 "Convert data directory to a real submodule pinned to b0e59c6".
+
+## Implemented
+- ciphersuites/_ciphersuites is now a gitlink (160000) at b0e59c6. .gitmodules has one stanza, with the name matching the path (the old name `_ciphersuites` was replaced, otherwise `git submodule add` left two stanzas).
+- ciphersuites/__init__.py: added DataNotFoundError(RuntimeError) and `_load_yaml(name)`, using stdlib `importlib.resources.files` (3.9-safe). All 14 try/warn/[] blocks replaced by `X = _load_yaml("x.yaml")`. `warnings` import removed. Error message contains `git submodule update --init`.
+- Byte-identity: all 14 *.yaml files at b0e59c6 are identical (cmp) to the previously committed copies (saved before removal). Only .github workflow differs, as expected.
+
+## TDD
+RED: `pytest tests/test_data_packaging.py` -> 3 failed (gitlink assertion on 040000; AttributeError: no DataNotFoundError).
+GREEN: `pytest -q` -> 4 passed (3 new + test_sample). `python -m ciphersuites --version` -> 0.0.1.
+Note: first test version reloaded the module; reload redefines the exception class so pytest.raises saw a different class. Test now calls `ciphersuites._load_yaml` with `importlib.resources.files` monkeypatched to an empty dir.
+
+## Files
+.gitmodules, ciphersuites/__init__.py, ciphersuites/_ciphersuites (gitlink), tests/test_data_packaging.py.
+
+## Concerns
+- `git status` shows the submodule as dirty because Python writes __pycache__ inside it (untracked in the submodule; not part of the commit).
+- Dropped the "TODO: doesn't work on python > 3.10" comment, since files() resolves it.
+- pyproject still says requires-python ~=3.8 (floor change is out of this task).
+
+## Fix round 1
+Added test_uninitialised_submodule_raises_clear_error: copies ciphersuites/__init__.py into a tmp dir with an empty `_ciphersuites/` (namespace package), imports in a subprocess with that dir on PYTHONPATH.
+RED (py3.9, before loader fix): `uv run --python 3.9 --with pyyaml --with pytest -- python -m pytest tests/test_data_packaging.py -q` -> 1 failed, 3 passed; subprocess died with `TypeError: expected str, bytes or os.PathLike object, not NoneType` from files().
+Fix: loader now catches (ImportError, OSError, AttributeError, TypeError); `from importlib import resources`; `encoding="utf-8"`; `ignore = untracked` added to .gitmodules.
+GREEN: py3.9 -> `4 passed` (tests/test_data_packaging.py); py3.13 `pytest -q` -> `5 passed`.
+Note: the new test already passed on 3.13 before the fix (3.13 raises OSError there); it only fails on 3.9.
+
+---
+
+<!-- task-2-report.md -->
+
+# Task 2 report
+Implemented per brief: pyproject (requires-python >=3.9, test extras +pytest-cov/responses, tox py39-py313 `pytest tests`, [tool.pytest.ini_options] testpaths, black target-version updated to py39-py313), ci.yml (lint/test/build), tests/__init__.py, deleted tests/test_sample.py.
+Pinned: actions/checkout 11d5960a326750d5838078e36cf38b85af677262 # v4.4.0; actions/setup-python a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0 (both lightweight tags).
+Verification: actionlint exit 0; `pytest -q` -> 4 passed; `flit build` OK; wheel contains ciphersuites/_ciphersuites/ciphersuites.yaml.
+Concerns: black target-version changed (py38 dropped) beyond the literal brief; pylint config untouched; pytest not run under 3.9 locally.
+
+## Fix round 1
+- ci.yml: lint job installs `".[test]"`; build step writes `unzip -l` to a file then greps it (no SIGPIPE); tox uses `extras = test`.
+- Running the CI lint commands locally exposed real failures on the current tree: black would reformat tests/test_data_packaging.py; pylint reported 5 findings there plus E0015 unrecognized-option for `files-output` and `no-space-check` in pyproject. Fixed by reformatting/adding module docstring, moving imports to top, `check=False`, a targeted protected-access disable, and deleting those two obsolete pylint options from pyproject (the only pylint config change; needed for lint to pass).
+- After: `black --check tests` clean; `pylint tests` 10.00/10 exit 0; bandit skipped (no paths exist yet); pytest default Python 4 passed; `uv run --python 3.9 ... pytest` 4 passed (uv.lock removed); actionlint 0; flit build OK and wheel check exit 0.
+
+---
+
+<!-- task-3-report.md -->
+
+# Task 3 report
+
+Implemented ciphersuites/scrape/{__init__,core,helpers}.py exactly per brief signatures; tests in tests/test_core.py, tests/test_helpers.py (brief tests verbatim plus edge cases: bool/None/float/empty/"0x"/out-of-range rejected, 0x/0X variants, whitespace stripped, SSLv2/TLS word shapes and rejects, self-cycle, extract_defines later-wins, attributes not shared, zero-key coverage).
+
+RED: `pytest tests/test_core.py tests/test_helpers.py` -> ModuleNotFoundError: ciphersuites.scrape.core (2 collection errors).
+GREEN: full suite `pytest -q` -> 51 passed.
+Lint: black --check ciphersuites/scrape tests clean; pylint 10.00/10; bandit -r ciphersuites/scrape no issues (CI bandit scope is scrape + catalog.py only; test asserts would be B101 otherwise).
+Commit: 33bd930.
+
+Notes: extract_defines compiles with re.MULTILINE (so ^/$ in patterns work). normalize_byte strips surrounding whitespace and accepts only 1-2 hex digits. A 3-byte code point from normalize_code_point is allowed generally (not only SSLv2).
+
+---
+
+<!-- task-4-report.md -->
+
+# Task 4 report
+Implemented ciphersuites/scrape/fetch.py (FetchError/FileMissingError/CacheMissError, RETRY_DELAYS, TIMEOUT, raw_url, sha256_digest, decode_text, Fetcher) and tests/test_fetch.py (28 tests, incl. latin-1 Review Focus 1, atomic-write failure, offline, retries, timeout kwarg).
+RED: `pytest tests/test_fetch.py` -> ModuleNotFoundError: ciphersuites.scrape.fetch (collection error).
+GREEN: 28 passed; full suite 79 passed.
+Lint: black --check clean; pylint 10.00/10 on ciphersuites/scrape and tests; bandit clean on ciphersuites/scrape.
+Commit: 52e32be. Not pushed.
+Notes: Session created lazily; cache hit is checked before the offline check; temp file cleaned on any write failure.
+Concern: `responses` was pip-installed locally (already in the test extra).
+
+## Fix round 1
+Changes in fetch.py: ChunkedEncodingError now retried; SSLError raises FetchError immediately (caught before ConnectionError); any other RequestException (InvalidURL, TooManyRedirects, ContentDecodingError) wrapped in FetchError with `from`, no retry; raw_url requires commit matching ^[0-9a-f]{40}$ (else ValueError) and percent-quotes path segments (keeps `/`).
+Tests added (10): chunked retried, 3 permanent errors wrapped/unretried/chained, SSL not retried, tag/branch/short/uppercase SHA rejected, segment quoting. Existing tests moved to a 40-hex SHA.
+Commands: `pytest tests/test_fetch.py -q` -> 38 passed; full suite 89 passed; black --check clean; pylint 10.00/10; bandit clean.
+
+---
+
+<!-- task-5-report.md -->
+
+# Task 5 report
+Added ciphersuites/scrape/versions.py and tests/test_versions.py (25 tests).
+RED: collection ImportError before implementation. GREEN: full suite 109 passed.
+Lint: black clean, pylint 10/10 (after fixing two test warnings), bandit no issues.
+Behaviour: malformed ls-remote lines/SHAs raise ValueError; git errors propagate; peeled ^{} SHA wins; ties in key resolved to greatest tag name; keys compared only within a line.
+Odd tags (alpha, fips, rc, cocoapods) covered in tests.
+Concern: bandit prints "nosec encountered but no failed test" warnings (runner is injectable), harmless.
+
+## Fix round 1
+```
+$ python -m pytest tests/test_versions.py -q
+......................                                                   [100%]
+22 passed in 0.86s
+exit=0
+$ black --check ciphersuites/scrape tests
+All done! ✨ 🍰 ✨
+11 files would be left unchanged.
+exit=0
+$ pylint ciphersuites/scrape tests
+pylint: Command line or configuration file:1: UserWarning: 'StandardError' is not a proper value for the 'overgeneral-exceptions' option. Use fully qualified name (maybe 'builtins.StandardError' ?) instead. This will cease to be checked at runtime when the configuration upgrader is released.
+pylint: Command line or configuration file:1: UserWarning: 'Exception' is not a proper value for the 'overgeneral-exceptions' option. Use fully qualified name (maybe 'builtins.Exception' ?) instead. This will cease to be checked at runtime when the configuration upgrader is released.
+pylint: Command line or configuration file:1: UserWarning: 'BaseException' is not a proper value for the 'overgeneral-exceptions' option. Use fully qualified name (maybe 'builtins.BaseException' ?) instead. This will cease to be checked at runtime when the configuration upgrader is released.
+
+------------------------------------
+Your code has been rated at 10.00/10
+
+exit=0
+$ bandit -q -r ciphersuites/scrape
+[tester]	WARNING	nosec encountered (B607), but no failed test on file ciphersuites/scrape/versions.py:29
+[tester]	WARNING	nosec encountered (B603), but no failed test on file ciphersuites/scrape/versions.py:29
+exit=0
+```
+
+---
+
+<!-- task-6-report.md -->
+
+# Task 6 report
+Implemented Adapter/registry (adapters/base.py), fixtures.py (capture, capture_url, read/write_manifest, load_fixture, three-form CLI), tests/conftest.py (--update-goldens, update_goldens + upstream fixtures), tests/golden.py, empty manifest, .cache/ in .gitignore.
+TDD: RED = collection ImportError (no `fixtures` module); GREEN = 35 passed in the two new files; full suite 146 passed.
+Lint: black clean; pylint 10.00/10 on ciphersuites/scrape tests; bandit no issues.
+Commits: b2e2d2a, 3128d02.
+Concerns: main() returns 1 on handled errors; argparse usage errors exit 2 via SystemExit. The commit form uses commit as ref. tests/golden.py EXPECTED_DIR is monkeypatchable module constant.
+
+## Fix round 1
+- Imp 1: load_fixture evicts the cache entry on sha mismatch (new public Fetcher.evict) and names it in the error; tests for truncated download and poisoned cache then re-download.
+- Imp 2: adapters/__init__ docstring documents import pattern; test walks adapters/ (recursive, skips _*.py and base) in a fresh interpreter and requires each to be imported and register an adapter.
+- Minor A: Adapter.source_url used by fetch_files and capture; test with overriding adapter.
+- Minor B: no parenthesised with; tag_env helper.
+Outputs: pytest 3.13: "151 passed in 1.16s"; pytest 3.9 (uv): "151 passed in 1.46s"; pylint 10.00/10; black clean; bandit no issues.
+
+---
+
+<!-- task-7-report.md -->
+
+# Task 7 report
+Status: DONE_WITH_CONCERNS. Commit 041103f "Add OpenSSL adapter with per-version discovery".
+Implemented: adapters/_openssl_family.py (parse_ck_txt), adapters/openssl.py (OpenSSL, registered, imported in adapters/__init__), tests/adapters/test_openssl.py (13 tests), tag list tests/fixtures/tags/openssl.txt, manifest entries + goldens for labels 1.0.2 (OpenSSL_1_0_2u), 1.1.1 (OpenSSL_1_1_1w), 3.6 (openssl-3.6.5).
+TDD: RED = tests with adapter module absent -> ImportError at conftest (circular import of missing openssl module); (adapter was written before tests and set aside to demonstrate RED, then restored). GREEN first run: 10 passed, 3 golden failed (missing); after --update-goldens: 13 passed; full suite 164 passed.
+Hand assertions all held, including 0x0016 (EDH- in 1.0.2, DHE- in 1.1.1).
+Golden vs v1: see commit message (v1 is a union over versions; differences are version-expected).
+Lint: black --check ciphersuites/scrape tests clean; pylint ciphersuites/scrape tests 10.00/10 zero messages; bandit clean.
+Concerns: `black --check ciphersuites tests` fails at BASE on 17 legacy ciphersuites/_scripts files (pre-existing, untouched). Pylint pattern forbids leading-underscore module constants (used new_tag_version). 3.6 chosen as newest stable 3.x (3.6.5).
+
+---
+
+<!-- task-8-report.md -->
+
+# Task 8 report: LibreSSL and BoringSSL adapters
+
+Commit 20e0e58 "Add LibreSSL and BoringSSL adapters".
+
+## Implemented
+- adapters/libressl.py, adapters/boringssl.py (registered, imported in adapters/__init__.py)
+- tests: test_libressl.py, test_boringssl.py, test_openssl_family.py (a-d)
+- tag list tests/fixtures/tags/libressl.txt; fixtures libressl 2.5/3.9/4.0, boringssl 2025-03-17 (5584ad8cd3925c53188ca0a819bf666e737cf230), 2026-11-08 (0131ae9d78e42fcc2c1811315e62410ad96d8230); goldens.
+- Labels derive from line: tags libressl-v2.5.0/3.9.2/4.0.0 -> "2.5"/"3.9"/"4.0".
+
+## TDD
+RED (tests written first, modules absent): `pytest tests/adapters/test_libressl.py tests/adapters/test_boringssl.py -q`
+-> ImportError cannot import name 'boringssl' ... 2 errors during collection.
+GREEN (after implementation, goldens generated and reviewed): `pytest tests/adapters -q` -> 34 passed; full suite 185 passed.
+Intermediate failure of note: before the parse_ck_txt fixes, BoringSSL HEAD failed hand assertion (no 0x13 0x01), coverage < 0.9, and family test (a).
+
+## IMPORTANT: parse_ck_txt was changed (needed, please review)
+Brief said report rather than silently change semantics; the changes were required for the brief's own BoringSSL assertions, so I made minimal fixes and flag them:
+1. TXT_PATTERN now allows backslash-newline continuation before the string (5 BoringSSL HEAD names were missed).
+2. CK alias values are prefixed macro names (`TLS1_CK_X TLS1_3_CK_X`) but resolve_aliases looks up bare keys, so aliased suites were silently dropped (not even counted in total_keys), and BoringSSL's legacy `TLS1_CK_AES_128_GCM_SHA256` alias overwrote the literal TLS1_3 entry of the same key (lost 0x1301-0x1303). New `_ck_values` strips the prefix and lets a literal beat an alias.
+Side effect: OpenSSL goldens (1.0.2: +6, 1.1.1: +6, 3.6: +6 rows approx; additions only, no removals) now include DHE/EDH alias suites (e.g. DHE-DSS-DES-CBC-SHA 0x0012) that the old scraper also produced.
+Family test (b) revealed nothing wrong: TLS1_3_TXT_* name wins.
+
+## Golden vs v1 (code points)
+- boringssl 2025-03-17: 151 rows, identical to v1.
+- boringssl 2026-11-08: 25 rows, all in v1; 126 v1 code points absent (upstream pruning).
+- libressl 4.0: 174 rows; v1-only CCA8/CCA9/CCAA (CK key ECDHE_RSA_CHACHA20_POLY1305 vs TXT key ECDHE_RSA_WITH_CHACHA20_POLY1305: key mismatch, unmatched; coverage 0.972). Unmatched: DHE_RSA/ECDHE_ECDSA/ECDHE_RSA_CHACHA20_POLY1305, FALLBACK_SCSV, SCSV.
+- libressl 3.9: 187 rows; same 3 chacha missing; 13 SSLv2 code points from ssl2.h not in v1 (incl NULL-MD5 as 0x00,0x00,0x00 from SSL2_CK_NULL_WITH_MD5 0x02000000 - possibly dubious).
+- libressl 2.5: 182 rows; 13 extra (SSLv2), v1-only 0x1301-1305 and chacha (not in 2.5.0 / unmatched).
+- Concern: the CK/TXT key mismatch for LibreSSL chacha could be fixed later with a name-normalising join; not done (out of scope).
+
+## Regression investigation (151 -> 24)
+Old scrape_boringssl.py regexes (copied to scratchpad oldre.py) on fixtures, replicating its per-file join and dedupe: 2025-03-17 -> 151 rows; 2026-11-08 -> 25 rows (the "24" is within one of this; HEAD may have moved). Headers: 2025 tls1.h has ~125 TXT defines, HEAD has 21 (+ssl3.h 1). Conclusion: upstream header change (legacy suites removed, headers reformatted), not a regex miss. New parser gives 151 and 25 = old regexes, so legitimate. I did not pin the exact upstream removal commit (blobless pickaxe too slow); it falls between 2025-03-17 and 2026-11-08.
+
+## Lint / tests (final)
+- `python -m pytest -q` -> 185 passed
+- `black --check ciphersuites/scrape tests` -> 27 files would be left unchanged
+- `pylint ciphersuites/scrape tests` -> rated 10.00/10 (only config UserWarnings)
+- `bandit -q -r ciphersuites/scrape` -> 0 issues
+
+## Files
+ciphersuites/scrape/adapters/{libressl,boringssl}.py (new), __init__.py, _openssl_family.py (modified); tests/adapters/test_{libressl,boringssl,openssl_family}.py; tests/fixtures/{manifest.yaml,tags/libressl.txt,expected/{libressl,boringssl}/*, expected/openssl/* (regenerated)}.
+
+## Self-review / concerns
+- Family test (a) uses an alias that only passes thanks to my parse_ck_txt fix.
+- BoringSSL fixture label 2026-11-08 is HEAD at capture time; rerunning discover later gives a new label by design.
+- Pre-existing: accidentally ran black on all of ciphersuites/, reverted the unrelated files before committing.
+
+## Fix round 1
+Changes: (1) `parse_ck_txt(files, rekey)` hook; LibreSSL `_rekey` maps `X_CHACHA20_POLY1305` -> `X_WITH_CHACHA20_POLY1305` (not `_OLD`); hand test `test_chacha_suites_joined`; libressl goldens 2.5/3.9/4.0 each gain exactly the 3 CCA8/A9/AA records (18 inserted lines total, nothing else changed). OpenSSL/BoringSSL fixtures have no similar unmatched suites (only SCSV/FALLBACK_SCSV, plus pre-existing SSLv2 names in OpenSSL 1.0.2). (2) dangling aliases added to unmatched_keys/total_keys. (3) conflicting literals raise ValueError naming key and both values; same literal OK; all 8 captured fixtures parse without raising. (4) synthetic tests for continuation, prefixed alias, literal-vs-alias both orders, dangling, conflict. (5) correction recorded in fix commit message: 151 -> 25.
+Output: pytest 192 passed; black "27 files would be left unchanged"; pylint 10.00/10; bandit 0 issues.
+
+---
+
+<!-- task-9-report.md -->
+
+# Task 9 report: Go adapter
+Commit d6fb7b3. Files: ciphersuites/scrape/adapters/go.py, adapters/__init__.py (import), tests/adapters/test_go.py, tests/fixtures/{tags/go.txt,manifest.yaml,expected/go/{1.12,1.27}.yaml}.
+TDD: tests written first -> RED (ModuleNotFoundError: ciphersuites.scrape.adapters.go). Fixtures can only be captured once the adapter is registered (CLI errors "unknown adapter 'go'"), so fixtures were captured after implementation. GREEN: 12 passed in test_go.py; full suite 204 passed; black clean; pylint 10.00; bandit clean (only pre-existing nosec warnings).
+Fixtures: go1.12.17 (1.12), go1.27.3 (1.27, newest in captured list).
+Golden vs v1: code-point sets identical for both. 1.12 lacks the two *_CHACHA20_POLY1305_SHA256 alias names (v1 has them; added in later Go); 1.27 has 28 records/26 code points, names match v1.
+Notes: bare "go1" tag is not matched (no minor). Regex matches TLS_* lines anywhere (not scoped to const block) with optional uint16 and trailing comments; conflicting values for one name raise ValueError; dangling aliases counted unmatched.
+
+---
+
+<!-- task-10-report.md -->
+
+# Task 10 report: NSS adapter
+Implemented ciphersuites/scrape/adapters/nss.py (registered, imported in adapters/__init__.py), tests/adapters/test_nss.py (16 tests), tests/fixtures/tags/nss.txt, manifest entries, goldens for 3.20 and 3.133 (newest = NSS_3_133_RTM, a base RTM tag; no 3.133.x patch exists).
+RED: `pytest tests/adapters/test_nss.py` -> ModuleNotFoundError: ciphersuites.scrape.adapters.nss. Then a first implementation failed on real data (BadCodePoint '0x01' for SSL_AT_MD5_WITH_RSA_ENCRYPTION; SSL_EN_* 0xFF01 would have been silently wrong), fixed by excluding SSL_CK_/SSL_EN_/SSL_AT_ prefixes. GREEN: 16 passed after --update-goldens, 16 passed without; full suite 220 passed.
+Non-suite defines in both fixtures: SSL_LIBRARY_VERSION_*, SSL_HL_*, SSL_MT_*, SSL_CT_/SSL_PKCS6_/SSL_PE_*, SSL_AT_MD5_WITH_RSA_ENCRYPTION (0x01), SSL_CK_* (0x01-0x07, present in both 3.20 and 3.133), SSL_EN_* (0xFF01-07). Excluded by name filter (_WITH_ / TLS_AES_ / TLS_CHACHA20_ / _SCSV) minus the SSL_CK_/EN_/AT_ prefixes.
+Golden vs v1: 3.133 records 159 (127 distinct code points), v1 120 -> v1 subset; additions 0x001C-001E (FORTEZZA), 0xFEFE/FEFF (FIPS), 0xFFE0/FFE1 (OLDFIPS). 3.20: 140 records/108 cps; same 7 additions, lacks 19 newer cps from v1. No name/code mismatches.
+black, pylint (10/10, no messages), bandit (only pre-existing nosec warnings in versions.py) clean.
+Concerns: 7 extra legacy code points (FORTEZZA/FIPS) vs v1 are real upstream defines.
+
+---
+
+<!-- task-11-report.md -->
+
+# Task 11 report: JSSE adapter
+
+Commits: ee6fbbe "Allow fixture capture from an alternate repo" (--repo, 2 tests), dde0e6b "Add JSSE adapter".
+
+## Implemented
+- `--repo URL` on the fixtures CLI (tag and --commit paths resolve against it; Version.repo set to it). Tests monkeypatch ls_remote_tags / mock HTTP.
+- `ciphersuites/scrape/adapters/jsse.py`: discover_versions = "8" (newest jdk8u GA, repo=jdk8u URL) then jdk-N-ga N>=11 ascending (repo = jdk URL, same as base). Base `discover_versions` could not be reused because it calls base's `ls_remote_tags`, so jsse calls `latest_per_line` itself. `version_order` needs no override ("8" < "11" via line_key; tested).
+- Tags: tests/fixtures/tags/jsse.txt, jsse-jdk8u.txt. Newest jdk8u GA = jdk8u512-ga (same as brief). Newest jdk GA = jdk-27-ga.
+- Fixtures: 8 (jdk8u512-ga), 11, 27. Goldens in tests/fixtures/expected/jsse/.
+
+## TDD
+RED: `pytest tests/adapters/test_jsse.py` -> collection error (no module). After the adapter, with fixtures missing, 13 failed/7 passed (fixture/golden tests need capture); after capture + --update-goldens: 20 passed. Full: 242 passed.
+
+## Parsing findings (real files)
+- Brief regex `\(\s*0x` misses 4 kinds of real entries: TLS_EMPTY_RENEGOTIATION_INFO_SCSV (`(   // comment` then `0x00FF`), and the "names known" form `NAME( // TLS 1.3 \n "NAME", 0x1304)` (TLS_CHACHA20_POLY1305_SHA256 in 8/11, TLS_AES_128_CCM_SHA256, TLS_AES_128_CCM_8_SHA256). I extended the parser: strip comments (string-aware) then `NAME\(\s*("..."\s*,\s*)?0xHHHH`.
+- Commented-out suites: none in jdk8u512/11/27 (checked `//` and `/* */`); regex still ignores them (synthetic test).
+- total_keys = all `^\s+(TLS|SSL)_\w+\(` entries after comment stripping; unmatched = those without a 4-hex code point. All 3 fixtures: coverage 1.0 (101, 91, 94 entries).
+- Alias names (second string arg, e.g. TLS_RSA_WITH_RC4_128_MD5 on SSL_ entries) are not parsed, as the brief allows.
+
+## Golden vs v1 (jsse.yaml, 110 suites)
+- No shared name has a different code point.
+- v1-only names: 22 in 8 and 11, 19 in 27 (TLS_ alias spellings of SSL_ entries; plus DHE/ECDHE ChaCha20 0xCCA8-0xCCAA in 8/11 which those JDKs lack). Code points of aliases are all present under SSL_ names.
+- Golden-only: SCSV 0x00FF, 0x1304, 0x1305 (all); in 8 also 10 KRB5 suites (0x1E-0x2B). (Commit message says "10 Kerberos + 4 export"; the correct total is 10 including the 4 export ones.)
+
+## Lint
+black: 33 files unchanged. pylint: 10.00/10 (only pre-existing config UserWarnings). bandit: clean (pre-existing nosec warnings in versions.py).
+
+## Files
+ciphersuites/scrape/fixtures.py, adapters/jsse.py, adapters/__init__.py, tests/test_fixtures.py, tests/adapters/test_jsse.py, tests/fixtures/{manifest.yaml,tags/jsse*.txt,expected/jsse/*}.
+
+## Concerns
+- Parser deviates from the brief's regex (necessarily, see above). Commit message KRB5 count wording slightly off (no amend).
+- jdk-27-ga is the "newest" fixture and will age.
+
+---
+
+<!-- task-12-report.md -->
+
+# Task 12 report: s2n-tls and Mbed TLS adapters
+
+Status: DONE. Commits: 9cfdf72 (s2n-tls), dde983b (Mbed TLS). Base dde0e6b.
+
+## Implemented
+- `ciphersuites/scrape/adapters/s2n.py`, `mbedtls.py`, registered in `adapters/__init__.py`.
+- Tests `tests/adapters/test_s2n.py`, `test_mbedtls.py`; tag lists `tests/fixtures/tags/{s2n,mbedtls}.txt`; fixtures + goldens (s2n 1.3/1.7, mbedtls 2.28/3.6/4.2); manifest updated.
+
+## TDD
+RED (before adapter modules): `python -m pytest -q tests/adapters/test_s2n.py` and `test_mbedtls.py` -> "1 error during collection" (ModuleNotFoundError). GREEN after implementation, fixture capture and `--update-goldens`: s2n 21 passed, mbedtls 22 passed.
+
+## Findings that deviate from the brief (hand assertions all held)
+- s2n v1.3.0 has NO `.iana_name` (only `.iana_value = { TLS_X }`); v1.7.13 has both. Join prefers the `.iana_value` macro (or a literal byte pair), falls back to `.iana_name`. Both forms tested synthetically. Joining on `.iana_name` as the brief says would have yielded zero records for 1.3.
+- Mbed TLS TLS 1.3 suites are `MBEDTLS_TLS1_3_*`; the brief's `MBEDTLS_TLS_\w+` would drop them. Pattern is `MBEDTLS_TLS\w*`. Header ids are 1 byte (`0x2F`, padded to 0x002F) or 2 bytes.
+- Mbed TLS paths unchanged through v4.2.0 (HTTP 200 for both files at v2.28.10, v3.6.7, v4.2.0); no per-line `files_for` branch needed.
+- Newest overall is v4.2.0, distinct from 3.6.x, so three fixtures.
+
+## Tag discovery
+- s2n: `v\d+.\d+.\d+` only; bare `1.3.19`, `test_20200310` rejected. Newest 1.7 -> v1.7.13.
+- Mbed TLS: `v` and `mbedtls-` forms both accepted; they peel to the same commit and the greatest tag name (`v...`) wins deterministically, one entry per line. Rejected: -rc, -beta, -dev, `p1`, `d0`, `v3.6.3.1`, polarssl-, yotta-, archive/. Lines: 2.16 ... 2.28, 3.0 ... 3.6, 4.0, 4.1, 4.2.
+
+## Golden vs v1 (code-point sets)
+- s2n 1.7 (37): only diff is v1's ECDHE-KYBER-RSA-AES256-GCM-SHA384 (0xFF,0x0C). s2n 1.3 (40): v1 + ECDHE-BIKE-RSA... (0xFF,0x04) and ECDHE-SIKE-RSA... (0xFF,0x08).
+- mbedtls 4.2 (76): subset of v1 (53 v1 records absent, 0 new). 3.6 (190): v1 is a strict subset (61 extra DHE suites). 2.28 (207): lacks v1's 5 TLS1-3 suites, 83 extra.
+- No name differences at equal code points in any fixture.
+
+## Regression investigation
+- s2n 38 -> 37: upstream removal. Kyber PQ suite present in v1.5.14, absent in v1.5.20, 1.7.13 and main (0 "kyber" matches; main has 37 `.name` entries, all captured). Legacy scraper pulls `main`.
+- Mbed TLS 129 -> 106 -> 76: upstream removal, not parser miss. Legacy scraper pulls the moving `development` branch (became 4.x). 4.2.0 parse is 76 with join coverage 1.0, all 76 in v1; 129 - 53 = 76. The 53 are removed RSA key exchange and static ECDH suites, e.g. TLS-RSA-WITH-AES-128-GCM-SHA256 (0x009C), TLS-RSA-WITH-AES-128-CBC-SHA (0x002F), TLS-ECDH-ECDSA-WITH-AES-128-GCM-SHA256 (0xC02D), TLS-RSA-WITH-CAMELLIA-128-CBC-SHA256 (0x00BA), TLS-RSA-WITH-AES-128-CCM (0xC09C), TLS-RSA-WITH-NULL-SHA256. In 3.6, v1 is a strict subset (3.6 additionally has 61 DHE suites). The intermediate 106 is not reproducible from tags (development history) and is consistent with partial removals. Silent loss came from tracking a moving branch with no coverage gate; the new adapters pin tags and fail on unmatched/conflicts.
+
+## Guarded suites
+Included. s2n: the only `#if` blocks in `s2n_cipher_suites.c` wrap crypto-init code, not suites (1.3 and 1.7); synthetic test covers a guarded struct. Mbed TLS: every table row sits under `#if defined(MBEDTLS_...)` guards (207/190/76 rows), all included (implemented when that option is built).
+
+## Verification output
+- `python -m pytest -q` -> 285 passed
+- `black --check ciphersuites/scrape tests` -> 37 files would be left unchanged
+- `pylint ciphersuites/scrape tests` -> rated 10.00/10 (only config UserWarnings from the repo pylintrc)
+- `bandit -q -r ciphersuites/scrape` -> no issues (only pre-existing nosec warnings for versions.py)
+
+## Self-review
+Join semantics follow the brief (total_keys = name side; header-only ids ignored). Tests use real fixtures plus synthetic forms (dangling macro, alias, conflicts, comments, guards, case, literal bytes). No legacy scripts touched.
+
+## Concerns
+- Mbed TLS tie between `v` and `mbedtls-` tags is resolved by tag-name order (assumes same commit; true for all captured lines).
+- `test_every_table_entry_is_a_record` counts `"TLS` string occurrences in the .c file; fragile if upstream adds other such strings.
+- v3.6.3.1 (security re-release) is not discovered as a patch of 3.6; harmless since 3.6.7 is newer.
+
+---
+
+<!-- task-13-report.md -->
+
+# Task 13 report: GnuTLS adapter
+
+Implemented `ciphersuites/scrape/adapters/gnutls.py` (registered, imported in `adapters/__init__.py`), `tests/adapters/test_gnutls.py`, tag list, two fixtures (3.6.16, 3.8.13) and goldens.
+
+## Naming finding
+Verified in both fixtures: `ENTRY`/`ENTRY_PRF`/`ENTRY_TLS13` use `#name` and the library returns `cs_algorithms[idx].name + sizeof("GNU") - 1`. So the GnuTLS name is the macro name minus "GNU" (`GNUTLS_ECDHE_RSA_AES_128_GCM_SHA256` -> `TLS_ECDHE_RSA_AES_128_GCM_SHA256`). Hand assertion is true. Second arg is the IANA canonical name; not recorded: `ParseResult.attributes` exists generically but no adapter uses it and goldens ignore it (YAGNI).
+Also found: a third macro `ENTRY_TLS13` (5 rows); handled by the `ENTRY*(` row-start rule.
+
+## Deviation: tags
+Brief says `gnutls_X_Y_Z` only. Real tags: `gnutls_X_Y_Z` up to 3.6.12, plain `X.Y.Z` from 3.6.12 on; 3.6.16 and all 3.7/3.8 exist only as plain. Both forms accepted (fullmatch rejects pre0, _1, -windows, _win32). Same-key ties go to greatest tag name (deterministic).
+
+## TDD
+RED: `pytest tests/adapters/test_gnutls.py` -> collection error, ModuleNotFoundError (adapter absent); after adapter, before fixtures: 8 failed (no fixture), 13 passed.
+GREEN: after fixtures + `--update-goldens`: `21 passed`. Full suite: `306 passed`.
+
+## Golden vs v1 (188 records)
+Both 3.6.16 and 3.8.13 give 188 records, join coverage 1.0, identical to v1 names/code points. Sole difference: v1 has one lowercase-hex record (TLS_GOSTR341112_256_28147_CNT_IMIT 0xc1/0x02), normalised to 0xC1/0x02.
+
+## Lint
+black: 39 files unchanged. pylint: 10.00/10, zero messages (only pre-existing config UserWarnings about overgeneral-exceptions). bandit: clean (pre-existing nosec warnings in versions.py only).
+
+## Self-review
+Row counting independent of key capture (unparsed rows -> `<unparsed row at line N>` unmatched); macro definitions blanked incl. continuation lines; comments blanked skipping strings; conflicts raise; aliases resolved. Tests cover each. Join coverage asserted == 1.0.
+
+## Concerns
+None significant. Comment blanking replaces `//` comments with a space (not empty) so tokens never fuse.
+
+---
+
+<!-- task-14-report.md -->
+
+# Task 14 report: Schannel curated adapter
+
+Status: implemented. Commit: see `git log` ("Add hand-curated Schannel adapter").
+
+## Pages transcribed (oldest to newest, all under https://learn.microsoft.com/en-us/windows/win32/secauthn/)
+Index: cipher-suites-in-schannel (lists 18 pages; all transcribed).
+schannel-cipher-suites-in-windows-vista (16 suites); tls-cipher-suites-in-windows-7 (41); -8 (39); -8-1 (41); -10--version-1507 (43); -10-v1511 (43); -10-v1607 (45); -10-v1703, v1709, v1803, v1809, v1903, v20h2 (45 each); -windows-server-2022 (48); -windows-11 (48); -windows-11-v22h2 (48); -windows-10-v22h2 (45); -windows-server-2025 (48).
+Default, "supported but not enabled by default" and PSK tables are merged; noted in the YAML header. Brief assertion (TLS_AES_128_GCM_SHA256 in newest) holds.
+
+## Name special-cases
+- Curve suffixes `_P256/_P384/_P521` on Vista, 7, 8, 8.1 pages stripped and deduplicated (28 distinct suffixed names).
+- Absent from iana.yaml, standard values used (match v1 schannel.yaml): TLS_RSA_EXPORT1024_WITH_DES_CBC_SHA 0x0062, TLS_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA 0x0063, TLS_RSA_EXPORT1024_WITH_RC4_56_SHA 0x0064, SSL_CK_RC4_128_WITH_MD5 01 00 80, SSL_CK_RC4_128_EXPORT40_WITH_MD5 02 00 80, SSL_CK_DES_64_CBC_WITH_MD5 06 00 40, SSL_CK_DES_192_EDE3_CBC_WITH_MD5 07 00 C0. Marked "(not in IANA data)" in the YAML.
+- Some cells carry trailing text after the name (e.g. "Only used when application explicitly requests"): only the first token is taken.
+- Server 2022 page says three suites are disabled by default from 23H2; still supported, kept.
+
+## Curated vs v1
+No v1 code point is missing and no curated code point is absent from v1. v1-only names: curve-suffixed ECDHE names and SSL_CK_RC4_128_EXPORT40_MD5 (same code points as listed names). So no `# not in any Microsoft Learn page` entries; the test accepts such comments if ever needed. Ordering choice: Server 2022, Windows 11, Windows 11 22H2, Windows 10 22H2, Server 2025.
+
+## Design notes
+parse() receives no version, so fetch_files returns the packaged YAML cut down to the requested version's single entry (file name schannel_curated.yaml); parse validates and requires exactly one. load_curated validates labels, unique names, code points, one code point per name across versions. source_url returns the Learn URL (version.ref).
+
+## TDD
+RED: tests/adapters/test_schannel.py -> ModuleNotFoundError for ciphersuites.scrape.adapters.schannel. GREEN: 322 passed (full suite).
+
+## Checks
+- pytest -q: 322 passed
+- black --check ciphersuites/scrape tests: 42 files unchanged
+- pylint ciphersuites/scrape tests: 10.00/10, no messages
+- bandit -q -r ciphersuites/scrape: no findings
+- `flit build --format wheel` (as CI): wheel contains ciphersuites/scrape/data/schannel_curated.yaml and data/__init__.py.
+
+## Files
+ciphersuites/scrape/data/__init__.py, ciphersuites/scrape/data/schannel_curated.yaml, ciphersuites/scrape/adapters/schannel.py, ciphersuites/scrape/adapters/__init__.py (import), tests/adapters/test_schannel.py.
+
+## Concerns
+Pages were not re-verified for later edits; transcription date 2026-11-08. HTML kept only in scratchpad; no golden test (curated data).
+
+## Fix round 1
+- Vista: the "supported, not present by default" suites are a bullet list (`<ul><li>`), which the first extractor skipped. Added the 8 missing: TLS_RSA_EXPORT_WITH_RC4_40_MD5 0x0003, TLS_RSA_EXPORT1024_WITH_RC4_56_SHA 0x0064, TLS_RSA_EXPORT1024_WITH_DES_CBC_SHA 0x0062, SSL_CK_RC4_128_EXPORT40_WITH_MD5 (page spells it ..._EXPORT40_MD5; noted in YAML) 02 00 80, SSL_CK_DES_64_CBC_WITH_MD5 06 00 40, TLS_RSA_WITH_DES_CBC_SHA 0x0009, TLS_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA 0x0063, TLS_DHE_DSS_WITH_DES_CBC_SHA 0x0012. Vista comment corrected. The reviewer's list matched the live page exactly.
+- Re-fetched all 18 pages (byte-identical to the saved copies); extractor now reads table first cells and list items, and cross-checks every `(TLS|SSL)_...` token in the page text against what was captured (no uncaptured tokens on any page). Page vs YAML unique-suite counts (curve suffixes collapsed), all match: Vista 24/24, 7 41/41, 8 39/39, 8.1 41/41, 10-1507 43/43, 1511 43/43, 1607..22H2 (1607,1703,1709,1803,1809,1903,20H2) 45/45 each, Server 2022 48/48, 11 48/48, 11 22H2 48/48, 10 22H2 45/45, Server 2025 48/48. Only Vista changed.
+- Tests added: per-version expected count table, Vista regression (TLS_RSA_WITH_DES_CBC_SHA, SSL_CK_DES_64_CBC_WITH_MD5, EXPORT40), version_order ValueError for uncurated label (code fixed).
+- Results: pytest 325 passed; black --check: 42 files unchanged; pylint ciphersuites/scrape tests: 10.00/10, no messages; bandit -q -r ciphersuites/scrape: no findings.
+
+---
+
+<!-- task-15-report.md -->
+
+# Task 15 report: reference adapters (IANA, testssl, Scanigma)
+
+Status: DONE_WITH_CONCERNS
+
+## Implemented
+- `ciphersuites/scrape/adapters/reference/{__init__,iana,testssl,scanigma}.py`, imported from `adapters/__init__.py`.
+- All three: `kind="reference"`, `rolling=True`, one version per run labelled `now.date().isoformat()`.
+- IANA: ref = CSV URL, `commit=None`, `fetch_files` uses no cache key. Reserved/Unassigned rows excluded (not counted); ranges (`0x00,0x10-12`, `0x01-02,*`) expanded for named rows; `attributes[cp] = {"dtls_ok": bool, "recommended": "Y"|"N"|"D"}`. total_keys = non-excluded CSV rows, counted independently; rows with unreadable value/flags/name are unmatched. Same code point with two names -> ValueError. Missing column -> ValueError.
+- testssl: `repo`, `commit=ls_remote_head`, `files_for -> ["etc/cipher-mapping.txt"]`, default commit-keyed fetch. total_keys = every line starting with a code point; unmatched = those the full regex cannot read. Entries whose IANA name is `-` (4 in the fixture) are recognised and skipped (counted in total, not unmatched, no record), as in the legacy scraper. 3-byte SSLv2 codes supported.
+- Scanigma (restructured site, per ruling): ref = listing URL; `fetch_files` fetches listing then each detail URL sequentially (de-duplicated, no cache key); files `listing.html`, `detail/<slug>.html`; parse via BeautifulSoup + json on JSON-LD. total_keys = max(numberOfItems, listed entries); unmatched = listing names with no detail page / no usable termCode / bad code (plus placeholders if the page claims more than it lists). Code points never looked up by name. Malformed listing JSON-LD raises ValueError; malformed detail -> unmatched.
+- Wayback scaffolding: `wayback_id_url(timestamp, url)` in fetch.py (14 digits else ValueError); fixtures CLI `--wayback TIMESTAMP` only with `--url` (error otherwise), records the Wayback URL in the manifest. Unused by any fixture.
+
+## IANA live column findings
+Headers exactly `Value,Description,DTLS-OK,Recommended,Reference,Comment`. DTLS-OK values: Y/N/blank; Recommended: Y/N/D/blank. Blank only on Reserved/Unassigned ranges; all 358 named rows have Y/N and Y/N/D, so the brief's expectation matches. Value cells quoted `"0xC0,0x2F"`; descriptions can contain embedded newlines (needs csv with newline=""). No named row currently has a range. IANA fixture: 358 records, 358 keys, coverage 1.0. 0xC0,0x2F has `{"dtls_ok": True, "recommended": "Y"}` as the brief says (no assertion mismatch).
+
+## Counts
+- testssl @ 7dc4a6f2f49294ffa56f535fbfd0b62421130be8: 374 entry lines, 370 records, 0 unmatched; (0xCC,0xA8) = TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256 and (0xCC,0x13) = ..._SHA256_OLD, distinct.
+- Scanigma listing: 417 entries. Fixture = listing + 8 detail pages (tls-ecdhe-rsa-with-aes-128-gcm-sha256, old-tls-dhe-rsa-with-chacha20-poly1305-sha256, old-tls-ecdhe-rsa-with-chacha20-poly1305-sha256, tls-aes-128-gcm-sha256, tls-aes-256-gcm-sha384, tls-chacha20-poly1305-sha256, ssl-ck-rc4-128-with-md5, tls-rsa-with-aes-128-cbc-sha): 8 records, 409 unmatched, coverage 0.019 by construction (asserted records == 8, unmatched == total - records).
+
+## Tests / verification
+- `python -m pytest -q`: 373 passed. Python 3.9 via uv: 373 passed (uv.lock removed). `black --check`: clean. `pylint ciphersuites/scrape tests`: 10.00, zero messages. `bandit -q -r ciphersuites/scrape`: no findings (two pre-existing nosec warnings).
+- TDD: wayback tests (tests/test_fetch.py, tests/test_fixtures.py) run red (ImportError) before implementation; tests/adapters/test_reference.py run red (collection error) before adapters, then only the 7 fixture-dependent tests failed until fixtures were captured, then goldens generated with --update-goldens and reviewed (iana 358 rows, testssl 370, scanigma 8).
+- Fixtures: IANA/Scanigma captured from live URLs with `--url` (label 2026-11-08), testssl with `--commit`; 11 manifest entries.
+
+## Files
+Created: reference/* (4), tests/adapters/test_reference.py, goldens for iana/testssl/scanigma. Modified: adapters/__init__.py, fetch.py, fixtures.py, tests/test_fetch.py, tests/test_fixtures.py, tests/fixtures/manifest.yaml.
+
+## Concerns
+1. IANA and Scanigma fixtures are live URLs with sha256 pins: the live content changes (IANA registry updates, Scanigma edits), so `load_fixture` will raise a sha256 mismatch on a fresh cache once upstream changes; only the local `.cache/fixtures` keeps the tests passing. This is the expected consequence of the user directive (Task 24 migrates to Wayback).
+2. Scanigma page for SSL_CK_NULL_WITH_MD5 declares termCode "0x00, 0x00" (2 bytes) whereas testssl has 3-byte 0x00,0x00,0x00; kept as the page says (not in the fixture).
+3. `TestSsl` class name triggers pytest collection warnings when imported in tests; handled with `__test__ = False`.
+4. Registry is `rolling = True` for all three reference adapters (matches BoringSSL; retention semantics for the runner unconfirmed).
+
+## Self-review
+Diff reviewed; no adapter catches exceptions except per-item parse tolerance returning unmatched; no network in tests (responses mocks / cached fixtures).
+
+## Fix round 1
+- `keep_last = 1` on Iana, TestSsl, Scanigma (rolling stays True); parametrised test asserts both.
+- Scanigma `fetch_files` skips items with empty/missing/null url (no `detail/.html` fetch); they stay unmatched and counted in total; test added. Comment at the detail-fetch loop documents that a failed detail fetch propagates and fails the version.
+- Verification: pytest 377 passed (also 3.9 via uv, uv.lock removed); black clean; pylint 10.00 zero messages; bandit no findings.
+
+---
+
+<!-- task-16-report.md -->
+
+# Task 16 report
+Status: DONE
+Commits: 020a6de golden (generated from the old function first); c536343 move + tests.
+Implemented: ciphersuites/parse_name.py with complete_cs_instance(name, code_point); second (unreachable) SCSV branch deleted; CodePoint imported under TYPE_CHECKING only (no runtime import of scrape code, avoids circular import). ciphersuites/__init__.py keeps a thin wrapper (instance -> name + code point tuple) because _scripts/complete_cs_instance.py and public users call it; unused `import re` removed there.
+Golden: tests/fixtures/expected/parse_name_iana.yaml, 358 IANA records keyed by name (names unique).
+Tests: tests/test_parse_name.py (8): golden, key set, SCSV, CCM_8, TLS1.3 GCM, TLS_SHA256_SHA256 at C0B4, GOST at C100 (KUZNYECHIK_CTR_OMAC), SSLv2 3-byte case. All brief assertions held against the current function's output.
+TDD: RED = collection error, module missing. GREEN = 8 passed, golden unchanged (not regenerated after the move).
+Verification: pytest 385 passed; black clean; pylint 10/10 no messages; bandit clean (existing nosec warnings only); py3.9 uv run 385 passed; uv.lock removed.
+Concerns: none. Note some golden values reflect legacy quirks (e.g. TLS_AES_128_CCM_ASCONHASH256 parsed with authentication "128 CCM ASCONHASH256", aead false); characterised as-is, not fixed.
+
+---
+
+<!-- task-17-report.md -->
+
+# Task 17 report
+Status: DONE. Files: ciphersuites/scrape/schema.py, tests/test_schema.py.
+Tests: 416 passed (py3.12 and uv py3.9); black, pylint 10/10, bandit clean (only "nosec unneeded" warnings, same as versions.py).
+Notes:
+- v1 shape is Django-fixture rows (model/pk/fields.hex_byte_1..3); normalised to 0xAB tuples, 3 bytes only when hex_byte_3 present.
+- Suite attributes (dtls_ok, recommended) stored as an optional per-suite `attributes` mapping (spec does not fix the location).
+- Unsafe ref (empty, leading "-", whitespace, ":") and bad library raise SchemaError; git timeout 30s; absent file -> None; other git failure -> SchemaError.
+- Tests written alongside the module (not observed failing first).
+- No brief/spec assertion conflicts found.
+
+## Fix round 1
+- from_doc: label isinstance(str) check before membership test; tests for [["1"]], [{}], [1], [None].
+- test_bad_ref_rejected now patches subprocess.run, asserts no call and "unsafe git ref" message.
+- v1: falsy hex_byte_3 treated as absent (test). git runs with LC_ALL=C. Comments/docstring for attributes and data_dir=repo root.
+- to_doc raises ValueError on unknown member labels or kind not in library/reference (tests).
+- 423 tests pass (3.9 too), black/pylint/bandit clean.
+
+## Fix round 1b
+- Item 4 (LC_ALL=C env in _git_show) was genuinely missing; added with a test asserting env and timeout. An intermediate commit afdb872 had the test but not the fix; the next commit fixes it. All checks green.
+
+---
+
+<!-- task-18-report.md -->
+
+# Task 18 report
+Implemented ciphersuites/scrape/validate.py and tests/test_validate.py.
+RED: tests collection failed (module missing) with implementation moved aside (impl was written before tests; RED was shown retroactively). GREEN: 446 passed; black, pylint (0 msgs), bandit, py3.9 all pass.
+Decisions/notes:
+- IANA `recommended` WARN skipped per ruling.
+- check_parse skips LOW_JOIN_COVERAGE when total_keys == 0; ZERO_RECORDS returns early.
+- V1_PARITY only emitted when newest label is in `scraped`; details["missing"] is a sorted list of code-point tuples.
+- Reference rules ignore labels (newest baseline vs newest new); generic NONDETERMINISTIC/PATCH rules are skipped for reference kind.
+- check_catalog expects catalog_doc["suites"][i]["code_point"]. Cross-library collision flags every involved library not in KNOWN_NAME_COLLISIONS.
+- apply_accepts adds details["reason"]. No brief/spec conflicts found.
+
+---
+
+<!-- task-19-report.md -->
+
+# Task 19 report
+Status: DONE. Commit f00a492 "Add catalogue builder".
+Files: ciphersuites/scrape/build_catalog.py, tests/test_build_catalog.py.
+RED: collection error ModuleNotFoundError (no build_catalog module). One test bug fixed after GREEN run (TLS_B vs TLS_Z name ordering).
+Verification: pytest 455 passed (also on py3.9 via uv); black clean; pylint 10.00 with no messages; bandit no issues (only pre-existing nosec warnings); uv.lock removed.
+Rulings implemented: newest version only; smallest name per reference; precedence iana>testssl>scanigma; unknown key -> ValueError; merge by code point only; attributes not copied; code_point as list; sorted by code_point_sort_key; deterministic dump and empty-input tests.
+Concerns: none.
+
+---
+
+<!-- task-20-report.md -->
+
+# Task 20 report: runner, report, CLI
+
+Commit: f5e8f24 (Add scrape runner, report and ciphersuites-scrape CLI). Not pushed.
+
+## Files
+- ciphersuites/scrape/runner.py (406 lines, over the ~350 guideline), report.py, cli.py
+- validate.py: added constant BASELINE_ERROR (baseline unreadable / SchemaError -> FAIL for that library)
+- pyproject.toml: script ciphersuites-scrape
+- tests/test_runner.py, tests/test_cli.py (28 tests)
+
+## Verification
+- pytest: 483 passed (also on Python 3.9 via uv; uv.lock removed)
+- black --check clean; pylint 10.00/10 zero messages; bandit: no issues
+- RED was captured first: both new test modules failed at collection (ImportError) before implementation.
+
+## Decisions
+- Catalogue skipped (no reference data at all): Finding(WARN, FETCH_ERROR, library="ciphersuites"). Reuses existing code; level WARN.
+- Discovery exception: FAIL FETCH_ERROR (version None); baseline exception: FAIL BASELINE_ERROR.
+- Failed rolling snapshot (references, boringssl): newest baseline snapshot is marked stale; on a later fully successful rolling refresh retained snapshots are reset to status ok (otherwise old stale flags would persist and trigger STALE_TOO_OLD).
+- Failed discovery on a reference restores its baseline as stale for the catalogue; non-reference libraries are left untouched on disk.
+- LibraryData.source = adapter.repo, else the newest entry ref (IANA/Scanigma URL).
+- diffs include every compared label, even if empty; markdown lists only non-empty ones.
+- Libraries with no restorable/fresh version are not written.
+- Findings in the result are sorted by (library, version, code, level, message).
+
+## Live dry run
+Command as specified; exit code 1; wrote nothing (data repo git status empty before and after; result.written == []).
+Report: /tmp/claude-0/-home-user/c3ed32d4-2ad7-55a3-aa5e-af481896ed77/scratchpad/dry-run.json, stdout /tmp/claude-0/-home-user/c3ed32d4-2ad7-55a3-aa5e-af481896ed77/scratchpad/dry-run.out, stderr empty (no traceback).
+
+### Counts (level, code, library)
+- fail FILE_MISSING libressl: 5
+- fail V1_PARITY boringssl: 1
+- fail V1_PARITY mbedtls: 1
+- fail V1_PARITY openssl: 1
+- fail V1_PARITY s2n: 1
+- fail V1_PARITY schannel: 1
+- warn NEW_NAME_COLLISION libressl: 96
+- warn NEW_NAME_COLLISION nss: 2
+- warn NEW_NAME_COLLISION s2n: 2
+- warn NEW_NAME_COLLISION scanigma: 1
+- warn NEW_NAME_COLLISION testssl: 5
+- warn UNKNOWN_CODE_POINT libressl: 1
+- warn UNKNOWN_CODE_POINT mbedtls: 1
+- warn UNKNOWN_CODE_POINT nss: 1
+- warn UNKNOWN_CODE_POINT openssl: 1
+- warn UNKNOWN_CODE_POINT s2n: 1
+
+### FAIL findings
+- FILE_MISSING libressl 2.0: HTTP 404 for https://raw.githubusercontent.com/libressl/openbsd/61fc5ede295ff4dded0a54dfe30d3a7a0dff1150/src/lib/libssl/ssl2.h
+- FILE_MISSING libressl 2.1: HTTP 404 for https://raw.githubusercontent.com/libressl/openbsd/bc1a32b382ba2358d6f7b09fd14fd8923a14b7d6/src/lib/libssl/ssl2.h
+- FILE_MISSING libressl 2.2: HTTP 404 for https://raw.githubusercontent.com/libressl/openbsd/809294d5e45b821403c487bd614cabe8f89fb8af/src/lib/libssl/ssl2.h
+- FILE_MISSING libressl 2.3: HTTP 404 for https://raw.githubusercontent.com/libressl/openbsd/0350b4845f185ed74dc66e4225a672f9e1a9114a/src/lib/libssl/ssl2.h
+- FILE_MISSING libressl 2.4: HTTP 404 for https://raw.githubusercontent.com/libressl/openbsd/f319f250a309eb73664f1042f428e97d05d6c19e/src/lib/libssl/ssl2.h
+
+### V1_PARITY (missing code points)
+- boringssl 2026-11-08: 126 v1 code point(s) missing: 0x00,0x01 0x00,0x02 0x00,0x03 0x00,0x04 0x00,0x05 0x00,0x06 0x00,0x07 0x00,0x08 0x00,0x09 0x00,0x0B 0x00,0x0C 0x00,0x0D 0x00,0x0E 0x00,0x0F 0x00,0x10 0x00,0x11 0x00,0x12 0x00,0x13 0x00,0x14 0x00,0x15 0x00,0x16 0x00,0x17 0x00,0x18 0x00,0x19 0x00,0x1A 0x00,0x1B 0x00,0x30 0x00,0x31 0x00,0x32 0x00,0x33 0x00,0x34 0x00,0x36 0x00,0x37 0x00,0x38 0x00,0x39 0x00,0x3A 0x00,0x3B 0x00,0x3C 0x00,0x3D 0x00,0x3E 0x00,0x3F 0x00,0x40 0x00,0x41 0x00,0x42 0x00,0x43 0x00,0x44 0x00,0x45 0x00,0x46 0x00,0x60 0x00,0x61 0x00,0x62 0x00,0x63 0x00,0x64 0x00,0x65 0x00,0x66 0x00,0x67 0x00,0x68 0x00,0x69 0x00,0x6A 0x00,0x6B 0x00,0x6C 0x00,0x6D 0x00,0x84 0x00,0x85 0x00,0x86 0x00,0x87 0x00,0x88 0x00,0x89 0x00,0x8A 0x00,0x8B 0x00,0x96 0x00,0x97 0x00,0x98 0x00,0x99 0x00,0x9A 0x00,0x9B 0x00,0x9E 0x00,0x9F 0x00,0xA0 0x00,0xA1 0x00,0xA2 0x00,0xA3 0x00,0xA4 0x00,0xA5 0x00,0xA6 0x00,0xA7 0xC0,0x01 0xC0,0x02 0xC0,0x03 0xC0,0x04 0xC0,0x05 0xC0,0x06 0xC0,0x07 0xC0,0x08 0xC0,0x0B 0xC0,0x0C 0xC0,0x0D 0xC0,0x0E 0xC0,0x0F 0xC0,0x10 0xC0,0x11 0xC0,0x12 0xC0,0x15 0xC0,0x16 0xC0,0x17 0xC0,0x18 0xC0,0x19 0xC0,0x1A 0xC0,0x1B 0xC0,0x1C 0xC0,0x1D 0xC0,0x1E 0xC0,0x1F 0xC0,0x20 0xC0,0x21 0xC0,0x22 0xC0,0x24 0xC0,0x25 0xC0,0x26 0xC0,0x28 0xC0,0x29 0xC0,0x2A 0xC0,0x2D 0xC0,0x2E 0xC0,0x31 0xC0,0x32
+- mbedtls 4.2: 53 v1 code point(s) missing: 0x00,0x01 0x00,0x02 0x00,0x2F 0x00,0x35 0x00,0x3B 0x00,0x3C 0x00,0x3D 0x00,0x41 0x00,0x84 0x00,0x9C 0x00,0x9D 0x00,0xBA 0x00,0xC0 0xC0,0x01 0xC0,0x04 0xC0,0x05 0xC0,0x0B 0xC0,0x0E 0xC0,0x0F 0xC0,0x25 0xC0,0x26 0xC0,0x29 0xC0,0x2A 0xC0,0x2D 0xC0,0x2E 0xC0,0x31 0xC0,0x32 0xC0,0x3C 0xC0,0x3D 0xC0,0x4A 0xC0,0x4B 0xC0,0x4E 0xC0,0x4F 0xC0,0x50 0xC0,0x51 0xC0,0x5E 0xC0,0x5F 0xC0,0x62 0xC0,0x63 0xC0,0x74 0xC0,0x75 0xC0,0x78 0xC0,0x79 0xC0,0x7A 0xC0,0x7B 0xC0,0x88 0xC0,0x89 0xC0,0x8C 0xC0,0x8D 0xC0,0x9C 0xC0,0x9D 0xC0,0xA0 0xC0,0xA1
+- openssl 4.1: 34 v1 code point(s) missing: 0x00,0x00,0x00 0x00,0x1E 0x00,0x1F 0x00,0x20 0x00,0x21 0x00,0x22 0x00,0x23 0x00,0x24 0x00,0x25 0x00,0x26 0x00,0x27 0x00,0x28 0x00,0x29 0x00,0x2A 0x00,0x2B 0x00,0x60 0x00,0x61 0x00,0x62 0x00,0x63 0x00,0x64 0x00,0x65 0x00,0x66 0x01,0x00,0x80 0x02,0x00,0x80 0x03,0x00,0x80 0x04,0x00,0x80 0x05,0x00,0x80 0x06,0x00,0x40 0x06,0x01,0x40 0x07,0x00,0xC0 0x07,0x01,0xC0 0x08,0x00,0x80 0xFF,0x08,0x00 0xFF,0x08,0x10
+- s2n 1.7: 1 v1 code point(s) missing: 0xFF,0x0C
+- schannel Windows Server 2025: 4 v1 code point(s) missing: 0x01,0x00,0x80 0x02,0x00,0x80 0x06,0x00,0x40 0x07,0x00,0xC0
+
+Notes: libressl 2.0-2.4 fail with FILE_MISSING for src/lib/libssl/ssl2.h at those commits (404), so those lines would be restored stale/omitted. No tuning or data fixes were done. The V1_PARITY failures are reported as found, not investigated.
+
+## Fix round 1
+- Important 1-3: all post-discovery per-library work is wrapped (any exception -> FAIL RUNNER_ERROR with type and message; v2 baseline marked stale). All docs are rendered (to_doc + dump) before any write, in dry run too; a render error drops only that library. build_catalog/check_catalog errors -> FAIL RUNNER_ERROR for library "ciphersuites", not written. Writes are guarded per file with accurate `written`. run() always returns a RunResult.
+- Ruling A: discovery failure / NO_VERSIONS marks all v2 baseline entries stale and writes; V1 baseline writes nothing.
+- Ruling B: catalogue is written only when iana, testssl and scanigma are all available; otherwise WARN CATALOGUE_SKIPPED (also replaces the old FETCH_ERROR reuse).
+- Minor 4: --capture-fixtures reads sys.argv[1:] when argv is None. Minor 5: rolling-skip test cleaned and asserts no LINE_MISSING.
+- Minor 6 done: helpers moved to ciphersuites/scrape/merge.py (runner.py 358 lines, merge.py 153).
+- New codes in validate.py: RUNNER_ERROR, CATALOGUE_SKIPPED.
+- Tests: 491 passed (py3.9 too), black/pylint/bandit clean. Live scrape not re-run.
+
+---
+
+<!-- task-21-report.md -->
+
+# Task 21 report: Catalog query API
+
+Status: DONE. Commit 9bf5df5 "Add lazy catalog query API".
+
+RED: tests/test_catalog.py failed at collection (no ciphersuites.catalog).
+GREEN: 517 passed on 3.x and on Python 3.9 (uv). black, pylint (10.00), bandit clean.
+
+Files:
+- ciphersuites/catalog.py (new): DataNotFoundError, Candidate, AmbiguousNameError, CipherSuite, Catalog, module functions with lazy locked default (`_default`, `_default_location()` are the monkeypatch points).
+- ciphersuites/__init__.py: imports DataNotFoundError from catalog.
+- ciphersuites/scrape/schema.py: added public `loads(text, where)` (wraps `_parse`) so Traversable text can be parsed with the same safe loader.
+- tests/fixtures/catalog_v2/: ciphersuites, openssl (1.0.2/1.1.1/3.0), go, iana, testssl; generated with to_doc/dump/build_catalog. Includes RC4-MD5 ambiguity, an openssl code point (0x56,0x00) absent from the catalogue.
+- tests/test_catalog.py (new); tests/test_data_packaging.py: the uninitialised-submodule subprocess test copies only __init__.py, so it now also copies catalog.py and scrape/ (needed because __init__ imports catalog).
+
+Notes / concerns:
+- get() by code point ignores library/version (narrowing applies to names only).
+- Name index includes reference docs (library="iana" etc.) and catalogue names (library None); narrowing by library excludes catalogue entries.
+- supported_by/versions accept reference libraries too; libraries() excludes them.
+- Fallback name for catalogue-absent code points uses kind=library docs only, libraries in sorted order.
+- Testing for fixture-absent-from-catalogue name is synthetic ("TLS_FALLBACK_SCSV_X").
+
+## Fix report: hash-seed nondeterminism
+Cause: Candidate.versions was built from a set of labels (order = PYTHONHASHSEED). Fix: `Catalog._candidates` now orders each candidate's versions by the library's written version order. Audit of catalog.py: all other outputs are already ordered (find/supported_by sorted by code point; names_of sorted names within written-order versions; membership uses written order; fallback name uses min over (rank, name); candidates sorted by code point then library). Only that one spot was set-ordered.
+Regression: `test_deterministic_under_hash_seeds` runs the ambiguous lookup in subprocesses with PYTHONHASHSEED 0-5 and requires identical output; test_ambiguous_name asserts the exact order.
+Multi-seed run (`PYTHONHASHSEED=s pytest -q tests/test_catalog.py`, s=0..5): 24 passed in each of the six runs.
+Full: 518 passed (also on 3.9); black, pylint, bandit clean.
+
+---
+
+<!-- task-22-report.md -->
+
+# Task 22 steps 4-7 report
+
+Status: DONE_WITH_CONCERNS. Commit 7701bf3 (not pushed).
+
+- Gitlink advanced to 92e283fa (fetch OK, not shallow).
+- RED captured first: tests/test_package.py, 10 failed / 2 passed against old package.
+- New: tests/test_package.py (13 tests), `catalog.all_suites()` / `Catalog.suites()` (public, sorted by code point), clearer DataNotFoundError text for missing ciphersuites.yaml.
+- __init__.py per ruling 2; __main__.py per ruling 1 (exit 2 for --version without --library; exit 1 + stderr for unknown library/version/DataNotFoundError).
+- Deleted ciphersuites/_scripts/, build_ciphersuites.sh, all old [project.scripts] (kept ciphersuites-scrape). docs/ had no references to the removed API.
+- CI: coverage flags added to pytest step only.
+
+## Tests changed/removed
+- Removed tests/adapters/test_schannel.py::test_covers_v1_code_points_or_documents_the_gap (and unused V1 constant/Path import): it read the v1-format schannel.yaml from the submodule, which is now v2 data; v1 parity is already gated by the scraper's V1_PARITY check.
+- tests/test_data_packaging.py: gitlink test now checks the index for 92e283fa (git ls-files -s); missing-data test uses Catalog.load on an absent dir (v1 `_load_yaml` is gone); uninitialised-submodule test now expects import to succeed and the first catalog call to raise DataNotFoundError naming `git submodule update --init` (copies parse_name.py too).
+- No scraper/adapter/catalog tests deleted otherwise.
+
+## Concern: pytest-cov breaks PyYAML C loader
+With dotted `--cov=ciphersuites.catalog` targets, coverage imports the `ciphersuites` package (hence PyYAML) while configuring and then drops those modules; the re-imported CSafeLoader returns nodes with tag None (50 failures). Reproduced with plain coverage + pyyaml 6.0.2/6.0.3, py3.12/3.13. Fix: `addopts = "-p yaml"` in pyproject [tool.pytest.ini_options] (pre-imports PyYAML), with a comment. CI uses the same pytest invocation so it benefits too.
+
+## Verification
+- pytest with coverage gate: 539 passed, total coverage 96.09% (gate 85, no extra tests needed).
+- black, pylint (10.00), bandit clean (only pre-existing nosec warnings). Python 3.9 via uv: 539 passed; uv.lock removed.
+- flit build: wheel contains ciphersuites/_ciphersuites/ciphersuites.yaml, no _scripts. Removed the 0.1.0 dist outputs; dist/ is untracked/ignored and held a pre-existing 0.0.1 tarball, left alone.
+- `python -m ciphersuites --library go --version 1.27` prints JSON.
+
+---
+
+<!-- task-20a-report.md -->
+
+# Task 20a report: LibreSSL pre-2.5 header layout
+
+Status: DONE. Commit 304b9a6.
+
+## Change
+- `adapters/libressl.py`: `files_for` uses `src/lib/libssl/src/ssl/` when `line_key(label) < (2, 5)`, else `src/lib/libssl/`. ssl2.h rule (< 4.0) unchanged. Comment added.
+- `source_url`, `fetch_files`, `parse` are path-generic; `parse_ck_txt` just joins files sorted by path with no key dependence. No other change needed.
+
+## TDD
+- RED: `test_files_for_layout_change_at_2_5` failed (old base returned for 2.0/2.4).
+- GREEN: passes after the change. Asserts old base for 2.0 and 2.4, new base for 2.5.
+
+## Fixture
+- `fixtures libressl libressl-v2.4.5 --label 2.4` (commit f319f250...), 3 files under src/lib/libssl/src/ssl/ added to manifest.yaml. Golden `tests/fixtures/expected/libressl/2.4.yaml` generated with `--update-goldens`. "2.4" added to LABELS (coverage and golden tests).
+- 2.4: 185 records, join coverage 0.9737; 2.5: 185 records, 0.9737 (identical; file hashes match 2.5's).
+
+## Verification
+pytest 494 passed; black clean; pylint 10.00 (no messages); bandit no issues (only existing nosec warnings); Python 3.9 via uv 494 passed; uv.lock removed.
+
+## Live dry run
+Report: /tmp/claude-0/-home-user/c3ed32d4-2ad7-55a3-aa5e-af481896ed77/scratchpad/libressl-dry.json. Result passed, exit 0. No FILE_MISSING, no FAIL codes. Only WARN: CATALOGUE_SKIPPED (no reference data for iana, testssl, scanigma; expected for a libressl-only run). /home/user/ciphersuites status clean.
+
+## Concerns
+None significant. Only the 4.4 diff is shown (empty) in the report; lines 2.0-2.4 produced no failures.
+
+---
+
+<!-- task-22a-report.md -->
+
+# Task 22a report: comment-adjacent CK values silently dropped
+
+Status: DONE.
+
+## Fix
+`ciphersuites/scrape/adapters/_openssl_family.py`: `parse_ck_txt` now blanks C comments (`/* */` incl. multi-line, and `//`) before matching, keeping line structure and string literals (same `_SKIP` regex / `_blank_comments` convention as jsse, gnutls, mbedtls; local copy since those helpers are private to each adapter). Defence in depth: CK value capture is now `[^\s/]+`. Side effect: commented-out defines are now ignored (previously matched).
+
+## TDD
+RED (before fix): 5 failed: test_comment_touching_value, test_comment_spanning_two_lines_after_value, test_line_comment_touching_value, test_commented_out_define_is_ignored, test_102_comment_adjacent_suites_present. The `/*` inside TXT string test passed (guards the blanking). GREEN after fix: all pass (one initial failure was my own wrong expected value in a test: SSL2 0x02000000 -> 00,00,00; corrected).
+Tests: 5 synthetic in tests/adapters/test_openssl_family.py; 1 explicit 8-code-point assertion on the 1.0.2 fixture in tests/adapters/test_openssl.py.
+
+## Golden diffs
+Only `tests/fixtures/expected/openssl/1.0.2.yaml` changed (171 -> 179 records). libressl and boringssl goldens: no change. Nothing removed (diff has no deletions).
+Added code points: 00,00,00; 00,60; 00,61; 06,01,40; 07,01,C0; 08,00,80; FF,08,00; FF,08,10, carrying names NULL, NULL-MD5, DES-CBC-SHA, DES-CBC3-SHA, DES-CFB-M1, EXP1024-RC2-CBC-MD5, EXP1024-RC4-MD5, RC4-64-MD5 (per the yaml diff; per-pair mapping in the diff). These are exactly the 8 lost v1 code points.
+
+## Counts (records / total keys / coverage)
+- openssl 1.0.2: 179 / 181 / 0.989 (was 171 / 181 / 0.945); 1.1.1: 266/268/0.993; 3.6: 268/270/0.993
+- libressl 2.4: 185/190/0.974; 2.5: 185/190/0.974; 3.9: 190/192/0.990; 4.0: 177/179/0.989
+- boringssl 2025-03-17: 152/154/0.987; 2026-11-08: 25/27/0.926
+All pass the 0.90 gate; unchanged except openssl 1.0.2.
+
+## FALLBACK_SCSV / SCSV
+Treatment unchanged: still unmatched in every fixture (no TXT name in these headers). Only unmatched keys for 1.0.2 now. (libressl 2.4/2.5 also keep the three *_CHACHA20_POLY1305_OLD, unchanged.)
+
+## Verification
+pytest 524 passed; black clean; pylint 10.00 with zero messages; bandit clean (only pre-existing nosec warnings); py3.9 uv run 524 passed; uv.lock removed.
+
+---
+
+<!-- task-22b-report.md -->
+
+# Task 22b report: skip legacy non-suite files
+- catalog.py: `_NON_SUITE_FILES = frozenset({"technologies.yaml", "vulnerabilities.yaml"})`; `_read` skips them by name. All other *.yaml stay strict.
+- Tests: legacy files skipped (fixture copy + list-shaped files loads); list-shaped foo.yaml raises DataNotFoundError.
+- Real data (read-only): libraries ['boringssl','gnutls','go','jsse','libressl','mbedtls','nss','openssl','s2n','schannel'], get((0xC0,0x2F)).name = TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256.
+- 526 passed (also 3.9); black, pylint, bandit clean.
+
+---
+
+<!-- final-review.md -->
+
+# Final whole-branch review: scraping robustness
+
+- Branch: `claude/modest-tesla-n4t2ke`, range `78490d4..HEAD` (63 commits)
+- Data repo: workflow file only (`dc29366`)
+- Reviewer: final broad pass, read-only. Probes were run against the pinned fixtures in `.cache/fixtures` (offline). The only network calls were `git ls-remote` to check action SHAs and remote refs.
+
+## Passes performed
+
+1. **Core and fetch** (`core.py`, `fetch.py`, `helpers.py`, `versions.py`). Sound. SHA-only raw URLs, bounded retries, atomic cache writes. One minor: 429 is not retried.
+2. **Adapters** (all 13). Found two confirmed silent-drop bugs: testssl blank-line handling and LibreSSL `_OLD` ChaCha suites. Also confirmed the Go, JSSE and Mbed TLS denominator gaps deferred from the task reviews.
+3. **Schema, validate, merge, runner, cli, report.** Gates and stale handling match spec 5.4/6.2. Unmatched keys under the coverage threshold are never reported (spec 6.1/6.5 gap). The IANA `Recommended` ruling rests on a false premise.
+4. **Catalog, `__init__`, `__main__`.** Clean. Lookups are deterministic. Errors name the submodule command.
+5. **Packaging and CI.** Actions are pinned. I verified all four SHAs against their tags with `git ls-remote`. `permissions: contents: read` is set. The gitlink is `160000 92e283f`. The wheel check is in place.
+6. **Data-repo workflow.** Input injection is handled correctly through `env:`. The write token is exposed to the whole scrape. The install comes from a mutable, not-yet-existing tag. The cache key is frozen.
+
+## Strengths
+
+- One clear exception boundary. Adapters raise. `runner._scrape_version` and `_process` catch per (library, version) and per library. Every failure becomes a `Finding` and never ends as a silent `[]`.
+- Coverage denominators are counted over "entry-looking" lines in most adapters (GnuTLS `ENTRY*(` rows, s2n `.name =` structs, testssl code-point lines, Scanigma `numberOfItems`). A format change therefore usually lowers coverage instead of vanishing.
+- Determinism is handled with care. `to_doc` sorts suites by code point and names by (first-version rank, name). Findings are sorted on a full key. Report sets are sorted. `_newest_names` uses the smallest-name rule. Catalog lookups sort before returning.
+- Conflicting definitions fail loudly everywhere: the OpenSSL-family CK conflicts, and the Go, NSS, JSSE, s2n, Mbed TLS, GnuTLS, IANA and Scanigma name or code-point conflicts all raise `ValueError`.
+- Supply-chain basics are good:
+  - SHA-pinned actions.
+  - `permissions: {}` as the workflow default.
+  - Dispatch inputs reach the script only through quoted env vars.
+  - `--baseline-ref` is guarded against `-`, `:` and whitespace and passed as an argv list.
+  - YAML is only ever read with safe loaders (`CSafeLoader` and `safe_load`).
+  - No `shell=True`.
+- Stale handling (spec 5.4) is implemented faithfully, including rolling snapshots and "discovery failed: mark all stale".
+- The fixture manifest has sha256 pinning, eviction on mismatch, and no vendored GPL/MPL source.
+
+## Issues
+
+### Critical (Must Fix)
+
+None.
+
+### Important (Should Fix)
+
+**I1. testssl: a blank line before an entry silently drops that entry.**
+- Where: `ciphersuites/scrape/adapters/reference/testssl.py:23`
+- What is wrong: `_ENTRY = re.compile(rf"^\s*{_BYTE}\s*,", re.MULTILINE)`. Under MULTILINE, `^\s*` can start at a preceding blank line and consume the newline. `match.start()` then points at the blank line, so `line` is `""`, `_FULL` fails, and the real entry is recorded as unmatched key `''`.
+- Probe: I inserted two blank lines into the pinned `cipher-mapping.txt`. The result was 368 records instead of 370, unmatched `['', '']`, and coverage 0.995. That passes `min_join_coverage` and the 10% `REFERENCE_SHRINK` gate.
+- Why it matters: upstream only has to group the table with blank lines, and suites disappear from `testssl.yaml` and possibly from the catalogue. This is the same bug class as the `\S+` capture.
+- Fix: use `^[ \t]*` in `_ENTRY` (and in `_FULL` for consistency). Add a test with blank lines between entries that asserts all records survive.
+
+**I2. LibreSSL: the pre-standard ChaCha suites 0xCC,0x13/14/15 are dropped from every 2.4+ line that ships them. This is already in the pinned data 92e283f.**
+- Where: `ciphersuites/scrape/adapters/libressl.py:16` (`_CHACHA_KEY`)
+- What is wrong: LibreSSL 2.4 and 2.5 define `TLS1_CK_ECDHE_RSA_CHACHA20_POLY1305_OLD 0x0300CC13` (plus ECDSA/DHE) with TXT key `..._WITH_CHACHA20_POLY1305_OLD`. `_rekey` fullmatches `X_CHACHA20_POLY1305` only, so the `_OLD` keys never join their TXT names. They become unmatched (coverage 0.974, which passes) and are never reported (see I3).
+- Effect on published data: `libressl.yaml` at 92e283f lists 0xCC,0x13-15 only for 2.0-2.3, under the non-`_OLD` names. For 2.4+ the suites are missing.
+- Verified fix:
+  `_CHACHA_KEY = re.compile(r"(?P<kx>\w+?)(?<!_WITH)_CHACHA20_POLY1305(?P<old>_OLD)?")`, returning `f"{kx}_WITH_CHACHA20_POLY1305{old or ''}"`.
+  On the 2.4 and 2.5 fixtures this gives 188 records (was 185) and adds exactly 0xCC,0x13/14/15. The 3.9 and 4.0 fixtures are unchanged.
+- Follow-on work:
+  - Update the 2.4 and 2.5 goldens.
+  - Add a hand assertion that LibreSSL 2.5 has `ECDHE-RSA-CHACHA20-POLY1305-OLD` at 0xCC,0x13.
+  - Regenerate libressl data (the same-commit identical-output gate requires `--accept libressl:<affected lines>` or a local regeneration), then bump the gitlink.
+
+**I3. Unmatched keys under the coverage threshold are never reported (spec 6.1 "unmatched keys always listed"; 6.5 "unmatched keys").**
+- Where: `ciphersuites/scrape/validate.py:152-169`, `runner.py:109-124`
+- What is wrong: `unmatched_keys` reaches a `Finding` only inside `LOW_JOIN_COVERAGE`. Below that threshold, up to 10% of a version's keys can vanish with no trace in `validation-report.json` or the step summary. The saved real-run reports (`dry-run.json`, `run3.json`) contain no unmatched keys at all, although the fixtures show unmatched keys in every OpenSSL-family version. This is why I2 went unnoticed, and why I1 would.
+- Fix: in `check_parse`, emit `Finding(WARN, UNMATCHED_KEYS, lib, label, f"{n} unmatched key(s)", {"unmatched": sorted(...)})` whenever `unmatched_keys` is non-empty and coverage passes. To keep the signal clean, either map or deliberately exclude the OpenSSL-family `SCSV`/`FALLBACK_SCSV` CK defines, which are signalling values with no TXT (they are present in every OpenSSL, LibreSSL and BoringSSL version). Otherwise the new warning starts as noise.
+
+**I4. The data-repo workflow gives the `contents: write` token to the entire scrape (spec 9.2: "`contents: write` only on the commit job").**
+- Where: data repo `.github/workflows/scrape_format_ciphersuites.yaml:37-46, 61-63`
+- What is wrong:
+  - There is a single job with `contents: write`.
+  - `actions/checkout` keeps its default `persist-credentials: true`, so the token sits in `.git/config` during the "Scrape and validate" step.
+  - That step runs code installed from a git tag together with unpinned transitive dependencies (`pyyaml`, `beautifulsoup4`, `requests`, no hashes).
+  - That step also parses untrusted HTML, CSV and C sources from about 450 remote URLs.
+- Plan versus spec: the plan's Task 23 step 2 said "one job", which contradicts the spec. The spec is the authority.
+- Why it matters: any compromised dependency or parser exploit can push to the data repo's main branch. That branch feeds the package once the gitlink is bumped. The gitlink review is a second gate, but a malicious push could still be subtle.
+- Fix (minimum): `persist-credentials: false` on checkout, and in the commit step only:
+  `git -c http.extraheader="AUTHORIZATION: basic $(printf x-access-token:%s "$GITHUB_TOKEN" | base64 -w0)" push` with `GITHUB_TOKEN: ${{ github.token }}` in that step's env.
+- Fix (spec-conformant): split into a read-only `scrape` job that uploads the data as an artifact, and a `commit` job with `contents: write` that downloads it, re-validates the YAML shape, and pushes.
+
+**I5. The workflow installs from a mutable tag that does not exist yet, and the package pins a data commit that sits only on a feature branch.**
+- Where: data workflow line 63 (`@v0.1.0`); `ciphersuites/_ciphersuites` gitlink 92e283f
+- What is wrong:
+  - `git ls-remote` shows no tags on python-ciphersuites.
+  - The data repo's `main` is still `07d09ab`. `92e283f` and `dc29366` exist only on `claude/modest-tesla-n4t2ke`.
+  - Tags can be force-moved, so the "immutable release tag" comment is false.
+- Why it matters:
+  - If the data branch merges first, the weekly run fails at install.
+  - If the data branch is squash-merged or deleted, 92e283f becomes unreachable. `actions/checkout submodules: true` and every `git clone --recurse-submodules` then break.
+  - Installing from a mutable tag in a write-token job is a supply-chain hole (see I4).
+- Fix:
+  - Pin the install to a full commit SHA (`git+https://...@<40-hex>`), optionally with a hashed requirements file for dependencies.
+  - Merge order: package branch to main, then create the tag/SHA and set it in the workflow, then merge the data branch with a merge commit (not a squash) or tag `92e283f` (e.g. `data-v2-initial`) so it stays reachable.
+
+**I6. IANA `Recommended` changes are reported nowhere. The Task 18 ruling's premise ("the runner's diff report covers it") is false.**
+- Where: `validate.py:220-256`, `merge.py:48-66`
+- What is wrong: `merge.diffs` compares code-point sets only. Attribute changes (`recommended` Y to N to D, `dtls_ok`) never reach the report. Spec 6.2 requires "`Recommended` changes reported".
+- Why it matters: a security architect wants to see when IANA marks a suite as discouraged (D). The data file is updated, but nobody is told.
+- Fix: in `_check_reference` for `iana`, compare `new.attributes` with `baseline.attributes` for common code points. Emit a WARN finding (e.g. `IANA_ATTRIBUTE_CHANGED`) listing (code point, field, old, new).
+
+### Minor (Nice to Have)
+
+- **M1.** Data workflow `actions/cache` key `scrape-cache-${{ runner.os }}` is static (line 56). An exact-key hit never re-saves, so the cache is frozen after the first run and every new upstream commit is refetched weekly. Spec 9.2 says "keyed by commit". Fix: `key: scrape-cache-${{ runner.os }}-${{ github.run_id }}` with `restore-keys: scrape-cache-${{ runner.os }}-`.
+- **M2.** `Fetcher.get` returns cached bytes without integrity checks (`fetch.py:126-128`). Combined with M1, a poisoned cache entry is trusted, and the recorded `files:` hash describes the poisoned bytes. The risk is low, because only this workflow writes the cache in the data repo. Option: store the sha256 beside each entry and verify on read.
+- **M3.** `git add -- '*.yaml'` (data workflow) also matches `.github/workflows/*.yaml`, because git pathspec `*` crosses `/`. Use `':(top,glob)*.yaml'` to limit it to root-level data files.
+- **M4.** Upstream-controlled strings reach `$GITHUB_STEP_SUMMARY` as raw Markdown (`report.py:49-55`): testssl unmatched lines, Scanigma names, exception text. This allows Markdown/link injection in the job summary. Wrap values in backticks and strip backticks and newlines.
+- **M5.** `--accept` keys are not validated (`cli.py:110-121`). With `"mbedtls:4.2, schannel:X"` the second key starts with a space and is silently ignored. The gate still fails, so nothing is lost, but the cause is obscure. Strip whitespace around pairs, and warn when an accept matches no finding.
+- **M6.** `Catalog.load` (`catalog.py:236-242`): two files declaring the same `library` resolve last-wins in `iterdir()` order, which depends on the filesystem. Raise `DataNotFoundError` on a duplicate library.
+- **M7.** The IANA and Scanigma fixtures are pinned to live URLs (Task 24 deferred), so any upstream edit turns every CI run red with a sha256 mismatch. This was user-directed. Track it so a red CI run is not misread.
+- **M8.** 148 `NEW_NAME_COLLISION` warnings in the last real run (`run3.json`) drown real warnings. Emit one per (library, name), and extend `KNOWN_NAME_COLLISIONS` for libressl/boringssl or document them. (This is the Task 18 deferred minor, promoted.)
+
+## Deferred-minors triage
+
+| Item | Decision | Reason |
+|---|---|---|
+| T1 utf-8 / alias / submodule ignore | leave | Already folded into fix round 1. |
+| T1 `__init__` except wraps safe_load | leave | Moot: `__init__.py` was rewritten in Task 22. |
+| T1 test_data_packaging oddities | leave | The current file is clean. |
+| T2 ci.yml path loop ×3 | leave | Cosmetic. |
+| T2 stale pylint comment blocks in pyproject | fix now | Delete the orphaned "files-output"/"no-space-check" comment paragraphs. Trivial, and they mislead. |
+| T3 split_hex_word accepts any 0x02xxxxxx | leave | Only `SSL2_CK_*` values reach that branch, and a misparse shows up as a 3-byte code point. |
+| T3 normalize_code_point("C0") | fix now | Add `if isinstance(values, (str, bytes)): raise BadCodePoint(...)` at the top. It is a public helper. |
+| T3 truthiness-only test | leave | Test-only. |
+| T3 join_coverage < 0 | leave | Every adapter keeps unmatched as a subset of total. |
+| T4 429 not retried (plus cache key, sleep, fsync, BOM) | fix now (429 only) | Treat 429 like 5xx: Scanigma makes about 418 requests and, by ruling, one failure stales the whole version. Leave the rest: unreachable, or loud (a BOM breaks the column check). |
+| T4 FetchError not chained; ChunkedEncoding exhaustion test | leave | Diagnostics only. |
+| T5 ls_remote_head on annotated tag | leave | Only called with HEAD. |
+| T5 misleading `assert tag` | leave | Test-only. |
+| T6 filler test, bare TypeError, `_sort_key` annotation | leave | Cosmetic. |
+| T6 `python -I` registration test | leave | Works in CI (package installed). |
+| T6 source_url NotImplementedError in fixtures.main | leave | Unreachable: every repo-less adapter overrides `source_url`. |
+| T7 narrow TLS1.3 assertion, helper naming, per-adapter noqa | leave | Cosmetic. |
+| T8 alias-over-alias last-wins | leave | Theoretical, and a wrong code point would trip the patch/identical gates. |
+| T8 LibreSSL SSLv2 NULL-MD5 0x00,0x00,0x00 | leave | Ruling: upstream header content. |
+| T9 Go denominator misses unparseable `TLS_` forms | fix now | Count `^[ \t]*TLS_\w+[^\n]*?=` lines as `total_keys`. Verified equal to parsed today (26/26 and 28/28), so no golden churn. |
+| T10 BadCodePoint/BRANCH tag tests | leave | Test-only. |
+| T11 JSSE `_ENTRY` misses `NAME (` | fix now | One token, `[ \t]*\(`. Same silent-drop class as I1. The other T11 items: leave. |
+| T12 Mbed TLS nameless-entry denominator; comment-stripped count tests; s2n block-boundary test | fix now | Count `\{\s*MBEDTLS_TLS\w*\s*,` as the denominator and treat rows without a name as unmatched. Cheap, and the same class as I1. |
+| T13 GnuTLS `#if 0` and tag tests | leave | No `#if 0` rows upstream. Add a comment only. |
+| T14 Vista test asserts 3 of 8 | leave | The count test catches drops. |
+| T15 IANA range rows counted once | leave | Only affects the coverage ratio, and it is consistent. |
+| T15 testssl nameless lines in total | leave | Documented, and coverage still reads 1.0. |
+| T15 import ordering | leave | Cosmetic. |
+| T15 Scanigma 2-byte SSLv2 termCode | leave | Kept as published. |
+| T15 no Scanigma politeness delay | leave | Superseded by the 429 retry above. |
+| T16 legacy parse_name mislabels new IANA names (ASCON → key_exchange AES) | leave | Out of scope (spec 3, enrichment). File a follow-up issue: the catalogue publishes wrong fields for these. |
+| T17 red test-only commit | leave | History. |
+| T18 NEW_NAME_COLLISION noise | fix now | See M8: 148 warnings hide real ones, including the new I3 warnings. |
+| T18 untested gate edges | leave | Test-only. |
+| T18 reference `--accept` key is the run date | leave | Document it in the workflow input description. |
+| T18 Finding unhashable | leave | Never hashed. |
+| T19 `_newest_names` assumes versions[-1] is newest | leave | Guaranteed by `to_doc` ordering. |
+| T20 dead `merge.restore_reference` | fix now | Delete it (unused). |
+| T20 duplicate RUNNER_ERROR | leave | Noise in a rare path. |
+| T20 post-accept exception findings | leave | Rare path, and it still fails. |
+| T20 cli.py second capture branch | leave | Reachable through the argparse prefix `--capture LIB REF`. Not dead. |
+| T21 get(cp, library=) ignores narrowing | leave | Documented in the docstring. |
+| T21 v1 error lacks submodule hint | leave | v1 data is no longer pinned. |
+| T21 supported_by docstring omits KeyError | leave | Docs nit. |
+| T21 `object.__setattr__` in `_bind` | leave | Idiomatic for frozen dataclasses. |
+| T22 CI submodule pin on a non-default branch | fix now (process) | See I5: tag 92e283f or merge with a merge commit before merging the package. |
+| T22 schannel gap comments not test-enforced | leave | Comments only. |
+
+**Counts:** 47 items: 9 fix now, 38 leave.
+
+## Rulings you disagree with
+
+- **Task 18 (IANA `Recommended` gets no Finding code, "the runner's diff report covers it").** Disagree. `merge.diffs` compares only code-point sets, so Recommended changes are not reported anywhere, contrary to spec 6.2. See I6.
+- **Task 23, plan step 2 ("one job" with `contents: write`).** This is a plan instruction rather than a recorded ruling, but it contradicts spec 9.2 ("`contents: write` only on the commit job"), and the spec is the authority. See I4.
+- **Task 15 (one failed Scanigma detail fetch fails the version).** Agree with the rule, but only if 429 is retried (T4 triage). Otherwise a rate-limit on any one of about 418 pages stales Scanigma every week.
+- All other rulings: agree.
+
+## Declined to judge
+
+- **Wayback migration for IANA/Scanigma (Task 24):** deferred by user direction because web.archive.org is unreachable.
+- **Correctness of `parse_name.complete_cs_instance` field derivation for new names:** spec 3 puts the enrichment join out of scope, and the code was moved, not rewritten.
+- **Whether OpenSSL-family SCSV defines (`SCSV`, `FALLBACK_SCSV`) belong in library data:** the spec is silent and v1 parity passed. Mentioned only as noise for I3.
+- **Exposing IANA `recommended`/`dtls_ok` through the `catalog` API:** spec 5.5 does not list it, and the Task 19 ruling keeps it out of the catalogue.
+- **ReDoS in adapter regexes (for example the s2n `_DEFINE` lazy `[^/\n]*?` followed by `[ \t]*`):** they are worst-case polynomial per line on upstream source from fixed repos. Not exploitable at realistic sizes.
+- **Scanigma listing size being unbounded (a hostile listing could trigger many requests):** the source is a fixed site the spec chose, and the run is weekly.
+- **Following redirects in Fetcher:** an existing ruling I agree with. Content is hashed and validated.
+- **`--baseline-ref` values like `a..b`:** they can only produce a SchemaError, not code or option injection.
+- **The wheel carrying the submodule's `.git` pointer file or README:** harmless, and I did not verify it with a real build.
+- **Choice of 0.90 / 0.5 / 10% thresholds:** fixed by the spec.
+
+---
+
+<!-- final-fix-report.md -->
+
+# Final-review fix report: scraping robustness (package side)
+
+- Branch: `claude/modest-tesla-n4t2ke`, range `e96c09f..e37ef81` (17 commits, not pushed)
+- Data repo: not touched. Gitlink still `160000 92e283f` (`tests/test_data_packaging.py` passes).
+- Input: `final-review.md` (I1, I2, I3, I6, the 9 "fix now" triage items, minors M1-M8).
+
+## Summary table
+
+| ID | Result | Commit | Test(s) | Golden diffs |
+|---|---|---|---|---|
+| I1 testssl blank-line drop | fixed | f0b927f | `test_testssl_blank_lines_between_entries_lose_nothing`, `test_testssl_fixture_with_blank_lines_keeps_every_record` (test_reference.py) | none |
+| I2 LibreSSL `_OLD` ChaCha | fixed | 2bf8859 | `test_old_chacha_suites_joined_in_2_5` (test_libressl.py) | libressl 2.4, 2.5: +3 each (0xCC,0x13/14/15) |
+| I3a SCSV defines named | fixed | a76f026 | `test_signalling_cks_get_their_iana_names`, `test_signalling_ck_with_unexpected_value_stays_unmatched` (test_openssl_family.py), `test_signalling_suites_use_iana_names` (test_openssl.py, checks names against the IANA fixture) | +2 each in all 9 OpenSSL-family goldens |
+| I3b UNMATCHED_KEYS warning | fixed | 416dee3 | `test_unmatched_keys_at_exact_threshold_are_a_warning`, `test_unmatched_keys_warning_lists_keys_sorted`, `test_good_parse_without_unmatched_keys_has_no_findings` (test_validate.py), `test_unmatched_keys_warning_does_not_stale_the_version` (test_runner.py) | none |
+| I6 IANA Recommended changes | fixed | 4b29e22 | `test_iana_recommended_change_is_one_warning`, `test_iana_recommended_unchanged_gives_no_finding`, `test_iana_removal_and_recommended_change_both_reported` (test_validate.py) | none |
+| T4 429 retry | fixed | 82d5f3e | `test_429_retried_on_backoff_schedule`, `test_429_gives_up_after_four_retries`, `test_429_retry_after_capped_at_schedule[9 cases]` (test_fetch.py) | none |
+| T9 Go denominator | fixed | e24d5c3 | `test_unparseable_tls_constant_counts_as_unmatched` (test_go.py) | none (26/26, 28/28) |
+| T11 JSSE `NAME (` | fixed | bc4dc37 | `test_space_before_parenthesis_is_still_an_entry` (test_jsse.py) | none |
+| T12 Mbed TLS denominator | fixed | 2d11a31 | `test_row_without_a_name_string_is_unmatched` (test_mbedtls.py) | none (207, 190, 76) |
+| T12 test-only parts (comment-stripped counts, Mbed TLS coverage == 1.0, s2n block boundary) | fixed | 676cb70 | `test_every_table_entry_is_a_record`, `test_join_coverage_is_complete` (mbedtls), `test_every_name_side_suite_is_a_record`, `test_struct_without_iana_does_not_borrow_the_next_struct` (s2n) | none |
+| T3 `normalize_code_point("C0")` | fixed | 5489da8 | `test_normalize_code_point_rejects_a_bare_string[4 cases]` (test_core.py) | none |
+| T18/M8 NEW_NAME_COLLISION noise | fixed | 0c2a6c3 | `test_openssl_family_known_collisions_are_silent[libressl,boringssl]`, `test_collision_repeated_in_every_version_is_one_finding`, `test_within_and_cross_library_collision_is_one_finding_per_library` (test_validate.py) | none |
+| T20 dead `merge.restore_reference` | fixed | a6941fc | existing suite (no callers) | none |
+| T2 stale pylint comments | fixed | fcde571 | pylint run (also silences the 3 `overgeneral-exceptions` config warnings) | none |
+| T22 submodule pin reachability | left | - | process work, controller | - |
+| M4 Markdown injection in summary | fixed | e37ef81 | `test_markdown_neutralises_upstream_text` (test_runner.py) | none |
+| M5 `--accept` whitespace | fixed (strip only) | fc274df | `test_accept_keys_are_stripped`, `test_blank_accept_part_is_rejected` (test_cli.py) | none |
+| M6 duplicate library in `Catalog.load` | fixed | de9f71c | `test_load_duplicate_library_is_an_error` (test_catalog.py) | none |
+| M1 cache key frozen | left | - | data-repo workflow (out of scope) | - |
+| M2 cache integrity | left | - | not trivial (needs a sidecar hash format) | - |
+| M3 `*.yaml` glob | left | - | data-repo workflow, not package-side | - |
+| M5 "warn when an accept matches no finding" | left | - | needs a new finding/plumbing in the runner; not trivial | - |
+| M7 live-URL fixtures | left | - | tracking only (user-directed) | - |
+| I4, I5 | left | - | controller (data workflow, merge order, tag pinning) | - |
+
+All other triage rows marked "leave" in `final-review.md` remain left.
+
+## TDD record (RED -> GREEN)
+
+- I1: both new tests failed (fixture with doubled newlines kept 1 of 370 records); green after anchoring.
+- I2: new test failed (`KeyError ('0xCC','0x13')`); green, then goldens regenerated.
+- I3a: both synthetic and IANA-cross-check tests failed; green.
+- I3b: import of `UNMATCHED_KEYS` failed; after validate change, the runner test still failed (the runner treated any check_parse finding as fatal and would have staled the version), fixed in `runner._scrape_version/_scrape_library` to fail only on FAIL-level findings.
+- I6: import failed; green.
+- 429: 9 tests failed (429 raised immediately); green.
+- Go, JSSE, Mbed TLS, normalize_code_point, collisions, M5, M6, M4: each new test failed first, then passed.
+- T12 test-only parts and T20/T2: no behaviour change, no RED expected.
+
+## Golden diffs explained
+
+All golden changes are additions; no golden lost a record.
+
+1. `libressl/2.4.yaml`, `libressl/2.5.yaml` (I2): +`ECDHE-RSA-CHACHA20-POLY1305-OLD` 0xCC,0x13, +`ECDHE-ECDSA-CHACHA20-POLY1305-OLD` 0xCC,0x14, +`DHE-RSA-CHACHA20-POLY1305-OLD` 0xCC,0x15. Upstream headers define these as `TLS1_CK_*_CHACHA20_POLY1305_OLD` with matching `TLS1_TXT_*_WITH_CHACHA20_POLY1305_OLD`; the join previously missed them. 3.9 and 4.0 were unchanged by I2.
+2. All 9 OpenSSL-family goldens (`openssl/1.0.2, 1.1.1, 3.6`, `libressl/2.4, 2.5, 3.9, 4.0`, `boringssl/2025-03-17, 2026-11-08`) (I3a): +`TLS_EMPTY_RENEGOTIATION_INFO_SCSV` 0x00,0xFF and +`TLS_FALLBACK_SCSV` 0x56,0x00 from `SSL3_CK_SCSV 0x030000FF` and `SSL3_CK_FALLBACK_SCSV 0x03005600`. The IANA fixture (`iana/2026-11-08.yaml`) uses exactly these names for these code points, and a test enforces that. The mapping applies only when the define holds the IANA value.
+
+LibreSSL record counts on the pinned fixtures:
+
+| Line | Before | After I2 | After I2 + SCSV |
+|---|---|---|---|
+| 2.4 | 185 | 188 | 190 |
+| 2.5 | 185 | 188 | 190 |
+| 3.9 | 190 | 190 | 192 |
+| 4.0 | 177 | 177 | 179 |
+
+## Unmatched keys remaining in fixtures (after these changes)
+
+Every library and reference fixture now parses with zero unmatched keys (OpenSSL, LibreSSL, BoringSSL, GnuTLS, Go, JSSE, Mbed TLS, NSS, s2n, IANA, testssl), so `UNMATCHED_KEYS` does not fire on any of them. Before: every OpenSSL-family version had `SCSV`, `FALLBACK_SCSV`; LibreSSL 2.4 and 2.5 also had the three `*_CHACHA20_POLY1305_OLD` keys.
+
+The one exception is the Scanigma fixture, which by design holds the listing plus only 8 detail pages (`SCANIGMA_DETAIL_FILES = 8`). Its 409 unmatched keys are the listing entries whose detail pages are not in the fixture. That is an artifact of the sampled fixture, not a parser gap; a real run fetches every detail page. testssl still counts 4 nameless (`-`) lines in `total_keys` without listing them as unmatched (documented, T15 "leave").
+
+## NEW_NAME_COLLISION count
+
+Measured by running `check_catalog` over the pinned data (`ciphersuites/_ciphersuites` at 92e283f), which reproduces the 148 of `run3.json`:
+
+- Before: 148 (129 LibreSSL, mostly the same 6 SSLv2/TLS names once per version).
+- After: 19, one per (library, name).
+
+Remaining 19 are genuine signals: the ChaCha names that LibreSSL 2.0-2.3 and older BoringSSL use for the pre-standard 0xCC,0x13-15 (openssl, libressl, boringssl, s2n), NSS/testssl `SSL_RSA_FIPS_WITH_{3DES_EDE,DES}_CBC_SHA`, s2n `RC4-MD5`/`DES-CBC3-SHA` (s2n uses OpenSSL-style names but is not OpenSSL-family, so it was not added to the known list), and Scanigma/testssl `SSL_CK_NULL_WITH_MD5` (2-byte vs 3-byte, T15 ruling). Each finding now carries `name`, `code_points`, `versions` (where it collides within the library) and `libraries` (when it differs across libraries).
+
+## Behaviour notes for the controller
+
+- **Data regeneration needed.** I2 and I3a change parser output for every OpenSSL, LibreSSL and BoringSSL version (and LibreSSL lines that ship `_OLD`). The same-commit identical-output gate will report `NONDETERMINISTIC` for all of them on the next run unless the data is regenerated locally or `--accept`ed. Only additions; no removals.
+- **Runner change (I3b).** `check_parse` can now return a WARN. The runner previously staled a version on any parse finding; it now stales only on FAIL-level findings and passes warnings through to the report.
+- **429 semantics.** 429 is retried like 5xx (4 retries). `Retry-After` (delta-seconds or HTTP-date; past date = 0) can shorten a wait but is capped at the scheduled delay for that attempt (2/4/8/16 s). Unparseable values use the schedule. This extends the global constraint "retries on connection errors, timeouts and 5xx only" and spec 4.3 by reviewer direction; neither document was edited.
+- **IANA_RECOMMENDED_CHANGED** compares `recommended` for code points present in both the new data and the baseline's newest IANA version. The pinned `iana.yaml` has `recommended` on all 358 suites, so the first run will not emit a spurious flood. `dtls_ok` changes are not reported (spec 6.2 names only Recommended).
+- **M4** changes the Markdown summary format: messages and unmatched keys are now inline code spans.
+
+## Verification
+
+- `python -m pytest -q --cov=ciphersuites.scrape --cov=ciphersuites.catalog --cov-branch --cov-fail-under=85`: 578 passed, coverage 96.55%.
+- `black --check ...`: 66 files unchanged.
+- `pylint ciphersuites/scrape ciphersuites/parse_name.py ciphersuites/catalog.py tests`: 10.00/10, zero messages (the config warnings are gone too).
+- `bandit -q -r ciphersuites/scrape ciphersuites/catalog.py`: no issues (the three "nosec encountered" tester warnings predate this work and are identical on e96c09f).
+- `uv run --no-project --python 3.9 ... pytest -q`: 578 passed; `uv.lock` removed.
+- `PYTHONHASHSEED=0` and `PYTHONHASHSEED=7`: 578 passed each.
+
+## Commits
+
+```
+e37ef81 Render upstream text in the Markdown summary as inline code
+de9f71c Reject two data files declaring the same library in Catalog.load
+fc274df Strip whitespace around --accept library and version
+fcde571 Remove stale pylint comments and qualify overgeneral-exceptions
+a6941fc Delete unused merge.restore_reference
+0c2a6c3 Collapse NEW_NAME_COLLISION to one finding per (library, name)
+5489da8 Reject a bare string in normalize_code_point
+676cb70 Tighten Mbed TLS and s2n fixture invariants
+2d11a31 Count every Mbed TLS table row in the coverage denominator
+bc4dc37 Accept whitespace before the parenthesis in JSSE enum entries
+e24d5c3 Count unparseable Go TLS_ constants in the coverage denominator
+82d5f3e Retry HTTP 429 in the fetcher, honouring Retry-After within the schedule
+4b29e22 Report IANA Recommended changes as IANA_RECOMMENDED_CHANGED (spec 6.2)
+416dee3 Report unmatched keys as an UNMATCHED_KEYS warning (spec 6.1)
+a76f026 Name OpenSSL-family SCSV defines with their IANA names
+2bf8859 Join LibreSSL pre-standard ChaCha *_OLD keys to their TXT names
+f0b927f Anchor testssl entry pattern to one line so blank lines drop nothing
+```
+
+`.superpowers/` is git-ignored, so this report is not committed.
+
+## Incident note
+
+During the RED step of M5, `test_blank_accept_part_is_rejected` was first written without mocking `cli.run`, so the then-accepted `" :3.0"` let `cli.main` start a real scrape for about 60 s (output into pytest's tmp dir, fetch cache in `~/.cache/python-ciphersuites`). Nothing in the repo or the data repo was written. The test now mocks `run`.
+
+---
+
+<!-- final-rereview.md -->
+
+# Final re-review: fix round e96c09f..e37ef81 + data a745aa9
+
+Method: read the diff and workflow. Reverted each fix's source file in a scratch copy of e37ef81 (repos untouched) and ran only that fix's tests. "RED" means the test fails without the fix.
+
+## 1. Findings and fix-now items
+- **I1** addressed: `adapters/reference/testssl.py:23,25-26` (`^[ \t]*`). RED (2 tests).
+- **I2** addressed: `adapters/libressl.py:16-18,33-34`. RED.
+- **I3** addressed in two parts. SCSV naming: `_openssl_family.py:28-31,105-108`, RED 2/3 (the third is the negative case and passes either way, as expected). UNMATCHED_KEYS: `validate.py:179-189`, RED (ImportError); runner part RED.
+- **I6** addressed: `validate.py:240-250,276-287`. RED (ImportError). `dtls_ok` is not compared; spec 6.2 names only Recommended, so that is acceptable.
+- **T2 pylint comments** addressed: `pyproject.toml` (deleted; `:465` is qualified). Config only, no test.
+- **T3 normalize_code_point** addressed: `core.py:39-42`. RED (4 tests).
+- **T4 429 retry** addressed: `fetch.py:81-97,174-181,202-209`. RED (11 tests).
+- **T9 Go denominator** addressed: `adapters/go.py:22,70-75`. RED.
+- **T11 JSSE `NAME (`** addressed: `adapters/jsse.py:24`. RED.
+- **T12 Mbed TLS denominator** addressed: `adapters/mbedtls.py:31,104-109`. RED. The s2n and count tests are test-only, so passing without the fix is expected.
+- **T18/M8 collisions** addressed: `validate.py:66-77,414-476`. RED (4 of 6 tests).
+- **T20 dead code** addressed: `restore_reference` is gone, with no references left.
+- **T22** is process work. It is still open with the controller, alongside I5.
+
+## 2. I4: addressed
+- The scrape job has `contents: read` and `persist-credentials: false` (lines 41-52).
+- The commit job runs only the pinned checkout and download-artifact actions, plus `find`/`cp`/`git` (lines 120-147).
+- Only regular top-level files are copied, via `find -maxdepth 1 -type f -name '*.yaml'`, which does not follow symlinks.
+- `':(glob)*.yaml'` cannot reach `.github/`.
+- Every `uses:` is pinned to a 40-hex SHA.
+- Both jobs check out `github.sha`, so a branch that moves in between makes the push fail. It cannot revert newer commits.
+- M1 and M3 are fixed as a side effect.
+
+## 3. New behaviour
+- **(a) Stale rule: correct, nothing lost.** Every check_parse code that existed before (ZERO_RECORDS, BAD_CODE_POINT, DUPLICATE_RECORD, LOW_JOIN_COVERAGE) is FAIL, so "any finding" and "any FAIL" were the same set until UNMATCHED_KEYS arrived (`runner.py:115,149`). `apply_accepts` only touches BASELINE_CODES, so a WARN never reaches `accepted`.
+- **(b) 429: correct and bounded.** It makes at most 5 calls, and each wait is ≤ min(schedule, Retry-After). I probed values that did not parse ("abc", "1e3", "-5", non-ASCII digits, year 99999, day 32) and dates at the edges (year 1 at +2359, year 9999 at -2359). Unparseable values return None and use the schedule; the edge dates gave 0.0 and a capped value. Nothing raised. The Python 3.9 `TypeError` path is caught.
+- **(c) Collisions: no regression for names outside the list.**
+  - The six known names are now silenced for LibreSSL and BoringSSL whatever their code points. This already applied to OpenSSL.
+  - A new collision on a (library, name) that is already flagged only changes `details`; it adds no finding. See m2.
+- **(d) SCSV: not misleading relative to the existing data.**
+  - Go, NSS and JSSE already publish these SCSVs, and IANA lists them in the cipher-suite registry. The catalogue gives them `-` fields.
+  - The OpenSSL family now matches its peers. `supported_by` listing signalling values is existing behaviour that applies to every library (see m3).
+- **(e) UNMATCHED_KEYS noise: acceptable.** There is at most one finding per scraped version, and the real regeneration (data `75564b1`) emitted none.
+
+## 4. Determinism
+All of these sort or follow a fixed order before output:
+- `_collision_findings`: `by_name` is filled from a set, but every output path is sorted, `users` is built in sorted library order, `versions` follows `data.versions`, and `_sorted` keys on a message that contains the name.
+- `_recommended_changes`: iterates `_sort_cps`.
+- Go: `sorted(... | unread)`.
+- Mbed TLS: the `finditer` order of the source text.
+- `Catalog.load`: `sorted(docs.items())`.
+- UNMATCHED_KEYS: `sorted(...)`.
+
+No set or dict order reaches the output.
+
+## New issues
+- Critical: none.
+- Important: none.
+- Minor:
+  - **m1.** `fetch.py:179`: a long Retry-After (for example 3600) is ignored, and the fetcher retries at 2/4/8/16 s. Against an explicit request to back off, those retries are early and probably futile. Consider failing fast when the requested wait is longer than the schedule.
+  - **m2.** Collision findings repeat every week and are not diffed against the previous run. The steady 19 can therefore hide a change in an existing finding's details. Folding s2n `RC4-MD5`/`DES-CBC3-SHA` into the known list, or keying known collisions on code points, would reduce this.
+  - **m3.** `supported_by` returns SCSVs (and other signalling values) as suites, with no flag on them. This is a follow-up for the API docs or a `signalling` attribute.
+  - **m4.** The commit job does not re-check the YAML shape. It also accepts any top-level `*.yaml` (`technologies.yaml`, `vulnerabilities.yaml`, new dotfiles), not just the 14 scraper outputs. A filename allowlist would narrow this. The gitlink review remains the second gate.
+  - I5 (the `@v0.1.0` mutable tag, `workflow:70`) is still open with the controller. Its blast radius is now limited to data contents.
+
+**Ready to merge:** With fixes. Every review item is addressed and its test fails without the fix, but I5/T22 (pin the install SHA, keep 92e283f/75564b1 reachable, merge order) must be done before merging.

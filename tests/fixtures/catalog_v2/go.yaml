@@ -1,0 +1,39 @@
+schema_version: 2
+kind: library
+library: go
+source: https://example.invalid/go
+versions:
+- label: '1.21'
+  ref: ref-1.21
+  commit: null
+  files:
+    f.h: sha256:00
+  scraped_at: '2026-11-08T00:00:00Z'
+  status: ok
+  last_error: null
+  accepted: null
+- label: '1.22'
+  ref: ref-1.22
+  commit: null
+  files:
+    f.h: sha256:00
+  scraped_at: '2026-11-08T00:00:00Z'
+  status: ok
+  last_error: null
+  accepted: null
+suites:
+- code_point:
+  - '0x13'
+  - '0x01'
+  names:
+  - name: TLS_AES_128_GCM_SHA256
+    versions:
+    - '1.22'
+- code_point:
+  - '0xC0'
+  - '0x2F'
+  names:
+  - name: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+    versions:
+    - '1.21'
+    - '1.22'

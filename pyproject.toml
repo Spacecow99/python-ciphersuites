@@ -14,30 +14,16 @@ classifiers = [
     "Operating System :: OS Independent",
     "Development Status :: 2 - Pre-Alpha"
 ]
-requires-python = "~=3.8"
+requires-python = ">=3.9"
 dependencies = ["pyyaml", "beautifulsoup4", "requests"]
 
 [project.optional-dependencies]
 dev = ["flit", "black", "pylint", "bandit"]
-test = ["tox", "pytest"]
+test = ["tox", "pytest", "pytest-cov", "responses"]
 docs = ["sphinx", "sphinx-rtd-theme", "myst-parser"]
 
 [project.scripts]
-complete-ciphersuites = "ciphersuites._scripts.complete_cs_instance:main"
-deduplicate-ciphers = "ciphersuites._scripts.deduplicate_ciphers:main"
-scrape-gnutls = "ciphersuites._scripts.scrape_gnutls:main"
-scrape-iana = "ciphersuites._scripts.scrape_iana:main"
-scrape-nss = "ciphersuites._scripts.scrape_nss:main"
-scrape-openssl = "ciphersuites._scripts.scrape_openssl:main"
-scrape-scanigma = "ciphersuites._scripts.scrape_scanigma:main"
-scrape-testssl = "ciphersuites._scripts.scrape_testssl:main"
-scrape-go = "ciphersuites._scripts.scrape_go:main"
-scrape-jsse = "ciphersuites._scripts.scrape_jsse:main"
-scrape-libressl = "ciphersuites._scripts.scrape_libressl:main"
-scrape-boringssl = "ciphersuites._scripts.scrape_boringssl:main"
-scrape-s2n = "ciphersuites._scripts.scrape_s2n:main"
-scrape-mbedtls = "ciphersuites._scripts.scrape_mbedtls:main"
-
+ciphersuites-scrape = "ciphersuites.scrape.cli:main"
 
 [project.urls]
 Source = "https://pypi.org/project/python-ciphersuites"
@@ -49,17 +35,24 @@ name = "ciphersuites"
 legacy_tox_ini = """
 [tox]
 isolated_build = True
-envlist = py38,py39,py310,py311,py312
+envlist = py39,py310,py311,py312,py313
 
 [testenv]
-deps = pytest
-commands = py.test ciphersuites
+extras = test
+commands = pytest tests
 """
 
 [tool.black]
 line-length = 80
-target-version = ["py38", "py39", "py310", "py311", "py312"]
+target-version = ["py39", "py310", "py311", "py312", "py313"]
 include = "\\.py[iw]?$"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# Import PyYAML before pytest-cov starts. With dotted --cov targets coverage
+# imports the package (and so PyYAML) while configuring, then forgets those
+# modules; PyYAML's C loader breaks when re-imported ("tag None" errors).
+addopts = "-p yaml"
 
 [tool.bandit]
 skips = []
@@ -221,12 +214,6 @@ disable=[
 # mypackage.mymodule.MyReporterClass.
 output-format="text"
 
-# Put messages in a separate file for each module / package specified on the
-# command line instead of printing them on stdout. Reports (if any) will be
-# written in a file name "pylint_global.[txt|html]". This option is deprecated
-# and it will be removed in Pylint 2.0.
-files-output="no"
-
 # Tells whether to display a full report or only the messages
 reports="no"
 
@@ -344,12 +331,6 @@ ignore-long-lines=[
 # Allow the body of an if to be on the same line as the test if there is no
 # else.
 single-line-if-stmt="yes"
-
-# List of optional constructs for which whitespace checking is disabled. `dict-
-# separator` is used to allow tabulation in dicts, etc.: {1  : 1,\n222: 2}.
-# `trailing-comma` allows a space between comma and closing bracket: (a, ).
-# `empty-line` allows space-only lines.
-no-space-check=[]
 
 # Maximum number of lines in a module
 max-module-lines=99999
@@ -481,5 +462,5 @@ valid-metaclass-classmethod-first-arg="mcs"
 
 # Exceptions that will emit a warning when being caught. Defaults to
 # "Exception"
-overgeneral-exceptions=["StandardError","Exception","BaseException"]
+overgeneral-exceptions=["builtins.Exception","builtins.BaseException"]
 

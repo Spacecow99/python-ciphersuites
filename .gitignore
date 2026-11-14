@@ -70,6 +70,7 @@ instance/
 
 # Sphinx documentation
 docs/_build/
+docs/build/
 
 # PyBuilder
 .pybuilder/
@@ -137,3 +138,6 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+# Fixture download cache
+.cache/

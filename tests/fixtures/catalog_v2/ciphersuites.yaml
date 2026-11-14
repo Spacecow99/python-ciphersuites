@@ -1,0 +1,78 @@
+schema_version: 2
+suites:
+- code_point:
+  - '0x00'
+  - '0x04'
+  name: TLS_RSA_WITH_RC4_128_MD5
+  sources:
+  - iana
+  protocol: TLS
+  key_exchange: RSA
+  authentication: RSA
+  encryption: RC4 128
+  hashing: MD5
+  old: false
+  export: false
+  fips: false
+  aead: false
+- code_point:
+  - '0x00'
+  - '0x16'
+  name: TLS_DHE_RSA_WITH_3DES_EDE_CBC_SHA
+  sources:
+  - iana
+  protocol: TLS
+  key_exchange: DHE
+  authentication: RSA
+  encryption: 3DES EDE CBC
+  hashing: SHA
+  old: false
+  export: false
+  fips: false
+  aead: false
+- code_point:
+  - '0x01'
+  - '0x00'
+  - '0x80'
+  name: SSL_CK_RC4_128_WITH_MD5
+  sources:
+  - testssl
+  protocol: SSL
+  key_exchange: RSA
+  authentication: RSA
+  encryption: RC4 128
+  hashing: MD5
+  old: false
+  export: false
+  fips: false
+  aead: false
+- code_point:
+  - '0x13'
+  - '0x01'
+  name: TLS_AES_128_GCM_SHA256
+  sources:
+  - iana
+  protocol: TLS
+  key_exchange: '-'
+  authentication: '-'
+  encryption: AES 128 GCM
+  hashing: SHA256
+  old: false
+  export: false
+  fips: false
+  aead: true
+- code_point:
+  - '0xC0'
+  - '0x2F'
+  name: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+  sources:
+  - iana
+  protocol: TLS
+  key_exchange: ECDHE
+  authentication: RSA
+  encryption: AES 128 GCM
+  hashing: SHA256
+  old: false
+  export: false
+  fips: false
+  aead: true
