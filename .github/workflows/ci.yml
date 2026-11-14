@@ -43,7 +43,10 @@ jobs:
           if test -n "$paths"; then bandit -r $paths; fi
 
   test:
-    runs-on: ubuntu-latest
+    # ubuntu-latest is Ubuntu 26.04, which has no Python 3.9 build in
+    # actions/python-versions (3.9 is EOL; builds exist for 22.04/24.04 only).
+    # Keep testing the declared floor (requires-python >= 3.9) on 24.04.
+    runs-on: ${{ matrix.python-version == '3.9' && 'ubuntu-24.04' || 'ubuntu-latest' }}
     strategy:
       fail-fast: false
       matrix:
