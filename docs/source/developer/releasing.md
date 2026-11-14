@@ -3,11 +3,8 @@
 This page describes how a release of the package and its data comes
 together, and how to move the data {term}`gitlink`.
 
-**State at the commit that this documentation describes.** No release
-has been made. The package repository has no tags at all; in particular,
-the tag `v0.1.0` does not exist (checked with `git ls-remote --tags` on
-2026-11-09). The procedure below is the plan from the project's review
-records. No step of it is done yet.
+**State.** Release `v0.1.0` is done. This page records the procedure as
+it was performed.
 
 ## What a release is
 
@@ -35,53 +32,51 @@ other:
   reference (see [The data repository workflow](data-repo-workflow.md)).
   The install fails when that reference does not exist.
 
-Today, both sides point at work that is only on feature branches:
-
-- The gitlink pins data commit `c24a21e`, which is on the data branch
-  `claude/modest-tesla-n4t2ke`. The data repository's `main` is still at
-  `07d09ab`.
-- The data workflow on that branch installs
-  `python-ciphersuites @ git+https://github.com/Spacecow99/python-ciphersuites@v0.1.0`,
-  and that tag does not exist.
-- The package code is on the branch `claude/modest-tesla-n4t2ke`; the
-  package `main` has older code.
+Before the release, both sides pointed at work that was only on
+feature branches. The gitlink pinned a data commit that was only on a
+data branch. The data workflow installed the package from a tag that did
+not exist. The package `main` had older code.
 
 A squash merge or a deleted branch would make the pinned data commit
 unreachable. Git can move a tag to a different commit. So the workflow
-must install the package from a full commit SHA, not from a tag.
+installs the package from a full commit SHA, not from a tag.
 
 ## The release procedure
 
-Do these steps in this order.
+These steps were done in this order.
 
 ### 1. Merge the data branch with a merge commit
 
-Merge the data repository's branch `claude/modest-tesla-n4t2ke` into
-its `main`. Use a merge commit. Do not squash or rebase: the merge commit
-keeps `c24a21e` reachable from `main`, so the gitlink stays valid.
+The data repository's feature branch went into its `main` with pull
+request Spacecow99/ciphersuites#19. It used a merge commit, not a squash
+or a rebase. The merge commit `52037e5` keeps the pinned data commit
+`c24a21e` reachable from `main`, so the gitlink stays valid.
 
-From this moment, the workflow file is on the default branch, so its
-weekly schedule is active (Sundays 00:00 UTC). Until step 4 is done, a
-scheduled run fails at the install step, because `v0.1.0` does not
-exist. Such a run fails before it scrapes, so it does not change the
-data. Do steps 1 to 4 one after the other, in one session.
+From this moment, the workflow file was on the default branch, so its
+weekly schedule (Sundays 00:00 UTC) was active. Until step 4 was done, a
+scheduled run would fail at the install step. Such a run fails before it
+scrapes, so it does not change the data. Steps 1 to 4 were done one
+after the other, in one session.
 
 ### 2. Merge the package branch
 
-Merge the package repository's branch `claude/modest-tesla-n4t2ke` into
-its `main`. The CI must pass on the merge.
+The package repository's feature branch went into its `main` with pull
+request Spacecow99/python-ciphersuites#9, also with a merge commit. The
+CI passed on the merge. The merge commit is
+`05ae7183cda1c3896040d26e75a61b8e8322f317`.
 
 ### 3. Tag the release
 
-Create the tag `v0.1.0` on the merge commit of step 2, and push it:
+The tag `v0.1.0` is a lightweight tag on that merge commit. It was
+created and pushed like this:
 
 % notest: creates and pushes a tag in the package repository
 ```console
-$ git tag v0.1.0 <merge-commit-sha>
+$ git tag v0.1.0 05ae7183cda1c3896040d26e75a61b8e8322f317
 $ git push origin v0.1.0
 ```
 
-Write down the full 40-character SHA of the tagged commit:
+The full SHA of a tagged commit is:
 
 % notest: needs the tag of step 3
 ```console
@@ -90,26 +85,26 @@ $ git rev-parse v0.1.0^{commit}
 
 ### 4. Pin the workflow install to the commit SHA
 
-In the data repository, change the install line of the workflow from the
-tag to the full commit SHA of step 3:
+In the data repository, the install line of the workflow changed from
+the tag to the full commit SHA of step 3 (data commits `bf796e5` and
+`a75b39c`). It reads:
 
 ```text
-python -m pip install "python-ciphersuites @ git+https://github.com/Spacecow99/python-ciphersuites@<40-hex-sha>"
+python -m pip install "python-ciphersuites @ git+https://github.com/Spacecow99/python-ciphersuites@05ae7183cda1c3896040d26e75a61b8e8322f317"
 ```
 
-A commit SHA cannot move; a tag can. Commit this change to the data
-repository's `main`.
+A commit SHA cannot move; a tag can. Write the bare SHA after a single
+`@`. The text `...@v0.1.0@<sha>` fails: pip clones a repository named
+`python-ciphersuites@v0.1.0`, which does not exist.
 
 ### 5. Move the gitlink to the tip of data `main`
 
-After step 4, the newest commit of the data repository's `main` is the
-commit that pins the workflow install to the SHA. Move the gitlink to
-that commit, so that the packaged data includes the final workflow
-file. Use the procedure in [Move the data gitlink](#move-the-data-gitlink),
-in a follow-up commit of the package. Data `main` (`07d09ab`) is an
-ancestor of `c24a21e`. So, when `main` gets no other commits, the data
-files at that commit are the same as at `c24a21e`, and the tests must
-still pass.
+After step 4, the newest commit of the data repository's `main` was
+`a75b39c`. The gitlink moved to that commit, so that the packaged data
+includes the final workflow file. It used the procedure in
+[Move the data gitlink](#move-the-data-gitlink). The data files at
+`a75b39c` are identical to the files at `c24a21e`, and the tests still
+pass.
 
 ## Move the data gitlink
 

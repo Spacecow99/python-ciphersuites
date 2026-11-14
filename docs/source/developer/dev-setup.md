@@ -20,13 +20,11 @@ Clone the repository with its data {term}`submodule`:
 
 % notest: needs network access to GitHub
 ```console
-$ git clone --recurse-submodules --branch claude/modest-tesla-n4t2ke https://github.com/Spacecow99/python-ciphersuites.git
+$ git clone --recurse-submodules https://github.com/Spacecow99/python-ciphersuites.git
 $ cd python-ciphersuites
 ```
 
-At the commit that this documentation describes, the code is on the
-branch `claude/modest-tesla-n4t2ke`. The `main` branch has older code.
-See [Install the package](../user/install.md#which-code-to-install).
+The clone has the `main` branch, which holds the current code. See [Install the package](../user/install.md#which-code-to-install).
 
 Without `--recurse-submodules`, the directory `ciphersuites/_ciphersuites`
 stays empty, and the tests that read the data fail. Fetch it later with:

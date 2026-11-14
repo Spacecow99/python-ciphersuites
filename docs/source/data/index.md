@@ -24,17 +24,19 @@ The files are in the {term}`data repository`
 
 This guide documents the files at data commit
 `c24a21eb2cf4253bcdaf15b09d5d13da6fe21773` (short form `c24a21e`). That
-is the commit that the Python package `python-ciphersuites` 0.1.0 pins
-as its {term}`submodule`. At the time of writing, this commit is on the
-branch `claude/modest-tesla-n4t2ke` of the data repository. The `main`
-branch of the data repository still holds an older file format (a YAML
-list of `model`, `pk` and `fields` items). This guide does not describe
-that older format.
+is the commit that the Python package `python-ciphersuites` 0.1.0 pinned
+as its {term}`submodule` at the release. The package now pins the later
+data commit `a75b39ccf91997abd5b57aad7e2ff7598aa61854` (short form
+`a75b39c`) on the `main` branch of the data repository. The data files
+at `a75b39c` are identical to the files at `c24a21e`. Only the workflow
+file differs. Older data commits hold an older file format (a YAML list
+of `model`, `pk` and `fields` items). This guide does not describe that
+older format.
 
 To get the files at the documented commit:
 
 1. Clone the data repository.
-2. Check out commit `c24a21e`.
+2. Check out commit `c24a21e` or `a75b39c`.
 
 All examples in this guide read the files from the directory
 `ciphersuites/_ciphersuites`, which is where the Python package's source

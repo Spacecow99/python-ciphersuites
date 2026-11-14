@@ -30,15 +30,11 @@ repository, as shown below.
 
 ## Which code to install
 
-At the commit that this documentation describes, the code that this
-guide documents is on the branch `claude/modest-tesla-n4t2ke` of the
-source repository. The `main` branch has older code that does not
-contain the module `ciphersuites.catalog`. The examples below name the
-branch. This changes after the branch is merged into `main`.
-
-The project has no release tags yet. In particular, the tag `v0.1.0`
-does not exist, so do not try to install `@v0.1.0`. The package version
-`0.1.0` comes from the file `ciphersuites/__init__.py`, not from a tag.
+The `main` branch of the source repository holds the code that this
+guide documents. The release `v0.1.0` is a git tag on the `main` commit
+`05ae7183cda1c3896040d26e75a61b8e8322f317`. Route 1 installs that
+release. Route 2 installs `main`. The package version `0.1.0` comes from
+the file `ciphersuites/__init__.py`, not from the tag.
 
 ## Requirements
 
@@ -76,12 +72,12 @@ data submodule, and installs the package.
 
 % notest: needs network access to GitHub; run by hand in a new virtual environment with pip 26.2.2 (see the D3 report)
 ```console
-$ pip install "git+https://github.com/Spacecow99/python-ciphersuites@claude/modest-tesla-n4t2ke"
+$ pip install "git+https://github.com/Spacecow99/python-ciphersuites@v0.1.0"
 ```
 
-The text after `@` is the branch to install. When this route was tested,
+The text after `@` is the tag to install. When this route was tested,
 the installed package contained the data files, and the first query
-worked.
+worked. To install the newest code instead, leave out `@v0.1.0`.
 
 ## Route 2: clone the repository, then install
 
@@ -92,11 +88,11 @@ data that some examples in this guide use.
 
    % notest: needs network access to GitHub; run by hand (see the D3 report)
    ```console
-   $ git clone --recurse-submodules --branch claude/modest-tesla-n4t2ke https://github.com/Spacecow99/python-ciphersuites.git
+   $ git clone --recurse-submodules https://github.com/Spacecow99/python-ciphersuites.git
    ```
 
-   The option `--recurse-submodules` also downloads the data. The option
-   `--branch` selects the branch.
+   The option `--recurse-submodules` also downloads the data. The clone
+   has the `main` branch.
 
 2. Go into the new directory and install the package:
 

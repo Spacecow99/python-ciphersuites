@@ -36,15 +36,14 @@ The data lives in a git submodule, so clone with submodules and install
 with pip. Python 3.9 or newer is necessary.
 
 ```console
-$ git clone --recurse-submodules --branch claude/modest-tesla-n4t2ke https://github.com/Spacecow99/python-ciphersuites.git
+$ git clone --recurse-submodules https://github.com/Spacecow99/python-ciphersuites.git
 $ cd python-ciphersuites
 $ pip install .
 ```
 
-The command names the branch `claude/modest-tesla-n4t2ke`, because the
-`main` branch does not have the module `ciphersuites.catalog` yet. This
-changes when that branch is merged into `main`. The project has no
-release tags yet. If you already cloned without `--recurse-submodules`,
+To install the pinned release `v0.1.0` directly, run
+`pip install "git+https://github.com/Spacecow99/python-ciphersuites@v0.1.0"`.
+If you already cloned without `--recurse-submodules`,
 run `git submodule update --init`. The
 [installation page](docs/source/user/install.md) gives all the details.
 
