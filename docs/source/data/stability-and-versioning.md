@@ -20,8 +20,8 @@ Do not confuse these two:
 - The **data commit** is the content. Each scraper run that changes the
   data makes a new commit in the {term}`data repository`.
 
-The Python package `python-ciphersuites` 0.1.0 pins one data commit,
-`c24a21e`, through its {term}`gitlink`. If you read the files directly,
+The Python package `python-ciphersuites` on `main` pins one data commit,
+`a75b39c`, through its {term}`gitlink`. If you read the files directly,
 choose a data commit yourself and record its SHA. A commit SHA always
 gives the same files.
 
@@ -37,7 +37,7 @@ The Python package refuses to load a file whose `schema_version` is not
 `2`. Your program should do the same. This documentation makes no promise
 about what a future schema version will change.
 
-The older files on the `main` branch of the data repository have no
+The files of older data commits have no
 `schema_version` key. They are YAML lists in an older format, which this
 guide does not describe.
 

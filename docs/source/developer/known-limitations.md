@@ -84,25 +84,6 @@ reasons:
   that marks them. The [User guide](../user/faq.md) explains how to
   leave them out.
 
-## The release is not done
-
-The release procedure in [Releasing](releasing.md) has not been carried
-out:
-
-- The package repository has no tags. The data workflow at data commit
-  `c24a21e` installs the package from the tag `v0.1.0`, so it cannot run
-  yet: every run stops at the install step and changes no data.
-- The current workflow and data are on the data repository's branch
-  `claude/modest-tesla-n4t2ke`. Scheduled runs start only when the
-  workflow file is on the default branch.
-- The data repository's `main` branch still has an older workflow, with
-  the same weekly schedule (Sundays 00:00 UTC). It installs the package
-  from the package repository's `main` branch, runs the older scraper
-  commands (for example `scrape-iana`), and updates the older-format
-  files on data `main`.
-- The package code that this documentation describes is on the package
-  branch `claude/modest-tesla-n4t2ke`, not on `main`.
-
 ## Known defects
 
 - **The `export` flag is false for SSLv2 export suites.** The function

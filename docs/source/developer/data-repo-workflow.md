@@ -10,16 +10,15 @@ The workflow file is
 `.github/workflows/scrape_format_ciphersuites.yaml` in the data
 repository <https://github.com/Spacecow99/ciphersuites>. This page
 describes the file as it is at data commit
-`c24a21eb2cf4253bcdaf15b09d5d13da6fe21773` (short form `c24a21e`). That
+`a75b39ccf91997abd5b57aad7e2ff7598aa61854` (short form `a75b39c`). That
 is the commit that this package's data {term}`submodule` pins. You can
 read the file in a clone at
 `ciphersuites/_ciphersuites/.github/workflows/scrape_format_ciphersuites.yaml`.
 
-That commit is on the data repository's branch
-`claude/modest-tesla-n4t2ke`. The data repository's default branch
-`main` still has an older workflow, which calls commands that the
-current package no longer has. This page does not describe it.
-[Releasing](releasing.md) describes how the branch reaches `main`.
+That commit is on the data repository's default branch `main`. The
+workflow file is therefore on the default branch, and the weekly
+schedule is active. [Releasing](releasing.md) describes how the file got
+there.
 
 ## Why the workflow has two jobs
 
@@ -59,9 +58,8 @@ This is the `on:` section of the file, without its comments.
 
 - **Schedule.** The cron expression `0 0 * * 0` means every Sunday at
   00:00 UTC. GitHub runs scheduled workflows only from the default
-  branch. So the weekly run starts only when this workflow file is on
-  the data repository's default branch. Until then, it runs only when a
-  person starts it.
+  branch. This workflow file is on the data repository's default branch,
+  so the weekly run is active.
 - **Manual start** (`workflow_dispatch`). A person with write access
   starts the workflow in the GitHub web interface (tab "Actions") and
   chooses a branch. The three inputs:
@@ -100,9 +98,10 @@ Permissions: `contents: read`. Steps:
    that starts with `scrape-cache-<os>-` can be restored. So each run
    starts from the newest cache and saves a new one.
 4. **Install the package**:
-   `python -m pip install "python-ciphersuites @ git+https://github.com/Spacecow99/python-ciphersuites@v0.1.0"`.
-   The tag `v0.1.0` does not exist yet, so this step fails until it is
-   created. See [Releasing](releasing.md).
+   `python -m pip install "python-ciphersuites @ git+https://github.com/Spacecow99/python-ciphersuites@05ae7183cda1c3896040d26e75a61b8e8322f317"`.
+   The text after `@` is the full SHA of the commit that the tag
+   `v0.1.0` marks. A SHA cannot move; a tag can. See
+   [Releasing](releasing.md).
 5. **Scrape and validate.**
    - It runs `ciphersuites-scrape --out . --report validation-report.json`.
    - It adds one `--accept` per pair and `--reason` when `accept` is set.

@@ -93,23 +93,13 @@ state its purpose.
 
 `.github/workflows/scrape_format_ciphersuites.yaml` is a GitHub Actions
 workflow. It runs the scraper and commits the new data files. The file
-defines a weekly schedule (Sundays at 00:00 UTC) and a manual start. At
-commit `c24a21e`, this version of the workflow exists only on the
-branch `claude/modest-tesla-n4t2ke`, not on `main`. GitHub runs
-scheduled workflows on the latest commit of the default branch. So the
-weekly schedule takes effect only when the workflow file is on the data
-repository's default branch. Until then, the workflow runs on the branch
-only when someone starts it by hand.
-
-At commit `c24a21e`, the workflow cannot run yet. It installs the
-package from the tag `v0.1.0`, and that tag does not exist yet. So every
-run stops at the install step and changes no data, until the tag is
-made.
-
-The `main` branch of the data repository has an older workflow. It runs
-every week and updates the older-format files on `main`. The
-[developer guide](../developer/data-repo-workflow.md) describes the new
-workflow.
+defines a weekly schedule (Sundays at 00:00 UTC) and a manual start.
+The workflow file is on the `main` branch of the data repository, which
+is the default branch. GitHub runs scheduled workflows on the latest
+commit of the default branch, so the weekly schedule is active. The
+workflow installs the package by the full SHA of the commit that the tag
+`v0.1.0` marks. The [developer guide](../developer/data-repo-workflow.md)
+describes the workflow.
 
 The workflow commits only the fourteen data files that the scraper
 produces: `ciphersuites.yaml`, the three reference files and the ten
