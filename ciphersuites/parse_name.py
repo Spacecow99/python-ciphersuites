@@ -175,6 +175,11 @@ def complete_cs_instance(name: str, code_point: CodePoint) -> Dict[str, Any]:
         # split kex again, potentially yielding auth algorithm
         # otherwise this variable will remain unchanged
         kex, _, aut = kex.partition(" ")
+        if kex == "SRP":
+            # The SHA after SRP names the SRP hash, not an authentication
+            # algorithm. What remains is RSA or DSS, or nothing when the
+            # suite uses no certificate.
+            aut = re.sub(r"\ASHA\b\s*", "", aut)
         enc, _, hsh = rst.rpartition(" ")
 
         # split enc again if we only got a number for hsh
