@@ -6,6 +6,7 @@ from typing import Callable, Dict
 
 import pytest
 
+from ciphersuites.scrape import runner
 from ciphersuites.scrape.fetch import Fetcher
 from ciphersuites.scrape.fixtures import (
     CACHE_DIR,
@@ -39,3 +40,13 @@ def fixture_upstream() -> Callable[[str, str], Dict[str, str]]:
         return load_fixture(MANIFEST_PATH, library, label, fetcher)
 
     return load
+
+
+@pytest.fixture(autouse=True)
+def fixture_empty_overlay(monkeypatch):
+    """Keep the packaged overlay out of every scraper run by default.
+
+    Tests that exercise the overlay override this with their own
+    ``monkeypatch.setattr(runner, "packaged_overlay", ...)``.
+    """
+    monkeypatch.setattr(runner, "packaged_overlay", lambda: [])

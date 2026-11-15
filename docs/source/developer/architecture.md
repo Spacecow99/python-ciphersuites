@@ -56,10 +56,12 @@ So data moves like this:
 | `ciphersuites/scrape/validate.py` | the checks and the {term}`finding` codes |
 | `ciphersuites/scrape/merge.py` | combines baseline and new data, and marks failed versions stale |
 | `ciphersuites/scrape/schema.py` | the schema v2 model, YAML output, atomic writes and baseline loading |
-| `ciphersuites/scrape/build_catalog.py` | builds `ciphersuites.yaml` from the reference sources |
+| `ciphersuites/scrape/build_catalog.py` | builds `ciphersuites.yaml` from the reference sources and merges the overlay into it |
+| `ciphersuites/scrape/overlay.py` | loads and validates the catalogue overlay |
 | `ciphersuites/scrape/report.py` | the Markdown summary and the JSON report |
 | `ciphersuites/scrape/fixtures.py` | captures and loads pinned upstream files for the tests |
 | `ciphersuites/scrape/data/schannel_curated.yaml` | the hand-curated Schannel data |
+| `ciphersuites/scrape/data/catalogue_overlay.yaml` | the hand-curated catalogue overlay |
 | `ciphersuites/parse_name.py` | derives properties (key exchange, encryption, flags) from a suite name; used to build the catalogue |
 
 ## One run, step by step
@@ -120,8 +122,18 @@ skips the catalogue with `CATALOGUE_SKIPPED`.
 `build_catalog` merges the newest snapshot of each reference by code
 point. The name comes from the first source in the order `iana`,
 `testssl`, `scanigma`. The other fields come from `complete_cs_instance`
-in `ciphersuites/parse_name.py`, which reads them from that name. Then
-`check_catalog` runs the catalogue checks.
+in `ciphersuites/parse_name.py`, which reads them from that name.
+
+Then `apply_overlay` merges the hand-curated overlay
+(`ciphersuites/scrape/data/catalogue_overlay.yaml`, loaded by
+`ciphersuites/scrape/overlay.py`) into the result. It adds overlay
+records, drops the scraped records that an overlay record corrects, and
+returns warning findings. An invalid overlay raises `OverlayError`, and
+the runner then writes no catalogue and reports `RUNNER_ERROR`. The
+runner dumps the merged catalogue to text. Last, `check_catalog` runs
+the catalogue checks.
+
+So the catalogue steps are: build, apply the overlay, dump, check.
 
 ### 5. Write the files
 

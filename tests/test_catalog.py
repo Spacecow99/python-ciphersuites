@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import dataclasses
 import os
 import shutil
 import subprocess
@@ -272,3 +273,105 @@ def test_other_list_shaped_yaml_still_rejected(tmp_path):
     (tmp_path / "d" / "foo.yaml").write_text("- model: x\n  pk: 1\n")
     with pytest.raises(DataNotFoundError, match="foo.yaml"):
         Catalog.load(tmp_path / "d")
+
+
+OVERLAY_RECORD = """- code_point:
+  - '0xD0'
+  - '0x01'
+  name: TLS_OVERLAY_TEST
+  sources:
+  - overlay
+  provenance: implementation
+  references:
+  - type: rfc
+    id: RFC 8442
+    note: n
+  superseded_by:
+  - '0xD0'
+  - '0x01'
+"""
+
+
+def _load_with_record(tmp_path, record):
+    """Loads a copy of the fixture directory with ``record`` appended."""
+    data = tmp_path / "data"
+    shutil.copytree(FIXTURES, data)
+    with (data / "ciphersuites.yaml").open("a", encoding="utf-8") as handle:
+        handle.write(record)
+    return Catalog.load(data)
+
+
+def test_field_order_puts_overlay_fields_before_protocol():
+    names = [f.name for f in dataclasses.fields(CipherSuite)]
+    assert names == [
+        "code_point",
+        "name",
+        "sources",
+        "provenance",
+        "references",
+        "superseded_by",
+        "protocol",
+        "key_exchange",
+        "authentication",
+        "encryption",
+        "hashing",
+        "old",
+        "export",
+        "fips",
+        "aead",
+        "_catalog",
+    ]
+
+
+def test_new_keys_default_for_ordinary_records():
+    suite = Catalog.load(FIXTURES).get((0xC0, 0x2F))
+    assert suite.provenance is None
+    assert suite.references == []
+    assert suite.superseded_by is None
+
+
+def test_new_keys_are_read(tmp_path):
+    suite = _load_with_record(tmp_path, OVERLAY_RECORD).get((0xD0, 0x01))
+    assert suite.provenance == "implementation"
+    assert suite.references == [{"type": "rfc", "id": "RFC 8442", "note": "n"}]
+    assert suite.superseded_by == ("0xD0", "0x01")
+
+
+def test_suite_with_references_is_hashable(tmp_path):
+    suite = _load_with_record(tmp_path, OVERLAY_RECORD).get((0xD0, 0x01))
+    assert isinstance(hash(suite), int)
+
+
+def test_malformed_superseded_by_raises(tmp_path):
+    record = OVERLAY_RECORD[: OVERLAY_RECORD.index("  superseded_by:")]
+    record += "  superseded_by: ['0xZZ', '0x01']\n"
+    with pytest.raises(DataNotFoundError, match="ciphersuites.yaml"):
+        _load_with_record(tmp_path, record)
+
+
+@pytest.mark.parametrize(
+    "references",
+    [
+        "  references:\n  - RFC 8442\n",
+        "  references: RFC 8442\n",
+        "  references:\n    type: rfc\n",
+        "  references:\n  - - [a, b]\n",
+        "  references:\n  - id: 5\n",
+    ],
+)
+def test_malformed_references_raise(tmp_path, references):
+    start = OVERLAY_RECORD.index("  references:")
+    end = OVERLAY_RECORD.index("  superseded_by:")
+    record = OVERLAY_RECORD[:start] + references + OVERLAY_RECORD[end:]
+    with pytest.raises(DataNotFoundError, match="ciphersuites.yaml"):
+        _load_with_record(tmp_path, record)
+
+
+def test_null_references_load_as_empty(tmp_path):
+    start = OVERLAY_RECORD.index("  references:")
+    end = OVERLAY_RECORD.index("  superseded_by:")
+    record = (
+        OVERLAY_RECORD[:start] + "  references: null\n" + OVERLAY_RECORD[end:]
+    )
+    suite = _load_with_record(tmp_path, record).get((0xD0, 0x01))
+    assert suite.references == []

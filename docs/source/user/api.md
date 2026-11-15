@@ -286,7 +286,10 @@ You can put them in a set or use them as dict keys.
 |---|---|---|
 | `CipherSuite.code_point` | `Tuple[str, ...]` | The code point: two strings, or three for an SSLv2 suite, each in the form `0xAB`. |
 | `CipherSuite.name` | `str` | The catalogue name. For a {term}`fallback suite`, a name from a library file (see below). |
-| `CipherSuite.sources` | `List[str]` | The reference sources that list the code point, in the order `iana`, `testssl`, `scanigma`. Empty for a fallback suite. |
+| `CipherSuite.sources` | `List[str]` | The reference sources that list the code point, in the order `iana`, `testssl`, `scanigma`, followed by `overlay` when the catalogue overlay adds or touches the record. Empty for a fallback suite. |
+| `CipherSuite.provenance` | `Optional[str]` | `rfc`, `draft` or `implementation` when the catalogue overlay records where the suite is defined. Otherwise `None`, which means "not assessed". |
+| `CipherSuite.references` | `List[Dict[str, str]]` | The documents and source files that define the suite. Empty when there are none. |
+| `CipherSuite.superseded_by` | `Optional[Tuple[str, ...]]` | The code point of the final record when this code point is a placeholder. Otherwise `None`. |
 | `CipherSuite.protocol` | `Optional[str]` | The protocol: `TLS` or `SSL` in the packaged data. |
 | `CipherSuite.key_exchange` | `Optional[str]` | The key exchange algorithm, for example `ECDHE`. |
 | `CipherSuite.authentication` | `Optional[str]` | The authentication algorithm, for example `RSA`. |
@@ -304,20 +307,21 @@ name", for example the key exchange of a {term}`TLS 1.3 suite`. The data guide
 describes every value and the known limits:
 [The derived fields](../data/catalogue-schema.md#the-derived-fields).
 
-For a fallback suite, `CipherSuite.sources` is `[]` and all nine derived
-fields are `None`. A fallback suite is a code point that a library file
-lists but the catalogue does not. Its `name` is the name that the
-alphabetically first library with that code point uses in its oldest
-version that contains it.
+For a fallback suite, `CipherSuite.sources` is `[]`, `CipherSuite.provenance`
+and `CipherSuite.superseded_by` are `None`, `CipherSuite.references` is `[]`,
+and all nine derived fields are `None`. A fallback suite is a code point
+that a library file lists but the catalogue does not. Its `name` is the
+name that the alphabetically first library with that code point uses in
+its oldest version that contains it.
 
 ```pycon
 >>> from pathlib import Path
 >>> from ciphersuites.catalog import Catalog
 >>> cat = Catalog.load(Path("tests/fixtures/catalog_v2"))
 >>> cat.get((0xC0, 0x2F))
-CipherSuite(code_point=('0xC0', '0x2F'), name='TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256', sources=['iana'], protocol='TLS', key_exchange='ECDHE', authentication='RSA', encryption='AES 128 GCM', hashing='SHA256', old=False, export=False, fips=False, aead=True)
+CipherSuite(code_point=('0xC0', '0x2F'), name='TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256', sources=['iana'], provenance=None, references=[], superseded_by=None, protocol='TLS', key_exchange='ECDHE', authentication='RSA', encryption='AES 128 GCM', hashing='SHA256', old=False, export=False, fips=False, aead=True)
 >>> cat.get((0x56, 0x00))
-CipherSuite(code_point=('0x56', '0x00'), name='TLS_FALLBACK_SCSV_X', sources=[], protocol=None, key_exchange=None, authentication=None, encryption=None, hashing=None, old=None, export=None, fips=None, aead=None)
+CipherSuite(code_point=('0x56', '0x00'), name='TLS_FALLBACK_SCSV_X', sources=[], provenance=None, references=[], superseded_by=None, protocol=None, key_exchange=None, authentication=None, encryption=None, hashing=None, old=None, export=None, fips=None, aead=None)
 ```
 
 ### Methods

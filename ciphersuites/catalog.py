@@ -81,6 +81,9 @@ class CipherSuite:
     code_point: CodePoint
     name: str
     sources: List[str] = field(hash=False)
+    provenance: Optional[str] = None
+    references: List[Dict[str, str]] = field(default_factory=list, hash=False)
+    superseded_by: Optional[CodePoint] = None
     protocol: Optional[str] = None
     key_exchange: Optional[str] = None
     authentication: Optional[str] = None
@@ -137,6 +140,25 @@ def _read(entries: Iterable[Any]) -> Dict[str, Any]:
     return docs
 
 
+def _references(cp: CodePoint, raw: Any) -> List[Dict[str, str]]:
+    """Validates and copies the ``references`` of one catalogue record."""
+    if raw is None:
+        return []
+    if not isinstance(raw, list):
+        raise TypeError(f"references of {cp} must be a list")
+    result = []
+    for ref in raw:
+        if not isinstance(ref, dict) or not all(
+            isinstance(key, str) and isinstance(value, str)
+            for key, value in ref.items()
+        ):
+            raise TypeError(
+                f"each reference of {cp} must map strings to strings"
+            )
+        result.append(dict(ref))
+    return result
+
+
 def _catalogue_suites(doc: Any) -> Dict[CodePoint, CipherSuite]:
     where = _CATALOGUE_FILE
     if not isinstance(doc, dict) or doc.get("schema_version") != SCHEMA_VERSION:
@@ -148,10 +170,16 @@ def _catalogue_suites(doc: Any) -> Dict[CodePoint, CipherSuite]:
     for item in raw:
         try:
             cp = normalize_code_point(item["code_point"])
+            superseded_by = item.get("superseded_by")
+            if superseded_by is not None:
+                superseded_by = normalize_code_point(superseded_by)
             suites[cp] = CipherSuite(
                 code_point=cp,
                 name=item["name"],
                 sources=list(item["sources"]),
+                provenance=item.get("provenance"),
+                references=_references(cp, item.get("references")),
+                superseded_by=superseded_by,
                 **{key: item.get(key) for key in _PARSED_FIELDS},
             )
         except (BadCodePoint, KeyError, TypeError) as exc:

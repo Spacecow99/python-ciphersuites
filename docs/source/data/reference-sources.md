@@ -115,7 +115,8 @@ page.
 
 For each code point, the catalogue takes the IANA name if there is one,
 else the testssl name, else the Scanigma name. The catalogue key
-`sources` lists every reference source that has the code point. See
+`sources` lists every reference source that has the code point, and
+`overlay` when the hand-curated overlay touches the record. See
 [Where the records come from](catalogue-schema.md#where-the-records-come-from).
 
 ## Example
