@@ -139,7 +139,11 @@ def _parse(text: str, kind: str, list_key: str) -> List[Any]:
     if not isinstance(document, dict):
         raise ReferenceFileError(f"{kind} file must be a mapping")
     version = document.get("schema_version")
-    if isinstance(version, bool) or version != REFERENCE_VERSION:
+    if (
+        not isinstance(version, int)
+        or isinstance(version, bool)
+        or version != REFERENCE_VERSION
+    ):
         raise ReferenceFileError(
             f"schema_version must be {REFERENCE_VERSION}, not {version!r}"
         )
@@ -275,7 +279,13 @@ def _read(
             return (), ReferenceProblem(name, "missing", f"{name} not found")
         text = path.read_text(encoding="utf-8")
         return tuple(loader(text)), None
-    except (ReferenceFileError, OSError, UnicodeDecodeError) as exc:
+    except (
+        ReferenceFileError,
+        OSError,
+        UnicodeDecodeError,
+        AttributeError,
+        TypeError,
+    ) as exc:
         return (), ReferenceProblem(name, "invalid", str(exc))
 
 

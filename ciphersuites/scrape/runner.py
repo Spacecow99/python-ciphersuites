@@ -48,6 +48,7 @@ from ciphersuites.scrape.validate import (
     FILE_MISSING,
     OVERLAY_CORRECTION,
     PARSE_ERROR,
+    REFERENCE_FILE_PROBLEM,
     RUNNER_ERROR,
     WARN,
     Finding,
@@ -308,14 +309,25 @@ def _catalogue(
         found = found + check_catalog(
             catalogue, {**finals, **refs}, options.now, corrected
         )
-        found = found + check_technologies(
-            catalogue, load_reference_files(options.out_dir)
-        )
     except Exception as exc:  # pylint: disable=broad-exception-caught
         findings.append(
             Finding(FAIL, RUNNER_ERROR, CATALOGUE, None, _describe(exc))
         )
         return None
+    try:
+        found = found + check_technologies(
+            catalogue, load_reference_files(options.out_dir)
+        )
+    except Exception as exc:  # pylint: disable=broad-exception-caught
+        found = found + [
+            Finding(
+                WARN,
+                REFERENCE_FILE_PROBLEM,
+                "technologies",
+                None,
+                _describe(exc),
+            )
+        ]
     findings.extend(found)
     return text
 

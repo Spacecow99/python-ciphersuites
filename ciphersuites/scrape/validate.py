@@ -23,6 +23,7 @@ from ciphersuites.scrape.schema import (
 )
 from ciphersuites.scrape.technologies import (
     TECHNOLOGIES_FILE,
+    VULNERABILITIES_FILE,
     ReferenceFiles,
 )
 
@@ -656,7 +657,7 @@ def check_technologies(
         "technologies",
         [({"category": c, "value": v}, f"{c} {v!r}") for c, v in unused],
     )
-    if not any(p.file != TECHNOLOGIES_FILE for p in reference.problems):
+    if not any(p.file == VULNERABILITIES_FILE for p in reference.problems):
         names = {v.name for v in reference.vulnerabilities}
         cited = sorted(
             (t.category, t.value, name)

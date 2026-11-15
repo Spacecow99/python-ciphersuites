@@ -737,3 +737,16 @@ def test_reference_warnings_render_in_the_report(tmp_path, monkeypatch):
     warnings = text[text.index("## Warnings") :]
     assert TECHNOLOGY_MISSING in warnings
     assert REFERENCE_FILE_PROBLEM in warnings
+
+
+def test_failing_technology_check_warns_and_keeps_the_catalogue(
+    tmp_path, monkeypatch
+):
+    def boom(*_args):
+        raise RuntimeError("check exploded")
+
+    monkeypatch.setattr(runner, "check_technologies", boom)
+    result = run(reference_adapters(1), None, opts(tmp_path))
+    assert ("technologies", REFERENCE_FILE_PROBLEM) in codes(result, WARN)
+    assert (tmp_path / "ciphersuites.yaml").exists()
+    assert result.exit_code == 0

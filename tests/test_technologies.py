@@ -90,6 +90,12 @@ def test_load_vulnerabilities_reads_a_valid_file():
         (_VALID_TECH.replace("['Cipher Block Chaining']", "[1]"), ""),
         (_VALID_TECH.replace("2026-11-15", "yesterday"), "reviewed"),
         (_VALID_TECH.replace("2026-11-15", "5"), "reviewed"),
+        (
+            _VALID_TECH.replace(
+                "schema_version: 2", "schema_version: !!float 2"
+            ),
+            "",
+        ),
         ("schema_version: 2\nkind: [unclosed\n", "YAML"),
         ("", ""),
     ],
@@ -196,3 +202,13 @@ def test_an_impossible_calendar_date_is_an_error_not_an_exception(tmp_path):
 def test_deeply_nested_yaml_is_an_error_not_an_exception():
     with pytest.raises(ReferenceFileError):
         load_technologies("[" * 100000)
+
+
+def test_object_without_path_methods_gives_invalid_problems():
+    # A duck-typed data_dir with no joinpath cannot say whether a file
+    # exists, so each file is reported as invalid, not missing, and
+    # nothing is raised.
+    result = load_reference_files(object())
+    assert result.technologies == ()
+    assert result.vulnerabilities == ()
+    assert [p.kind for p in result.problems] == ["invalid", "invalid"]

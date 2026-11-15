@@ -356,8 +356,8 @@ def test_unresolved_vulnerability_name_is_skipped(cat):
 
 def test_unbound_suite_has_no_technologies():
     suite = CipherSuite(code_point=("0x00", "0x04"), name="X", sources=[])
-    assert suite.technologies() == []
-    assert suite.vulnerabilities() == []
+    assert not suite.technologies()
+    assert not suite.vulnerabilities()
 
 
 def test_default_catalogue_exposes_technologies():
