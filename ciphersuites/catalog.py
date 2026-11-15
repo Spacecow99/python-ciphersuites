@@ -81,6 +81,9 @@ class CipherSuite:
     code_point: CodePoint
     name: str
     sources: List[str] = field(hash=False)
+    provenance: Optional[str] = None
+    references: List[Dict[str, str]] = field(default_factory=list, hash=False)
+    superseded_by: Optional[CodePoint] = None
     protocol: Optional[str] = None
     key_exchange: Optional[str] = None
     authentication: Optional[str] = None
@@ -148,10 +151,16 @@ def _catalogue_suites(doc: Any) -> Dict[CodePoint, CipherSuite]:
     for item in raw:
         try:
             cp = normalize_code_point(item["code_point"])
+            superseded_by = item.get("superseded_by")
+            if superseded_by is not None:
+                superseded_by = normalize_code_point(superseded_by)
             suites[cp] = CipherSuite(
                 code_point=cp,
                 name=item["name"],
                 sources=list(item["sources"]),
+                provenance=item.get("provenance"),
+                references=[dict(ref) for ref in item.get("references") or []],
+                superseded_by=superseded_by,
                 **{key: item.get(key) for key in _PARSED_FIELDS},
             )
         except (BadCodePoint, KeyError, TypeError) as exc:
