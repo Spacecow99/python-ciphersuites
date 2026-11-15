@@ -34,6 +34,10 @@ def complete_cs_instance(name: str, code_point: CodePoint) -> Dict[str, Any]:
         name = name.replace("_CK", "")
         prt, _, rst = name.replace("_", " ").partition(" ")
         enc, _, hsh = rst.rpartition("WITH")
+        # Drop a trailing variant suffix such as the _1 in ..._WITH_MD5_1.
+        hsh = re.sub(r"\s+1\Z", "", hsh)
+        if "EXPORT40" in enc:
+            export_flag = True
         # Handle SSL_CK_NULL and SSL_CK_NULL_WITH_MD5
         if re.search("NULL", enc) or re.search("NULL", hsh):
             kex, aut = "NULL", "NULL"
@@ -180,6 +184,16 @@ def complete_cs_instance(name: str, code_point: CodePoint) -> Dict[str, Any]:
             # algorithm. What remains is RSA or DSS, or nothing when the
             # suite uses no certificate.
             aut = re.sub(r"\ASHA\b\s*", "", aut)
+        elif kex == "FORTEZZA" and aut.strip() == "KEA":
+            # RFC 6101 gives no details of FORTEZZA KEA, so the key exchange
+            # and the authentication share the one name.
+            kex = aut = "FORTEZZA KEA"
+        else:
+            # A hybrid KEM token joins the key exchange. The token after it
+            # is the authentication algorithm.
+            kem, _, after_kem = aut.partition(" ")
+            if kem in ("BIKE", "SIKE", "KYBER"):
+                kex, aut = kex + " " + kem, after_kem
         enc, _, hsh = rst.rpartition(" ")
 
         # split enc again if we only got a number for hsh
