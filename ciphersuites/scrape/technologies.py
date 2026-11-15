@@ -13,7 +13,7 @@ from __future__ import annotations
 import datetime
 import re
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 import yaml
 
@@ -37,7 +37,7 @@ _TECHNOLOGY_KEYS = frozenset(
 _VULNERABILITY_KEYS = frozenset(
     {"name", "severity", "description", "references"}
 )
-_ISO_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+_ISO_DATE = re.compile(r"^[0-9]{4}-[0-9]{2}-[0-9]{2}$")
 
 
 class ReferenceFileError(ValueError):
@@ -127,7 +127,7 @@ def _parse(text: str, kind: str, list_key: str) -> List[Any]:
     """Parses a document and returns its record list."""
     try:
         document = yaml.safe_load(text)
-    except yaml.YAMLError as exc:
+    except (yaml.YAMLError, ValueError, RecursionError) as exc:
         raise ReferenceFileError(f"{kind} is not valid YAML: {exc}") from exc
     if document is None:
         raise ReferenceFileError(f"{kind} file is empty")
@@ -265,7 +265,9 @@ def load_vulnerabilities(text: str) -> List[Vulnerability]:
     return result
 
 
-def _read(data_dir: Any, name: str, loader: Any) -> Tuple[Tuple[Any, ...], Any]:
+def _read(
+    data_dir: Any, name: str, loader: Callable[[str], List[Any]]
+) -> Tuple[Tuple[Any, ...], Optional[ReferenceProblem]]:
     """Loads one file; returns its records and a problem or None."""
     try:
         path = data_dir.joinpath(name)

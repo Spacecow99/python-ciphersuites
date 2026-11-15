@@ -177,3 +177,22 @@ def test_non_utf8_bytes_are_an_invalid_problem_not_an_exception(tmp_path):
     assert [(p.file, p.kind) for p in result.problems] == [
         (TECHNOLOGIES_FILE, "invalid")
     ]
+
+
+def test_an_impossible_calendar_date_is_an_error_not_an_exception(tmp_path):
+    text = _VALID_TECH.replace("2026-11-15", "2026-13-45")
+    with pytest.raises(ReferenceFileError):
+        load_technologies(text)
+    (tmp_path / TECHNOLOGIES_FILE).write_text(text, encoding="utf-8")
+    (tmp_path / VULNERABILITIES_FILE).write_text(_VALID_VULN, encoding="utf-8")
+    result = load_reference_files(tmp_path)
+    assert result.technologies == ()
+    assert len(result.vulnerabilities) == 1
+    assert [(p.file, p.kind) for p in result.problems] == [
+        (TECHNOLOGIES_FILE, "invalid")
+    ]
+
+
+def test_deeply_nested_yaml_is_an_error_not_an_exception():
+    with pytest.raises(ReferenceFileError):
+        load_technologies("[" * 100000)
