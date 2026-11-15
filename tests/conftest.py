@@ -39,3 +39,17 @@ def fixture_upstream() -> Callable[[str, str], Dict[str, str]]:
         return load_fixture(MANIFEST_PATH, library, label, fetcher)
 
     return load
+
+
+@pytest.fixture(autouse=True)
+def fixture_empty_overlay(monkeypatch):
+    """Keep the packaged overlay out of every scraper run by default.
+
+    Tests that exercise the overlay override this with their own
+    ``monkeypatch.setattr(runner, "packaged_overlay", ...)``.
+    """
+    # Imported here so that a failure to import the runner shows up as a
+    # test error, not as a collection error for the whole suite.
+    from ciphersuites.scrape import runner  # pylint: disable=C0415
+
+    monkeypatch.setattr(runner, "packaged_overlay", lambda: [])

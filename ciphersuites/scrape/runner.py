@@ -8,7 +8,11 @@ from pathlib import Path
 from typing import Dict, List, Optional, Set, Tuple
 
 from ciphersuites.scrape.adapters.base import Adapter
-from ciphersuites.scrape.build_catalog import PRECEDENCE, build_catalog
+from ciphersuites.scrape.build_catalog import (
+    PRECEDENCE,
+    apply_overlay,
+    build_catalog,
+)
 from ciphersuites.scrape.core import ParseResult, Version
 from ciphersuites.scrape.fetch import (
     Fetcher,
@@ -24,6 +28,7 @@ from ciphersuites.scrape.merge import (
     mark_all_stale,
     newest_entry,
 )
+from ciphersuites.scrape.overlay import packaged_overlay
 from ciphersuites.scrape.schema import (
     BaselineData,
     LibraryData,
@@ -287,9 +292,13 @@ def _catalogue(
         )
         return None
     try:
-        catalogue = build_catalog(refs)
+        catalogue, found = apply_overlay(
+            build_catalog(refs), packaged_overlay()
+        )
         text = dump(catalogue)
-        found = check_catalog(catalogue, {**finals, **refs}, options.now)
+        found = found + check_catalog(
+            catalogue, {**finals, **refs}, options.now
+        )
     except Exception as exc:  # pylint: disable=broad-exception-caught
         findings.append(
             Finding(FAIL, RUNNER_ERROR, CATALOGUE, None, _describe(exc))

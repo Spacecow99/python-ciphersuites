@@ -14,6 +14,11 @@ from ciphersuites.scrape.fetch import (
     FetchError,
     FileMissingError,
 )
+from ciphersuites.scrape.overlay import (
+    OverlayError,
+    OverlayRecord,
+    OverlayReference,
+)
 from ciphersuites.scrape.report import render_markdown, write_json
 from ciphersuites.scrape.runner import RunOptions, run
 from ciphersuites.scrape.schema import (
@@ -30,9 +35,11 @@ from ciphersuites.scrape.validate import (
     CATALOGUE_SKIPPED,
     FETCH_ERROR,
     FILE_MISSING,
+    OVERLAY_REFERENCE_LISTS,
     PARSE_ERROR,
     PATCH_REMOVAL,
     RUNNER_ERROR,
+    UNKNOWN_CODE_POINT,
     UNMATCHED_KEYS,
     V1_PARITY,
     WARN,
@@ -577,3 +584,85 @@ def test_build_catalog_exception_is_contained(tmp_path, monkeypatch):
     assert failure.code == RUNNER_ERROR and "catalogue broke" in failure.message
     assert not (tmp_path / "ciphersuites.yaml").exists()
     assert (tmp_path / "iana.yaml").is_file()
+
+
+def overlay_record(number: int, name: str = "OVERLAY_ONLY") -> OverlayRecord:
+    return OverlayRecord(
+        code_point=cp(number),
+        name=name,
+        provenance="rfc",
+        references=(OverlayReference("rfc", "note", id="RFC 1"),),
+    )
+
+
+def reference_adapters(*numbers: int) -> List[Adapter]:
+    adapters = []
+    for name in ("iana", "testssl", "scanigma"):
+        adapter = Ref({"2026-11-08": recs(*numbers)})
+        adapter.name = name
+        adapters.append(adapter)
+    return adapters
+
+
+def use_overlay(monkeypatch, records) -> None:
+    from ciphersuites.scrape import runner  # pylint: disable=C0415
+
+    monkeypatch.setattr(runner, "packaged_overlay", lambda: records)
+
+
+def test_overlay_records_are_written_to_the_catalogue(tmp_path, monkeypatch):
+    use_overlay(monkeypatch, [overlay_record(9)])
+    run(reference_adapters(1), None, opts(tmp_path))
+    catalogue = load_yaml(tmp_path / "ciphersuites.yaml")
+    added = [s for s in catalogue["suites"] if s["code_point"] == list(cp(9))]
+    assert len(added) == 1
+    assert added[0]["sources"] == ["overlay"]
+
+
+def test_overlay_warnings_are_reported(tmp_path, monkeypatch):
+    use_overlay(monkeypatch, [overlay_record(1)])
+    result = run(reference_adapters(1), None, opts(tmp_path))
+    assert ("ciphersuites", OVERLAY_REFERENCE_LISTS) in codes(result, WARN)
+
+
+def test_overlay_error_writes_no_catalogue(tmp_path, monkeypatch):
+    from ciphersuites.scrape import runner  # pylint: disable=C0415
+
+    def bad():
+        raise OverlayError("bad")
+
+    monkeypatch.setattr(runner, "packaged_overlay", bad)
+    result = run(reference_adapters(1), None, opts(tmp_path))
+    assert not (tmp_path / "ciphersuites.yaml").exists()
+    failure = next(f for f in result.findings if f.level == FAIL)
+    assert failure.code == RUNNER_ERROR and failure.library == "ciphersuites"
+    assert "bad" in failure.message
+
+
+def test_overlay_removes_the_unknown_code_point_warning(tmp_path, monkeypatch):
+    def run_once(out_dir):
+        out_dir.mkdir()
+        adapters = reference_adapters(1)
+        adapters.append(Fake({"1.0": recs(1, 7)}))
+        return run(adapters, None, opts(out_dir))
+
+    use_overlay(monkeypatch, [])
+    without = run_once(tmp_path / "without")
+    assert ("fake", UNKNOWN_CODE_POINT) in codes(without)
+    use_overlay(monkeypatch, [overlay_record(7)])
+    with_overlay = run_once(tmp_path / "with")
+    assert ("fake", UNKNOWN_CODE_POINT) not in codes(with_overlay)
+
+
+def test_overlay_is_not_applied_when_a_reference_is_missing(
+    tmp_path, monkeypatch
+):
+    from ciphersuites.scrape import runner  # pylint: disable=C0415
+
+    def never():
+        raise AssertionError("packaged_overlay was called")
+
+    monkeypatch.setattr(runner, "packaged_overlay", never)
+    result = run(reference_adapters(1)[:2], None, opts(tmp_path))
+    assert ("ciphersuites", CATALOGUE_SKIPPED) in codes(result, WARN)
+    assert not (tmp_path / "ciphersuites.yaml").exists()
