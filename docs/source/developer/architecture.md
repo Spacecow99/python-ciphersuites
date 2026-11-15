@@ -175,9 +175,12 @@ check.
 `Catalog` object. The module-level functions (`get`, `find`,
 `supported_by` and the others) use a default catalogue, loaded on the
 first call from the packaged data directory `ciphersuites/_ciphersuites`.
-It reads every `.yaml` file of the directory, except the legacy files
-`technologies.yaml` and `vulnerabilities.yaml`. Each file must be in
-schema v2; any other file raises `DataNotFoundError`.
+It reads every `.yaml` file of the directory except `technologies.yaml`
+and `vulnerabilities.yaml`. Each of those files must be in schema v2;
+any other file raises `DataNotFoundError`. The two excepted files go
+through `load_reference_files` in `ciphersuites/scrape/technologies.py`,
+which never raises. A file that is missing or invalid becomes a problem
+that the catalog reports with `Catalog.reference_problems`.
 
 From the scraper package, the read side imports only `core.py` (the code
 point helpers) and `schema.py` (the schema reader). It does not import

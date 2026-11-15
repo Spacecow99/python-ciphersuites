@@ -21,7 +21,7 @@ Do not confuse these two:
   data makes a new commit in the {term}`data repository`.
 
 The Python package `python-ciphersuites` on `main` pins one data commit,
-`a75b39c`, through its {term}`gitlink`. If you read the files directly,
+`df9a10c`, through its {term}`gitlink`. If you read the files directly,
 choose a data commit yourself and record its SHA. A commit SHA always
 gives the same files.
 
@@ -130,11 +130,12 @@ does not depend on the content of the data:
 >>> import pathlib
 >>> import yaml
 >>> TOP = ["schema_version", "kind", "library", "source", "versions", "suites"]
+>>> KINDS = ("library", "reference")
 >>> ENTRY = ["label", "ref", "commit", "files", "scraped_at", "status", "last_error", "accepted"]
 >>> problems = []
 >>> for path in sorted(pathlib.Path("ciphersuites/_ciphersuites").glob("*.yaml")):
 ...     doc = yaml.safe_load(path.read_text(encoding="utf-8"))
-...     if not isinstance(doc, dict) or "kind" not in doc:
+...     if not isinstance(doc, dict) or doc.get("kind") not in KINDS:
 ...         continue
 ...     if list(doc) != TOP:
 ...         problems.append(path.name)

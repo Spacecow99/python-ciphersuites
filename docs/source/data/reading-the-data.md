@@ -138,7 +138,7 @@ code point to a tuple.
 ### Compare the names of one code point in all libraries
 
 This example reads every library file. It skips the catalogue, the
-reference sources and the two legacy files. For each library, it prints
+reference sources and the technologies and vulnerabilities files. For each library, it prints
 the first name that the library used for `0xC0,0x2F`:
 
 ```pycon

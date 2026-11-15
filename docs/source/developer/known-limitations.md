@@ -149,9 +149,14 @@ checks the edit like scraped data.
 - The defaults of the fixtures command (`--manifest`, `--cache`) point
   into the source tree. They are useful only in a clone with an
   editable install.
-- The data repository holds two legacy files, `technologies.yaml` and
-  `vulnerabilities.yaml`. The scraper does not write or check them, and
-  the read API skips them. See [Files in the data repository](../data/files.md#the-legacy-files).
+- A person maintains `technologies.yaml` and `vulnerabilities.yaml` by
+  hand. The scraper reads them and warns about gaps, but it cannot fix a
+  gap, and the warnings never fail a scrape. The vulnerability content
+  is the one that existed before the conversion to schema version 2.
+  Feature 2 ([issue 30](https://github.com/Spacecow99/python-ciphersuites/issues/30))
+  refreshes it. The records have no `reviewed` date yet, so every scrape
+  reports `TECHNOLOGY_UNREVIEWED`. See
+  [Technologies and vulnerabilities](../data/technologies-and-vulnerabilities.md).
 - The real data has no example of a stale entry yet. The data guide
   shows one made with the scraper's own code:
   [Status and staleness](../data/status-and-staleness.md#an-example-of-a-stale-entry).

@@ -476,10 +476,14 @@ A class method. Reads every data file in `data_dir` and returns a new
   Traversable object. A plain string does not work: it raises
   `DataNotFoundError`.
 - The directory must contain `ciphersuites.yaml`. Every other `.yaml`
-  file in it must be a library or reference file. All files must have
+  file in it, except `technologies.yaml` and `vulnerabilities.yaml`,
+  must be a library or reference file. All files must have
   `schema_version: 2`. Library files are optional.
-- The method reads only files that end in `.yaml`. It skips the legacy
-  files `technologies.yaml` and `vulnerabilities.yaml`.
+- The method reads only files that end in `.yaml`.
+- The method reads `technologies.yaml` and `vulnerabilities.yaml`
+  separately. A missing or invalid file does not raise. The catalog
+  holds no records from that file, and `Catalog.reference_problems`
+  describes the problem.
 
 Raises `DataNotFoundError` when the directory cannot be listed, when
 `ciphersuites.yaml` is missing, when a file cannot be read or has the
@@ -745,9 +749,13 @@ Returns one problem for each of `technologies.yaml` and
 
 ### The constructor
 
-`Catalog(suites, docs)` builds a catalog from data that is already
-parsed. The package uses it inside `Catalog.load`. Use `Catalog.load`
-instead.
+`Catalog(suites, docs, reference=None)` builds a catalog from data that
+is already parsed. The optional `reference` argument is a
+`ReferenceFiles` object (from `ciphersuites.scrape.technologies`) that
+holds the technologies, the vulnerabilities and the problems that were
+found. Without it, the catalog has no technologies and no
+vulnerabilities. The package uses the constructor inside `Catalog.load`.
+Use `Catalog.load` instead.
 
 ## `Candidate`
 

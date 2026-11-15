@@ -26,17 +26,19 @@ This guide documents the files at data commit
 `c24a21eb2cf4253bcdaf15b09d5d13da6fe21773` (short form `c24a21e`). That
 is the commit that the Python package `python-ciphersuites` 0.1.0 pinned
 as its {term}`submodule` at the release. The package now pins the later
-data commit `a75b39ccf91997abd5b57aad7e2ff7598aa61854` (short form
-`a75b39c`) on the `main` branch of the data repository. The data files
-at `a75b39c` are identical to the files at `c24a21e`. Only the workflow
-file differs. Older data commits hold an older file format (a YAML list
+data commit `df9a10cf6772262033878fe6241beaf973685f47` (short form
+`df9a10c`) on the branch `feature/technologies-schema-v2` of the data
+repository. That commit holds newer scrape results than `c24a21e` and
+converts `technologies.yaml` and `vulnerabilities.yaml` to schema
+version 2. The pages of this guide that name `c24a21e` describe the
+facts at that commit. Older data commits hold an older file format (a YAML list
 of `model`, `pk` and `fields` items). This guide does not describe that
 older format.
 
 To get the files at the documented commit:
 
 1. Clone the data repository.
-2. Check out commit `c24a21e` or `a75b39c`.
+2. Check out commit `c24a21e` or `df9a10c`.
 
 All examples in this guide read the files from the directory
 `ciphersuites/_ciphersuites`, which is where the Python package's source
@@ -56,9 +58,11 @@ Read the pages in this order:
    each library, and how to find the entry for a BoringSSL commit.
 6. [Status and staleness](status-and-staleness.md): `status`,
    `last_error`, `scraped_at` and `accepted`.
-7. [Reading the data](reading-the-data.md): working examples in Python,
+7. [Technologies and vulnerabilities](technologies-and-vulnerabilities.md):
+   `technologies.yaml` and `vulnerabilities.yaml`.
+8. [Reading the data](reading-the-data.md): working examples in Python,
    `jq` and `yq`.
-8. [Stability and versioning](stability-and-versioning.md): what can
+9. [Stability and versioning](stability-and-versioning.md): what can
    change between two data commits, and what does not.
 
 ```{toctree}
@@ -70,6 +74,7 @@ catalogue-schema
 reference-sources
 versions-and-labels
 status-and-staleness
+technologies-and-vulnerabilities
 reading-the-data
 stability-and-versioning
 ```

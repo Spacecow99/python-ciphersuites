@@ -360,10 +360,22 @@ def test_unbound_suite_has_no_technologies():
     assert suite.vulnerabilities() == []
 
 
-def test_default_catalogue_still_loads_with_the_pinned_legacy_files():
-    assert not catalog_module.technologies()
-    assert not catalog_module.vulnerabilities()
-    assert catalog_module.libraries()
+def test_default_catalogue_exposes_technologies():
+    assert catalog_module.technologies()
+    assert catalog_module.libraries() == [
+        "boringssl",
+        "gnutls",
+        "go",
+        "jsse",
+        "libressl",
+        "mbedtls",
+        "nss",
+        "openssl",
+        "s2n",
+        "schannel",
+    ]
+    suite = catalog_module.get(["0xC0", "0x2F"])
+    assert suite.technologies()
 
 
 def test_other_list_shaped_yaml_still_rejected(tmp_path):

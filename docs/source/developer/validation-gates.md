@@ -87,6 +87,11 @@ column "Accept" tells if `--accept` can turn the `fail` into `accepted`.
 | `OVERLAY_REFERENCE_LISTS` | warn | no | An overlay record has a code point that a reference source also lists. The scraped name stays, and `overlay` is added to `sources`. The message says whether the names match or differ. |
 | `UNKNOWN_CODE_POINT` | warn | no | A code point of a library or reference file is not in the catalogue. Code points that an overlay correction dropped are not reported. |
 | `STALE_TOO_OLD` | warn | no | A version entry is stale and its `scraped_at` is more than 28 days old. |
+| `TECHNOLOGY_MISSING` | warn | no | A catalogue (category, value) pair, or an `export` or `old` flag, has no record in `technologies.yaml`. `details` holds the category, the value and the number of suites. |
+| `TECHNOLOGY_UNUSED` | warn | no | One warning that lists the technology records that no catalogue suite uses. |
+| `VULNERABILITY_UNRESOLVED` | warn | no | One warning that lists the technologies that cite a vulnerability name that `vulnerabilities.yaml` does not define. |
+| `TECHNOLOGY_UNREVIEWED` | warn | no | One warning that lists the technology records without a `reviewed` date. |
+| `REFERENCE_FILE_PROBLEM` | warn | no | `technologies.yaml` or `vulnerabilities.yaml` is missing or invalid. The scraper ignores that file. |
 
 The codes are constants in `ciphersuites/scrape/validate.py`. The
 runner (`ciphersuites/scrape/runner.py`) produces `BASELINE_ERROR`,
@@ -173,7 +178,15 @@ together with the three reference sources:
 - `STALE_TOO_OLD`: one warning for each stale entry older than 28 days
   (`STALE_AFTER`).
 
-All three are warnings. They never change the data.
+- `TECHNOLOGY_MISSING`, `TECHNOLOGY_UNUSED`, `VULNERABILITY_UNRESOLVED`,
+  `TECHNOLOGY_UNREVIEWED` and `REFERENCE_FILE_PROBLEM`: the function
+  `check_technologies` compares the catalogue with the two reference
+  files. Matching is exact and case-sensitive. When
+  `technologies.yaml` is unusable, only `REFERENCE_FILE_PROBLEM` is
+  reported. See
+  [Technologies and vulnerabilities](../data/technologies-and-vulnerabilities.md).
+
+All of these are warnings. They never change the data.
 
 ## Accept a gate failure
 
