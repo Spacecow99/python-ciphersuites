@@ -82,13 +82,19 @@ column "Accept" tells if `--accept` can turn the `fail` into `accepted`.
 | `RUNNER_ERROR` | fail | no | An unexpected exception while the runner processed a library, rendered a file, built the catalogue or wrote a file. |
 | `CATALOGUE_SKIPPED` | warn | no | The data of `iana`, `testssl` or `scanigma` is not available, so `ciphersuites.yaml` is not written. The finding's library is `ciphersuites`. |
 | `NEW_NAME_COLLISION` | warn | no | A name maps to more than one code point in one version, or two libraries use the same name for different code points. |
-| `UNKNOWN_CODE_POINT` | warn | no | A code point of a library or reference file is not in the catalogue. |
+| `OVERLAY_CORRECTION` | warn | no | A `corrects` entry of the catalogue overlay dropped a scraped record that IANA does not list. `details.code_points` lists the dropped code points. |
+| `OVERLAY_STALE_CORRECTION` | warn | no | A `corrects` entry names a code point that no reference lists, so there was nothing to drop. The entry is now stale and a maintainer can remove it. |
+| `OVERLAY_REFERENCE_LISTS` | warn | no | An overlay record has a code point that a reference source also lists. The scraped name stays, and `overlay` is added to `sources`. The message says whether the names match or differ. |
+| `UNKNOWN_CODE_POINT` | warn | no | A code point of a library or reference file is not in the catalogue. Code points that an overlay correction dropped are not reported. |
 | `STALE_TOO_OLD` | warn | no | A version entry is stale and its `scraped_at` is more than 28 days old. |
 
 The codes are constants in `ciphersuites/scrape/validate.py`. The
 runner (`ciphersuites/scrape/runner.py`) produces `BASELINE_ERROR`,
 `FETCH_ERROR`, `FILE_MISSING`, `PARSE_ERROR`, `RUNNER_ERROR` and
-`CATALOGUE_SKIPPED`. The functions in `validate.py` produce all others.
+`CATALOGUE_SKIPPED`. `apply_overlay` in `ciphersuites/scrape/build_catalog.py`
+produces `OVERLAY_CORRECTION`, `OVERLAY_STALE_CORRECTION` and
+`OVERLAY_REFERENCE_LISTS`. The functions in `validate.py` produce all
+others.
 
 ## Parse checks
 
@@ -160,7 +166,10 @@ together with the three reference sources:
   `RC4-MD5`, `NULL-MD5`, `EXP-RC4-MD5`, `EXP-RC2-CBC-MD5`, `DES-CBC-SHA`
   and `DES-CBC3-SHA`.
 - `UNKNOWN_CODE_POINT`: one warning for each library or reference that
-  has code points outside the catalogue.
+  has code points outside the catalogue. The runner passes the code
+  points that an overlay correction dropped in the `corrected` argument,
+  and `check_catalog` skips them, because `OVERLAY_CORRECTION` already
+  reports them.
 - `STALE_TOO_OLD`: one warning for each stale entry older than 28 days
   (`STALE_AFTER`).
 

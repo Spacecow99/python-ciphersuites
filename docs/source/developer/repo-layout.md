@@ -52,10 +52,12 @@ its files.
 | `validate.py` | the checks and finding codes |
 | `merge.py` | combines baseline and new data; stale handling |
 | `schema.py` | the schema v2 model, YAML output, baseline loading |
-| `build_catalog.py` | builds `ciphersuites.yaml` |
+| `build_catalog.py` | builds `ciphersuites.yaml` and merges the catalogue overlay into it |
+| `overlay.py` | loads and validates the catalogue overlay |
 | `report.py` | the Markdown and JSON reports |
 | `fixtures.py` | the fixtures command and the fixture loader for tests |
 | `data/schannel_curated.yaml` | the hand-curated Schannel data |
+| `data/catalogue_overlay.yaml` | the hand-curated catalogue overlay |
 
 [Architecture](architecture.md) explains how these modules work
 together.

@@ -37,6 +37,7 @@ in `pyproject.toml` explains why.
 | `tests/test_runner.py`, `tests/test_validate.py` | the run, the gates, stale handling, accept, the reports | no |
 | `tests/test_fetch.py` | retries, the cache, offline mode, URL building (with the `responses` package, which fakes HTTP) | no |
 | `tests/test_schema.py`, `test_core.py`, `test_versions.py`, `test_helpers.py`, `test_build_catalog.py` | the building blocks | no |
+| `tests/test_overlay.py`, `tests/test_overlay_content.py` | the overlay loader and its validation, and the content of the packaged overlay file | no |
 | `tests/test_cli.py`, `test_fixtures.py`, `test_adapter_base.py` | the command lines, the fixtures command and the adapter registry | no |
 | `tests/test_catalog.py`, `test_package.py`, `test_parse_name.py` | the read API and the package root | no |
 | `tests/test_data_packaging.py` | the data submodule: the pinned gitlink commit and the error when the data is missing | no |

@@ -286,7 +286,7 @@ You can put them in a set or use them as dict keys.
 |---|---|---|
 | `CipherSuite.code_point` | `Tuple[str, ...]` | The code point: two strings, or three for an SSLv2 suite, each in the form `0xAB`. |
 | `CipherSuite.name` | `str` | The catalogue name. For a {term}`fallback suite`, a name from a library file (see below). |
-| `CipherSuite.sources` | `List[str]` | The reference sources that list the code point, in the order `iana`, `testssl`, `scanigma`, `overlay`. Empty for a fallback suite. |
+| `CipherSuite.sources` | `List[str]` | The reference sources that list the code point, in the order `iana`, `testssl`, `scanigma`, followed by `overlay` when the catalogue overlay adds or touches the record. Empty for a fallback suite. |
 | `CipherSuite.provenance` | `Optional[str]` | `rfc`, `draft` or `implementation` when the catalogue overlay records where the suite is defined. Otherwise `None`, which means "not assessed". |
 | `CipherSuite.references` | `List[Dict[str, str]]` | The documents and source files that define the suite. Empty when there are none. |
 | `CipherSuite.superseded_by` | `Optional[Tuple[str, ...]]` | The code point of the final record when this code point is a placeholder. Otherwise `None`. |

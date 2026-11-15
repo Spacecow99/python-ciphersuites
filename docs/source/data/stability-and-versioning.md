@@ -67,6 +67,9 @@ These changes can happen while the schema version stays `2`:
   `sources` list can change. A record can gain the optional keys
   `provenance`, `references` and `superseded_by`, and `sources` can gain
   `overlay`, when a maintainer edits the overlay.
+  A placeholder record can share its name with the record that replaced
+  it, so a name lookup can then raise `AmbiguousNameError`. See
+  [Find a suite by name](../user/name-resolution.md).
 - **Status.** An entry can become `stale` and later `ok` again. See
   [Status and staleness](status-and-staleness.md).
 - **`accepted`.** It can be set in one commit and return to `null` in

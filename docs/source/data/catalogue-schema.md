@@ -34,17 +34,23 @@ name in character order wins.
 
 The scraper also merges a hand-curated overlay into the catalogue. The
 overlay is the file `ciphersuites/scrape/data/catalogue_overlay.yaml`, and
-the scraper reads it on every run. It does three things:
+the scraper reads it on the runs that write the catalogue, that is when
+all three reference sources are available. It does three things:
 
 - It adds records for code points that no reference source lists.
 - It attaches metadata (`provenance`, `references` and `superseded_by`) to
   records that a reference source does list.
-- It drops a wrong record that only testssl or only Scanigma lists. A
-  record that IANA lists is never dropped.
+- It drops a record that IANA does not list. A correction aimed at a
+  record that IANA lists is an error, and the scraper then writes no
+  catalogue.
 
 When a reference source also lists a code point that the overlay names,
 the scraped name wins. The scraper appends `overlay` to the `sources` list
-of that record, attaches the overlay metadata, and reports a warning.
+of that record, attaches the overlay metadata, and reports the warning
+`OVERLAY_REFERENCE_LISTS`. When the overlay drops a record, the scraper
+reports `OVERLAY_CORRECTION`. The
+[finding codes table](../developer/validation-gates.md#all-finding-codes)
+in the developer guide describes both warnings.
 
 The scraper writes `ciphersuites.yaml` only when data from all three
 reference sources is available. If one is missing, it keeps the old file.
@@ -145,7 +151,8 @@ The key `superseded_by` appears on a placeholder code point. It holds the
 code point of the record that replaced it. For example, `0xCA,0xFE` was a
 placeholder that RFC 8442 later registered as `0xD0,0x01`.
 
-This is the record for `0xCA,0xFE`:
+This is the record for `0xCA,0xFE`, as a scrape with the current scraper
+produces it. The data commit pinned at `c24a21e` has no such record:
 
 ```yaml
 - code_point:
@@ -203,7 +210,6 @@ Some values need care:
   empty values. For example, `TLS_ECDHE_SM4_CBC_SM3` (`0xE0,0x11`, from
   Scanigma) has `authentication: SM4 CBC SM3` and an empty string for
   `encryption` and `hashing`.
-
 - The parser gives wrong values for some overlay-only records: the two
   FORTEZZA suites (`0x00,0x1C` and `0x00,0x1D`) and the BIKE, SIKE and
   Kyber suites (`0xFF,0x04`, `0xFF,0x08` and `0xFF,0x0C`). GitHub issue

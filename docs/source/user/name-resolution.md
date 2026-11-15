@@ -21,6 +21,13 @@ For example, OpenSSL 1.0.2 uses the name `RC4-MD5` for two suites:
 
 So the name `RC4-MD5` alone does not tell you which suite you mean.
 
+A placeholder record in the catalogue can also give a name two code
+points. When the catalogue overlay marks a placeholder with
+`superseded_by`, the placeholder and the record that replaced it can
+share a name. Then `get(name)` raises `AmbiguousNameError`, and
+`find(name)` returns both records. The `superseded_by` field of the
+placeholder holds the code point of the final record.
+
 ## Which names the package knows
 
 A name lookup compares your name with:
