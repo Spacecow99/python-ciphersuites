@@ -157,6 +157,11 @@ checks the edit like scraped data.
   refreshes it. The records have no `reviewed` date yet, so every scrape
   reports `TECHNOLOGY_UNREVIEWED`. See
   [Technologies and vulnerabilities](../data/technologies-and-vulnerabilities.md).
+  Until the data is regenerated for #12, a few removed technology
+  records (`SHA`, `SHA DSS`, `SHA RSA` and `SHA256` as authentication,
+  and `MD5 1` as hashing) are still used by the stale stored values. So
+  for the suite `SSL_CK_DES_64_CFB64_WITH_MD5_1`, the read API reports
+  no `Message Digest 5` vulnerability. It resolves on regeneration.
 - The real data has no example of a stale entry yet. The data guide
   shows one made with the scraper's own code:
   [Status and staleness](../data/status-and-staleness.md#an-example-of-a-stale-entry).

@@ -43,7 +43,7 @@ technologies:
 | `category` | string | One of `protocol`, `key_exchange`, `authentication`, `encryption`, `hashing` or `flag`. |
 | `value` | string | Exactly the value that the catalogue uses. For the category `flag`, the value is `export` or `old`. |
 | `long_name` | string | A readable name. |
-| `vulnerabilities` | list of strings | The `name` of each vulnerability that applies. An empty list means that a person reviewed the technology and none apply. |
+| `vulnerabilities` | list of strings | The `name` of each vulnerability that applies. An empty list with a `reviewed` date means that a person reviewed the technology and none apply. |
 | `reviewed` | date, optional | The ISO date (`YYYY-MM-DD`) on which a person last reviewed the record. |
 
 A pair of `category` and `value` is unique in the file.
@@ -64,10 +64,13 @@ vulnerabilities:
 
 | Key | Type | Meaning |
 |---|---|---|
+| `schema_version` | integer | Always `2`. |
+| `kind` | string | Always `vulnerabilities`. |
+| `vulnerabilities` | list | One record for each vulnerability. |
 | `name` | string | The name of the vulnerability. It is unique in the file, and technologies cite it. |
 | `severity` | integer | `0`, `1` or `2`. A higher number is more severe. |
 | `description` | string | Plain text. The text has no HTML. |
-| `references` | list of strings | Links to more information. |
+| `references` | list of strings, optional | Links to more information. It defaults to an empty list. |
 
 ## The matching rule
 

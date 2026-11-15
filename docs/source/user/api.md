@@ -770,6 +770,44 @@ name. `AmbiguousNameError.candidates` holds a list of them.
 
 See the example of `AmbiguousNameError` below.
 
+## `Technology`
+
+A frozen dataclass from `ciphersuites.scrape.technologies`. It is one
+record of `technologies.yaml`. `Catalog.technologies` and
+`CipherSuite.technologies` return them.
+
+| Attribute | Type | Meaning |
+|---|---|---|
+| `Technology.category` | `str` | One of `protocol`, `key_exchange`, `authentication`, `encryption`, `hashing` or `flag`. |
+| `Technology.value` | `str` | The catalogue value that the record describes. For the category `flag`, it is `export` or `old`. |
+| `Technology.long_name` | `str` | A readable name. |
+| `Technology.vulnerabilities` | `Tuple[str, ...]` | The names of the vulnerabilities that apply. The tuple can be empty. |
+| `Technology.reviewed` | `Optional[str]` | The review date as an ISO string (`YYYY-MM-DD`), or `None` when the record has no review date. |
+
+## `Vulnerability`
+
+A frozen dataclass from `ciphersuites.scrape.technologies`. It is one
+record of `vulnerabilities.yaml`. `Catalog.vulnerabilities` and
+`CipherSuite.vulnerabilities` return them.
+
+| Attribute | Type | Meaning |
+|---|---|---|
+| `Vulnerability.name` | `str` | The name. It is unique in the file. |
+| `Vulnerability.severity` | `int` | `0`, `1` or `2`. A higher number is more severe. |
+| `Vulnerability.description` | `str` | Plain text. |
+| `Vulnerability.references` | `Tuple[str, ...]` | Links to more information. The tuple can be empty. |
+
+## `ReferenceProblem`
+
+A frozen dataclass from `ciphersuites.scrape.technologies`.
+`Catalog.reference_problems` returns a list of them.
+
+| Attribute | Type | Meaning |
+|---|---|---|
+| `ReferenceProblem.file` | `str` | `technologies.yaml` or `vulnerabilities.yaml`. |
+| `ReferenceProblem.kind` | `str` | `missing` when the file is not there, or `invalid` when it cannot be read or breaks the schema. |
+| `ReferenceProblem.message` | `str` | A description of the problem. |
+
 ## `AmbiguousNameError`
 
 ```text
