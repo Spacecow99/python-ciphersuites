@@ -45,6 +45,7 @@ from ciphersuites.scrape.validate import (
     FAIL,
     FETCH_ERROR,
     FILE_MISSING,
+    OVERLAY_CORRECTION,
     PARSE_ERROR,
     RUNNER_ERROR,
     WARN,
@@ -296,8 +297,14 @@ def _catalogue(
             build_catalog(refs), packaged_overlay()
         )
         text = dump(catalogue)
+        corrected = {
+            tuple(cp)
+            for finding in found
+            if finding.code == OVERLAY_CORRECTION
+            for cp in finding.details["code_points"]
+        }
         found = found + check_catalog(
-            catalogue, {**finals, **refs}, options.now
+            catalogue, {**finals, **refs}, options.now, corrected
         )
     except Exception as exc:  # pylint: disable=broad-exception-caught
         findings.append(

@@ -299,6 +299,16 @@ def test_unknown_code_point():
     only(found, UNKNOWN_CODE_POINT, WARN)
 
 
+def test_corrected_code_points_are_not_reported_unknown():
+    libs = {"x": lib({"1": [rec("A", 1), rec("B", 2), rec("C", 3)]}, name="x")}
+    found = check_catalog(catalog(cp(1)), libs, NOW, corrected=[cp(2)])
+    only(found, UNKNOWN_CODE_POINT, WARN)
+    assert found[0].details["code_points"] == [cp(3)]
+    assert not check_catalog(
+        catalog(cp(1)), libs, NOW, corrected=[cp(2), cp(3)]
+    )
+
+
 def test_stale_boundary():
     def run(days_ago_stamp):
         libs = {

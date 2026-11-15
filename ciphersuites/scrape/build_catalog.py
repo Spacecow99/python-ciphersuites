@@ -152,6 +152,20 @@ def _drop_corrected(
     return findings
 
 
+def _find_cycle(
+    start: CodePoint, by_code_point: Dict[CodePoint, OverlayRecord]
+) -> bool:
+    """Returns whether the ``superseded_by`` chain from ``start`` revisits."""
+    visited = {start}
+    target = by_code_point[start].superseded_by
+    while target is not None and target in by_code_point:
+        if target in visited:
+            return True
+        visited.add(target)
+        target = by_code_point[target].superseded_by
+    return False
+
+
 def _check_links(
     final: Dict[CodePoint, Dict[str, Any]],
     overlay: Sequence[OverlayRecord],
@@ -164,8 +178,8 @@ def _check_links(
 
     Raises:
       OverlayError: A ``corrects`` entry names an overlay code point, a
-        ``superseded_by`` target is not in the merged records, or two overlay
-        records supersede each other.
+        ``superseded_by`` target is not in the merged records, or the
+        ``superseded_by`` chain from an overlay record loops.
     """
     by_code_point = {record.code_point: record for record in overlay}
     for record in overlay:
@@ -190,6 +204,10 @@ def _check_links(
                 f"record {record.code_point} has superseded_by {target}, "
                 "which points back"
             )
+        if _find_cycle(record.code_point, by_code_point):
+            raise OverlayError(
+                f"record {record.code_point} is in a superseded_by cycle"
+            )
 
 
 def apply_overlay(
@@ -207,8 +225,10 @@ def apply_overlay(
       findings that the merge produced.
 
     Raises:
-      OverlayError: An overlay record corrects a record that IANA lists, or
-        an overlay link is invalid (see ``_check_links``).
+      OverlayError: An overlay record corrects a record that IANA lists, a
+        ``corrects`` entry names an overlay code point, a ``superseded_by``
+        target is not in the merged records, or a ``superseded_by`` chain
+        loops (a pair that points both ways, or a longer cycle).
     """
     scraped = {
         tuple(suite["code_point"]): copy.deepcopy(suite)

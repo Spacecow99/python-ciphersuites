@@ -327,6 +327,32 @@ def test_superseded_by_pair_pointing_both_ways_raises() -> None:
         )
 
 
+def test_superseded_by_longer_cycle_raises() -> None:
+    first, second, third = (("0xFF", f"0x{n:02X}") for n in (0x0C, 0x0D, 0x0E))
+    with pytest.raises(OverlayError, match="cycle"):
+        apply_overlay(
+            iana_catalogue(),
+            [
+                overlay_record(first, "TLS_ONE", superseded_by=second),
+                overlay_record(second, "TLS_TWO", superseded_by=third),
+                overlay_record(third, "TLS_THREE", superseded_by=first),
+            ],
+        )
+
+
+def test_superseded_by_chain_without_a_cycle_is_accepted() -> None:
+    first, second, third = (("0xFF", f"0x{n:02X}") for n in (0x0C, 0x0D, 0x0E))
+    merged, _ = apply_overlay(
+        iana_catalogue(),
+        [
+            overlay_record(first, "TLS_ONE", superseded_by=second),
+            overlay_record(second, "TLS_TWO", superseded_by=third),
+            overlay_record(third, "TLS_THREE"),
+        ],
+    )
+    assert by_cp(merged)[second]["superseded_by"] == ["0xFF", "0x0E"]
+
+
 def test_superseded_by_target_dropped_by_a_correction_raises() -> None:
     wrong = ("0xFF", "0x80", "0x10")
     right = ("0xFF", "0x08", "0x10")

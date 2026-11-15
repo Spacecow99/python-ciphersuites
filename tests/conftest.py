@@ -6,6 +6,7 @@ from typing import Callable, Dict
 
 import pytest
 
+from ciphersuites.scrape import runner
 from ciphersuites.scrape.fetch import Fetcher
 from ciphersuites.scrape.fixtures import (
     CACHE_DIR,
@@ -48,8 +49,4 @@ def fixture_empty_overlay(monkeypatch):
     Tests that exercise the overlay override this with their own
     ``monkeypatch.setattr(runner, "packaged_overlay", ...)``.
     """
-    # Imported here so that a failure to import the runner shows up as a
-    # test error, not as a collection error for the whole suite.
-    from ciphersuites.scrape import runner  # pylint: disable=C0415
-
     monkeypatch.setattr(runner, "packaged_overlay", lambda: [])

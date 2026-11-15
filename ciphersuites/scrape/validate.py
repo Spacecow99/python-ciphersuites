@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field, replace
 from datetime import datetime, timedelta, timezone
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any, Collection, Dict, List, Optional, Set, Tuple
 
 from ciphersuites.scrape.adapters.base import Adapter
 from ciphersuites.scrape.core import (
@@ -480,9 +480,23 @@ def _collision_findings(
 
 
 def check_catalog(
-    catalog_doc: dict, libraries: Dict[str, LibraryData], now: datetime
+    catalog_doc: dict,
+    libraries: Dict[str, LibraryData],
+    now: datetime,
+    corrected: Collection[CodePoint] = (),
 ) -> List[Finding]:
-    """Catalogue-level warnings (spec 6.3)."""
+    """Catalogue-level warnings (spec 6.3).
+
+    Args:
+      catalog_doc: The catalogue document.
+      libraries: The library data to check against the catalogue.
+      now: The current time.
+      corrected: Code points that an overlay correction removed from the
+        catalogue on purpose. They are not reported as unknown.
+
+    Returns:
+      The sorted warnings.
+    """
     findings: List[Finding] = _collision_findings(libraries)
     known: Set[CodePoint] = set()
     for suite in catalog_doc.get("suites", []):
@@ -494,7 +508,7 @@ def check_catalog(
         every: Set[CodePoint] = set()
         for records in data.members.values():
             every.update(rec.code_point for rec in records)
-        unknown = every - known
+        unknown = every - known - set(corrected)
         if unknown:
             findings.append(
                 Finding(
