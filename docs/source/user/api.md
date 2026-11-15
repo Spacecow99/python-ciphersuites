@@ -296,7 +296,7 @@ You can put them in a set or use them as dict keys.
 | `CipherSuite.encryption` | `Optional[str]` | The encryption algorithm, for example `AES 128 GCM`. |
 | `CipherSuite.hashing` | `Optional[str]` | The hash algorithm, for example `SHA256`. |
 | `CipherSuite.old` | `Optional[bool]` | `True` when the name contains `OLD`. |
-| `CipherSuite.export` | `Optional[bool]` | `True` when the name contains `EXPORT`, and for the SSLv2 {term}`export-grade` `EXPORT40` suites such as `SSL_CK_RC4_128_EXPORT40_WITH_MD5`; see [The derived fields](../data/catalogue-schema.md#the-derived-fields). |
+| `CipherSuite.export` | `Optional[bool]` | `True` when the name contains `EXPORT`, and for the SSLv2 {term}`export-grade` `EXPORT40` suites such as `SSL_CK_RC4_128_EXPORT40_WITH_MD5`. The packaged data still has `False` for these suites until it is regenerated; see [Known limitations](../developer/known-limitations.md#known-defects). |
 | `CipherSuite.fips` | `Optional[bool]` | `True` when the name contains `FIPS`. |
 | `CipherSuite.aead` | `Optional[bool]` | `True` when the encryption is an {term}`AEAD` mode. |
 

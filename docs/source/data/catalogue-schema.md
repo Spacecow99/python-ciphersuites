@@ -115,7 +115,7 @@ in this order.
 | `encryption` | string | The encryption algorithm. |
 | `hashing` | string | The hash algorithm. |
 | `old` | boolean | `true` when the name contains `OLD`. |
-| `export` | boolean | `true` when the name contains `EXPORT`, and for the SSLv2 `EXPORT40` suites. |
+| `export` | boolean | `true` when the name contains `EXPORT`, and for the SSLv2 `EXPORT40` suites. The data pinned at `c24a21e` predates the SSLv2 part; see [Known limitations](../developer/known-limitations.md#known-defects). |
 | `fips` | boolean | `true` when the name contains `FIPS`. |
 | `aead` | boolean | The encryption is an {term}`AEAD` mode (GCM, CCM, POLY1305 or MGM). |
 
@@ -195,11 +195,11 @@ BASH, and AEGIS names, the SRP names, and the hybrid KEM names.
 
 Some values need care:
 
-- The value `-` means "not part of the name". TLS 1.3 suites have `-` for
-  `key_exchange` and `authentication`. The `authentication` value is also
-  `-` when the definition of the suite does not fix it, as for the ASCON,
-  BELT, and BASH suites. The two SCSVs have `-` for all four algorithm
-  fields.
+- The value `-` means "not part of the name". It appears in
+  `key_exchange` for TLS 1.3-style suites. It appears in `authentication`
+  when the definition of the suite does not fix it, as for TLS 1.3 suites
+  and the ASCON, BELT, and BASH suites. The two SCSVs have `-` for all four
+  algorithm fields.
 - The value `NULL` is in quotes in the file (`'NULL'`). It means "no
   algorithm", for example no encryption. Without quotes, YAML would read
   it as a null value.
@@ -208,7 +208,9 @@ Some values need care:
 - The `export` flag is `true` for the SSLv2 `EXPORT40` suites. For example,
   `SSL_CK_RC4_128_EXPORT40_WITH_MD5` (`0x02,0x00,0x80`) has `export: true`.
   Its `encryption` value, `RC4 128 EXPORT40`, still shows the export key
-  size.
+  size. The data pinned at `c24a21e` was generated before this fix and
+  still has `export: false` for these suites until it is regenerated. See
+  [Known limitations](../developer/known-limitations.md#known-defects).
 - Some values stay approximate. The `SM2` value of `authentication` for
   the SM4 suites rests on the TLCP implementations, not on the text of the
   standard. For the `IBC` and `IBSDH` suites and the FORTEZZA suites, the
@@ -221,7 +223,11 @@ the suite.
 ### Real values at data commit `c24a21e`
 
 These are the values that occur in the catalogue at this commit. Other
-values can appear when the reference sources change.
+values can appear when the reference sources change. The derived fields at
+this commit were generated before the parser fixes of GitHub issue #12, so
+some values, such as `export` for the SSLv2 `EXPORT40` suites, differ from
+what the current parser returns. See
+[Known limitations](../developer/known-limitations.md#known-defects).
 
 | Field | Values (number of records) |
 |---|---|

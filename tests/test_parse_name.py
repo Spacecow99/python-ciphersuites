@@ -17,7 +17,8 @@ CATALOGUE = REPO_ROOT / "ciphersuites" / "_ciphersuites" / "ciphersuites.yaml"
 OVERLAY = (
     REPO_ROOT / "ciphersuites" / "scrape" / "data" / "catalogue_overlay.yaml"
 )
-# Hash, cipher and mode tokens that must never appear in `authentication`.
+# Hash, cipher and mode tokens that must never appear in `authentication`
+# as a whole token.
 ALGORITHM_TOKENS = {
     "SM4",
     "SHA",
