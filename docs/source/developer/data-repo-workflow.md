@@ -10,7 +10,7 @@ The workflow file is
 `.github/workflows/scrape_format_ciphersuites.yaml` in the data
 repository <https://github.com/Spacecow99/ciphersuites>. This page
 describes the file as it is at data commit
-`df9a10cf6772262033878fe6241beaf973685f47` (short form `df9a10c`). That
+`b4a2cddc0252dde00a3aa5d6f94055e14390a707` (short form `b4a2cdd`). That
 is the commit that this package's data {term}`submodule` pins. The
 workflow file is the same as at `a75b39c`. You can
 read the file in a clone at
