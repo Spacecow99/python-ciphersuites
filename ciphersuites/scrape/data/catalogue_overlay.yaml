@@ -12,4 +12,95 @@
 #   corrects: Optional list of code points whose scraped records this record
 #     corrects.
 overlay_version: 1
-suites: []
+suites:
+  - code_point: ['0x00', '0x1C']
+    name: SSL_FORTEZZA_KEA_WITH_NULL_SHA
+    provenance: rfc
+    references:
+      - type: rfc
+        id: 'RFC 6101'
+        note: >-
+          RFC 6101 appendix A.6 defines this suite. IANA lists 0x00,0x1C-1D as reserved to avoid conflicts with SSLv3.
+  - code_point: ['0x00', '0x1D']
+    name: SSL_FORTEZZA_KEA_WITH_FORTEZZA_CBC_SHA
+    provenance: rfc
+    references:
+      - type: rfc
+        id: 'RFC 6101'
+        note: >-
+          RFC 6101 appendix A.6 defines this suite. IANA lists 0x00,0x1C-1D as reserved to avoid conflicts with SSLv3.
+  - code_point: ['0xC0', '0xFF']
+    name: TLS_ECJPAKE_WITH_AES_128_CCM_8
+    provenance: implementation
+    references:
+      - type: draft
+        id: 'draft-cragie-tls-ecjpake-01'
+        note: >-
+          Expired draft that defines the name with value 0xTBD.
+      - type: source-code
+        id: 'Mbed-TLS/mbedtls include/mbedtls/ssl_ciphersuites.h'
+        note: >-
+          Defines MBEDTLS_TLS_ECJPAKE_WITH_AES_128_CCM_8 as 0xC0FF, marked experimental.
+  - code_point: ['0xCA', '0xFE']
+    name: TLS_ECDHE_PSK_WITH_AES_128_GCM_SHA256
+    provenance: implementation
+    references:
+      - type: source-code
+        id: 'google/boringssl commit 594a58e ssl/s3_lib.c'
+        note: >-
+          2014 placeholder 0x0300CAFE described as a non-standard ECDHE PSK ciphersuite.
+      - type: rfc
+        id: 'RFC 8442'
+        note: >-
+          Registers this suite as 0xD0,0x01.
+    superseded_by: ['0xD0', '0x01']
+  - code_point: ['0xFF', '0x04']
+    name: TLS_ECDHE_BIKE_RSA_WITH_AES_256_GCM_SHA384
+    provenance: draft
+    references:
+      - type: draft
+        id: 'draft-campagna-tls-bike-sike-hybrid-01'
+        note: >-
+          Expired draft that defines the suite at {0xFF, 0x04}, a private-use value.
+  - code_point: ['0xFF', '0x08']
+    name: TLS_ECDHE_SIKE_RSA_WITH_AES_256_GCM_SHA384
+    provenance: draft
+    references:
+      - type: draft
+        id: 'draft-campagna-tls-bike-sike-hybrid-01'
+        note: >-
+          Expired draft that defines the suite at {0xFF, 0x08}.
+  - code_point: ['0xFF', '0x0C']
+    name: TLS_ECDHE_KYBER_RSA_WITH_AES_256_GCM_SHA384
+    provenance: implementation
+    references:
+      - type: source-code
+        id: 'aws/s2n-tls tls/s2n_cipher_suites.c'
+        note: >-
+          Defines the suite at 0xFF,0x0C and cites the BIKE/SIKE draft, which does not define a Kyber suite.
+  - code_point: ['0xFF', '0x08', '0x00']
+    name: SSL_CK_DES_64_CFB64_WITH_MD5_1
+    provenance: implementation
+    references:
+      - type: source-code
+        id: 'openssl/openssl ssl/ssl2.h'
+        note: >-
+          SSL2_CK_DES_64_CFB64_WITH_MD5_1 is 0x02ff0800, marked as a SSLeay extension. testssl also lists 0xFF,0x80,0x00.
+      - type: draft
+        id: 'draft-hickman-netscape-ssl-00'
+        note: >-
+          SSLv2 specification that does not define this cipher kind.
+    corrects: [['0xFF', '0x80', '0x00']]
+  - code_point: ['0xFF', '0x08', '0x10']
+    name: SSL_CK_NULL
+    provenance: implementation
+    references:
+      - type: source-code
+        id: 'openssl/openssl ssl/ssl2.h'
+        note: >-
+          SSL2_CK_NULL is 0x02ff0810, marked as a SSLeay extension. testssl also lists 0xFF,0x80,0x10.
+      - type: draft
+        id: 'draft-hickman-netscape-ssl-00'
+        note: >-
+          SSLv2 specification that does not define this cipher kind.
+    corrects: [['0xFF', '0x80', '0x10']]
