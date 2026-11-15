@@ -1,0 +1,50 @@
+schema_version: 2
+kind: technologies
+technologies:
+- category: protocol
+  value: TLS
+  long_name: Transport Layer Security
+  vulnerabilities: []
+  reviewed: 2026-01-15
+- category: protocol
+  value: SSL
+  long_name: Secure Sockets Layer
+  vulnerabilities:
+  - No such vulnerability
+  reviewed: 2026-01-15
+- category: key_exchange
+  value: RSA
+  long_name: RSA key transport
+  vulnerabilities: []
+  reviewed: 2026-01-15
+- category: authentication
+  value: RSA
+  long_name: RSA signature
+  vulnerabilities: []
+  reviewed: 2026-01-15
+- category: encryption
+  value: RC4 128
+  long_name: RC4 with a 128-bit key
+  vulnerabilities:
+  - RC4 biases
+  - Deprecated cipher
+  reviewed: 2026-01-15
+- category: encryption
+  value: 3DES EDE CBC
+  long_name: Triple DES in CBC mode
+  vulnerabilities:
+  - Sweet32
+  reviewed: 2026-01-15
+- category: hashing
+  value: MD5
+  long_name: Message Digest 5
+  vulnerabilities:
+  - MD5 collisions
+  - Deprecated cipher
+  reviewed: 2026-01-15
+- category: flag
+  value: export
+  long_name: Export-grade cryptography
+  vulnerabilities:
+  - FREAK
+  reviewed: 2026-01-15

@@ -268,6 +268,26 @@ Returns the version labels of a library in written order. The same as
 ['3.20', '3.21']
 ```
 
+### `technologies`
+
+```text
+technologies() -> List[Technology]
+```
+
+Returns every technology record of the default catalog in file order.
+The same as `Catalog.technologies`. See
+[`Catalog.technologies`](#catalogtechnologies).
+
+### `vulnerabilities`
+
+```text
+vulnerabilities() -> List[Vulnerability]
+```
+
+Returns every vulnerability record of the default catalog in file order.
+The same as `Catalog.vulnerabilities`. See
+[`Catalog.vulnerabilities`](#catalogvulnerabilities).
+
 ## `CipherSuite`
 
 A frozen dataclass that describes one cipher suite. "Frozen" means that
@@ -377,6 +397,28 @@ written order (oldest first). Returns `[]` when no version contains it.
 
 The list can have gaps. A suite can leave a library and come back in a
 later version.
+
+#### `CipherSuite.technologies`
+
+```text
+technologies() -> List[Technology]
+```
+
+Returns the technology records for the `protocol`, `key_exchange`,
+`authentication`, `encryption` and `hashing` values, in that order,
+then the `export` and `old` flag records for each flag that is true.
+Values without a record are skipped. A suite that is not bound to a
+catalog returns `[]`.
+
+#### `CipherSuite.vulnerabilities`
+
+```text
+vulnerabilities() -> List[Vulnerability]
+```
+
+Returns the distinct vulnerabilities that the records of
+`CipherSuite.technologies` cite, sorted by severity (highest first) and
+then by name. A cited name that the catalog does not define is skipped.
 
 #### `CipherSuite.first_seen`
 
@@ -654,6 +696,52 @@ normalised, as for `Catalog.membership`.
 >>> cat.names_of(("0x01", "0x00", "0x80"), "openssl")
 {'RC4-MD5': ['1.0.2']}
 ```
+
+### `Catalog.technologies`
+
+```text
+technologies() -> List[Technology]
+```
+
+Returns every technology record in file order. The list is empty when
+`technologies.yaml` is missing or invalid.
+
+### `Catalog.technology`
+
+```text
+technology(category: str, value: str) -> Technology
+```
+
+Returns the record for a category and a value. Raises `KeyError` when
+there is no such record.
+
+### `Catalog.vulnerabilities`
+
+```text
+vulnerabilities() -> List[Vulnerability]
+```
+
+Returns every vulnerability record in file order. The list is empty
+when `vulnerabilities.yaml` is missing or invalid.
+
+### `Catalog.vulnerability`
+
+```text
+vulnerability(name: str) -> Vulnerability
+```
+
+Returns the vulnerability with this exact, case-sensitive name. Raises
+`KeyError` when there is no such record.
+
+### `Catalog.reference_problems`
+
+```text
+reference_problems() -> List[ReferenceProblem]
+```
+
+Returns one problem for each of `technologies.yaml` and
+`vulnerabilities.yaml` that is missing (`missing`) or cannot be read
+(`invalid`). Loading a catalog never fails because of these two files.
 
 ### The constructor
 

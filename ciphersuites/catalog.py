@@ -24,10 +24,28 @@ from ciphersuites.scrape.schema import (
     from_doc,
     loads,
 )
+from ciphersuites.scrape.technologies import (
+    TECHNOLOGIES_FILE,
+    VULNERABILITIES_FILE,
+    ReferenceFiles,
+    ReferenceProblem,
+    Technology,
+    Vulnerability,
+    load_reference_files,
+)
 
 _CATALOGUE_FILE = "ciphersuites.yaml"
-# Legacy list-shaped data files shipped beside the v2 files; skipped by name.
-_NON_SUITE_FILES = frozenset({"technologies.yaml", "vulnerabilities.yaml"})
+# The reference files sit beside the library files but hold no suites; they
+# are read separately by ``load_reference_files``.
+_NON_SUITE_FILES = frozenset({TECHNOLOGIES_FILE, VULNERABILITIES_FILE})
+_TECHNOLOGY_FIELDS = (
+    "protocol",
+    "key_exchange",
+    "authentication",
+    "encryption",
+    "hashing",
+)
+_FLAG_FIELDS = ("export", "old")
 _PARSED_FIELDS = (
     "protocol",
     "key_exchange",
@@ -107,6 +125,46 @@ class CipherSuite:
         if self._catalog is None:
             return {}
         return self._catalog.names_of(self.code_point, library)
+
+    def technologies(self) -> List[Technology]:
+        """Technology records for this suite, in field order.
+
+        Covers ``protocol``, ``key_exchange``, ``authentication``,
+        ``encryption`` and ``hashing``, then the ``export`` and ``old`` flag
+        records for each flag that is true. Values without a record are
+        skipped. A suite not bound to a catalogue returns an empty list.
+        """
+        if self._catalog is None:
+            return []
+        wanted = [(c, getattr(self, c)) for c in _TECHNOLOGY_FIELDS]
+        wanted += [("flag", f) for f in _FLAG_FIELDS if getattr(self, f)]
+        found = []
+        for category, value in wanted:
+            try:
+                found.append(self._catalog.technology(category, value))
+            except KeyError:
+                continue
+        return found
+
+    def vulnerabilities(self) -> List[Vulnerability]:
+        """Distinct vulnerabilities cited by :meth:`technologies`.
+
+        Sorted by severity, highest first, then by name. Cited names that
+        the catalogue does not define are skipped.
+        """
+        if self._catalog is None:
+            return []
+        names = {
+            name
+            for tech in self.technologies()
+            for name in tech.vulnerabilities
+        }
+        found = [
+            record
+            for record in self._catalog.vulnerabilities()
+            if record.name in names
+        ]
+        return sorted(found, key=lambda v: (-v.severity, v.name))
 
     def supported_in(self, library: str) -> List[str]:
         """Versions of ``library`` containing this suite, oldest first.
@@ -194,8 +252,18 @@ class Catalog:
         self,
         suites: Dict[CodePoint, CipherSuite],
         docs: Dict[str, LibraryData],
+        reference: Optional[ReferenceFiles] = None,
     ) -> None:
         self._libs = docs
+        self._reference = (
+            reference if reference is not None else ReferenceFiles()
+        )
+        self._technology_index = {
+            (t.category, t.value): t for t in self._reference.technologies
+        }
+        self._vulnerability_index = {
+            v.name: v for v in self._reference.vulnerabilities
+        }
         # library -> code point -> version -> names
         self._by_cp: Dict[str, Dict[CodePoint, Dict[str, Set[str]]]] = {}
         # name -> {(library or None, version or None, code point)}
@@ -273,7 +341,7 @@ class Catalog:
                     "than one data file"
                 )
             loaded[data.library] = data
-        return cls(suites, loaded)
+        return cls(suites, loaded, load_reference_files(data_dir))
 
     # -- helpers used by CipherSuite ---------------------------------------
 
@@ -399,6 +467,42 @@ class Catalog:
         """Version labels of ``library`` in written (oldest first) order."""
         return [v.label for v in self._lib(library).versions]
 
+    def technologies(self) -> List[Technology]:
+        """Every technology record in file order; empty if unusable."""
+        return list(self._reference.technologies)
+
+    def technology(self, category: str, value: str) -> Technology:
+        """Return the technology for ``category`` and ``value``.
+
+        Raises:
+            KeyError: No such technology record exists.
+        """
+        try:
+            return self._technology_index[(category, value)]
+        except KeyError:
+            raise KeyError(
+                f"no technology {value!r} in category {category!r}"
+            ) from None
+
+    def vulnerabilities(self) -> List[Vulnerability]:
+        """Every vulnerability record in file order; empty if unusable."""
+        return list(self._reference.vulnerabilities)
+
+    def vulnerability(self, name: str) -> Vulnerability:
+        """Return the vulnerability with the exact, case-sensitive ``name``.
+
+        Raises:
+            KeyError: No such vulnerability exists.
+        """
+        try:
+            return self._vulnerability_index[name]
+        except KeyError:
+            raise KeyError(f"no vulnerability named {name!r}") from None
+
+    def reference_problems(self) -> List[ReferenceProblem]:
+        """Problems found while reading the two reference files."""
+        return list(self._reference.problems)
+
 
 _lock = threading.Lock()
 _default: Optional[Catalog] = None
@@ -448,3 +552,13 @@ def libraries() -> List[str]:
 def versions(library: str) -> List[str]:
     """See :meth:`Catalog.versions`."""
     return _catalog().versions(library)
+
+
+def technologies() -> List[Technology]:
+    """See :meth:`Catalog.technologies`."""
+    return _catalog().technologies()
+
+
+def vulnerabilities() -> List[Vulnerability]:
+    """See :meth:`Catalog.vulnerabilities`."""
+    return _catalog().vulnerabilities()
