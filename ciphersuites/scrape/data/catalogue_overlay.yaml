@@ -1,0 +1,15 @@
+# Hand-curated overlay for the cipher suite catalogue. Edit this file by
+# hand; the scrapers never write it.
+#
+# overlay_version: Schema version of this file. The loader accepts only 1.
+# suites: List of overlay records. Each record has these keys:
+#   code_point: Two or three bytes, for example [0xFF, 0x0C].
+#   name: Suite name.
+#   provenance: One of rfc, draft or implementation.
+#   references: Non-empty list. Each entry has a type (rfc, draft or
+#     source-code), a note, and an id or a url.
+#   superseded_by: Optional code point of the suite that replaces this one.
+#   corrects: Optional list of code points whose scraped records this record
+#     corrects.
+overlay_version: 1
+suites: []
