@@ -152,6 +152,46 @@ def _drop_corrected(
     return findings
 
 
+def _check_links(
+    final: Dict[CodePoint, Dict[str, Any]],
+    overlay: Sequence[OverlayRecord],
+) -> None:
+    """Rejects overlay links that would write a bad catalogue.
+
+    Args:
+      final: The merged records by code point.
+      overlay: The overlay records.
+
+    Raises:
+      OverlayError: A ``corrects`` entry names an overlay code point, a
+        ``superseded_by`` target is not in the merged records, or two overlay
+        records supersede each other.
+    """
+    by_code_point = {record.code_point: record for record in overlay}
+    for record in overlay:
+        for cp in record.corrects:
+            if cp in by_code_point:
+                raise OverlayError(
+                    f"record {record.code_point} corrects {cp}, which is "
+                    "also an overlay record"
+                )
+    for record in overlay:
+        target = record.superseded_by
+        if target is None:
+            continue
+        if target not in final:
+            raise OverlayError(
+                f"record {record.code_point} has superseded_by {target}, "
+                "which is not in the catalogue"
+            )
+        other = by_code_point.get(target)
+        if other is not None and other.superseded_by == record.code_point:
+            raise OverlayError(
+                f"record {record.code_point} has superseded_by {target}, "
+                "which points back"
+            )
+
+
 def apply_overlay(
     catalogue: Dict[str, Any], overlay: Sequence[OverlayRecord]
 ) -> Tuple[Dict[str, Any], List[Finding]]:
@@ -167,7 +207,8 @@ def apply_overlay(
       findings that the merge produced.
 
     Raises:
-      OverlayError: An overlay record corrects a record that IANA lists.
+      OverlayError: An overlay record corrects a record that IANA lists, or
+        an overlay link is invalid (see ``_check_links``).
     """
     scraped = {
         tuple(suite["code_point"]): copy.deepcopy(suite)
@@ -212,6 +253,8 @@ def apply_overlay(
                 [cp],
             )
         )
+
+    _check_links(scraped, overlay)
 
     merged = dict(catalogue)
     merged["suites"] = [

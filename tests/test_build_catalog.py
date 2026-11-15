@@ -279,3 +279,77 @@ def test_apply_overlay_is_deterministic_and_pure() -> None:
     second, _ = apply_overlay(catalogue, overlay)
     assert dump(first) == dump(second)
     assert dump(catalogue) == before
+
+
+def test_superseded_by_may_point_at_a_scraped_record() -> None:
+    target = ("0xD0", "0x01")
+    catalogue = build_catalog({"iana": lib("iana", [(GCM, target)])})
+    merged, _ = apply_overlay(
+        catalogue,
+        [overlay_record(("0xCA", "0xFE"), "TLS_X", superseded_by=target)],
+    )
+    assert by_cp(merged)[("0xCA", "0xFE")]["superseded_by"] == ["0xD0", "0x01"]
+
+
+def test_superseded_by_may_point_at_another_overlay_record() -> None:
+    first, second = ("0xFF", "0x0C"), ("0xFF", "0x0D")
+    merged, _ = apply_overlay(
+        iana_catalogue(),
+        [
+            overlay_record(first, "TLS_ONE", superseded_by=second),
+            overlay_record(second, "TLS_TWO"),
+        ],
+    )
+    assert by_cp(merged)[first]["superseded_by"] == ["0xFF", "0x0D"]
+
+
+def test_superseded_by_missing_target_raises() -> None:
+    with pytest.raises(OverlayError, match="superseded_by.*0xAA"):
+        apply_overlay(
+            iana_catalogue(),
+            [
+                overlay_record(
+                    ("0xFF", "0x0C"), "TLS_X", superseded_by=("0xAA", "0xBB")
+                )
+            ],
+        )
+
+
+def test_superseded_by_pair_pointing_both_ways_raises() -> None:
+    first, second = ("0xFF", "0x0C"), ("0xFF", "0x0D")
+    with pytest.raises(OverlayError, match="points back"):
+        apply_overlay(
+            iana_catalogue(),
+            [
+                overlay_record(first, "TLS_ONE", superseded_by=second),
+                overlay_record(second, "TLS_TWO", superseded_by=first),
+            ],
+        )
+
+
+def test_superseded_by_target_dropped_by_a_correction_raises() -> None:
+    wrong = ("0xFF", "0x80", "0x10")
+    right = ("0xFF", "0x08", "0x10")
+    catalogue = build_catalog(
+        {"testssl": lib("testssl", [("SSL_CK_NULL", wrong)])}
+    )
+    with pytest.raises(OverlayError, match="superseded_by"):
+        apply_overlay(
+            catalogue,
+            [
+                overlay_record(("0xFF", "0x0C"), "TLS_X", superseded_by=wrong),
+                overlay_record(right, "SSL_CK_NULL", corrects=(wrong,)),
+            ],
+        )
+
+
+def test_correction_of_an_overlay_code_point_raises() -> None:
+    first, second = ("0xFF", "0x0C"), ("0xFF", "0x0D")
+    with pytest.raises(OverlayError, match="corrects"):
+        apply_overlay(
+            iana_catalogue(),
+            [
+                overlay_record(first, "TLS_ONE", corrects=(second,)),
+                overlay_record(second, "TLS_TWO"),
+            ],
+        )
