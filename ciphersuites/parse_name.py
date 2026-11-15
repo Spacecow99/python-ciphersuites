@@ -18,6 +18,9 @@ def complete_cs_instance(name: str, code_point: CodePoint) -> Dict[str, Any]:
     fips_flag = False  # Flag for FIPS grade cipher
     export_flag = False  # Flag for export-grade cipher
     aead_flag = False  # Flag for authenticated encryption cipher
+    sm4_match = re.fullmatch(
+        r"TLS_(ECDHE|ECC|IBSDH|IBC|RSA)_(SM4_[A-Z0-9]+)_([A-Z0-9]+)", name
+    )
 
     # Handle TLS_EMPTY_RENEGOTIATION_INFO_SCSV and TLS_FALLBACK_SCSV
     if (hex_byte_1 == "0x00" and hex_byte_2 == "0xFF") or (
@@ -138,6 +141,14 @@ def complete_cs_instance(name: str, code_point: CodePoint) -> Dict[str, Any]:
             enc, _, hsh = rst.rpartition(" ")
         aut = "-"
         kex = "-"
+
+    # SM4 suites that have no WITH, for example TLS_ECDHE_SM4_GCM_SM3
+    elif sm4_match:
+        prt = "TLS"
+        kex, enc, hsh = sm4_match.groups()
+        enc = enc.replace("_", " ")
+        # The TLCP stack authenticates with an SM2 signature certificate.
+        aut = "SM2" if kex in ("ECDHE", "ECC") else kex
 
     else:
 
