@@ -86,15 +86,28 @@ reasons:
 
 ## Known defects
 
-- **The pinned catalogue data predates the corrected `export` flag.** The
-  function that derives properties from a suite name
-  (`ciphersuites/parse_name.py`) now sets the `export` flag for the SSLv2
-  `EXPORT40` suites, `SSL_CK_RC4_128_EXPORT40_WITH_MD5` (`0x02,0x00,0x80`)
-  and `SSL_CK_RC2_128_CBC_EXPORT40_WITH_MD5` (`0x04,0x00,0x80`). The data
-  that the package pins was generated before that fix, so it still has
-  `export: false` for them until the data is regenerated. A filter on
-  `export` does not find them until then. Their `encryption` value contains
-  `EXPORT40`.
+- **The pinned catalogue data predates the parser fixes.** The function
+  that derives properties from a suite name (`ciphersuites/parse_name.py`)
+  now returns correct values for several classes of names. The scraper
+  runs that function, but the data that the package pins (data commit
+  `c24a21e`) was generated before the fixes. The API and the CLI serve the
+  pinned values, so 36 catalogue records still have the old output until
+  the data is regenerated. The classes are:
+  - SM4 names without `WITH`, for example `TLS_ECDHE_SM4_CBC_SM3`:
+    `authentication` holds the algorithms (`SM4 CBC SM3`), and
+    `encryption` and `hashing` are empty.
+  - ASCON, BELT, and BASH names: `key_exchange` holds a token,
+    `encryption` and `hashing` are empty, and `aead` is `false`.
+  - AEGIS names: `aead` is `false`.
+  - SRP names: `authentication` is `SHA RSA`, `SHA DSS`, or `SHA`.
+  - The integrity-only suites `TLS_SHA256_SHA256` and `TLS_SHA384_SHA384`:
+    `authentication` holds the hash.
+  - SSLv2 names with `_1`: the value is `MD5 1`.
+  - SSLv2 `EXPORT40` suites, `SSL_CK_RC4_128_EXPORT40_WITH_MD5`
+    (`0x02,0x00,0x80`) and `SSL_CK_RC2_128_CBC_EXPORT40_WITH_MD5`
+    (`0x04,0x00,0x80`): `export` is `false`. A filter on `export` does not
+    find them until the data is regenerated. Their `encryption` value
+    contains `EXPORT40`.
 - **`--report` into a missing directory crashes the command.**
   `ciphersuites-scrape` writes the report after the run, outside any
   error handler. When the directory of the `--report` path does not

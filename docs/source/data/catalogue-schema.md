@@ -115,9 +115,9 @@ in this order.
 | `encryption` | string | The encryption algorithm. |
 | `hashing` | string | The hash algorithm. |
 | `old` | boolean | `true` when the name contains `OLD`. |
-| `export` | boolean | `true` when the name contains `EXPORT`, and for the SSLv2 `EXPORT40` suites. The data pinned at `c24a21e` predates the SSLv2 part; see [Known limitations](../developer/known-limitations.md#known-defects). |
+| `export` | boolean | `true` when the name contains `EXPORT`, and for the SSLv2 `EXPORT40` suites. The data pinned at `c24a21e` predates the SSLv2 part; see [the list of stale values](../developer/known-limitations.md#known-defects). |
 | `fips` | boolean | `true` when the name contains `FIPS`. |
-| `aead` | boolean | The encryption is an {term}`AEAD` mode (GCM, CCM, POLY1305 or MGM). |
+| `aead` | boolean | The encryption is an {term}`AEAD` mode, such as GCM, CCM, POLY1305, MGM, AEGIS, ASCONAEAD, BELT CHE, or BASH PRG AE. |
 
 ### `sources`
 
@@ -210,7 +210,7 @@ Some values need care:
   Its `encryption` value, `RC4 128 EXPORT40`, still shows the export key
   size. The data pinned at `c24a21e` was generated before this fix and
   still has `export: false` for these suites until it is regenerated. See
-  [Known limitations](../developer/known-limitations.md#known-defects).
+  [The list of known defects](../developer/known-limitations.md#known-defects).
 - Some values stay approximate. The `SM2` value of `authentication` for
   the SM4 suites rests on the TLCP implementations, not on the text of the
   standard. For the `IBC` and `IBSDH` suites and the FORTEZZA suites, the
@@ -224,10 +224,12 @@ the suite.
 
 These are the values that occur in the catalogue at this commit. Other
 values can appear when the reference sources change. The derived fields at
-this commit were generated before the parser fixes of GitHub issue #12, so
-some values, such as `export` for the SSLv2 `EXPORT40` suites, differ from
-what the current parser returns. See
-[Known limitations](../developer/known-limitations.md#known-defects).
+this commit were generated before the parser fixes of GitHub issue #12.
+Several classes of values, not only `export`, differ from what the current
+parser returns: the SM4, ASCON, BELT, BASH, AEGIS, SRP, integrity-only, and
+SSLv2 names. The
+[known defects](../developer/known-limitations.md#known-defects) list each
+class.
 
 | Field | Values (number of records) |
 |---|---|
