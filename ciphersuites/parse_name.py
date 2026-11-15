@@ -18,6 +18,9 @@ def complete_cs_instance(name: str, code_point: CodePoint) -> Dict[str, Any]:
     fips_flag = False  # Flag for FIPS grade cipher
     export_flag = False  # Flag for export-grade cipher
     aead_flag = False  # Flag for authenticated encryption cipher
+    sm4_match = re.fullmatch(
+        r"TLS_(ECDHE|ECC|IBSDH|IBC|RSA)_(SM4_[A-Z0-9]+)_([A-Z0-9]+)", name
+    )
 
     # Handle TLS_EMPTY_RENEGOTIATION_INFO_SCSV and TLS_FALLBACK_SCSV
     if (hex_byte_1 == "0x00" and hex_byte_2 == "0xFF") or (
@@ -31,6 +34,10 @@ def complete_cs_instance(name: str, code_point: CodePoint) -> Dict[str, Any]:
         name = name.replace("_CK", "")
         prt, _, rst = name.replace("_", " ").partition(" ")
         enc, _, hsh = rst.rpartition("WITH")
+        # Drop a trailing variant suffix such as the _1 in ..._WITH_MD5_1.
+        hsh = re.sub(r"\s+1\Z", "", hsh)
+        if "EXPORT40" in enc:
+            export_flag = True
         # Handle SSL_CK_NULL and SSL_CK_NULL_WITH_MD5
         if re.search("NULL", enc) or re.search("NULL", hsh):
             kex, aut = "NULL", "NULL"
@@ -114,16 +121,35 @@ def complete_cs_instance(name: str, code_point: CodePoint) -> Dict[str, Any]:
         hex_byte_1 == "0xC0" and hex_byte_2 == "0xB5"
     ):
         prt, _, rst = name.replace("_", " ").partition(" ")
-        aut, _, hsh = rst.rpartition(" ")
+        _, _, hsh = rst.rpartition(" ")
+        aut = "-"
         enc = "NULL"
         kex = "-"
 
-    # TLS1.3 ciphers
-    elif hex_byte_1 == "0x13" or hex_byte_2 == "0xC6" or hex_byte_2 == "0xC7":
+    # TLS1.3 ciphers, including the ASCON, BELT and BASH suites (0x00,0x6E to
+    # 0x00,0x73) and the SM4 suites (0x00,0xC6 and 0x00,0xC7)
+    elif hex_byte_1 == "0x13" or (
+        hex_byte_1 == "0x00"
+        and hex_byte_2
+        in ("0x6E", "0x6F", "0x70", "0x71", "0x72", "0x73", "0xC6", "0xC7")
+    ):
         prt, _, rst = name.replace("_", " ").partition(" ")
-        enc, _, hsh = rst.rpartition(" ")
+        belt_match = re.fullmatch(r"(?:(.*) )?BELT HASH", rst)
+        if belt_match:
+            # The BELT hash is the only hash name that has two tokens.
+            enc, hsh = belt_match.group(1) or "", "BELT HASH"
+        else:
+            enc, _, hsh = rst.rpartition(" ")
         aut = "-"
         kex = "-"
+
+    # SM4 suites that have no WITH, for example TLS_ECDHE_SM4_GCM_SM3
+    elif sm4_match:
+        prt = "TLS"
+        kex, enc, hsh = sm4_match.groups()
+        enc = enc.replace("_", " ")
+        # The TLCP stack authenticates with an SM2 signature certificate.
+        aut = "SM2" if kex in ("ECDHE", "ECC") else kex
 
     else:
 
@@ -150,6 +176,21 @@ def complete_cs_instance(name: str, code_point: CodePoint) -> Dict[str, Any]:
         # split kex again, potentially yielding auth algorithm
         # otherwise this variable will remain unchanged
         kex, _, aut = kex.partition(" ")
+        if kex == "SRP":
+            # The SHA after SRP names the SRP hash, not an authentication
+            # algorithm. What remains is RSA or DSS, or nothing when the
+            # suite uses no certificate.
+            aut = re.sub(r"\ASHA\b\s*", "", aut)
+        elif kex == "FORTEZZA" and aut.strip() == "KEA":
+            # RFC 6101 gives no details of FORTEZZA KEA, so the key exchange
+            # and the authentication share the one name.
+            kex = aut = "FORTEZZA KEA"
+        else:
+            # A hybrid KEM token joins the key exchange. The token after it
+            # is the authentication algorithm.
+            kem, _, after_kem = aut.partition(" ")
+            if kem in ("BIKE", "SIKE", "KYBER"):
+                kex, aut = kex + " " + kem, after_kem
         enc, _, hsh = rst.rpartition(" ")
 
         # split enc again if we only got a number for hsh
@@ -164,6 +205,11 @@ def complete_cs_instance(name: str, code_point: CodePoint) -> Dict[str, Any]:
 
     # identify AEAD algorithms
     if re.search(r"GCM|POLY1305|CCM|MGM", enc, re.IGNORECASE):
+        aead_flag = True
+    # AEGIS, ASCONAEAD, BELT CHE and BASH PRG AE are matched as whole tokens.
+    elif re.search(
+        r"\b(?:AEGIS|ASCONAEAD\d*|CHE\d+|PRG AE\d+)\b", enc, re.IGNORECASE
+    ):
         aead_flag = True
 
     parsed = {}
