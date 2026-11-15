@@ -64,7 +64,9 @@ These changes can happen while the schema version stays `2`:
 - **The catalogue.** It follows the reference sources. It can gain or
   lose records. A record's `name` can change, for example when IANA registers
   a code point that only testssl or Scanigma listed before. The
-  `sources` list can change.
+  `sources` list can change. A record can gain the optional keys
+  `provenance`, `references` and `superseded_by`, and `sources` can gain
+  `overlay`, when a maintainer edits the overlay.
 - **Status.** An entry can become `stale` and later `ok` again. See
   [Status and staleness](status-and-staleness.md).
 - **`accepted`.** It can be set in one commit and return to `null` in
@@ -90,7 +92,9 @@ version 2:
 - **Order.** `versions` is in version order, `suites` is sorted by code
   point, and `names` is sorted by first version.
 - **Key order.** The scraper writes the keys in the order this guide
-  shows.
+  shows. In a catalogue record, the optional keys come after `sources`
+  and before `protocol`, in the order `provenance`, `references`,
+  `superseded_by`.
 
 ## What your program should depend on
 
@@ -110,7 +114,8 @@ Do not depend on:
 - the derived fields of the catalogue being correct for unusual names
   (see [The derived fields](catalogue-schema.md#the-derived-fields)).
 
-For robustness, let your program ignore keys that it does not know.
+For robustness, let your program ignore keys that it does not know. This
+includes the optional catalogue keys, which are absent from most records.
 
 ## Check the keys of every file
 

@@ -32,8 +32,25 @@ The scraper chooses the record's `name` in this order of precedence:
 If one source has several names for the same code point, the smallest
 name in character order wins.
 
+The scraper also merges a hand-curated overlay into the catalogue. The
+overlay is the file `ciphersuites/scrape/data/catalogue_overlay.yaml`, and
+the scraper reads it on every run. It does three things:
+
+- It adds records for code points that no reference source lists.
+- It attaches metadata (`provenance`, `references` and `superseded_by`) to
+  records that a reference source does list.
+- It drops a wrong record that only testssl or only Scanigma lists. A
+  record that IANA lists is never dropped.
+
+When a reference source also lists a code point that the overlay names,
+the scraped name wins. The scraper appends `overlay` to the `sources` list
+of that record, attaches the overlay metadata, and reports a warning.
+
 The scraper writes `ciphersuites.yaml` only when data from all three
 reference sources is available. If one is missing, it keeps the old file.
+It also writes no catalogue when the overlay is invalid, for example when
+a `superseded_by` link points to a code point that has no record, or when
+two records point at each other.
 
 ## Example
 
@@ -73,13 +90,19 @@ same way as in a library file (see
 
 ## Suite record keys
 
-Each record has these keys, in this order.
+Each record has these keys, in this order. The keys `provenance`,
+`references` and `superseded_by` are optional. They appear only on
+records that the overlay touches, and a record that has them writes them
+in this order.
 
 | Key | Type | Meaning |
 |---|---|---|
 | `code_point` | list of 2 or 3 strings | The code point, in the same form as in the library files. |
 | `name` | string | The preferred name (see the precedence above). |
-| `sources` | list of strings | The reference sources that list this code point, in the order `iana`, `testssl`, `scanigma`. |
+| `sources` | list of strings | The sources of this record, in the order `iana`, `testssl`, `scanigma`, `overlay`. |
+| `provenance` | string | Optional. Where the suite is defined: `rfc`, `draft` or `implementation`. |
+| `references` | list of mappings | Optional. The documents and source files that define the suite. |
+| `superseded_by` | list of 2 or 3 strings | Optional. The code point of the final record, when this code point is a placeholder. |
 | `protocol` | string | `TLS` or `SSL`. |
 | `key_exchange` | string | The key exchange algorithm. |
 | `authentication` | string | The authentication algorithm. |
@@ -92,15 +115,72 @@ Each record has these keys, in this order.
 
 ### `sources`
 
-A list with one to three of the strings `iana`, `testssl` and
-`scanigma`. A code point with `sources: [scanigma]` is listed by Scanigma
-only, so IANA has not registered it. Use `sources` to decide how much to
+A list with one to four of the strings `iana`, `testssl`, `scanigma` and
+`overlay`. A code point with `sources: [scanigma]` is listed by Scanigma
+only, so IANA has not registered it. The value `overlay` comes after
+`scanigma` and appears on every record that the overlay touches. A record
+with `sources: [overlay]` comes from the overlay alone, because no
+reference source lists its code point. Use `sources` to decide how much to
 trust a record.
+
+### `provenance`
+
+The optional key `provenance` says where the suite is defined:
+
+- `rfc`: an RFC defines the suite.
+- `draft`: an Internet-Draft defines the suite.
+- `implementation`: only the source code of an implementation defines the
+  suite.
+
+A record without `provenance` has not been assessed. The absence does not
+mean that the suite has no known source.
+
+### `references` and `superseded_by`
+
+Each entry of `references` is a mapping with the key `type` (`rfc`,
+`draft` or `source-code`), the key `id` or `url`, and the key `note`. The
+`note` explains what the reference says about the suite.
+
+The key `superseded_by` appears on a placeholder code point. It holds the
+code point of the record that replaced it. For example, `0xCA,0xFE` was a
+placeholder that RFC 8442 later registered as `0xD0,0x01`.
+
+This is the record for `0xCA,0xFE`:
+
+```yaml
+- code_point:
+  - '0xCA'
+  - '0xFE'
+  name: TLS_ECDHE_PSK_WITH_AES_128_GCM_SHA256
+  sources:
+  - overlay
+  provenance: implementation
+  references:
+  - type: source-code
+    id: google/boringssl commit 594a58e ssl/s3_lib.c
+    note: 2014 placeholder 0x0300CAFE described as a non-standard ECDHE PSK ciphersuite.
+  - type: rfc
+    id: RFC 8442
+    note: Registers this suite as 0xD0,0x01.
+  superseded_by:
+  - '0xD0'
+  - '0x01'
+  protocol: TLS
+  key_exchange: ECDHE
+  authentication: PSK
+  encryption: AES 128 GCM
+  hashing: SHA256
+  old: false
+  export: false
+  fips: false
+  aead: true
+```
 
 ### The derived fields
 
 The nine fields from `protocol` to `aead` are not read from any source.
-The scraper derives them from the `name` with a simple parser. The parser
+The scraper derives them from the `name` with a simple parser. Records
+from the overlay use the same parser as every other record. The parser
 splits names of the form `TLS_<key exchange>_<authentication>_WITH_<encryption>_<hash>`.
 It has special rules for SSLv2 names, {term}`TLS 1.3 suite`s, GOST suites
 and the two {term}`SCSV`s.
@@ -123,6 +203,11 @@ Some values need care:
   empty values. For example, `TLS_ECDHE_SM4_CBC_SM3` (`0xE0,0x11`, from
   Scanigma) has `authentication: SM4 CBC SM3` and an empty string for
   `encryption` and `hashing`.
+
+- The parser gives wrong values for some overlay-only records: the two
+  FORTEZZA suites (`0x00,0x1C` and `0x00,0x1D`) and the BIKE, SIKE and
+  Kyber suites (`0xFF,0x04`, `0xFF,0x08` and `0xFF,0x0C`). GitHub issue
+  #12 tracks the fix.
 
 So treat the derived fields as a convenience, not as facts from a
 standard. If you need exact algorithm data, check the RFC that defines
@@ -211,6 +296,12 @@ At data commit `c24a21e` there are nine such code points:
 | `0xFF,0x0C` | `s2n` (`ECDHE-KYBER-RSA-AES256-GCM-SHA384`) |
 
 The Python package calls these {term}`fallback suite`s.
+
+The scraper's overlay supplies a record for each of these nine code
+points, with `sources: [overlay]`. The data commit pinned at `c24a21e`
+predates the overlay, so it has no such records and the counts on this page
+do not include them. A scrape with the current scraper gives a catalogue
+that has them.
 
 ## Check the example against the real file
 

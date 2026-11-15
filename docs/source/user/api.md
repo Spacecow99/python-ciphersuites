@@ -309,10 +309,10 @@ describes every value and the known limits:
 
 For a fallback suite, `CipherSuite.sources` is `[]`, `CipherSuite.provenance`
 and `CipherSuite.superseded_by` are `None`, `CipherSuite.references` is `[]`,
-and all nine derived fields are `None`. A fallback suite is a code point that a library file
-lists but the catalogue does not. Its `name` is the name that the
-alphabetically first library with that code point uses in its oldest
-version that contains it.
+and all nine derived fields are `None`. A fallback suite is a code point
+that a library file lists but the catalogue does not. Its `name` is the
+name that the alphabetically first library with that code point uses in
+its oldest version that contains it.
 
 ```pycon
 >>> from pathlib import Path
