@@ -140,6 +140,25 @@ def _read(entries: Iterable[Any]) -> Dict[str, Any]:
     return docs
 
 
+def _references(cp: CodePoint, raw: Any) -> List[Dict[str, str]]:
+    """Validates and copies the ``references`` of one catalogue record."""
+    if raw is None:
+        return []
+    if not isinstance(raw, list):
+        raise TypeError(f"references of {cp} must be a list")
+    result = []
+    for ref in raw:
+        if not isinstance(ref, dict) or not all(
+            isinstance(key, str) and isinstance(value, str)
+            for key, value in ref.items()
+        ):
+            raise TypeError(
+                f"each reference of {cp} must map strings to strings"
+            )
+        result.append(dict(ref))
+    return result
+
+
 def _catalogue_suites(doc: Any) -> Dict[CodePoint, CipherSuite]:
     where = _CATALOGUE_FILE
     if not isinstance(doc, dict) or doc.get("schema_version") != SCHEMA_VERSION:
@@ -159,7 +178,7 @@ def _catalogue_suites(doc: Any) -> Dict[CodePoint, CipherSuite]:
                 name=item["name"],
                 sources=list(item["sources"]),
                 provenance=item.get("provenance"),
-                references=[dict(ref) for ref in item.get("references") or []],
+                references=_references(cp, item.get("references")),
                 superseded_by=superseded_by,
                 **{key: item.get(key) for key in _PARSED_FIELDS},
             )

@@ -347,3 +347,31 @@ def test_malformed_superseded_by_raises(tmp_path):
     record += "  superseded_by: ['0xZZ', '0x01']\n"
     with pytest.raises(DataNotFoundError, match="ciphersuites.yaml"):
         _load_with_record(tmp_path, record)
+
+
+@pytest.mark.parametrize(
+    "references",
+    [
+        "  references:\n  - RFC 8442\n",
+        "  references: RFC 8442\n",
+        "  references:\n    type: rfc\n",
+        "  references:\n  - - [a, b]\n",
+        "  references:\n  - id: 5\n",
+    ],
+)
+def test_malformed_references_raise(tmp_path, references):
+    start = OVERLAY_RECORD.index("  references:")
+    end = OVERLAY_RECORD.index("  superseded_by:")
+    record = OVERLAY_RECORD[:start] + references + OVERLAY_RECORD[end:]
+    with pytest.raises(DataNotFoundError, match="ciphersuites.yaml"):
+        _load_with_record(tmp_path, record)
+
+
+def test_null_references_load_as_empty(tmp_path):
+    start = OVERLAY_RECORD.index("  references:")
+    end = OVERLAY_RECORD.index("  superseded_by:")
+    record = (
+        OVERLAY_RECORD[:start] + "  references: null\n" + OVERLAY_RECORD[end:]
+    )
+    suite = _load_with_record(tmp_path, record).get((0xD0, 0x01))
+    assert suite.references == []
