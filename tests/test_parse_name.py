@@ -470,6 +470,16 @@ CASES = [
         "XPRG AE128",
         "SHA256",
     ),
+    _row(
+        "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+        ("0xC0", "0xC6"),
+        "ECDHE",
+        "RSA",
+        "AES 128 GCM",
+        "SHA256",
+        aead=True,
+        test_id="TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256-0xC0-0xC6",
+    ),
 ]
 
 

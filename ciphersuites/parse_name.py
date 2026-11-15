@@ -127,15 +127,11 @@ def complete_cs_instance(name: str, code_point: CodePoint) -> Dict[str, Any]:
         kex = "-"
 
     # TLS1.3 ciphers, including the ASCON, BELT and BASH suites (0x00,0x6E to
-    # 0x00,0x73)
-    elif (
-        hex_byte_1 == "0x13"
-        or hex_byte_2 == "0xC6"
-        or hex_byte_2 == "0xC7"
-        or (
-            hex_byte_1 == "0x00"
-            and hex_byte_2 in ("0x6E", "0x6F", "0x70", "0x71", "0x72", "0x73")
-        )
+    # 0x00,0x73) and the SM4 suites (0x00,0xC6 and 0x00,0xC7)
+    elif hex_byte_1 == "0x13" or (
+        hex_byte_1 == "0x00"
+        and hex_byte_2
+        in ("0x6E", "0x6F", "0x70", "0x71", "0x72", "0x73", "0xC6", "0xC7")
     ):
         prt, _, rst = name.replace("_", " ").partition(" ")
         belt_match = re.fullmatch(r"(?:(.*) )?BELT HASH", rst)
