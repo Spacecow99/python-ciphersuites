@@ -138,9 +138,10 @@ def complete_cs_instance(name: str, code_point: CodePoint) -> Dict[str, Any]:
         )
     ):
         prt, _, rst = name.replace("_", " ").partition(" ")
-        if rst.endswith(" BELT HASH"):
+        belt_match = re.fullmatch(r"(?:(.*) )?BELT HASH", rst)
+        if belt_match:
             # The BELT hash is the only hash name that has two tokens.
-            enc, hsh = rst[: -len(" BELT HASH")], "BELT HASH"
+            enc, hsh = belt_match.group(1) or "", "BELT HASH"
         else:
             enc, _, hsh = rst.rpartition(" ")
         aut = "-"
@@ -210,7 +211,9 @@ def complete_cs_instance(name: str, code_point: CodePoint) -> Dict[str, Any]:
     if re.search(r"GCM|POLY1305|CCM|MGM", enc, re.IGNORECASE):
         aead_flag = True
     # AEGIS, ASCONAEAD, BELT CHE and BASH PRG AE are matched as whole tokens.
-    elif re.search(r"\b(?:AEGIS|ASCONAEAD\d*|CHE\d+|PRG AE\d+)\b", enc):
+    elif re.search(
+        r"\b(?:AEGIS|ASCONAEAD\d*|CHE\d+|PRG AE\d+)\b", enc, re.IGNORECASE
+    ):
         aead_flag = True
 
     parsed = {}

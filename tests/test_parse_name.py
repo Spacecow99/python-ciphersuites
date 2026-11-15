@@ -446,6 +446,30 @@ CASES = [
         "SHA256",
         aead=True,
     ),
+    _row(
+        "TLS_TEACHE128_SHA256",
+        ("0x13", "0x09"),
+        "-",
+        "-",
+        "TEACHE128",
+        "SHA256",
+    ),
+    _row(
+        "TLS_AEGISX_256_SHA256",
+        ("0x13", "0x08"),
+        "-",
+        "-",
+        "AEGISX 256",
+        "SHA256",
+    ),
+    _row(
+        "TLS_XPRG_AE128_SHA256",
+        ("0x13", "0x0A"),
+        "-",
+        "-",
+        "XPRG AE128",
+        "SHA256",
+    ),
 ]
 
 
@@ -547,3 +571,15 @@ def test_sslv2_three_byte_code_point():
     )
     assert result["key_exchange"] == "RSA"
     assert result["hashing"] == "MD5"
+
+
+def test_aead_whole_token_match_is_case_insensitive():
+    lower = complete_cs_instance("TLS_aegis_256_sha512", ("0x13", "0x06"))
+    assert lower["aead"] is True
+    belt = complete_cs_instance("TLS_belt_che256_belt_hash", ("0x00", "0x72"))
+    assert belt["aead"] is True
+
+
+def test_belt_hash_without_encryption_tokens():
+    result = complete_cs_instance("TLS_BELT_HASH", ("0x00", "0x72"))
+    assert result["hashing"] == "BELT HASH"
