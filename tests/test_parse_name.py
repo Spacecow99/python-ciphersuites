@@ -23,6 +23,132 @@ KEYS = {
 }
 
 
+def _row(
+    name,
+    code_point,
+    *algorithms,
+    aead=False,
+    export=False,
+    test_id="",
+):
+    """Build one expected-value case for ``test_derived_fields``.
+
+    Args:
+      name: The cipher suite name.
+      code_point: The code point as a tuple of hex strings.
+      *algorithms: The key exchange, authentication, encryption and hashing
+        values, in that order.
+      aead: The expected ``aead`` value.
+      export: The expected ``export`` value.
+      test_id: The pytest id, which defaults to the name.
+    """
+    key_exchange, authentication, encryption, hashing = algorithms
+    expected = {
+        "protocol": name.split("_")[0],
+        "old": False,
+        "export": export,
+        "fips": False,
+        "key_exchange": key_exchange,
+        "authentication": authentication,
+        "encryption": encryption,
+        "aead": aead,
+        "hashing": hashing,
+    }
+    return pytest.param(name, code_point, expected, id=test_id or name)
+
+
+CASES = [
+    _row(
+        "TLS_ASCONAEAD128_ASCONHASH256",
+        ("0x00", "0x6E"),
+        "-",
+        "-",
+        "ASCONAEAD128",
+        "ASCONHASH256",
+        aead=True,
+    ),
+    _row(
+        "TLS_ASCONAEAD128_SHA256",
+        ("0x00", "0x6F"),
+        "-",
+        "-",
+        "ASCONAEAD128",
+        "SHA256",
+        aead=True,
+    ),
+    _row(
+        "TLS_AES_128_GCM_ASCONHASH256",
+        ("0x00", "0x70"),
+        "-",
+        "-",
+        "AES 128 GCM",
+        "ASCONHASH256",
+        aead=True,
+    ),
+    _row(
+        "TLS_AES_128_CCM_ASCONHASH256",
+        ("0x00", "0x71"),
+        "-",
+        "-",
+        "AES 128 CCM",
+        "ASCONHASH256",
+        aead=True,
+    ),
+    _row(
+        "TLS_BELT_CHE256_BELT_HASH",
+        ("0x00", "0x72"),
+        "-",
+        "-",
+        "BELT CHE256",
+        "BELT HASH",
+        aead=True,
+    ),
+    _row(
+        "TLS_BASH_PRG_AE2561_BASH256",
+        ("0x00", "0x73"),
+        "-",
+        "-",
+        "BASH PRG AE2561",
+        "BASH256",
+        aead=True,
+    ),
+    _row(
+        "TLS_AEGIS_256_SHA512",
+        ("0x13", "0x06"),
+        "-",
+        "-",
+        "AEGIS 256",
+        "SHA512",
+        aead=True,
+    ),
+    _row(
+        "TLS_AEGIS_128L_SHA256",
+        ("0x13", "0x07"),
+        "-",
+        "-",
+        "AEGIS 128L",
+        "SHA256",
+        aead=True,
+    ),
+    _row("TLS_SHA256_SHA256", ("0xC0", "0xB4"), "-", "-", "NULL", "SHA256"),
+    _row("TLS_SHA384_SHA384", ("0xC0", "0xB5"), "-", "-", "NULL", "SHA384"),
+    _row(
+        "TLS_AES_128_GCM_SHA256",
+        ("0x13", "0x01"),
+        "-",
+        "-",
+        "AES 128 GCM",
+        "SHA256",
+        aead=True,
+    ),
+]
+
+
+@pytest.mark.parametrize("name, code_point, expected", CASES)
+def test_derived_fields(name, code_point, expected):
+    assert complete_cs_instance(name, code_point) == expected
+
+
 @pytest.fixture(name="iana_records")
 def fixture_iana_records(upstream):
     """The IANA fixture records."""

@@ -1,5 +1,5 @@
 TLS_AEGIS_128L_SHA256:
-  aead: false
+  aead: true
   authentication: '-'
   encryption: AEGIS 128L
   export: false
@@ -9,7 +9,7 @@ TLS_AEGIS_128L_SHA256:
   old: false
   protocol: TLS
 TLS_AEGIS_256_SHA512:
-  aead: false
+  aead: true
   authentication: '-'
   encryption: AEGIS 256
   export: false
@@ -29,13 +29,13 @@ TLS_AES_128_CCM_8_SHA256:
   old: false
   protocol: TLS
 TLS_AES_128_CCM_ASCONHASH256:
-  aead: false
-  authentication: 128 CCM ASCONHASH256
-  encryption: ''
+  aead: true
+  authentication: '-'
+  encryption: AES 128 CCM
   export: false
   fips: false
-  hashing: ''
-  key_exchange: AES
+  hashing: ASCONHASH256
+  key_exchange: '-'
   old: false
   protocol: TLS
 TLS_AES_128_CCM_SHA256:
@@ -49,13 +49,13 @@ TLS_AES_128_CCM_SHA256:
   old: false
   protocol: TLS
 TLS_AES_128_GCM_ASCONHASH256:
-  aead: false
-  authentication: 128 GCM ASCONHASH256
-  encryption: ''
+  aead: true
+  authentication: '-'
+  encryption: AES 128 GCM
   export: false
   fips: false
-  hashing: ''
-  key_exchange: AES
+  hashing: ASCONHASH256
+  key_exchange: '-'
   old: false
   protocol: TLS
 TLS_AES_128_GCM_SHA256:
@@ -79,43 +79,43 @@ TLS_AES_256_GCM_SHA384:
   old: false
   protocol: TLS
 TLS_ASCONAEAD128_ASCONHASH256:
-  aead: false
-  authentication: ASCONHASH256
-  encryption: ''
+  aead: true
+  authentication: '-'
+  encryption: ASCONAEAD128
   export: false
   fips: false
-  hashing: ''
-  key_exchange: ASCONAEAD128
+  hashing: ASCONHASH256
+  key_exchange: '-'
   old: false
   protocol: TLS
 TLS_ASCONAEAD128_SHA256:
-  aead: false
-  authentication: SHA256
-  encryption: ''
+  aead: true
+  authentication: '-'
+  encryption: ASCONAEAD128
   export: false
   fips: false
-  hashing: ''
-  key_exchange: ASCONAEAD128
+  hashing: SHA256
+  key_exchange: '-'
   old: false
   protocol: TLS
 TLS_BASH_PRG_AE2561_BASH256:
-  aead: false
-  authentication: PRG AE2561 BASH256
-  encryption: ''
+  aead: true
+  authentication: '-'
+  encryption: BASH PRG AE2561
   export: false
   fips: false
-  hashing: ''
-  key_exchange: BASH
+  hashing: BASH256
+  key_exchange: '-'
   old: false
   protocol: TLS
 TLS_BELT_CHE256_BELT_HASH:
-  aead: false
-  authentication: CHE256 BELT HASH
-  encryption: ''
+  aead: true
+  authentication: '-'
+  encryption: BELT CHE256
   export: false
   fips: false
-  hashing: ''
-  key_exchange: BELT
+  hashing: BELT HASH
+  key_exchange: '-'
   old: false
   protocol: TLS
 TLS_CHACHA20_POLY1305_SHA256:
@@ -3450,7 +3450,7 @@ TLS_RSA_WITH_SEED_CBC_SHA:
   protocol: TLS
 TLS_SHA256_SHA256:
   aead: false
-  authentication: SHA256
+  authentication: '-'
   encryption: 'NULL'
   export: false
   fips: false
@@ -3460,7 +3460,7 @@ TLS_SHA256_SHA256:
   protocol: TLS
 TLS_SHA384_SHA384:
   aead: false
-  authentication: SHA384
+  authentication: '-'
   encryption: 'NULL'
   export: false
   fips: false

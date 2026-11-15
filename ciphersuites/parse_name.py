@@ -114,14 +114,28 @@ def complete_cs_instance(name: str, code_point: CodePoint) -> Dict[str, Any]:
         hex_byte_1 == "0xC0" and hex_byte_2 == "0xB5"
     ):
         prt, _, rst = name.replace("_", " ").partition(" ")
-        aut, _, hsh = rst.rpartition(" ")
+        _, _, hsh = rst.rpartition(" ")
+        aut = "-"
         enc = "NULL"
         kex = "-"
 
-    # TLS1.3 ciphers
-    elif hex_byte_1 == "0x13" or hex_byte_2 == "0xC6" or hex_byte_2 == "0xC7":
+    # TLS1.3 ciphers, including the ASCON, BELT and BASH suites (0x00,0x6E to
+    # 0x00,0x73)
+    elif (
+        hex_byte_1 == "0x13"
+        or hex_byte_2 == "0xC6"
+        or hex_byte_2 == "0xC7"
+        or (
+            hex_byte_1 == "0x00"
+            and hex_byte_2 in ("0x6E", "0x6F", "0x70", "0x71", "0x72", "0x73")
+        )
+    ):
         prt, _, rst = name.replace("_", " ").partition(" ")
-        enc, _, hsh = rst.rpartition(" ")
+        if rst.endswith(" BELT HASH"):
+            # The BELT hash is the only hash name that has two tokens.
+            enc, hsh = rst[: -len(" BELT HASH")], "BELT HASH"
+        else:
+            enc, _, hsh = rst.rpartition(" ")
         aut = "-"
         kex = "-"
 
@@ -164,6 +178,9 @@ def complete_cs_instance(name: str, code_point: CodePoint) -> Dict[str, Any]:
 
     # identify AEAD algorithms
     if re.search(r"GCM|POLY1305|CCM|MGM", enc, re.IGNORECASE):
+        aead_flag = True
+    # AEGIS, ASCONAEAD, BELT CHE and BASH PRG AE are matched as whole tokens.
+    elif re.search(r"\b(?:AEGIS|ASCONAEAD\d*|CHE\d+|PRG AE\d+)\b", enc):
         aead_flag = True
 
     parsed = {}
