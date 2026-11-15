@@ -86,15 +86,15 @@ reasons:
 
 ## Known defects
 
-- **The `export` flag is false for SSLv2 export suites.** The function
-  that derives properties from a suite name (`ciphersuites/parse_name.py`)
-  sets the `export` flag only for TLS-style names. For SSLv2 names (3-byte
-  code points) it never sets it. So the two SSLv2 export-grade suites,
-  `SSL_CK_RC4_128_EXPORT40_WITH_MD5` (`0x02,0x00,0x80`) and
-  `SSL_CK_RC2_128_CBC_EXPORT40_WITH_MD5` (`0x04,0x00,0x80`), have
-  `export: false` in the catalogue and in the API. A filter on `export`
-  does not find them. Their `encryption` value contains `EXPORT40`. The
-  documentation describes this behaviour; the code is not changed.
+- **The pinned catalogue data predates the corrected `export` flag.** The
+  function that derives properties from a suite name
+  (`ciphersuites/parse_name.py`) now sets the `export` flag for the SSLv2
+  `EXPORT40` suites, `SSL_CK_RC4_128_EXPORT40_WITH_MD5` (`0x02,0x00,0x80`)
+  and `SSL_CK_RC2_128_CBC_EXPORT40_WITH_MD5` (`0x04,0x00,0x80`). The data
+  that the package pins was generated before that fix, so it still has
+  `export: false` for them until the data is regenerated. A filter on
+  `export` does not find them until then. Their `encryption` value contains
+  `EXPORT40`.
 - **`--report` into a missing directory crashes the command.**
   `ciphersuites-scrape` writes the report after the run, outside any
   error handler. When the directory of the `--report` path does not

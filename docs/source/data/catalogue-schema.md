@@ -115,7 +115,7 @@ in this order.
 | `encryption` | string | The encryption algorithm. |
 | `hashing` | string | The hash algorithm. |
 | `old` | boolean | `true` when the name contains `OLD`. |
-| `export` | boolean | `true` when the name contains `EXPORT` (not set for SSLv2 names; see below). |
+| `export` | boolean | `true` when the name contains `EXPORT`, and for the SSLv2 `EXPORT40` suites. |
 | `fips` | boolean | `true` when the name contains `FIPS`. |
 | `aead` | boolean | The encryption is an {term}`AEAD` mode (GCM, CCM, POLY1305 or MGM). |
 
@@ -189,31 +189,30 @@ The nine fields from `protocol` to `aead` are not read from any source.
 The scraper derives them from the `name` with a simple parser. Records
 from the overlay use the same parser as every other record. The parser
 splits names of the form `TLS_<key exchange>_<authentication>_WITH_<encryption>_<hash>`.
-It has special rules for SSLv2 names, {term}`TLS 1.3 suite`s, GOST suites
-and the two {term}`SCSV`s.
+It has special rules for SSLv2 names, {term}`TLS 1.3 suite`s, GOST suites,
+the two {term}`SCSV`s, the SM4 names that have no `WITH`, the ASCON, BELT,
+BASH, and AEGIS names, the SRP names, and the hybrid KEM names.
 
 Some values need care:
 
 - The value `-` means "not part of the name". TLS 1.3 suites have `-` for
-  `key_exchange` and `authentication`. The two SCSVs have `-` for all four
-  algorithm fields.
+  `key_exchange` and `authentication`. The `authentication` value is also
+  `-` when the definition of the suite does not fix it, as for the ASCON,
+  BELT, and BASH suites. The two SCSVs have `-` for all four algorithm
+  fields.
 - The value `NULL` is in quotes in the file (`'NULL'`). It means "no
   algorithm", for example no encryption. Without quotes, YAML would read
   it as a null value.
 - `OLD` in a name marks an older, pre-standard variant of a suite, for
   example `TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256_OLD`.
-- The `export` flag is `false` for the SSLv2 {term}`export-grade` suites.
-  For example, `SSL_CK_RC4_128_EXPORT40_WITH_MD5` (`0x02,0x00,0x80`) has
-  `export: false`. Its `encryption` value, `RC4 128 EXPORT40`, shows the
-  export key size.
-- Names that do not follow the `..._WITH_...` pattern can give wrong or
-  empty values. For example, `TLS_ECDHE_SM4_CBC_SM3` (`0xE0,0x11`, from
-  Scanigma) has `authentication: SM4 CBC SM3` and an empty string for
-  `encryption` and `hashing`.
-- The parser gives wrong values for some overlay-only records: the two
-  FORTEZZA suites (`0x00,0x1C` and `0x00,0x1D`) and the BIKE, SIKE and
-  Kyber suites (`0xFF,0x04`, `0xFF,0x08` and `0xFF,0x0C`). GitHub issue
-  #12 tracks the fix.
+- The `export` flag is `true` for the SSLv2 `EXPORT40` suites. For example,
+  `SSL_CK_RC4_128_EXPORT40_WITH_MD5` (`0x02,0x00,0x80`) has `export: true`.
+  Its `encryption` value, `RC4 128 EXPORT40`, still shows the export key
+  size.
+- Some values stay approximate. The `SM2` value of `authentication` for
+  the SM4 suites rests on the TLCP implementations, not on the text of the
+  standard. For the `IBC` and `IBSDH` suites and the FORTEZZA suites, the
+  parser copies the key exchange into `authentication`.
 
 So treat the derived fields as a convenience, not as facts from a
 standard. If you need exact algorithm data, check the RFC that defines

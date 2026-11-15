@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 import yaml
 
@@ -10,6 +12,22 @@ from ciphersuites.scrape.adapters.reference.iana import Iana
 from tests.golden import EXPECTED_DIR
 
 GOLDEN = EXPECTED_DIR / "parse_name_iana.yaml"
+REPO_ROOT = Path(__file__).resolve().parent.parent
+CATALOGUE = REPO_ROOT / "ciphersuites" / "_ciphersuites" / "ciphersuites.yaml"
+OVERLAY = (
+    REPO_ROOT / "ciphersuites" / "scrape" / "data" / "catalogue_overlay.yaml"
+)
+# Hash, cipher and mode tokens that must never appear in `authentication`.
+ALGORITHM_TOKENS = {
+    "SM4",
+    "SHA",
+    "SHA1",
+    "SHA256",
+    "SHA384",
+    "CBC",
+    "GCM",
+    "MD5",
+}
 KEYS = {
     "protocol",
     "old",
@@ -433,6 +451,26 @@ CASES = [
 @pytest.mark.parametrize("name, code_point, expected", CASES)
 def test_derived_fields(name, code_point, expected):
     assert complete_cs_instance(name, code_point) == expected
+
+
+def test_every_catalogue_name_has_no_empty_algorithm_field():
+    if not CATALOGUE.is_file():
+        pytest.skip("the data submodule is not initialised")
+    records = yaml.safe_load(CATALOGUE.read_text(encoding="utf-8"))["suites"]
+    records += yaml.safe_load(OVERLAY.read_text(encoding="utf-8"))["suites"]
+    assert len(records) >= 400
+    empty = []
+    misplaced = []
+    for record in records:
+        result = complete_cs_instance(
+            record["name"], tuple(record["code_point"])
+        )
+        if not result["encryption"] or not result["hashing"]:
+            empty.append(record["name"])
+        if ALGORITHM_TOKENS & set(result["authentication"].split()):
+            misplaced.append(record["name"])
+    assert not empty
+    assert not misplaced
 
 
 @pytest.fixture(name="iana_records")
