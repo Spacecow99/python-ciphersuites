@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Dict, Set, Tuple
+from typing import List, Set, Tuple
 
 import pytest
 import yaml
@@ -33,13 +33,13 @@ def fixture_parsed_pairs() -> Set[Tuple[str, str]]:
     """Every (category, value) that the pinned names and overlay produce."""
     text = (DATA_DIR / "ciphersuites.yaml").read_text(encoding="utf-8")
     suites = yaml.safe_load(text)["suites"]
-    named: Dict[Tuple[str, ...], str] = {
-        tuple(suite["code_point"]): suite["name"] for suite in suites
-    }
+    named: List[Tuple[Tuple[str, ...], str]] = [
+        (tuple(suite["code_point"]), suite["name"]) for suite in suites
+    ]
     for record in packaged_overlay():
-        named[record.code_point] = record.name
+        named.append((record.code_point, record.name))
     pairs: Set[Tuple[str, str]] = set()
-    for code_point, name in named.items():
+    for code_point, name in named:
         parsed = complete_cs_instance(name, code_point)
         for category in USED_CATEGORIES:
             if parsed.get(category):

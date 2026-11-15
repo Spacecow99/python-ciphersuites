@@ -74,7 +74,7 @@ vulnerabilities:
 A technology matches a catalogue value when `category` and `value` are
 equal to the catalogue's. A technology cites a vulnerability by the
 exact, case-sensitive `name`. The files have no ids. A value that
-differs only by case or by white space does not match.
+differs only by case or by whitespace does not match.
 
 The catalogue has flags instead of values for `export` and `old`. A suite
 with `export: true` matches the technology with the category `flag` and
@@ -115,7 +115,7 @@ date means "not reviewed yet". The scraper reports the second case with
 At data commit `df9a10c`, no record has a `reviewed` date, so the
 scraper reports `TECHNOLOGY_UNREVIEWED` on every run.
 
-## How to edit the files
+## Edit the files
 
 1. In a clone of the data repository, edit `technologies.yaml` or
    `vulnerabilities.yaml` by hand.
@@ -127,7 +127,8 @@ scraper reports `TECHNOLOGY_UNREVIEWED` on every run.
 
 Do not generate the files with the scraper. The workflow copies only the
 fourteen data files that the scraper writes, so it leaves these two
-files as they are. [Issue 30](https://github.com/Spacecow99/python-ciphersuites/issues/30)
+files as they are. Feature 2
+([issue 30](https://github.com/Spacecow99/python-ciphersuites/issues/30))
 refreshes the vulnerability content.
 
 ## Read the records with Python

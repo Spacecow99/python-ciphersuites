@@ -176,14 +176,15 @@ check.
 `supported_by` and the others) use a default catalogue, loaded on the
 first call from the packaged data directory `ciphersuites/_ciphersuites`.
 It reads every `.yaml` file of the directory except `technologies.yaml`
-and `vulnerabilities.yaml`. Each of those files must be in schema v2;
-any other file raises `DataNotFoundError`. The two excepted files go
+and `vulnerabilities.yaml`. Every other `.yaml` file must be in schema
+v2; a file that is not raises `DataNotFoundError`. The two excepted files go
 through `load_reference_files` in `ciphersuites/scrape/technologies.py`,
 which never raises. A file that is missing or invalid becomes a problem
 that the catalog reports with `Catalog.reference_problems`.
 
 From the scraper package, the read side imports only `core.py` (the code
-point helpers) and `schema.py` (the schema reader). It does not import
+point helpers), `schema.py` (the schema reader) and `technologies.py`
+(the reader of the two reference files). It does not import
 the fetch or adapter code.
 
 `ciphersuites/__main__.py` is the command `python -m ciphersuites`. The

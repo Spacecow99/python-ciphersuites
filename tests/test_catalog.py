@@ -375,7 +375,13 @@ def test_default_catalogue_exposes_technologies():
         "schannel",
     ]
     suite = catalog_module.get(["0xC0", "0x2F"])
-    assert suite.technologies()
+    assert [t.value for t in suite.technologies()] == [
+        "TLS",
+        "ECDHE",
+        "RSA",
+        "AES 128 GCM",
+        "SHA256",
+    ]
 
 
 def test_other_list_shaped_yaml_still_rejected(tmp_path):
