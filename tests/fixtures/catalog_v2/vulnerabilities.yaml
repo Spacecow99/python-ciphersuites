@@ -1,0 +1,25 @@
+schema_version: 2
+kind: vulnerabilities
+vulnerabilities:
+- name: Deprecated cipher
+  severity: 0
+  description: The algorithm is deprecated but has no practical attack.
+  references:
+  - https://example.test/deprecated
+- name: MD5 collisions
+  severity: 1
+  description: MD5 is open to practical collision attacks.
+  references: []
+- name: RC4 biases
+  severity: 2
+  description: RC4 keystream biases allow plaintext recovery.
+  references:
+  - https://example.test/rc4
+- name: Sweet32
+  severity: 1
+  description: 64-bit block ciphers leak plaintext in long sessions.
+  references: []
+- name: FREAK
+  severity: 2
+  description: Export-grade keys can be forced and factored.
+  references: []

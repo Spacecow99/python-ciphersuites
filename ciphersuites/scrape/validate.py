@@ -21,6 +21,11 @@ from ciphersuites.scrape.schema import (
     V1Baseline,
     VersionEntry,
 )
+from ciphersuites.scrape.technologies import (
+    TECHNOLOGIES_FILE,
+    VULNERABILITIES_FILE,
+    ReferenceFiles,
+)
 
 FAIL = "fail"
 WARN = "warn"
@@ -52,6 +57,11 @@ OVERLAY_STALE_CORRECTION = "OVERLAY_STALE_CORRECTION"
 OVERLAY_REFERENCE_LISTS = "OVERLAY_REFERENCE_LISTS"
 NEW_NAME_COLLISION = "NEW_NAME_COLLISION"
 STALE_TOO_OLD = "STALE_TOO_OLD"
+TECHNOLOGY_MISSING = "TECHNOLOGY_MISSING"
+TECHNOLOGY_UNUSED = "TECHNOLOGY_UNUSED"
+VULNERABILITY_UNRESOLVED = "VULNERABILITY_UNRESOLVED"
+TECHNOLOGY_UNREVIEWED = "TECHNOLOGY_UNREVIEWED"
+REFERENCE_FILE_PROBLEM = "REFERENCE_FILE_PROBLEM"
 
 BASELINE_CODES = frozenset(
     {
@@ -83,6 +93,14 @@ KNOWN_NAME_COLLISIONS = frozenset(
 
 REFERENCE_SHRINK_THRESHOLD = 0.10
 STALE_AFTER = timedelta(days=28)
+LISTED_PAIRS = 10
+USED_CATEGORIES = (
+    "protocol",
+    "key_exchange",
+    "authentication",
+    "encryption",
+    "hashing",
+)
 
 
 @dataclass(frozen=True)
@@ -536,6 +554,142 @@ def check_catalog(
                         f"stale since {entry.scraped_at}",
                     )
                 )
+    return _sorted(findings)
+
+
+def _used_pairs(catalog_doc: dict) -> Dict[Tuple[str, str], int]:
+    """Count the suites that use each (category, value) pair."""
+    counts: Dict[Tuple[str, str], int] = {}
+    suites = catalog_doc.get("suites", [])
+    if not isinstance(suites, list):
+        return counts
+    for suite in suites:
+        if not isinstance(suite, dict):
+            continue
+        pairs: Set[Tuple[str, str]] = set()
+        for category in USED_CATEGORIES:
+            value = suite.get(category)
+            if isinstance(value, str) and value:
+                pairs.add((category, value))
+        for flag in ("export", "old"):
+            if suite.get(flag) is True:
+                pairs.add(("flag", flag))
+        for pair in pairs:
+            counts[pair] = counts.get(pair, 0) + 1
+    return counts
+
+
+def _pair_message(prefix: str, labels: List[str]) -> str:
+    """Join the first ``LISTED_PAIRS`` labels, then count the rest."""
+    text = f"{prefix}: " + ", ".join(labels[:LISTED_PAIRS])
+    if len(labels) > LISTED_PAIRS:
+        text += f" and {len(labels) - LISTED_PAIRS} more"
+    return text
+
+
+def _aggregate(
+    code: str,
+    library: str,
+    prefix: str,
+    key: str,
+    items: List[Tuple[Dict[str, str], str]],
+) -> List[Finding]:
+    """One warning for ``items``, each a (details entry, label) pair."""
+    if not items:
+        return []
+    message = _pair_message(
+        f"{len(items)} {prefix}", [label for _, label in items]
+    )
+    details = {key: [entry for entry, _ in items]}
+    return [Finding(WARN, code, library, None, message, details)]
+
+
+def check_technologies(
+    catalog_doc: dict, reference: ReferenceFiles
+) -> List[Finding]:
+    """Warn about gaps between the catalogue and the reference files.
+
+    Every finding is a warning. Matching is exact and case-sensitive.
+
+    Args:
+      catalog_doc: The catalogue document.
+      reference: The technologies and vulnerabilities that were read.
+
+    Returns:
+      The sorted warnings.
+    """
+    findings: List[Finding] = [
+        Finding(
+            WARN,
+            REFERENCE_FILE_PROBLEM,
+            problem.file.rsplit(".", 1)[0],
+            None,
+            problem.message,
+        )
+        for problem in reference.problems
+    ]
+    if any(p.file == TECHNOLOGIES_FILE for p in reference.problems):
+        return _sorted(findings)
+    used = _used_pairs(catalog_doc)
+    known = {(t.category, t.value) for t in reference.technologies}
+    for (category, value), count in sorted(used.items()):
+        if (category, value) not in known:
+            findings.append(
+                Finding(
+                    WARN,
+                    TECHNOLOGY_MISSING,
+                    "technologies",
+                    None,
+                    f"{category} {value!r} has no technology record; "
+                    f"used by {count} suite(s)",
+                    {"category": category, "value": value, "suites": count},
+                )
+            )
+    unused = sorted(
+        (t.category, t.value)
+        for t in reference.technologies
+        if (t.category, t.value) not in used
+    )
+    findings += _aggregate(
+        TECHNOLOGY_UNUSED,
+        "technologies",
+        "technology record(s) used by no suite",
+        "technologies",
+        [({"category": c, "value": v}, f"{c} {v!r}") for c, v in unused],
+    )
+    if not any(p.file == VULNERABILITIES_FILE for p in reference.problems):
+        names = {v.name for v in reference.vulnerabilities}
+        cited = sorted(
+            (t.category, t.value, name)
+            for t in reference.technologies
+            for name in t.vulnerabilities
+            if name not in names
+        )
+        findings += _aggregate(
+            VULNERABILITY_UNRESOLVED,
+            "vulnerabilities",
+            "cited vulnerability name(s) not in the vulnerabilities file",
+            "references",
+            [
+                (
+                    {"category": c, "value": v, "vulnerability": n},
+                    f"{c} {v!r} cites {n!r}",
+                )
+                for c, v, n in cited
+            ],
+        )
+    unreviewed = sorted(
+        (t.category, t.value)
+        for t in reference.technologies
+        if t.reviewed is None
+    )
+    findings += _aggregate(
+        TECHNOLOGY_UNREVIEWED,
+        "technologies",
+        "technology record(s) without a review date",
+        "technologies",
+        [({"category": c, "value": v}, f"{c} {v!r}") for c, v in unreviewed],
+    )
     return _sorted(findings)
 
 

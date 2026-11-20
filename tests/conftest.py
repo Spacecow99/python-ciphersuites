@@ -50,3 +50,13 @@ def fixture_empty_overlay(monkeypatch):
     ``monkeypatch.setattr(runner, "packaged_overlay", ...)``.
     """
     monkeypatch.setattr(runner, "packaged_overlay", lambda: [])
+
+
+@pytest.fixture(autouse=True)
+def fixture_no_technology_warnings(monkeypatch):
+    """Keep the technology gap check out of every scraper run by default.
+
+    Tests of the check override this with their own
+    ``monkeypatch.setattr(runner, "check_technologies", ...)``.
+    """
+    monkeypatch.setattr(runner, "check_technologies", lambda *_args: [])

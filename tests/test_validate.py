@@ -10,6 +10,12 @@ import pytest
 from ciphersuites.scrape.adapters.base import Adapter
 from ciphersuites.scrape.core import ParseResult, Record, Version
 from ciphersuites.scrape.schema import LibraryData, V1Baseline, VersionEntry
+from ciphersuites.scrape.technologies import (
+    ReferenceFiles,
+    ReferenceProblem,
+    Technology,
+    Vulnerability,
+)
 from ciphersuites.scrape.validate import (
     ACCEPTED,
     BAD_CODE_POINT,
@@ -25,11 +31,16 @@ from ciphersuites.scrape.validate import (
     NONDETERMINISTIC,
     PARSE_ERROR,
     PATCH_REMOVAL,
+    REFERENCE_FILE_PROBLEM,
     REFERENCE_SHRINK,
     STALE_TOO_OLD,
+    TECHNOLOGY_MISSING,
+    TECHNOLOGY_UNREVIEWED,
+    TECHNOLOGY_UNUSED,
     UNKNOWN_CODE_POINT,
     UNMATCHED_KEYS,
     V1_PARITY,
+    VULNERABILITY_UNRESOLVED,
     WARN,
     ZERO_RECORDS,
     Finding,
@@ -38,6 +49,7 @@ from ciphersuites.scrape.validate import (
     check_catalog,
     check_discovery,
     check_parse,
+    check_technologies,
 )
 
 NOW = datetime(2026, 11, 8, tzinfo=timezone.utc)
@@ -414,3 +426,199 @@ def test_cross_library_collision():
     found = check_catalog(catalog(cp(1), cp(2)), libs, NOW)
     assert [f.code for f in found] == [NEW_NAME_COLLISION] * 2
     assert [f.library for f in found] == ["a", "b"]
+
+
+def suite(**kwargs) -> dict:
+    base = {
+        "protocol": "TLS",
+        "key_exchange": "ECDH",
+        "authentication": "RSA",
+        "encryption": "AES 128 GCM",
+        "hashing": "AEAD",
+    }
+    base.update(kwargs)
+    return base
+
+
+def tech(category, value, vulns=(), reviewed="2026-01-01") -> Technology:
+    return Technology(category, value, value, tuple(vulns), reviewed)
+
+
+def vuln(name) -> Vulnerability:
+    return Vulnerability(name, 1, "d", ())
+
+
+def clean_technologies(*suites) -> List[Technology]:
+    pairs = set()
+    for item in suites:
+        for cat in (
+            "protocol",
+            "key_exchange",
+            "authentication",
+            "encryption",
+            "hashing",
+        ):
+            pairs.add((cat, item[cat]))
+    return [tech(c, v) for c, v in sorted(pairs)]
+
+
+def by_code(findings, code):
+    return [f for f in findings if f.code == code]
+
+
+def test_missing_technology_is_a_warning_per_value():
+    doc = {
+        "suites": [
+            suite(encryption="AES 128 CBC"),
+            suite(encryption="AES 128 CBC", hashing="SHA"),
+        ]
+    }
+    techs = [
+        t
+        for t in clean_technologies(*doc["suites"])
+        if t.value != "AES 128 CBC"
+    ]
+    found = by_code(
+        check_technologies(doc, ReferenceFiles(tuple(techs))),
+        TECHNOLOGY_MISSING,
+    )
+    assert len(found) == 1
+    assert found[0].level == WARN and found[0].library == "technologies"
+    assert found[0].details["suites"] == 2
+    assert found[0].details["value"] == "AES 128 CBC"
+    assert found[0].message == (
+        "encryption 'AES 128 CBC' has no technology record; "
+        "used by 2 suite(s)"
+    )
+
+
+def test_matching_is_exact():
+    doc = {"suites": [suite(encryption="AES 128 CBC")]}
+    techs = [
+        t
+        for t in clean_technologies(*doc["suites"])
+        if t.value != "AES 128 CBC"
+    ] + [tech("encryption", "aes 128 cbc")]
+    found = check_technologies(doc, ReferenceFiles(tuple(techs)))
+    assert len(by_code(found, TECHNOLOGY_MISSING)) == 1
+    unused = by_code(found, TECHNOLOGY_UNUSED)
+    assert unused[0].details["technologies"] == [
+        {"category": "encryption", "value": "aes 128 cbc"}
+    ]
+
+
+def test_export_and_old_flags_need_flag_records():
+    doc = {"suites": [suite(export=True)]}
+    base = clean_technologies(*doc["suites"])
+    found = check_technologies(doc, ReferenceFiles(tuple(base)))
+    missing = by_code(found, TECHNOLOGY_MISSING)
+    assert [(f.details["category"], f.details["value"]) for f in missing] == [
+        ("flag", "export")
+    ]
+    full = ReferenceFiles(tuple(base + [tech("flag", "export")]))
+    assert not check_technologies(doc, full)
+    old = {"suites": [suite(old=True)]}
+    found = check_technologies(old, ReferenceFiles(tuple(base)))
+    assert by_code(found, TECHNOLOGY_MISSING)[0].details["value"] == "old"
+
+
+def test_empty_and_none_values_are_ignored():
+    doc = {
+        "suites": [
+            suite(encryption="", hashing=None),
+            "not a mapping",
+            None,
+        ]
+    }
+    techs = [
+        tech("protocol", "TLS"),
+        tech("key_exchange", "ECDH"),
+        tech("authentication", "RSA"),
+    ]
+    assert not check_technologies(doc, ReferenceFiles(tuple(techs)))
+
+
+def test_unused_unresolved_and_unreviewed_are_single_aggregates():
+    doc = {"suites": [suite()]}
+    extra = [
+        tech("encryption", f"X{n:02d}", ["nope"], reviewed=None)
+        for n in range(12)
+    ]
+    ref = ReferenceFiles(
+        tuple(clean_technologies(*doc["suites"]) + extra), (vuln("other"),)
+    )
+    found = check_technologies(doc, ref)
+    for code in (TECHNOLOGY_UNUSED, TECHNOLOGY_UNREVIEWED):
+        items = by_code(found, code)
+        assert len(items) == 1
+        assert len(items[0].details["technologies"]) == 12
+        assert "and 2 more" in items[0].message
+    unresolved = by_code(found, VULNERABILITY_UNRESOLVED)
+    assert len(unresolved) == 1
+    assert len(unresolved[0].details["references"]) == 12
+    assert unresolved[0].details["references"][0] == {
+        "category": "encryption",
+        "value": "X00",
+        "vulnerability": "nope",
+    }
+    assert "and 2 more" in unresolved[0].message
+    assert all(f.level == WARN for f in found)
+
+
+def test_three_unused_records_give_one_finding_without_truncation():
+    doc = {"suites": [suite()]}
+    extra = [tech("encryption", f"X{n}") for n in range(3)]
+    ref = ReferenceFiles(tuple(clean_technologies(*doc["suites"]) + extra))
+    found = by_code(check_technologies(doc, ref), TECHNOLOGY_UNUSED)
+    assert len(found) == 1
+    assert len(found[0].details["technologies"]) == 3
+    assert "more" not in found[0].message
+
+
+def test_unresolved_vulnerability_name_warns():
+    doc = {"suites": [suite()]}
+    techs = [
+        tech(t.category, t.value, ["Known", "known"])
+        for t in clean_technologies(*doc["suites"])[:1]
+    ] + clean_technologies(*doc["suites"])[1:]
+    found = check_technologies(
+        doc, ReferenceFiles(tuple(techs), (vuln("Known"),))
+    )
+    unresolved = by_code(found, VULNERABILITY_UNRESOLVED)
+    assert [
+        r["vulnerability"] for r in unresolved[0].details["references"]
+    ] == ["known"]
+    assert unresolved[0].library == "vulnerabilities"
+
+
+def test_unresolved_check_is_skipped_when_vulnerabilities_are_unusable():
+    doc = {"suites": [suite()]}
+    techs = [
+        tech(t.category, t.value, ["Known"])
+        for t in clean_technologies(*doc["suites"])
+    ]
+    problem = ReferenceProblem("vulnerabilities.yaml", "invalid", "bad file")
+    found = check_technologies(
+        doc, ReferenceFiles(tuple(techs), (), (problem,))
+    )
+    assert [f.code for f in found] == [REFERENCE_FILE_PROBLEM]
+    assert found[0].library == "vulnerabilities"
+    assert found[0].message == "bad file"
+
+
+def test_unusable_technologies_file_gives_only_the_problem_warning():
+    doc = {"suites": [suite()]}
+    problem = ReferenceProblem("technologies.yaml", "missing", "not found")
+    found = check_technologies(doc, ReferenceFiles((), (), (problem,)))
+    assert [(f.level, f.code, f.library) for f in found] == [
+        (WARN, REFERENCE_FILE_PROBLEM, "technologies")
+    ]
+
+
+def test_a_clean_reference_gives_no_findings():
+    doc = {"suites": [suite(export=True)]}
+    techs = clean_technologies(*doc["suites"]) + [tech("flag", "export")]
+    techs[0] = tech(techs[0].category, techs[0].value, ["Known"])
+    assert not check_technologies(
+        doc, ReferenceFiles(tuple(techs), (vuln("Known"),))
+    )

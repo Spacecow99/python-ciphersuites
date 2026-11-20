@@ -10,14 +10,15 @@ The workflow file is
 `.github/workflows/scrape_format_ciphersuites.yaml` in the data
 repository <https://github.com/Spacecow99/ciphersuites>. This page
 describes the file as it is at data commit
-`a75b39ccf91997abd5b57aad7e2ff7598aa61854` (short form `a75b39c`). That
-is the commit that this package's data {term}`submodule` pins. You can
+`1a2346e317f6336750773e2827355cb55387ab5a` (short form `1a2346e`). That
+is the commit that this package's data {term}`submodule` pins. The
+workflow file is the same as at `a75b39c`. You can
 read the file in a clone at
 `ciphersuites/_ciphersuites/.github/workflows/scrape_format_ciphersuites.yaml`.
 
-That commit is on the data repository's default branch `main`. The
-workflow file is therefore on the default branch, and the weekly
-schedule is active. [Releasing](releasing.md) describes how the file got
+That commit is the merge commit on the data repository's default branch
+`main`. The workflow file is therefore on the default branch, and the
+weekly schedule is active. [Releasing](releasing.md) describes how the file got
 there.
 
 ## Why the workflow has two jobs
@@ -135,8 +136,9 @@ It runs after `scrape` succeeded. Permissions: `contents: write`. Steps:
    `scanigma.yaml`, `boringssl.yaml`, `gnutls.yaml`, `go.yaml`,
    `jsse.yaml`, `libressl.yaml`, `mbedtls.yaml`, `nss.yaml`,
    `openssl.yaml`, `s2n.yaml` and `schannel.yaml`. Any other file in the
-   artifact is ignored. The legacy files `technologies.yaml` and
-   `vulnerabilities.yaml` are not in the list.
+   artifact is ignored. The files `technologies.yaml` and
+   `vulnerabilities.yaml` are not in the list, so the workflow never
+   overwrites them. A person edits them in the data repository.
 4. **Commit and push.** It stages the top-level `*.yaml` files only
    (`git add -- ':(glob)*.yaml'`). When something changed, it commits as
    `github-actions[bot]` with the message

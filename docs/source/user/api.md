@@ -268,6 +268,26 @@ Returns the version labels of a library in written order. The same as
 ['3.20', '3.21']
 ```
 
+### `technologies`
+
+```text
+technologies() -> List[Technology]
+```
+
+Returns every technology record of the default catalog in file order.
+The same as `Catalog.technologies`. See
+[`Catalog.technologies`](#catalogtechnologies).
+
+### `vulnerabilities`
+
+```text
+vulnerabilities() -> List[Vulnerability]
+```
+
+Returns every vulnerability record of the default catalog in file order.
+The same as `Catalog.vulnerabilities`. See
+[`Catalog.vulnerabilities`](#catalogvulnerabilities).
+
 ## `CipherSuite`
 
 A frozen dataclass that describes one cipher suite. "Frozen" means that
@@ -378,6 +398,28 @@ written order (oldest first). Returns `[]` when no version contains it.
 The list can have gaps. A suite can leave a library and come back in a
 later version.
 
+#### `CipherSuite.technologies`
+
+```text
+technologies() -> List[Technology]
+```
+
+Returns the technology records for the `protocol`, `key_exchange`,
+`authentication`, `encryption` and `hashing` values, in that order,
+then the `export` and `old` flag records for each flag that is true.
+Values without a record are skipped. A suite that is not bound to a
+catalog returns `[]`.
+
+#### `CipherSuite.vulnerabilities`
+
+```text
+vulnerabilities() -> List[Vulnerability]
+```
+
+Returns the distinct vulnerabilities that the records of
+`CipherSuite.technologies` cite, sorted by severity (highest first) and
+then by name. A cited name that the catalog does not define is skipped.
+
 #### `CipherSuite.first_seen`
 
 ```text
@@ -434,10 +476,14 @@ A class method. Reads every data file in `data_dir` and returns a new
   Traversable object. A plain string does not work: it raises
   `DataNotFoundError`.
 - The directory must contain `ciphersuites.yaml`. Every other `.yaml`
-  file in it must be a library or reference file. All files must have
+  file in it, except `technologies.yaml` and `vulnerabilities.yaml`,
+  must be a library or reference file. All files must have
   `schema_version: 2`. Library files are optional.
-- The method reads only files that end in `.yaml`. It skips the legacy
-  files `technologies.yaml` and `vulnerabilities.yaml`.
+- The method reads only files that end in `.yaml`.
+- The method reads `technologies.yaml` and `vulnerabilities.yaml`
+  separately. A missing or invalid file does not raise. The catalog
+  holds no records from that file, and `Catalog.reference_problems`
+  describes the problem.
 
 Raises `DataNotFoundError` when the directory cannot be listed, when
 `ciphersuites.yaml` is missing, when a file cannot be read or has the
@@ -655,11 +701,61 @@ normalised, as for `Catalog.membership`.
 {'RC4-MD5': ['1.0.2']}
 ```
 
+### `Catalog.technologies`
+
+```text
+technologies() -> List[Technology]
+```
+
+Returns every technology record in file order. The list is empty when
+`technologies.yaml` is missing or invalid.
+
+### `Catalog.technology`
+
+```text
+technology(category: str, value: str) -> Technology
+```
+
+Returns the record for a category and a value. Raises `KeyError` when
+there is no such record.
+
+### `Catalog.vulnerabilities`
+
+```text
+vulnerabilities() -> List[Vulnerability]
+```
+
+Returns every vulnerability record in file order. The list is empty
+when `vulnerabilities.yaml` is missing or invalid.
+
+### `Catalog.vulnerability`
+
+```text
+vulnerability(name: str) -> Vulnerability
+```
+
+Returns the vulnerability with this exact, case-sensitive name. Raises
+`KeyError` when there is no such record.
+
+### `Catalog.reference_problems`
+
+```text
+reference_problems() -> List[ReferenceProblem]
+```
+
+Returns one problem for each of `technologies.yaml` and
+`vulnerabilities.yaml` that is missing (`missing`) or cannot be read
+(`invalid`). Loading a catalog never fails because of these two files.
+
 ### The constructor
 
-`Catalog(suites, docs)` builds a catalog from data that is already
-parsed. The package uses it inside `Catalog.load`. Use `Catalog.load`
-instead.
+`Catalog(suites, docs, reference=None)` builds a catalog from data that
+is already parsed. The optional `reference` argument is a
+`ReferenceFiles` object (from `ciphersuites.scrape.technologies`) that
+holds the technologies, the vulnerabilities and the problems that were
+found. Without it, the catalog has no technologies and no
+vulnerabilities. The package uses the constructor inside `Catalog.load`.
+Use `Catalog.load` instead.
 
 ## `Candidate`
 
@@ -673,6 +769,44 @@ name. `AmbiguousNameError.candidates` holds a list of them.
 | `Candidate.versions` | `Tuple[str, ...]` | The versions of that library that use the name for this code point, in written order. Empty when `library` is `None`. |
 
 See the example of `AmbiguousNameError` below.
+
+## `Technology`
+
+A frozen dataclass from `ciphersuites.scrape.technologies`. It is one
+record of `technologies.yaml`. `Catalog.technologies` and
+`CipherSuite.technologies` return them.
+
+| Attribute | Type | Meaning |
+|---|---|---|
+| `Technology.category` | `str` | One of `protocol`, `key_exchange`, `authentication`, `encryption`, `hashing` or `flag`. |
+| `Technology.value` | `str` | The catalogue value that the record describes. For the category `flag`, it is `export` or `old`. |
+| `Technology.long_name` | `str` | A readable name. |
+| `Technology.vulnerabilities` | `Tuple[str, ...]` | The names of the vulnerabilities that apply. The tuple can be empty. |
+| `Technology.reviewed` | `Optional[str]` | The review date as an ISO string (`YYYY-MM-DD`), or `None` when the record has no review date. |
+
+## `Vulnerability`
+
+A frozen dataclass from `ciphersuites.scrape.technologies`. It is one
+record of `vulnerabilities.yaml`. `Catalog.vulnerabilities` and
+`CipherSuite.vulnerabilities` return them.
+
+| Attribute | Type | Meaning |
+|---|---|---|
+| `Vulnerability.name` | `str` | The name. It is unique in the file. |
+| `Vulnerability.severity` | `int` | `0`, `1` or `2`. A higher number is more severe. |
+| `Vulnerability.description` | `str` | Plain text. |
+| `Vulnerability.references` | `Tuple[str, ...]` | Links to more information. The tuple can be empty. |
+
+## `ReferenceProblem`
+
+A frozen dataclass from `ciphersuites.scrape.technologies`.
+`Catalog.reference_problems` returns a list of them.
+
+| Attribute | Type | Meaning |
+|---|---|---|
+| `ReferenceProblem.file` | `str` | `technologies.yaml` or `vulnerabilities.yaml`. |
+| `ReferenceProblem.kind` | `str` | `missing` when the file is not there, or `invalid` when it cannot be read or breaks the schema. |
+| `ReferenceProblem.message` | `str` | A description of the problem. |
 
 ## `AmbiguousNameError`
 

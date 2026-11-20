@@ -142,6 +142,10 @@ in `openssl.yaml`, `go.yaml` and `ciphersuites.yaml`.
 
 The [user guide](../user/index.md) describes the Python API. In short,
 the package loads every data file and joins them on the code point. It
-skips the two legacy files `technologies.yaml` and `vulnerabilities.yaml`
-(see [Files in the data repository](../data/files.md)). It refuses a file
-whose `schema_version` is not `2`.
+also reads `technologies.yaml` and `vulnerabilities.yaml`. They link a
+value of the catalogue to a technology, and a technology to the
+vulnerabilities that it has (see
+[Technologies and vulnerabilities](../data/technologies-and-vulnerabilities.md)).
+It refuses a library, reference or catalogue file whose `schema_version`
+is not `2`. A bad technologies or vulnerabilities file does not stop the
+load: the package ignores that file and reports a problem.

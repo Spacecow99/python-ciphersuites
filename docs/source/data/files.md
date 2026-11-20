@@ -3,6 +3,8 @@
 This page lists every file in the {term}`data repository` and tells you
 which file answers which question. The facts on this page describe data
 commit `c24a21e` (see [Where the files are](index.md#where-the-files-are)).
+The two files `technologies.yaml` and `vulnerabilities.yaml` are
+documented at the pinned data commit `1a2346e`.
 
 ## Overview
 
@@ -22,8 +24,8 @@ commit `c24a21e` (see [Where the files are](index.md#where-the-files-are)).
 | `iana.yaml` | reference | the IANA TLS Cipher Suites registry | [Reference sources](reference-sources.md) |
 | `testssl.yaml` | reference | the cipher mapping table of testssl.sh | [Reference sources](reference-sources.md) |
 | `scanigma.yaml` | reference | the Scanigma knowledge base | [Reference sources](reference-sources.md) |
-| `technologies.yaml` | legacy | not part of this data set; see below | this page |
-| `vulnerabilities.yaml` | legacy | not part of this data set; see below | this page |
+| `technologies.yaml` | technologies | the technologies that the catalogue uses, and the vulnerabilities of each | [Technologies and vulnerabilities](technologies-and-vulnerabilities.md) |
+| `vulnerabilities.yaml` | vulnerabilities | the vulnerabilities that technologies cite | [Technologies and vulnerabilities](technologies-and-vulnerabilities.md) |
 | `__init__.py` | - | an empty file; see below | this page |
 | `.github/workflows/scrape_format_ciphersuites.yaml` | - | the workflow that runs the scraper; see below | this page |
 
@@ -32,8 +34,7 @@ top-level key `kind` tells them apart. The catalogue has a different,
 smaller layout.
 
 The example below opens every YAML file and prints its schema version
-and its `kind`. The catalogue has no `kind` key. The two legacy files are
-YAML lists, not mappings, so they have no `schema_version`.
+and its `kind`. The catalogue has no `kind` key.
 
 ```pycon
 >>> import pathlib
@@ -41,10 +42,7 @@ YAML lists, not mappings, so they have no `schema_version`.
 >>> data = pathlib.Path("ciphersuites/_ciphersuites")
 >>> for path in sorted(data.glob("*.yaml")):
 ...     doc = yaml.safe_load(path.read_text(encoding="utf-8"))
-...     if isinstance(doc, dict):
-...         print(path.name, doc["schema_version"], doc.get("kind", "-"))
-...     else:
-...         print(path.name, "legacy list")
+...     print(path.name, doc["schema_version"], doc.get("kind", "-"))
 boringssl.yaml 2 library
 ciphersuites.yaml 2 -
 gnutls.yaml 2 library
@@ -58,9 +56,9 @@ openssl.yaml 2 library
 s2n.yaml 2 library
 scanigma.yaml 2 reference
 schannel.yaml 2 library
-technologies.yaml legacy list
+technologies.yaml 2 technologies
 testssl.yaml 2 reference
-vulnerabilities.yaml legacy list
+vulnerabilities.yaml 2 vulnerabilities
 ```
 
 ## Which file answers which question
@@ -75,13 +73,14 @@ vulnerabilities.yaml legacy list
 | Which upstream commit did a version's data come from? | the library file, key `versions[].commit` |
 | Did the last scrape of a version fail? | the library file, key `versions[].status` |
 
-## The legacy files
+## Technologies and vulnerabilities
 
-`technologies.yaml` and `vulnerabilities.yaml` are older files in a
-different format: a YAML list of items with the keys `model`, `pk` and
-`fields`. The scraper does not write them and does not check them. The
-Python package does not read them. This documentation makes no promise
-about their content or their future. Do not depend on them.
+`technologies.yaml` and `vulnerabilities.yaml` are `schema_version: 2`
+files like the others, with the `kind` values `technologies` and
+`vulnerabilities`. A person maintains them by hand in the data
+repository. The scraper reads them and warns about gaps, but it never
+writes them. The workflow does not overwrite them. See
+[Technologies and vulnerabilities](technologies-and-vulnerabilities.md).
 
 ## `__init__.py`
 

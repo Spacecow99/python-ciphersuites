@@ -38,6 +38,7 @@ from ciphersuites.scrape.schema import (
     to_doc,
     write_atomic,
 )
+from ciphersuites.scrape.technologies import load_reference_files
 from ciphersuites.scrape.validate import (
     ACCEPTED,
     BASELINE_ERROR,
@@ -47,6 +48,7 @@ from ciphersuites.scrape.validate import (
     FILE_MISSING,
     OVERLAY_CORRECTION,
     PARSE_ERROR,
+    REFERENCE_FILE_PROBLEM,
     RUNNER_ERROR,
     WARN,
     Finding,
@@ -55,6 +57,7 @@ from ciphersuites.scrape.validate import (
     check_catalog,
     check_discovery,
     check_parse,
+    check_technologies,
 )
 
 CATALOGUE = "ciphersuites"
@@ -311,6 +314,20 @@ def _catalogue(
             Finding(FAIL, RUNNER_ERROR, CATALOGUE, None, _describe(exc))
         )
         return None
+    try:
+        found = found + check_technologies(
+            catalogue, load_reference_files(options.out_dir)
+        )
+    except Exception as exc:  # pylint: disable=broad-exception-caught
+        found = found + [
+            Finding(
+                WARN,
+                REFERENCE_FILE_PROBLEM,
+                "technologies",
+                None,
+                _describe(exc),
+            )
+        ]
     findings.extend(found)
     return text
 

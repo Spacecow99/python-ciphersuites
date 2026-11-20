@@ -20,6 +20,7 @@ from ciphersuites.scrape.overlay import (
     OverlayReference,
 )
 from ciphersuites.scrape import runner
+from ciphersuites.scrape.technologies import load_reference_files
 from ciphersuites.scrape.report import render_markdown, write_json
 from ciphersuites.scrape.runner import RunOptions, run
 from ciphersuites.scrape.schema import (
@@ -40,11 +41,14 @@ from ciphersuites.scrape.validate import (
     OVERLAY_REFERENCE_LISTS,
     PARSE_ERROR,
     PATCH_REMOVAL,
+    REFERENCE_FILE_PROBLEM,
     RUNNER_ERROR,
+    TECHNOLOGY_MISSING,
     UNKNOWN_CODE_POINT,
     UNMATCHED_KEYS,
     V1_PARITY,
     WARN,
+    check_technologies,
 )
 
 NOW = datetime(2026, 11, 8, tzinfo=timezone.utc)
@@ -687,3 +691,62 @@ def test_corrected_code_point_is_not_reported_as_unknown(tmp_path, monkeypatch):
     result = run(adapters, None, opts(tmp_path))
     assert ("ciphersuites", OVERLAY_CORRECTION) in codes(result, WARN)
     assert ("testssl", UNKNOWN_CODE_POINT) not in codes(result)
+
+
+TECHNOLOGIES_TEXT = """\
+kind: technologies
+schema_version: 2
+technologies:
+  - category: protocol
+    value: Nothing Used
+    long_name: Nothing Used
+    vulnerabilities: []
+    reviewed: null
+"""
+
+
+def use_real_technology_check(monkeypatch) -> None:
+    monkeypatch.setattr(
+        runner,
+        "check_technologies",
+        check_technologies,
+    )
+    monkeypatch.setattr(runner, "load_reference_files", load_reference_files)
+
+
+def test_reference_gaps_warn_but_do_not_fail_the_run(tmp_path, monkeypatch):
+    use_real_technology_check(monkeypatch)
+    (tmp_path / "technologies.yaml").write_text(
+        TECHNOLOGIES_TEXT, encoding="utf-8"
+    )
+    result = run(reference_adapters(1), None, opts(tmp_path))
+    found = codes(result, WARN)
+    assert ("technologies", TECHNOLOGY_MISSING) in found
+    assert ("vulnerabilities", REFERENCE_FILE_PROBLEM) in found
+    assert result.exit_code == 0
+    assert (tmp_path / "ciphersuites.yaml").exists()
+
+
+def test_reference_warnings_render_in_the_report(tmp_path, monkeypatch):
+    use_real_technology_check(monkeypatch)
+    (tmp_path / "technologies.yaml").write_text(
+        TECHNOLOGIES_TEXT, encoding="utf-8"
+    )
+    result = run(reference_adapters(1), None, opts(tmp_path))
+    text = render_markdown(result)
+    warnings = text[text.index("## Warnings") :]
+    assert TECHNOLOGY_MISSING in warnings
+    assert REFERENCE_FILE_PROBLEM in warnings
+
+
+def test_failing_technology_check_warns_and_keeps_the_catalogue(
+    tmp_path, monkeypatch
+):
+    def boom(*_args):
+        raise RuntimeError("check exploded")
+
+    monkeypatch.setattr(runner, "check_technologies", boom)
+    result = run(reference_adapters(1), None, opts(tmp_path))
+    assert ("technologies", REFERENCE_FILE_PROBLEM) in codes(result, WARN)
+    assert (tmp_path / "ciphersuites.yaml").exists()
+    assert result.exit_code == 0

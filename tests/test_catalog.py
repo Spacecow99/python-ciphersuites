@@ -175,6 +175,12 @@ def test_load_from_traversable(tmp_path):
         def read_text(self, encoding="utf-8"):
             return self._p.read_text(encoding=encoding)
 
+        def joinpath(self, name):
+            return Fake(self._p / name)
+
+        def is_file(self):
+            return self._p.is_file()
+
     loaded = Catalog.load(Fake(tmp_path / "d"))
     assert loaded.get((0xC0, 0x2F)) == Catalog.load(FIXTURES).get((0xC0, 0x2F))
 
@@ -261,11 +267,121 @@ def test_deterministic_under_hash_seeds():
     assert len(outs) == 1
 
 
-def test_legacy_non_suite_files_are_skipped(tmp_path):
+def test_a_legacy_or_missing_reference_file_gives_empty_results_and_problems(
+    tmp_path,
+):
     shutil.copytree(FIXTURES, tmp_path / "d")
     for name in ("technologies.yaml", "vulnerabilities.yaml"):
         (tmp_path / "d" / name).write_text("- model: x\n  pk: 1\n")
-    assert Catalog.load(tmp_path / "d").libraries() == ["go", "openssl"]
+    loaded = Catalog.load(tmp_path / "d")
+    assert loaded.libraries() == ["go", "openssl"]
+    assert not loaded.technologies()
+    assert not loaded.vulnerabilities()
+    problems = loaded.reference_problems()
+    assert [(p.file, p.kind) for p in problems] == [
+        ("technologies.yaml", "invalid"),
+        ("vulnerabilities.yaml", "invalid"),
+    ]
+    (tmp_path / "d" / "technologies.yaml").unlink()
+    again = Catalog.load(tmp_path / "d")
+    assert not again.technologies()
+    assert [(p.file, p.kind) for p in again.reference_problems()] == [
+        ("technologies.yaml", "missing"),
+        ("vulnerabilities.yaml", "invalid"),
+    ]
+
+
+def test_technologies_and_vulnerabilities_load_from_the_fixture(cat):
+    techs = cat.technologies()
+    assert len(techs) == 8
+    assert [(t.category, t.value) for t in techs[:3]] == [
+        ("protocol", "TLS"),
+        ("protocol", "SSL"),
+        ("key_exchange", "RSA"),
+    ]
+    assert [v.name for v in cat.vulnerabilities()] == [
+        "Deprecated cipher",
+        "MD5 collisions",
+        "RC4 biases",
+        "Sweet32",
+        "FREAK",
+    ]
+    assert cat.reference_problems() == []
+
+
+def test_technology_lookup_and_keyerror(cat):
+    assert cat.technology("encryption", "RC4 128").long_name == (
+        "RC4 with a 128-bit key"
+    )
+    with pytest.raises(KeyError, match="rc4 128"):
+        cat.technology("encryption", "rc4 128")
+
+
+def test_vulnerability_lookup_and_keyerror(cat):
+    assert cat.vulnerability("Sweet32").severity == 1
+    with pytest.raises(KeyError, match="sweet32"):
+        cat.vulnerability("sweet32")
+
+
+def test_suite_technologies_follow_field_order_and_include_flags(cat):
+    suite = cat.get((0x00, 0x04))
+    assert [(t.category, t.value) for t in suite.technologies()] == [
+        ("protocol", "TLS"),
+        ("key_exchange", "RSA"),
+        ("authentication", "RSA"),
+        ("encryption", "RC4 128"),
+        ("hashing", "MD5"),
+    ]
+    flagged = dataclasses.replace(suite, export=True, old=True)
+    assert [t.value for t in flagged.technologies()][-1] == "export"
+    assert len(flagged.technologies()) == 6
+
+
+def test_suite_vulnerabilities_are_deduplicated_and_sorted(cat):
+    names = [v.name for v in cat.get((0x00, 0x04)).vulnerabilities()]
+    assert names == ["RC4 biases", "MD5 collisions", "Deprecated cipher"]
+
+
+def test_unresolved_vulnerability_name_is_skipped(cat):
+    suite = cat.get((0x01, 0x00, 0x80))
+    assert "No such vulnerability" in [
+        name for t in suite.technologies() for name in t.vulnerabilities
+    ]
+    assert [v.name for v in suite.vulnerabilities()] == [
+        "RC4 biases",
+        "MD5 collisions",
+        "Deprecated cipher",
+    ]
+
+
+def test_unbound_suite_has_no_technologies():
+    suite = CipherSuite(code_point=("0x00", "0x04"), name="X", sources=[])
+    assert not suite.technologies()
+    assert not suite.vulnerabilities()
+
+
+def test_default_catalogue_exposes_technologies():
+    assert catalog_module.technologies()
+    assert catalog_module.libraries() == [
+        "boringssl",
+        "gnutls",
+        "go",
+        "jsse",
+        "libressl",
+        "mbedtls",
+        "nss",
+        "openssl",
+        "s2n",
+        "schannel",
+    ]
+    suite = catalog_module.get(["0xC0", "0x2F"])
+    assert [t.value for t in suite.technologies()] == [
+        "TLS",
+        "ECDHE",
+        "RSA",
+        "AES 128 GCM",
+        "SHA256",
+    ]
 
 
 def test_other_list_shaped_yaml_still_rejected(tmp_path):
