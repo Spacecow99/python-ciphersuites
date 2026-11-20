@@ -10,15 +10,15 @@ The workflow file is
 `.github/workflows/scrape_format_ciphersuites.yaml` in the data
 repository <https://github.com/Spacecow99/ciphersuites>. This page
 describes the file as it is at data commit
-`b4a2cddc0252dde00a3aa5d6f94055e14390a707` (short form `b4a2cdd`). That
+`1a2346e317f6336750773e2827355cb55387ab5a` (short form `1a2346e`). That
 is the commit that this package's data {term}`submodule` pins. The
 workflow file is the same as at `a75b39c`. You can
 read the file in a clone at
 `ciphersuites/_ciphersuites/.github/workflows/scrape_format_ciphersuites.yaml`.
 
-That commit is on the branch `feature/technologies-schema-v2`, which is
-not merged into `main` yet. The workflow file on the default branch
-`main` is the same, so the weekly schedule is active. [Releasing](releasing.md) describes how the file got
+That commit is the merge commit on the data repository's default branch
+`main`. The workflow file is therefore on the default branch, and the
+weekly schedule is active. [Releasing](releasing.md) describes how the file got
 there.
 
 ## Why the workflow has two jobs

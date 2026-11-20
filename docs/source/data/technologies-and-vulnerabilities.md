@@ -17,7 +17,7 @@ A person maintains both files by hand in the {term}`data repository`.
 The scraper reads them and warns about gaps. It never writes them, and
 the workflow does not overwrite them.
 
-The facts on this page describe data commit `b4a2cdd` (see
+The facts on this page describe data commit `1a2346e` (see
 [Where the files are](index.md#where-the-files-are)).
 
 ## The technologies file
@@ -115,7 +115,7 @@ record with an empty `vulnerabilities` list and a `reviewed` date means
 date means "not reviewed yet". The scraper reports the second case with
 `TECHNOLOGY_UNREVIEWED`, so an empty list cannot hide a gap.
 
-At data commit `b4a2cdd`, no record has a `reviewed` date, so the
+At data commit `1a2346e`, no record has a `reviewed` date, so the
 scraper reports `TECHNOLOGY_UNREVIEWED` on every run.
 
 ## Edit the files

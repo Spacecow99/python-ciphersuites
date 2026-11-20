@@ -21,7 +21,7 @@ Do not confuse these two:
   data makes a new commit in the {term}`data repository`.
 
 The Python package `python-ciphersuites` on `main` pins one data commit,
-`b4a2cdd`, through its {term}`gitlink`. If you read the files directly,
+`1a2346e`, through its {term}`gitlink`. If you read the files directly,
 choose a data commit yourself and record its SHA. A commit SHA always
 gives the same files.
 

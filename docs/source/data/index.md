@@ -26,8 +26,8 @@ This guide documents the files at data commit
 `c24a21eb2cf4253bcdaf15b09d5d13da6fe21773` (short form `c24a21e`). That
 is the commit that the Python package `python-ciphersuites` 0.1.0 pinned
 as its {term}`submodule` at the release. The package now pins the later
-data commit `b4a2cddc0252dde00a3aa5d6f94055e14390a707` (short form
-`b4a2cdd`) on the branch `feature/technologies-schema-v2` of the data
+data commit `1a2346e317f6336750773e2827355cb55387ab5a` (short form
+`1a2346e`), the merge commit on the `main` branch of the data
 repository. That commit holds newer scrape results than `c24a21e` and
 converts `technologies.yaml` and `vulnerabilities.yaml` to schema
 version 2. The pages of this guide that name `c24a21e` describe the
@@ -38,7 +38,7 @@ older format.
 To get the files at the documented commit:
 
 1. Clone the data repository.
-2. Check out commit `c24a21e` or `b4a2cdd`.
+2. Check out commit `c24a21e` or `1a2346e`.
 
 All examples in this guide read the files from the directory
 `ciphersuites/_ciphersuites`, which is where the Python package's source

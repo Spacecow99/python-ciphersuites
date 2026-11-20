@@ -4,7 +4,7 @@ This page lists every file in the {term}`data repository` and tells you
 which file answers which question. The facts on this page describe data
 commit `c24a21e` (see [Where the files are](index.md#where-the-files-are)).
 The two files `technologies.yaml` and `vulnerabilities.yaml` are
-documented at the pinned data commit `b4a2cdd`.
+documented at the pinned data commit `1a2346e`.
 
 ## Overview
 
